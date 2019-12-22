@@ -105,9 +105,7 @@
   "optionalDependencies": {
     "puppeteer": "^1.17.0"
   },
-  "engines": {
-    "node": ">=10.0.0"
-  },
+  
   "checkFiles": [
     "src/**/*.js*",
     "src/**/*.ts*",
