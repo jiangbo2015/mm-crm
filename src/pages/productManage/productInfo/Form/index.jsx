@@ -1,0 +1,111 @@
+import React from 'react';
+import { Form, Input, Select, Row, Col, Button } from 'antd';
+const { Option } = Select;
+import { connect } from 'dva';
+import styles from './index.less';
+
+@connect(state => ({
+    currentSize: state.global.currentSize,
+}))
+class RegistrationForm extends React.Component {
+    state = {};
+
+    handleAdd = () => {
+        const { currentSize } = this.props;
+        currentSize.values.push({});
+        this.props.dispatch({
+            type: 'global/setCurrentSize',
+            payload: {
+                ...currentSize,
+            },
+        });
+    };
+
+    handleDelete = index => {
+        const { currentSize } = this.props;
+        const { getFieldsValue, setFieldsValue } = this.props.form;
+        const fields = getFieldsValue();
+        const values = Object.values(fields);
+        values.splice(index, 1);
+        currentSize.values.splice(index, 1);
+        this.props.dispatch({
+            type: 'global/setCurrentSize',
+            payload: {
+                ...currentSize,
+            },
+        });
+        values.map((item, i) => {
+            setFieldsValue({
+                [`name${i}`]: values[i],
+            });
+        });
+    };
+
+    render() {
+        const { getFieldDecorator } = this.props.form;
+        console.log(this.props);
+        const formItemLayout = {
+            labelCol: {
+                xs: {
+                    span: 24,
+                },
+                sm: {
+                    span: 8,
+                },
+            },
+            wrapperCol: {
+                xs: {
+                    span: 24,
+                },
+                sm: {
+                    span: 16,
+                },
+            },
+        };
+        const { currentSize } = this.props;
+        return (
+            <Form {...formItemLayout}>
+                <Row>
+                    {currentSize.values.map((item, index) => (
+                        <Col span="3" key={index}>
+                            <Form.Item label="">
+                                {getFieldDecorator(`name${index}`, {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input name!',
+                                            whitespace: true,
+                                        },
+                                    ],
+                                })(<Input />)}
+                            </Form.Item>
+                            {index > 0 && (
+                                <Button
+                                    shape="circle"
+                                    className={styles.del}
+                                    icon="delete"
+                                    type="danger"
+                                    size="small"
+                                    onClick={e => this.handleDelete(index)}
+                                />
+                            )}
+                        </Col>
+                    ))}
+                    <Col span="2">
+                        <Button
+                            shape="circle"
+                            icon="plus"
+                            type="primary"
+                            style={{ marginTop: '5px' }}
+                            onClick={this.handleAdd}
+                        />
+                    </Col>
+                </Row>
+            </Form>
+        );
+    }
+}
+
+export default Form.create({
+    name: 'inputDesiner',
+})(RegistrationForm);
