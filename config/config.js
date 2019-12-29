@@ -23,11 +23,11 @@ const plugins = [
                 // default true, when it is true, will use `navigator.language` overwrite default
                 baseNavigator: true,
             },
-            // dynamicImport: {
-            //   loadingComponent: './components/PageLoading/index',
-            //   webpackChunkName: true,
-            //   level: 3,
-            // },
+            dynamicImport: {
+                loadingComponent: './components/PageLoading/index',
+                webpackChunkName: true,
+                level: 3,
+            },
             pwa: pwa
                 ? {
                       workboxPluginMode: 'InjectManifest',
@@ -71,6 +71,7 @@ export default {
         defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
     },
     hash: true,
+    treeShaking: true,
     targets: {
         ie: 11,
     },
