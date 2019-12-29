@@ -131,7 +131,7 @@ export default {
                         {
                             path: '/productManage',
                             name: '产品管理',
-                            icon: 'user',
+                            icon: 'sketch',
                             routes: [
                                 {
                                     path: '/productManage/productInfo',
@@ -153,7 +153,7 @@ export default {
                         {
                             path: '/orderManage',
                             name: '订单管理',
-                            icon: 'user',
+                            icon: 'dollar',
                             routes: [
                                 {
                                     path: '/orderManage/order',
@@ -165,7 +165,7 @@ export default {
                         {
                             path: '/systemSetup',
                             name: '系统设置',
-                            icon: 'smile',
+                            icon: 'tool',
                             component: './systemSetup',
                         },
                         {

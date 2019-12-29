@@ -1,3 +1,3 @@
-const api = process.env.NODE_ENV === process.env.APIURL;
+const api = process.env.APIURL;
 
 export { api };

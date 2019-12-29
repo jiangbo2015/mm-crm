@@ -100,7 +100,7 @@ class Login extends Component {
                             this.renderMessage('账户或密码错误（admin/ant.design）')}
                         <UserName
                             name="account"
-                            placeholder={`${'用户名'}: admin or user`}
+                            placeholder="账号"
                             rules={[
                                 {
                                     // required: true,
@@ -110,7 +110,7 @@ class Login extends Component {
                         />
                         <Password
                             name="password"
-                            placeholder={`${'密码'}: ant.design`}
+                            placeholder="密码"
                             rules={[
                                 {
                                     // required: true,

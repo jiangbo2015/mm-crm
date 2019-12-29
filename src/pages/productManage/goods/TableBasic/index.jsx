@@ -49,6 +49,7 @@ const Com = props => {
                 const newCategory = category.map((item, index) => ({
                     name: values[`cname${index}`],
                     sizeId: values[`size${index}`],
+                    _id: item._id || '',
                 }));
                 props.dispatch({
                     type: 'goods/update',
