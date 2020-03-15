@@ -25,15 +25,6 @@ const noMatch = (
         }
     />
 );
-/**
- * use Authorized check all menu item
- */
-
-const menuDataRender = menuList =>
-    menuList.map(item => {
-        const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
-        return Authorized.check(item.authority, localItem, null);
-    });
 
 const defaultFooterDom = (
     <DefaultFooter
@@ -88,6 +79,27 @@ const footerRender = () => {
 };
 
 const BasicLayout = props => {
+    /**
+     * use Authorized check all menu item
+     */
+
+    const menuDataRender = menuList =>
+        menuList.map(item => {
+            console.log(item, 'menu item');
+            const localItem = {
+                ...item,
+                children: item.children ? menuDataRender(item.children) : [],
+            };
+            const urls = ['userManage', 'orderManage', 'systemSetup'];
+            if (
+                props.currentUser.role === 2 &&
+                item.path !== '/productManage/colors' &&
+                item.path !== '/productManage'
+            ) {
+                return '';
+            }
+            return Authorized.check(item.authority, localItem, null);
+        });
     const {
         dispatch,
         children,
@@ -171,7 +183,8 @@ const BasicLayout = props => {
     );
 };
 
-export default connect(({ global, settings }) => ({
+export default connect(({ global, settings, user }) => ({
     collapsed: global.collapsed,
     settings,
+    currentUser: user.currentUser,
 }))(BasicLayout);

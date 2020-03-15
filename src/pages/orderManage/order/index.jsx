@@ -6,10 +6,14 @@ import TableBasic from './TableBasic';
 import { connect } from 'dva';
 
 const Com = props => {
-    useEffect(() => {
+    const getOrderList = (payload = {}) => {
         props.dispatch({
             type: 'order/getList',
+            payload,
         });
+    };
+    useEffect(() => {
+        getOrderList();
     }, []);
 
     return (
@@ -23,7 +27,7 @@ const Com = props => {
                 // }
                 style={{ marginBottom: '20px' }}
             >
-                <TableBasic />
+                <TableBasic getOrderList={getOrderList} />
             </Card>
         </PageHeaderWrapper>
     );
