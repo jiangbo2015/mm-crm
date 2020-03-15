@@ -225,6 +225,11 @@ const Model = {
             return {
                 ...state,
                 styleImgUrl: payload.imgUrl,
+                imgUrl: payload.imgUrl,
+                svgUrl: payload.svgUrl,
+                shadowUrl: payload.shadowUrl,
+                svgUrlBack: payload.svgUrlBack,
+                shadowUrlBack: payload.shadowUrlBack,
                 // plainColors: payload.plainColors.map(x => {
                 //     x._id = x.colorId;
                 //     return x;

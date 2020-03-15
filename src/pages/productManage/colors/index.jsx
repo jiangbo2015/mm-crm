@@ -8,14 +8,14 @@ import { connect } from 'dva';
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
-    const [addColorType, setAddColorType] = useState(0);  //0:素色  1: 画布
+    const [addColorType, setAddColorType] = useState(0); //0:素色  1: 画布
 
     const formRef = React.useRef();
 
     useEffect(() => {
         props.dispatch({
             type: 'style/getColorList',
-            payload: { limit: 10, page: 1}
+            payload: { limit: 10, page: 1 },
         });
     }, []);
 
@@ -46,12 +46,25 @@ const Com = props => {
                 title="颜色和画布列表"
                 extra={
                     <>
-                        <Button type="primary" onClick={() => {setVisible(true);setAddColorType(0)}}>
+                        <Button
+                            style={{ marginRight: '10px' }}
+                            type="primary"
+                            onClick={() => {
+                                setVisible(true);
+                                setAddColorType(0);
+                            }}
+                        >
                             添加素色
                         </Button>
 
-                        <Button type="success" onClick={() => {setVisible(true);setAddColorType(1)}}>
-                            添加画布
+                        <Button
+                            type="success"
+                            onClick={() => {
+                                setVisible(true);
+                                setAddColorType(1);
+                            }}
+                        >
+                            添加花布
                         </Button>
                     </>
                 }
@@ -73,10 +86,10 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form colorType={addColorType} onClose={handleClear}/>
+                <Form colorType={addColorType} onClose={handleClear} />
             </Modal>
         </PageHeaderWrapper>
     );
 };
 // colorList: state.style.colorList || [],
-export default connect(state => ({colorList: state.style.colorList || [],}))(Com);
+export default connect(state => ({ colorList: state.style.colorList || [] }))(Com);

@@ -85,7 +85,6 @@ const BasicLayout = props => {
 
     const menuDataRender = menuList =>
         menuList.map(item => {
-            console.log(item, 'menu item');
             const localItem = {
                 ...item,
                 children: item.children ? menuDataRender(item.children) : [],

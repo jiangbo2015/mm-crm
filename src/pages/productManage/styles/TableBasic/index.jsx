@@ -57,6 +57,7 @@ const Com = props => {
                     styleEditData,
                     currentCategorys,
                 } = props;
+
                 // console.log(plainColors, flowerColors, styleImgUrl);
                 props.dispatch({
                     type: 'style/update',
