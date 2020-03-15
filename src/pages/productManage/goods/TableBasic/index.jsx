@@ -46,11 +46,16 @@ const Com = props => {
             if (!err) {
                 setVisible(false);
                 const { category = [], imgUrl } = props;
-                const newCategory = category.map((item, index) => ({
-                    name: values[`cname${index}`],
-                    sizeId: values[`size${index}`],
-                    _id: item._id || '',
-                }));
+                const newCategory = category.map((item, index) => {
+                    let obj = {
+                        name: values[`cname${index}`],
+                        sizeId: values[`size${index}`],
+                    };
+                    if (item._id) {
+                        obj._id = item._id;
+                    }
+                    return obj;
+                });
                 props.dispatch({
                     type: 'goods/update',
                     payload: {

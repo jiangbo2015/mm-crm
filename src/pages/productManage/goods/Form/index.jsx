@@ -1,7 +1,7 @@
 import React from 'react';
-import { Form, Input, Select, Upload, Button, Row, Col } from 'antd';
+import { Form, Input, Select, Upload, Button, Row, Col, Divider } from 'antd';
 const { Option } = Select;
-import { uploadProps, Avatar, UploadBtn } from '../../colors/UploadCom'
+import { uploadProps, Avatar, UploadBtn } from '../../colors/UploadCom';
 import { connect } from 'dva';
 
 @connect(state => ({
@@ -35,14 +35,18 @@ class RegistrationForm extends React.Component {
     handleAdd = () => {
         this.props.dispatch({
             type: 'goods/setCategories',
-            payload: [{}].concat(this.props.category),
+            payload: this.props.category.concat({}),
         });
     };
 
-    handleDelete = index => {
+    handleDelete = (e, index) => {
+        console.log(index);
+        const copy = [].concat(this.props.category);
+        copy.splice(index, 1);
+        console.log(copy);
         this.props.dispatch({
             type: 'goods/setCategories',
-            payload: this.props.category.splice(index, 1),
+            payload: copy,
         });
     };
 
@@ -106,6 +110,7 @@ class RegistrationForm extends React.Component {
                         )}
                     </Upload>
                 </Form.Item>
+                <Divider orientation="left">商品分类</Divider>
                 <Row gutter={[20]}>
                     <Col span="10">名称</Col>
                     <Col span="10">尺码</Col>
@@ -151,7 +156,7 @@ class RegistrationForm extends React.Component {
                                     shape="circle"
                                     icon="delete"
                                     type="danger"
-                                    onClick={index => this.handleDelete(index)}
+                                    onClick={e => this.handleDelete(e, index)}
                                 />
                             )}
                         </Col>
