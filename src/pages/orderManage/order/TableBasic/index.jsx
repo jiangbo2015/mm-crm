@@ -40,7 +40,7 @@ const Com = props => {
             key: 'action',
             render: (text, record) => (
                 <div>
-                    <a href={`http://${location.hostname}:4000/download?_id=${record._id}`}>
+                    <a href={`http://${location.hostname}:4000/download?id=${record._id}`}>
                         订单文件
                     </a>
                 </div>
