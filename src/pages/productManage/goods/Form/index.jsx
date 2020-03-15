@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Select, Upload, Button, Row, Col } from 'antd';
 const { Option } = Select;
-import { uploadProps, Avatar, UploadBtn } from '../../styles/Form/UploadCom';
+import { uploadProps, Avatar, UploadBtn } from '../../colors/UploadCom'
 import { connect } from 'dva';
 
 @connect(state => ({

@@ -1,0 +1,64 @@
+.color {
+    width: 50px;
+    height: 50px;
+
+}
+.flex{
+    display: flex;
+    // flex-wrap: wrap;
+}
+.thumbWrap{
+    display: flex;
+    align-items: center;
+    margin-left: 15px; 
+ }
+ .thumb{
+     width: 40px;
+     height: 40px;
+     margin-right: 5px;
+     margin-bottom: 5px;
+     cursor: pointer;
+     border: 3px solid #fff;
+     display: inline-block;
+     background-size: 100% 100% !important;
+ }
+ .flexWrap{
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 150px;
+    min-height: 100px;
+    overflow: auto;
+    margin-bottom: 30px;
+    padding-top: 15px;
+    border: 1px dashed #000;
+    overflow: scroll;
+}
+
+.miniThumb{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.styleWrapper {
+    // width: 240px;
+    // height: 500px;
+    position: relative;
+    width: fit-content;
+    transform-origin: 0 0;
+}
+
+.styleWrapper svg{
+    // width: 240px;
+    transform-origin: 0 0;
+}
+
+.shadow {
+    width: 100%;
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}

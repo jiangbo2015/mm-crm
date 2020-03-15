@@ -68,11 +68,12 @@ const Com = props => {
         if (visible) {
             setTimeout(() => {
                 console.log(formRef);
+                console.log(data);
                 formRef.current.setFieldsValue({
                     ...data, //将所有字段都分配，会有warning
                     channels: data.channels[0]._id,
                 });
-            }, 100);
+            }, 1300);
         }
     }, [visible]);
     useEffect(() => {
@@ -94,8 +95,8 @@ const Com = props => {
     };
 
     const handleEdit = record => {
-        setVisible(true);
         setData(record);
+        setVisible(true);
     };
 
     const handleClear = () => {
@@ -118,9 +119,9 @@ const Com = props => {
             >
                 <Form ref={v => (formRef.current = v)} />
             </Modal>
-            <Table columns={columns} dataSource={props.user.customerList} />;
+            <Table columns={columns} dataSource={props.user.customerList.docs} />
         </>
-    );
+        )
 };
 
 export default connect(({ user, loading }) => ({

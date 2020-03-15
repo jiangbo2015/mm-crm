@@ -117,7 +117,7 @@ const Com = props => {
             >
                 <Form ref={v => (formRef.current = v)} />
             </Modal>
-            <Table columns={columns} dataSource={props.channelList} />
+            <Table columns={columns} dataSource={props.channelList.docs} />
         </>
     );
 };

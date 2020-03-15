@@ -9,7 +9,9 @@ import { connect } from 'dva';
     channelList: state.channel.list || [],
 }))
 class RegistrationForm extends React.Component {
+    
     render() {
+        const { channelList = { docs: [] }} = this.props;
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -38,7 +40,7 @@ class RegistrationForm extends React.Component {
             ],
         })(
             <Select placeholder="请选择">
-                {this.props.channelList.map((item, index) => (
+                {channelList.docs.map((item, index) => (
                     <Option value={item._id}>{item.name}</Option>
                 ))}
             </Select>,
@@ -58,8 +60,9 @@ class RegistrationForm extends React.Component {
                 <Option value={2}>欧元</Option>
             </Select>,
         );
-        const { channelList = [] } = this.props;
-
+        
+        console.log('-----channelList-----')
+        console.log(channelList)
         return (
             <Form {...formItemLayout}>
                 <Row>

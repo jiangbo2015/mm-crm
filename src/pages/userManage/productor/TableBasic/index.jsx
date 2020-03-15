@@ -76,7 +76,7 @@ const Com = props => {
                     address: data.address,
                     channels: data.channels.map(x => x._id),
                 });
-            });
+            }, 600);
         }
     }, [visible]);
     useEffect(() => {
@@ -122,7 +122,7 @@ const Com = props => {
             >
                 <Form ref={v => (formRef.current = v)} />
             </Modal>
-            <Table columns={columns} dataSource={props.user.productorList} />;
+            <Table columns={columns} dataSource={props.user.productorList.docs} />;
         </>
     );
 };

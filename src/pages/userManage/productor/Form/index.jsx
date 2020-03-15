@@ -29,7 +29,7 @@ class RegistrationForm extends React.Component {
             },
         };
 
-        const plainOptions = this.props.channelList.map(x => {
+        const plainOptions = this.props.channelList.docs.map(x => {
             return {
                 label: x.name,
                 value: x._id,

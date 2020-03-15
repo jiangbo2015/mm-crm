@@ -1,25 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Card, Typography, Alert, Button, Modal } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Button, Modal } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
+
+import Form from './From';
 import TableBasic from './TableBasic';
-import Form from './Form';
 import { connect } from 'dva';
 
 const Com = props => {
-    const formRef = useRef();
     const [visible, setVisible] = useState(false);
+    const [addColorType, setAddColorType] = useState(0);  //0:素色  1: 画布
+
+    const formRef = React.useRef();
+
     useEffect(() => {
         props.dispatch({
-            type: 'style/get',
-        });
-        props.dispatch({
             type: 'style/getColorList',
-        });
-        props.dispatch({
-            type: 'global/fetchSizeList',
-        });
-        props.dispatch({
-            type: 'goods/getList',
+            payload: { limit: 10, page: 1}
         });
     }, []);
 
@@ -33,37 +29,41 @@ const Com = props => {
                     type: 'style/addStyle',
                     payload: {
                         ...values,
-                        imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack
                     },
                 });
                 setVisible(false);
             }
         });
     };
+
     const handleClear = () => {
-        formRef.current.resetFields();
-        props.dispatch({
-            type: 'style/resetFields',
-        });
+        setVisible(false);
     };
+
     return (
         <PageHeaderWrapper>
             <Card
-                title="款式管理"
+                title="颜色和画布列表"
                 extra={
-                    <Button type="primary" onClick={() => setVisible(true)}>
-                        添加
-                    </Button>
+                    <>
+                        <Button type="primary" onClick={() => {setVisible(true);setAddColorType(0)}}>
+                            添加素色
+                        </Button>
+
+                        <Button type="success" onClick={() => {setVisible(true);setAddColorType(1)}}>
+                            添加画布
+                        </Button>
+                    </>
                 }
+                style={{ marginBottom: '20px' }}
             >
                 <TableBasic />
             </Card>
-
             <Modal
                 title="添加"
                 visible={visible}
-                width="900px"
-                destroyOnClose={true}
+                width="800px"
+                footer={false}
                 onOk={() => {
                     handleSubmit();
                     handleClear();
@@ -73,16 +73,10 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form ref={v => (formRef.current = v)} />
+                <Form colorType={addColorType} onClose={handleClear}/>
             </Modal>
         </PageHeaderWrapper>
     );
 };
-
-export default connect(state => ({
-    imgUrl: state.style.imgUrl,
-    svgUrl: state.style.svgUrl,
-    shadowUrl: state.style.shadowUrl,
-    svgUrlBack: state.style.svgUrlBack,
-    shadowUrlBack: state.style.shadowUrlBack,
-}))(Com);
+// colorList: state.style.colorList || [],
+export default connect(state => ({colorList: state.style.colorList || [],}))(Com);

@@ -16,37 +16,63 @@ import styles from './index.less';
 const { Option } = Select;
 const { Search } = Input;
 import { connect } from 'dva';
-import ColorCom from './Color';
-import { uploadProps, Avatar, UploadBtn } from './UploadCom';
+// import ColorCom from '../../colors/Color';
+import { uploadProps, Avatar, UploadBtn } from '../../colors/UploadCom';
 import { api } from '@/utils/apiconfig';
 
 @connect(state => ({
     colorList: state.style.colorList || [],
-    styleImgUrl: state.style.styleImgUrl || '',
+    imgUrl: state.style.imgUrl || '',
+    svgUrl: state.style.svgUrl || '',
+    svgUrlBack: state.style.svgUrlBack || '',
+    shadowUrl: state.style.shadowUrl || '',
+    shadowUrlBack: state.style.shadowUrlBack || '',
     sizeList: state.global.sizeList,
     goodsList: state.goods.list,
     currentCategorys: state.style.currentCategorys,
 }))
 class RegistrationForm extends React.Component {
     state = {
-        loading: false,
-        // currentCategorys: [],
+        loading: {
+            svgUrl: false,
+            shadowUrl: false,
+            svUrlBack: false,
+            shadowUrlBack: false,
+        },
+        urls: {
+            imgUrl: this.props.editData ? this.props.editData.imgUrl : '',
+            svgUrl: this.props.editData ? this.props.editData.svgUrl : '',
+            shadowUrl: this.props.editData ? this.props.editData.shadowUrl : '',
+            svgUrlBack: this.props.editData ? this.props.editData.svgUrlBack : '',
+            shadowUrlBack: this.props.editData ? this.props.editData.shadowUrlBack : '',
+        },
     };
 
-    handleChange = info => {
+    handleChange = (info, type) => {
         console.log(info);
         if (info.file.status === 'uploading') {
-            this.setState({ loading: true });
+            let tempLoading = {};
+            tempLoading[type] = true;
+            this.setState({ loading: { ...this.state.loading, ...tempLoading } });
             return;
         }
         if (info.file.status === 'done') {
-            this.setState({
-                loading: false,
-            });
-            this.props.dispatch({
-                type: 'style/setStyleImgUrl',
-                payload: info.file.response.data.url,
-            });
+            let tempLoading = {};
+            tempLoading[type] = false;
+            let tempUrls = {};
+            tempUrls[type] = info.file.response.data.url;
+            this.setState(
+                {
+                    loading: { ...this.state.loading, ...tempLoading },
+                    urls: { ...this.state.urls, ...tempUrls },
+                },
+                () => {
+                    this.props.dispatch({
+                        type: 'style/setStyleImgUrl',
+                        payload: { ...this.state.urls },
+                    });
+                },
+            );
         }
     };
 
@@ -107,7 +133,8 @@ class RegistrationForm extends React.Component {
             </Select>,
         );
 
-        const { sizeList = [], styleImgUrl } = this.props;
+        const { sizeList = [] } = this.props;
+        const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = this.state.urls;
         const sizes = sizeList.map(x => ({
             _id: x._id,
             name: x.values.map(i => i.name).join('/'),
@@ -132,7 +159,22 @@ class RegistrationForm extends React.Component {
         return (
             <Form {...formItemLayout} className="wrap">
                 <Row>
-                    <Col span="12">
+                    <Col span="6">
+                        <Upload
+                            {...uploadProps}
+                            onChange={args => this.handleChange(args, 'imgUrl')}
+                        >
+                            {imgUrl ? (
+                                <Avatar src={imgUrl}></Avatar>
+                            ) : (
+                                <UploadBtn
+                                    type={this.state.loading.imgUrl ? 'loading' : 'plus'}
+                                ></UploadBtn>
+                            )}
+                        </Upload>
+                        <p style={{ textAlign: 'center' }}>款式图</p>
+                    </Col>
+                    <Col span="8">
                         <Form.Item label={<span>款号</span>}>
                             {getFieldDecorator('styleNo', {
                                 rules: [
@@ -154,7 +196,8 @@ class RegistrationForm extends React.Component {
                                 ],
                             })(<Input />)}
                         </Form.Item>
-
+                    </Col>
+                    <Col span="10">
                         <Form.Item
                             label={
                                 <Tooltip title="不同通道会根据当时汇率自动转为对应货币价格">
@@ -198,16 +241,75 @@ class RegistrationForm extends React.Component {
                             })(<Input />)}
                         </Form.Item>
                     </Col>
-                    <Col span="12">
-                        <Upload {...uploadProps} onChange={this.handleChange}>
-                            {styleImgUrl ? (
-                                <Avatar src={styleImgUrl}></Avatar>
+                </Row>
+                <Divider className={styles.divider} orientation="left">
+                    正视图
+                </Divider>
+                <Row>
+                    <Col span="8">
+                        <Upload
+                            {...uploadProps}
+                            onChange={args => this.handleChange(args, 'svgUrl')}
+                        >
+                            {svgUrl ? (
+                                <Avatar src={svgUrl}></Avatar>
                             ) : (
                                 <UploadBtn
-                                    type={this.state.loading ? 'loading' : 'plus'}
+                                    type={this.state.loading.svgUrl ? 'loading' : 'plus'}
                                 ></UploadBtn>
                             )}
                         </Upload>
+                        <p style={{ textAlign: 'center' }}>SVG轮廓图</p>
+                    </Col>
+                    <Col span="8">
+                        <Upload
+                            {...uploadProps}
+                            onChange={args => this.handleChange(args, 'shadowUrl')}
+                        >
+                            {shadowUrl ? (
+                                <Avatar src={shadowUrl}></Avatar>
+                            ) : (
+                                <UploadBtn
+                                    type={this.state.loading.shadowUrl ? 'loading' : 'plus'}
+                                ></UploadBtn>
+                            )}
+                        </Upload>
+                        <p style={{ textAlign: 'center' }}>光阴覆盖层</p>
+                    </Col>
+                </Row>
+                <Divider className={styles.divider} orientation="left">
+                    后视图
+                </Divider>
+                <Row>
+                    <Col span="8">
+                        <Upload
+                            {...uploadProps}
+                            onChange={args => this.handleChange(args, 'svgUrlBack')}
+                        >
+                            {svgUrlBack ? (
+                                <Avatar src={svgUrlBack}></Avatar>
+                            ) : (
+                                <UploadBtn
+                                    type={this.state.loading.svgUrlBack ? 'loading' : 'plus'}
+                                ></UploadBtn>
+                            )}
+                        </Upload>
+                        <p style={{ textAlign: 'center' }}>SVG轮廓图</p>
+                    </Col>
+                    <Col span="8">
+                        <Upload
+                            {...uploadProps}
+                            onChange={args => this.handleChange(args, 'shadowUrlBack')}
+                        >
+                            {shadowUrlBack ? (
+                                <Avatar src={shadowUrlBack}></Avatar>
+                            ) : (
+                                <UploadBtn
+                                    type={this.state.loading.shadowUrlBack ? 'loading' : 'plus'}
+                                ></UploadBtn>
+                            )}
+                        </Upload>
+                        <p style={{ textAlign: 'center' }}>光阴覆盖层</p>
                     </Col>
                 </Row>
                 <Divider className={styles.divider} />
@@ -222,8 +324,6 @@ class RegistrationForm extends React.Component {
                         <Form.Item label="分类">{categorySelector}</Form.Item>
                     </Col>
                 </Row>
-                <Divider className={styles.divider}></Divider>
-                <ColorCom></ColorCom>
             </Form>
         );
     }

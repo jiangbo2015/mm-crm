@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { api } from '@/utils/apiconfig';
 import { Form, Input, Row, Select, Col, Upload, Icon, Divider, Button, notification } from 'antd';
 import styles from './index.less';
-export const Avatar = ({ src }) => (
-    <img src={`${api}/${src}`} alt="avatar" style={{ width: '100%' }} />
+export const Avatar = ({ src, onLoad }) => (
+    <img src={`${api}/${src}`} alt="avatar" style={{ width: '100%' }} onLoad={onLoad} />
 );
 
 const typeProps = {
@@ -16,7 +16,7 @@ export const uploadProps = {
     listType: 'picture-card',
     className: styles.uploader,
     showUploadList: false,
-    action: `${api}/api/common/upload`,
+    action: `/api/common/upload`,
 };
 
 export const UploadBtn = ({ type }) => (

@@ -3,6 +3,7 @@ import { Table, Divider, Tag, Modal, Popconfirm } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../Form';
+import Preview from '../Preview'
 
 const Com = props => {
     const columns = [
@@ -25,6 +26,8 @@ const Com = props => {
                 <div>
                     <a onClick={e => handleEdit(record)}>编辑</a>
                     <Divider type="vertical" />
+                    <a onClick={e => handlePreview(record)}>预览</a>
+                    <Divider type="vertical" />
                     <Popconfirm
                         title="确认要删除吗"
                         onConfirm={() => handleDelete(record)}
@@ -39,29 +42,20 @@ const Com = props => {
     ];
     const formRef = useRef();
     const [visible, setVisible] = useState(false);
+    const [preview, setPreview] = useState(false);
     const [data, setData] = useState({});
 
     const handleUpdate = () => {
         formRef.current.validateFields((err, values) => {
             if (!err) {
-                const { plainColors, flowerColors, styleImgUrl, styleEditData } = props;
+                const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack, styleEditData } = props;
                 // console.log(plainColors, flowerColors, styleImgUrl);
-                plainColors.map(item => {
-                    item.colorId = item._id;
-                    delete item._id;
-                });
-                flowerColors.map(item => {
-                    item.colorId = item._id;
-                    delete item._id;
-                });
                 props.dispatch({
                     type: 'style/update',
                     payload: {
                         _id: styleEditData._id,
                         ...values,
-                        plainColors,
-                        flowerColors,
-                        imgUrl: styleImgUrl,
+                        imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack
                     },
                 });
                 setVisible(false);
@@ -104,6 +98,11 @@ const Com = props => {
         });
     };
 
+    const handlePreview = record => {
+        setPreview(true)
+        setData(record);
+    }
+
     const handleEdit = record => {
         setVisible(true);
         setData(record);
@@ -132,7 +131,20 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form ref={v => (formRef.current = v)} />
+                <Form ref={v => (formRef.current = v)} editData={data}/>
+            </Modal>
+            <Modal
+                title="预览"
+                visible={preview}
+                width="1000px"
+                destroyOnClose={true}
+                footer={false}
+                onCancel={() => {
+                    setPreview(false)
+                }}
+            >
+                <Preview {...data}/>
+                {/* <Form ref={v => (formRef.current = v)} editData={data}/> */}
             </Modal>
             <Table columns={columns} dataSource={props.styleList} />
         </>
@@ -141,9 +153,11 @@ const Com = props => {
 
 export default connect(({ style, goods, loading }) => ({
     styleList: style.list,
-    styleImgUrl: style.styleImgUrl,
-    plainColors: style.plainColors,
-    flowerColors: style.flowerColors,
+    imgUrl: style.imgUrl || '',
+    svgUrl: style.svgUrl || '',
+    svgUrlBack: style.svgUrlBack || '',
+    shadowUrl: style.shadowUrl || '',
+    shadowUrlBack: style.shadowUrlBack || '',
     styleEditData: style.styleEditData,
     fetching: loading.effects['style/get'],
     goodsList: goods.list,

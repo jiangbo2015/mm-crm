@@ -2,12 +2,15 @@ import { routerRedux } from 'dva/router';
 import { stringify } from 'querystring';
 import {
     getList,
+    getSvgText,
     update as updateStyle,
     colorList,
     colorAdd,
     add,
     detail,
     del,
+    colorDel,
+    updateArr,
 } from '@/services/style';
 import { getPageQuery } from '@/utils/utils';
 import { notification } from 'antd';
@@ -19,9 +22,11 @@ const Model = {
         colorList: [],
         queryPlainColor: [], //模糊查询的素色列表
         queryFlowerColor: [], //模糊查询的花色列表
-        plainColors: [], //该款式下已选择的素色
-        flowerColors: [], //该款式下已选择的花色
-        styleImgUrl: '',
+        imgUrl: '',
+        svgUrl: '',
+        shadowUrl: '',
+        svgUrlBack: '',
+        shadowUrlBack: '',
         styleEditData: {}, //编辑款式时的数据
         currentCategorys: [],
     },
@@ -36,7 +41,19 @@ const Model = {
                 });
             }
         },
-
+        *getSvgText({ payload }, { call, put }) {
+            const res1 = yield call(getSvgText, payload.svgUrl);
+            const res2 = yield call(getSvgText, payload.svgUrlBack);
+            if (res1 && res2) {
+                yield put({
+                    type: 'setSvgText',
+                    payload: {
+                        svgText: res1,
+                        svgBackText: res2,
+                    },
+                });
+            }
+        },
         *addStyle({ payload }, { call, put }) {
             const res = yield call(add, payload);
             console.log(res);
@@ -96,16 +113,44 @@ const Model = {
             const res = yield call(colorAdd, payload);
             console.log(res);
             if (res.success && res.data) {
+                notification.success({
+                    message: '添加成功',
+                });
                 yield put({
-                    type: 'setSelectedColor',
+                    type: 'getColorList',
                     payload: {
-                        type: payload.type,
-                        data: res.data,
+                        page: 1,
+                        limit: 10,
                     },
                 });
             }
         },
-
+        *deleteColor({ payload }, { call, put }) {
+            const res = yield call(colorDel, payload);
+            console.log(res);
+            if (res.success && res.data) {
+                notification.success({
+                    message: '删除成功',
+                });
+                yield put({
+                    type: 'getColorList',
+                    payload: {
+                        page: 1,
+                        limit: 10,
+                    },
+                });
+            }
+        },
+        *updateArr({ payload }, { call }) {
+            console.log('update', payload);
+            const res = yield call(updateArr, payload);
+            // console.log(res);
+            if (res.success) {
+                notification.success({
+                    message: '保存成功',
+                });
+            }
+        },
         *update({ payload }, { put, call }) {
             console.log('update', payload);
             const res = yield call(updateStyle, payload);
@@ -148,7 +193,11 @@ const Model = {
                 queryFlowerColor: [],
                 plainColors: [],
                 flowerColors: [],
-                styleImgUrl: '',
+                imgUrl: '',
+                svgUrl: '',
+                shadowUrl: '',
+                svgUrlBack: '',
+                shadowUrlBack: '',
                 styleEditData: {},
                 currentCategorys: [],
             };
@@ -160,10 +209,16 @@ const Model = {
                 [payload.type === 0 ? 'queryPlainColor' : 'queryFlowerColor']: payload.data,
             };
         },
+        setSvgText(state, { payload }) {
+            return {
+                ...state,
+                ...payload,
+            };
+        },
         setStyleImgUrl(state, { payload }) {
             return {
                 ...state,
-                styleImgUrl: payload,
+                ...payload,
             };
         },
         setStyleEditData(state, { payload }) {

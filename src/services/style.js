@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import { api } from '@/utils/apiconfig';
 
 export async function getList(data) {
     return request('/api/style/getList', {
@@ -35,6 +36,20 @@ export async function update(data) {
     });
 }
 
+export async function updateArr(data) {
+    return request('/api/style/updateAttr', {
+        method: 'post',
+        data,
+    });
+}
+
+export async function getSvgText(url) {
+    console.log(url);
+    return request('/' + url, {
+        method: 'get',
+    });
+}
+
 // color
 export async function colorList(data) {
     return request('/api/color/getList', {
@@ -45,6 +60,13 @@ export async function colorList(data) {
 
 export async function colorAdd(data) {
     return request('/api/color/add', {
+        method: 'post',
+        data,
+    });
+}
+
+export async function colorDel(data) {
+    return request('/api/color/delete', {
         method: 'post',
         data,
     });
