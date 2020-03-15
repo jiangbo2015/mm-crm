@@ -7,9 +7,9 @@
     "analyze": "cross-env ANALYZE=1 umi build",
     "pm2-test": "pm2 start http-server --name crm -- -p 3006 -P http://8.209.64.159:3001",
     "pm2-prod": "pm2 start http-server --name crm -- -p 3007 -P http://8.209.64.159:3002",
-    "build-test": "UMI_ENV=test umi build",
-    "build-prod": "UMI_ENV=prod umi build",
-    "start": "umi dev",
+    "build-test": "UMI_ENV=test umi build && gulp",
+    "build-prod": "UMI_ENV=prod umi build && gulp",
+    "start": "APIENV=dev umi dev",
     "ui": "umi ui"
   },
   "browserslist": [
