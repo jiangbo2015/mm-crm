@@ -55,6 +55,7 @@ const Com = props => {
                     shadowUrl,
                     shadowUrlBack,
                     styleEditData,
+                    currentCategorys,
                 } = props;
                 // console.log(plainColors, flowerColors, styleImgUrl);
                 props.dispatch({
@@ -62,6 +63,7 @@ const Com = props => {
                     payload: {
                         _id: styleEditData._id,
                         ...values,
+                        categoryName: currentCategorys.find(x => x._id === values.categoryId).name,
                         imgUrl,
                         svgUrl,
                         svgUrlBack,
@@ -173,4 +175,5 @@ export default connect(({ style, goods, loading }) => ({
     styleEditData: style.styleEditData,
     fetching: loading.effects['style/get'],
     goodsList: goods.list,
+    currentCategorys: style.currentCategorys,
 }))(Com);

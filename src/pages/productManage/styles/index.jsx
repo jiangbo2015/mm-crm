@@ -27,13 +27,25 @@ const Com = props => {
         formRef.current.validateFields((err, values) => {
             console.log(err, values);
             if (!err) {
-                const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = props;
+                const {
+                    imgUrl,
+                    svgUrl,
+                    svgUrlBack,
+                    shadowUrl,
+                    shadowUrlBack,
+                    currentCategorys,
+                } = props;
                 // console.log(plainColors, flowerColors, styleImgUrl);
                 props.dispatch({
                     type: 'style/addStyle',
                     payload: {
                         ...values,
-                        imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack
+                        categoryName: currentCategorys.find(x => x._id === values.categoryId).name,
+                        imgUrl,
+                        svgUrl,
+                        svgUrlBack,
+                        shadowUrl,
+                        shadowUrlBack,
                     },
                 });
                 setVisible(false);
@@ -85,4 +97,5 @@ export default connect(state => ({
     shadowUrl: state.style.shadowUrl,
     svgUrlBack: state.style.svgUrlBack,
     shadowUrlBack: state.style.shadowUrlBack,
+    currentCategorys: state.style.currentCategorys,
 }))(Com);

@@ -225,14 +225,14 @@ const Model = {
             return {
                 ...state,
                 styleImgUrl: payload.imgUrl,
-                plainColors: payload.plainColors.map(x => {
-                    x._id = x.colorId;
-                    return x;
-                }),
-                flowerColors: payload.flowerColors.map(x => {
-                    x._id = x.colorId;
-                    return x;
-                }),
+                // plainColors: payload.plainColors.map(x => {
+                //     x._id = x.colorId;
+                //     return x;
+                // }),
+                // flowerColors: payload.flowerColors.map(x => {
+                //     x._id = x.colorId;
+                //     return x;
+                // }),
                 styleEditData: payload,
             };
         },
