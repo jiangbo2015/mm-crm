@@ -10,6 +10,7 @@ import {
     Tooltip,
     Divider,
     Icon,
+    Checkbox,
     notification,
 } from 'antd';
 import styles from './index.less';
@@ -155,6 +156,21 @@ class RegistrationForm extends React.Component {
                 ))}
             </Select>,
         );
+
+        const checkboxOptions = [
+            { label: 'SOUTHERN', value: 'SOUTHERN' },
+            { label: 'CENTER', value: 'CENTER' },
+            { label: 'NORTH', value: 'NORTH' },
+        ];
+
+        const checkboxSelector = getFieldDecorator('tags', {
+            rules: [
+                {
+                    required: true,
+                    message: '请选择标签!',
+                },
+            ],
+        })(<Checkbox.Group options={checkboxOptions} defaultValue={['']} />);
 
         return (
             <Form {...formItemLayout} className="wrap">
@@ -322,6 +338,11 @@ class RegistrationForm extends React.Component {
                     </Col>
                     <Col span="8">
                         <Form.Item label="分类">{categorySelector}</Form.Item>
+                    </Col>
+                </Row>
+                <Row style={{ marginLeft: '-14%' }}>
+                    <Col span="16">
+                        <Form.Item label="标签">{checkboxSelector}</Form.Item>
                     </Col>
                 </Row>
             </Form>

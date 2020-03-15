@@ -3,7 +3,7 @@ import { Table, Divider, Tag, Modal, Popconfirm } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../Form';
-import Preview from '../Preview'
+import Preview from '../Preview';
 
 const Com = props => {
     const columns = [
@@ -48,14 +48,25 @@ const Com = props => {
     const handleUpdate = () => {
         formRef.current.validateFields((err, values) => {
             if (!err) {
-                const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack, styleEditData } = props;
+                const {
+                    imgUrl,
+                    svgUrl,
+                    svgUrlBack,
+                    shadowUrl,
+                    shadowUrlBack,
+                    styleEditData,
+                } = props;
                 // console.log(plainColors, flowerColors, styleImgUrl);
                 props.dispatch({
                     type: 'style/update',
                     payload: {
                         _id: styleEditData._id,
                         ...values,
-                        imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack
+                        imgUrl,
+                        svgUrl,
+                        svgUrlBack,
+                        shadowUrl,
+                        shadowUrlBack,
                     },
                 });
                 setVisible(false);
@@ -74,6 +85,7 @@ const Com = props => {
                     size: data.size,
                     goodsId: data.goodsId,
                     categoryId: data.categoryId,
+                    tags: data.tags,
                 });
                 props.dispatch({
                     type: 'style/getDetail',
@@ -99,9 +111,9 @@ const Com = props => {
     };
 
     const handlePreview = record => {
-        setPreview(true)
+        setPreview(true);
         setData(record);
-    }
+    };
 
     const handleEdit = record => {
         setVisible(true);
@@ -131,7 +143,7 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form ref={v => (formRef.current = v)} editData={data}/>
+                <Form ref={v => (formRef.current = v)} editData={data} />
             </Modal>
             <Modal
                 title="预览"
@@ -140,10 +152,10 @@ const Com = props => {
                 destroyOnClose={true}
                 footer={false}
                 onCancel={() => {
-                    setPreview(false)
+                    setPreview(false);
                 }}
             >
-                <Preview {...data}/>
+                <Preview {...data} />
                 {/* <Form ref={v => (formRef.current = v)} editData={data}/> */}
             </Modal>
             <Table columns={columns} dataSource={props.styleList} />
