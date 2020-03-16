@@ -4,9 +4,23 @@ import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../Form';
 import Preview from '../Preview';
+import { api } from '@/utils/apiconfig';
 
 const Com = props => {
     const columns = [
+        {
+            title: '花布',
+            dataIndex: 'value',
+            key: 'value',
+            render: (val, obj) => (
+                <img
+                    style={{
+                        width: '80px',
+                    }}
+                    src={`${api}/${obj.imgUrl}`}
+                />
+            ),
+        },
         {
             title: '款式编号',
             dataIndex: 'styleNo',
