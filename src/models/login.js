@@ -1,5 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'querystring';
+import { message } from 'antd';
 import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
@@ -19,6 +20,10 @@ const Model = {
             }); // Login successfully
 
             if (response.success) {
+                if (response.data && response.data.role !== 0) {
+                    message.error('您没有权限登录');
+                    return;
+                }
                 localStorage.token = response.data.token;
 
                 const urlParams = new URL(window.location.href);
