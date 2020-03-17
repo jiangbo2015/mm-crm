@@ -20,7 +20,8 @@ const Model = {
             }); // Login successfully
 
             if (response.success) {
-                if (response.data && response.data.role !== 0) {
+                console.log(response.data, 'response');
+                if (response.data && response.data.role !== 0 && response.data.role !== 2) {
                     message.error('您没有权限登录');
                     return;
                 }
