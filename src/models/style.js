@@ -20,6 +20,7 @@ const Model = {
     state: {
         list: [],
         colorList: [],
+        colorListFlower: [],
         queryPlainColor: [], //模糊查询的素色列表
         queryFlowerColor: [], //模糊查询的花色列表
         imgUrl: '',
@@ -93,7 +94,7 @@ const Model = {
             console.log(res);
             if (res.success && res.data) {
                 yield put({
-                    type: 'setColorList',
+                    type: payload.type === 0 ? 'setColorList' : 'setFlowerList',
                     payload: res.data,
                 });
             }
@@ -121,6 +122,7 @@ const Model = {
                     payload: {
                         page: 1,
                         limit: 10,
+                        type: payload.type,
                     },
                 });
             }
@@ -137,6 +139,7 @@ const Model = {
                     payload: {
                         page: 1,
                         limit: 10,
+                        type: payload.type,
                     },
                 });
             }
@@ -176,6 +179,12 @@ const Model = {
             return {
                 ...state,
                 colorList: payload,
+            };
+        },
+        setFlowerList(state, { payload }) {
+            return {
+                ...state,
+                colorListFlower: payload,
             };
         },
 

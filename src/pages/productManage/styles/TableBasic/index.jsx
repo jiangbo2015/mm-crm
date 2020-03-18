@@ -9,7 +9,7 @@ import { api } from '@/utils/apiconfig';
 const Com = props => {
     const columns = [
         {
-            title: '花布',
+            title: '款式图',
             dataIndex: 'value',
             key: 'value',
             render: (val, obj) => (

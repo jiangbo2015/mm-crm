@@ -35,6 +35,7 @@ import { api } from '@/utils/apiconfig';
 class RegistrationForm extends React.Component {
     state = {
         loading: {
+            imgUrl: false,
             svgUrl: false,
             shadowUrl: false,
             svUrlBack: false,
@@ -54,7 +55,13 @@ class RegistrationForm extends React.Component {
         if (info.file.status === 'uploading') {
             let tempLoading = {};
             tempLoading[type] = true;
-            this.setState({ loading: { ...this.state.loading, ...tempLoading } });
+            this.setState({
+                loading: { ...this.state.loading, ...tempLoading },
+                urls: {
+                    ...this.state.urls,
+                    [type]: '',
+                },
+            });
             return;
         }
         if (info.file.status === 'done') {
@@ -83,6 +90,14 @@ class RegistrationForm extends React.Component {
             type: 'style/setCurrentCategorys',
             payload: this.props.goodsList.find(x => x._id === value).category,
         });
+    };
+
+    beforeUpload = file => {
+        const limit = file.size / 1024 < 300;
+        if (!limit) {
+            message.error('Image must smaller than 200K!');
+        }
+        return limit;
     };
 
     render() {
@@ -178,6 +193,7 @@ class RegistrationForm extends React.Component {
                     <Col span="6">
                         <Upload
                             {...uploadProps}
+                            beforeUpload={this.beforeUpload}
                             onChange={args => this.handleChange(args, 'imgUrl')}
                         >
                             {imgUrl ? (
@@ -218,7 +234,7 @@ class RegistrationForm extends React.Component {
                             label={
                                 <Tooltip title="不同通道会根据当时汇率自动转为对应货币价格">
                                     <span>
-                                        价格(美元)&nbsp;
+                                        价格(人民币)&nbsp;
                                         <Icon
                                             style={{ color: 'red' }}
                                             type="question-circle"
@@ -237,7 +253,7 @@ class RegistrationForm extends React.Component {
                             })(
                                 <InputNumber
                                     formatter={value =>
-                                        `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                        `¥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                                     }
                                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                 />,
@@ -280,6 +296,7 @@ class RegistrationForm extends React.Component {
                     <Col span="8">
                         <Upload
                             {...uploadProps}
+                            beforeUpload={this.beforeUpload}
                             onChange={args => this.handleChange(args, 'shadowUrl')}
                         >
                             {shadowUrl ? (
@@ -315,6 +332,7 @@ class RegistrationForm extends React.Component {
                     <Col span="8">
                         <Upload
                             {...uploadProps}
+                            beforeUpload={this.beforeUpload}
                             onChange={args => this.handleChange(args, 'shadowUrlBack')}
                         >
                             {shadowUrlBack ? (

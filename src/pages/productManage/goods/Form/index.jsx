@@ -21,6 +21,12 @@ class RegistrationForm extends React.Component {
             this.setState({ loading: true });
             return;
         }
+        if (this.props.imgUrl) {
+            this.props.dispatch({
+                type: 'goods/setImgUrl',
+                payload: '',
+            });
+        }
         if (info.file.status === 'done') {
             this.setState({
                 loading: false,

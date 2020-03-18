@@ -141,8 +141,13 @@ export default {
                                 },
                                 {
                                     path: '/productManage/colors',
-                                    name: '颜色和花布管理',
+                                    name: '素色管理',
                                     component: './productManage/colors/index.jsx',
+                                },
+                                {
+                                    path: '/productManage/flower',
+                                    name: '花布管理',
+                                    component: './productManage/flower/index.jsx',
                                 },
                                 {
                                     path: '/productManage/goods',

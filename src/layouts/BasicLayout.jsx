@@ -92,7 +92,9 @@ const BasicLayout = props => {
             const urls = ['userManage', 'orderManage', 'systemSetup'];
             if (
                 props.currentUser.role === 2 &&
-                item.path !== '/productManage/colors' && item.path !== '/productManage/styles' &&
+                item.path !== '/productManage/colors' &&
+                item.path !== '/productManage/styles' &&
+                item.path !== '/productManage/flower' &&
                 item.path !== '/productManage'
             ) {
                 return '';

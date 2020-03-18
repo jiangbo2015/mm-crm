@@ -16,7 +16,7 @@ const Model = {
             if (res.success && res.data) {
                 yield put({
                     type: 'setInfo',
-                    payload: res.data[0] ? res.data[0].email : '',
+                    payload: res.data[0] ? res.data[0] : {},
                 });
             }
         },
@@ -35,7 +35,7 @@ const Model = {
         setInfo(state, { payload }) {
             return {
                 ...state,
-                email: payload,
+                ...payload,
             };
         },
     },

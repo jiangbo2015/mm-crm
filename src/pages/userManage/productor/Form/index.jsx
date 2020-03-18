@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, Input, Checkbox } from 'antd';
+import { Form, Input, Checkbox, Select } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 import { connect } from 'dva';
+const { Option } = Select;
 
 @connect(state => ({
     channelList: state.channel.list || [],
@@ -35,6 +36,21 @@ class RegistrationForm extends React.Component {
                 value: x._id,
             };
         });
+
+        const productorSelector = getFieldDecorator('currency', {
+            rules: [
+                {
+                    required: true,
+                    message: '请选择货币',
+                },
+            ],
+        })(
+            <Select placeholder="请选择">
+                <Option value={0}>人民币</Option>
+                <Option value={1}>美元</Option>
+                <Option value={2}>欧元</Option>
+            </Select>,
+        );
 
         return (
             <Form {...formItemLayout}>
@@ -90,6 +106,8 @@ class RegistrationForm extends React.Component {
                         rules: [],
                     })(<CheckboxGroup options={plainOptions} />)}
                 </Form.Item>
+
+                <Form.Item label="货币">{productorSelector}</Form.Item>
 
                 <Form.Item label="备注">
                     {getFieldDecorator('remark', {

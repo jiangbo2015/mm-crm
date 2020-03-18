@@ -90,7 +90,7 @@ const Com = props => {
             type: 'style/deleteColor',
             payload: {
                 _id: record._id,
-                type: 0,
+                type: 1,
             },
         });
     };
@@ -101,7 +101,7 @@ const Com = props => {
             payload: {
                 page,
                 limit: props.colorList.limit,
-                type: 0,
+                type: 1,
             },
         });
     };
@@ -138,5 +138,5 @@ const Com = props => {
 };
 
 export default connect(({ style }) => ({
-    colorList: style.colorList,
+    colorList: style.colorListFlower,
 }))(Com);

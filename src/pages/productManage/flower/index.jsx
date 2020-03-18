@@ -15,7 +15,7 @@ const Com = props => {
     useEffect(() => {
         props.dispatch({
             type: 'style/getColorList',
-            payload: { limit: 10, page: 1, type: 0 },
+            payload: { limit: 10, page: 1, type: 1 },
         });
     }, []);
 
@@ -43,10 +43,10 @@ const Com = props => {
     return (
         <PageHeaderWrapper>
             <Card
-                title="颜色列表"
+                title="花布列表"
                 extra={
                     <>
-                        <Button
+                        {/* <Button
                             style={{ marginRight: '10px' }}
                             type="primary"
                             onClick={() => {
@@ -55,17 +55,17 @@ const Com = props => {
                             }}
                         >
                             添加素色
-                        </Button>
+                        </Button> */}
 
-                        {/* <Button
-                            type="success"
+                        <Button
+                            type="primary"
                             onClick={() => {
                                 setVisible(true);
                                 setAddColorType(1);
                             }}
                         >
                             添加花布
-                        </Button> */}
+                        </Button>
                     </>
                 }
                 style={{ marginBottom: '20px' }}

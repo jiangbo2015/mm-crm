@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select, Row, Col, notification, Upload, Button } from 'antd';
+import { Form, Input, message, Row, Col, notification, Upload, Button } from 'antd';
 var isHexcolor = require('is-hexcolor');
 import { connect } from 'dva';
 import { uploadProps, Avatar, UploadBtn } from '../UploadCom';
@@ -27,6 +27,10 @@ class RegistrationForm extends React.Component {
         });
     }
     handleAdd = info => {
+        console.log(info, 'info info info');
+        this.setState({
+            colorImgUrl: '',
+        });
         if (info.file.status === 'uploading') {
             this.setState({ loading: true });
             return;
@@ -58,12 +62,12 @@ class RegistrationForm extends React.Component {
         }
     };
     addPlainColor = params => {
-        if (isHexcolor(params.value)) {
+        if (isHexcolor(value)) {
             this.props.dispatch({
                 type: 'style/addColor',
                 payload: {
                     type: 0,
-                    // value,
+                    value,
                     ...params,
                 },
             });
@@ -83,8 +87,17 @@ class RegistrationForm extends React.Component {
             colorImgWidth: imgTemp.width,
         });
     };
+
+    beforeUpload = file => {
+        const limit = file.size / 1024 < 200;
+        if (!limit) {
+            message.error('Image must smaller than 200K!');
+        }
+        return limit;
+    };
     render() {
         const { getFieldDecorator } = this.props.form;
+
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -112,7 +125,11 @@ class RegistrationForm extends React.Component {
                         <>
                             {' '}
                             <Col span="8">
-                                <Upload {...uploadProps} onChange={this.handleAdd}>
+                                <Upload
+                                    {...uploadProps}
+                                    beforeUpload={this.beforeUpload}
+                                    onChange={this.handleAdd}
+                                >
                                     {colorImgUrl ? (
                                         <Avatar src={colorImgUrl} onLoad={this.imgOnLoad}></Avatar>
                                     ) : (
