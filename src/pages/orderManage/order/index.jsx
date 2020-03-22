@@ -18,15 +18,7 @@ const Com = props => {
 
     return (
         <PageHeaderWrapper>
-            <Card
-                // title="订单列表"
-                // extra={
-                //     <Button type="primary" onClick={() => setVisible(true)}>
-                //         添加
-                //     </Button>
-                // }
-                style={{ marginBottom: '20px' }}
-            >
+            <Card style={{ marginBottom: '20px' }}>
                 <TableBasic getOrderList={getOrderList} />
             </Card>
         </PageHeaderWrapper>
