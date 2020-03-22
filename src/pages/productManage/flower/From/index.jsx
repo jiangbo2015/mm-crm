@@ -12,6 +12,7 @@ class RegistrationForm extends React.Component {
         colorImgUrl: '',
         colorImgWidth: 0,
         colorImgHeight: 0,
+        onLoad: false,
     };
     // formRef = React.createRef()
     handleSubmit() {
@@ -30,6 +31,7 @@ class RegistrationForm extends React.Component {
         console.log(info, 'info info info');
         this.setState({
             colorImgUrl: '',
+            onLoad: false,
         });
         if (info.file.status === 'uploading') {
             this.setState({ loading: true });
@@ -85,6 +87,7 @@ class RegistrationForm extends React.Component {
         this.setState({
             colorImgHeight: imgTemp.height,
             colorImgWidth: imgTemp.width,
+            onLoad: true,
         });
     };
 
@@ -161,7 +164,7 @@ class RegistrationForm extends React.Component {
                                                 whitespace: true,
                                             },
                                         ],
-                                    })(<Input style={{ width: '60px' }} />)}
+                                    })(<Input style={{ width: '160px' }} />)}
                                 </Form.Item>
                             </Col>
                         </>
@@ -196,7 +199,11 @@ class RegistrationForm extends React.Component {
                     <Col span="2"></Col>
                     <Col span="8">
                         <Form.Item>
-                            <Button type="primary" onClick={this.handleSubmit.bind(this)}>
+                            <Button
+                                disabled={!this.state.onLoad}
+                                type="primary"
+                                onClick={this.handleSubmit.bind(this)}
+                            >
                                 确认添加
                             </Button>
                         </Form.Item>

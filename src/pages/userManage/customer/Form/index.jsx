@@ -9,9 +9,8 @@ import { connect } from 'dva';
     channelList: state.channel.list || [],
 }))
 class RegistrationForm extends React.Component {
-    
     render() {
-        const { channelList = { docs: [] }} = this.props;
+        const { channelList = { docs: [] } } = this.props;
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -46,23 +45,23 @@ class RegistrationForm extends React.Component {
             </Select>,
         );
 
-        const productorSelector = getFieldDecorator('currency', {
-            rules: [
-                {
-                    required: true,
-                    message: '请选择货币',
-                },
-            ],
-        })(
-            <Select placeholder="请选择">
-                <Option value={0}>人民币</Option>
-                <Option value={1}>美元</Option>
-                <Option value={2}>欧元</Option>
-            </Select>,
-        );
-        
-        console.log('-----channelList-----')
-        console.log(channelList)
+        // const productorSelector = getFieldDecorator('currency', {
+        //     rules: [
+        //         {
+        //             required: true,
+        //             message: '请选择货币',
+        //         },
+        //     ],
+        // })(
+        //     <Select placeholder="请选择">
+        //         <Option value={0}>人民币</Option>
+        //         <Option value={1}>美元</Option>
+        //         <Option value={2}>欧元</Option>
+        //     </Select>,
+        // );
+
+        console.log('-----channelList-----');
+        console.log(channelList);
         return (
             <Form {...formItemLayout}>
                 <Row>
@@ -154,9 +153,9 @@ class RegistrationForm extends React.Component {
                     <Col span="12">
                         <Form.Item label="通道">{tdSelector}</Form.Item>
                     </Col>
-                    <Col span="12">
+                    {/* <Col span="12">
                         <Form.Item label="货币">{productorSelector}</Form.Item>
-                    </Col>
+                    </Col> */}
                 </Row>
 
                 <Row>
