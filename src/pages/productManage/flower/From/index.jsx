@@ -83,12 +83,16 @@ class RegistrationForm extends React.Component {
     imgOnLoad = e => {
         let imgTemp = new Image();
         imgTemp.src = e.target.src;
-        console.log(imgTemp.width, imgTemp.height);
-        this.setState({
-            colorImgHeight: imgTemp.height,
-            colorImgWidth: imgTemp.width,
-            onLoad: true,
-        });
+        // console.log(imgTemp.width, imgTemp.height);
+
+        imgTemp.onload = () => {
+            console.log(imgTemp.width, imgTemp.height);
+            this.setState({
+                colorImgHeight: imgTemp.height,
+                colorImgWidth: imgTemp.width,
+                onLoad: true,
+            });
+        };
     };
 
     beforeUpload = file => {
