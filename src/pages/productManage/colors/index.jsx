@@ -30,7 +30,6 @@ const Com = props => {
             console.log(err, values);
             if (!err) {
                 const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = props;
-                // console.log(plainColors, flowerColors, styleImgUrl);
                 props.dispatch({
                     type: 'style/addStyle',
                     payload: {
