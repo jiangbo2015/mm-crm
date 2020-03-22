@@ -16,7 +16,6 @@ class RegistrationForm extends React.Component {
     // formRef = React.createRef()
     handleSubmit() {
         this.props.form.validateFields((err, values) => {
-            console.log(err, values);
             if (err) return;
             if (this.props.colorType) {
                 this.addFlowerColor(values);
