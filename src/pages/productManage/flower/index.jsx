@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Modal } from 'antd';
+import { Card, Button, Modal, Row, Col, Input } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 
 import Form from './From';
 import TableBasic from './TableBasic';
 import { connect } from 'dva';
+const { Search } = Input;
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
@@ -13,11 +14,15 @@ const Com = props => {
     const formRef = React.useRef();
 
     useEffect(() => {
+        handleSearch();
+    }, []);
+
+    const handleSearch = code => {
         props.dispatch({
             type: 'style/getColorList',
-            payload: { limit: 10, page: 1, type: 1 },
+            payload: { limit: 10, page: 1, type: 1, code },
         });
-    }, []);
+    };
 
     const handleSubmit = () => {
         formRef.current.validateFields((err, values) => {
@@ -42,6 +47,15 @@ const Com = props => {
 
     return (
         <PageHeaderWrapper>
+            <Row style={{ marginBottom: '10px' }}>
+                <Col span="8">
+                    <Search
+                        placeholder="请输入编码"
+                        onSearch={value => handleSearch(value)}
+                        enterButton
+                    />
+                </Col>
+            </Row>
             <Card
                 title="花布列表"
                 extra={

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Modal } from 'antd';
+import { Card, Button, Modal, Row, Col, Input } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 
 import Form from './Form';
 import TableBasic from './TableBasic';
 import { connect } from 'dva';
+
+const { Search } = Input;
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
@@ -15,6 +17,15 @@ const Com = props => {
             type: 'global/fetchSizeList',
         });
     }, []);
+
+    const handleSearch = value => {
+        props.dispatch({
+            type: 'goods/getList',
+            payload: {
+                name: value,
+            },
+        });
+    };
 
     const handleSubmit = () => {
         formRef.current.validateFields((err, values) => {
@@ -55,6 +66,15 @@ const Com = props => {
 
     return (
         <PageHeaderWrapper>
+            <Row style={{ marginBottom: '10px' }}>
+                <Col span="8">
+                    <Search
+                        placeholder="请输入商品名称"
+                        onSearch={value => handleSearch(value)}
+                        enterButton
+                    />
+                </Col>
+            </Row>
             <Card
                 title="商品列表"
                 extra={

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Table, Divider, Modal, Popconfirm } from 'antd';
+import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../From';
@@ -46,43 +46,48 @@ const Com = props => {
                     >
                         <a href="#">删除</a>
                     </Popconfirm>
+                    <a style={{ marginLeft: '5px' }} href="#" onClick={() => handleEdit(record)}>
+                        编辑
+                    </a>
                 </div>
             ),
         },
     ];
     const formRef = useRef();
     const [visible, setVisible] = useState(false);
+    const [data, setData] = useState({});
+
+    const handleEdit = record => {
+        setVisible(true);
+        setData(record);
+    };
 
     const handleUpdate = () => {
-        // formRef.current.validateFields((err, values) => {
-        //     if (!err) {
-        //         setVisible(false);
-        //         const { currentSize } = props;
-        //         props.dispatch({
-        //             type: 'global/updateSize',
-        //             payload: {
-        //                 _id: data._id,
-        //                 values: currentSize.values.map((x, i) => ({
-        //                     ...x,
-        //                     name: values[`name${i}`],
-        //                 })),
-        //             },
-        //         });
-        //     }
-        // });
+        formRef.current.validateFields((err, values) => {
+            if (!err) {
+                setVisible(false);
+                const { currentSize } = props;
+                props.dispatch({
+                    type: 'style/update',
+                    payload: {
+                        _id: data._id,
+                        ...values,
+                    },
+                });
+            }
+        });
     };
 
     useEffect(() => {
-        // if (visible) {
-        //     setTimeout(() => {
-        //         console.log(formRef);
-        //         data.values.map((x, i) => {
-        //             formRef.current.setFieldsValue({
-        //                 [`name${i}`]: x.name,
-        //             });
-        //         });
-        //     }, 100);
-        // }
+        if (visible) {
+            setTimeout(() => {
+                console.log(formRef);
+                formRef.current.setFieldsValue({
+                    code: data.code,
+                    value: data.value,
+                });
+            }, 100);
+        }
     }, [visible]);
 
     const handleDelete = record => {
@@ -114,15 +119,16 @@ const Com = props => {
                 width="800px"
                 onOk={() => {
                     handleUpdate();
-                    handleClear();
+                    // handleClear();
                 }}
                 onCancel={() => {
                     setVisible(false);
-                    handleClear();
+                    // handleClear();
                 }}
             >
                 <Form ref={v => (formRef.current = v)} />
             </Modal>
+
             <Table
                 columns={columns}
                 dataSource={props.colorList.docs}

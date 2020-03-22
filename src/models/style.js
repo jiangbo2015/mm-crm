@@ -6,6 +6,7 @@ import {
     update as updateStyle,
     colorList,
     colorAdd,
+    colorUpdate,
     add,
     detail,
     del,
@@ -77,6 +78,7 @@ const Model = {
         },
 
         *getQueryColor({ payload }, { call, put }) {
+            console.log('getQueryColor');
             const res = yield call(colorList, payload);
             if (res.success && res.data) {
                 yield put({
@@ -164,6 +166,24 @@ const Model = {
                 });
                 yield put({
                     type: 'get',
+                });
+            }
+        },
+        *updateColor({ payload }, { put, call }) {
+            console.log('update', payload);
+            const res = yield call(colorUpdate, payload);
+            // console.log(res);
+            if (res.success) {
+                notification.success({
+                    message: '修改成功',
+                });
+                yield put({
+                    type: 'getColorList',
+                    payload: {
+                        page: 1,
+                        limit: 10,
+                        type: 0,
+                    },
                 });
             }
         },

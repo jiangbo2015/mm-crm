@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Typography, Alert, Button, Modal } from 'antd';
+import { Card, Typography, Alert, Button, Modal, Row, Col, Input } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TableBasic from './TableBasic';
 import Form from './Form';
 import { connect } from 'dva';
+
+const { Search } = Input;
 
 const Com = props => {
     const formRef = useRef();
@@ -12,9 +14,9 @@ const Com = props => {
         props.dispatch({
             type: 'style/get',
         });
-        props.dispatch({
-            type: 'style/getColorList',
-        });
+        // props.dispatch({
+        //     type: 'style/getColorList',
+        // });
         props.dispatch({
             type: 'global/fetchSizeList',
         });
@@ -22,6 +24,15 @@ const Com = props => {
             type: 'goods/getList',
         });
     }, []);
+
+    const handleSearch = value => {
+        props.dispatch({
+            type: 'style/get',
+            payload: {
+                styleNo: value,
+            },
+        });
+    };
 
     const handleSubmit = () => {
         formRef.current.validateFields((err, values) => {
@@ -60,6 +71,15 @@ const Com = props => {
     };
     return (
         <PageHeaderWrapper>
+            <Row style={{ marginBottom: '10px' }}>
+                <Col span="8">
+                    <Search
+                        placeholder="请输入款式编号"
+                        onSearch={value => handleSearch(value)}
+                        enterButton
+                    />
+                </Col>
+            </Row>
             <Card
                 title="款式管理"
                 extra={

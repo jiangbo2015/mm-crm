@@ -65,6 +65,13 @@ export async function colorAdd(data) {
     });
 }
 
+export async function colorUpdate(data) {
+    return request('/api/color/update', {
+        method: 'post',
+        data,
+    });
+}
+
 export async function colorDel(data) {
     return request('/api/color/delete', {
         method: 'post',
