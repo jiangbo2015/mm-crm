@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Table, Divider, Tag, Modal, Popconfirm } from 'antd';
+import { Table, Divider, Tag, Modal, Popconfirm, message } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../Form';
@@ -59,6 +59,9 @@ const Com = props => {
                         ...values,
                     },
                 });
+            } else {
+                console.log(err);
+                message.error('请填写完整');
             }
         });
     };
@@ -74,6 +77,7 @@ const Com = props => {
                     email: data.email,
                     remark: data.remark,
                     address: data.address,
+                    currency: data.currency,
                     channels: data.channels.map(x => x._id),
                 });
             }, 600);
