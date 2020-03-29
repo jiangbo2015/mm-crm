@@ -11,7 +11,7 @@ import {
     Divider,
     Icon,
     Checkbox,
-    notification,
+    message,
 } from 'antd';
 import styles from './index.less';
 const { Option } = Select;
