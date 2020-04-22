@@ -171,6 +171,28 @@ class RegistrationForm extends React.Component {
                                     ],
                                 })(<Input style={{ width: '160px' }} />)}
                             </Form.Item>
+                            <Form.Item label={<span>中文名</span>}>
+                                {getFieldDecorator('namecn', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input namecn!',
+                                            whitespace: true,
+                                        },
+                                    ],
+                                })(<Input style={{ width: '160px' }} />)}
+                            </Form.Item>
+                            <Form.Item label={<span>英文名</span>}>
+                                {getFieldDecorator('nameen', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input nameen!',
+                                            whitespace: true,
+                                        },
+                                    ],
+                                })(<Input style={{ width: '160px' }} />)}
+                            </Form.Item>
                         </Col>
                     )}
                 </Row>

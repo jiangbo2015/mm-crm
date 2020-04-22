@@ -119,7 +119,7 @@ class RegistrationForm extends React.Component {
                 <Divider orientation="left">商品分类</Divider>
                 <Row gutter={[20]}>
                     <Col span="10">名称</Col>
-                    <Col span="10">尺码</Col>
+                    {/* <Col span="10">尺码</Col> */}
                 </Row>
                 {category.map((item, index) => (
                     <Row gutter={[20]}>
@@ -136,7 +136,7 @@ class RegistrationForm extends React.Component {
                                 })(<Input />)}
                             </Form.Item>
                         </Col>
-                        <Col span="10">
+                        {/* <Col span="10">
                             <Form.Item label="">
                                 {getFieldDecorator(`size${index}`, {
                                     rules: [
@@ -155,7 +155,7 @@ class RegistrationForm extends React.Component {
                                     </Select>,
                                 )}
                             </Form.Item>
-                        </Col>
+                        </Col> */}
                         <Col span="2">
                             {index > 0 && (
                                 <Button

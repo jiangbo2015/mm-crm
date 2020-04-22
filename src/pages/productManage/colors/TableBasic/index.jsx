@@ -25,9 +25,19 @@ const Com = props => {
             // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
         },
         {
-            title: '名称',
+            title: '色值',
             dataIndex: 'value',
             key: 'value',
+        },
+        {
+            title: '中文名',
+            dataIndex: 'namecn',
+            key: 'namecn',
+        },
+        {
+            title: '英文名',
+            dataIndex: 'nameen',
+            key: 'nameen',
         },
 
         {

@@ -1,5 +1,5 @@
-import { queryCurrent, getList, add, del, update as updateUser } from '@/services/user';
-
+import { queryCurrent, getList, add, del, update as updateUser, download } from '@/services/user';
+import { api } from '@/utils/apiconfig';
 const KEY = {
     // 0: 'productorList',
     1: 'productorList',
@@ -26,6 +26,13 @@ const UserModel = {
                     data: response.data,
                 },
             });
+        },
+
+        *download({ payload }, { call, put }) {
+            const { success, data } = yield call(download, payload);
+            if (success && data.url) {
+                window.open(api + '/' + data.url);
+            }
         },
 
         *add({ payload }, { call, put }) {

@@ -32,6 +32,13 @@ const Com = props => {
         });
     };
 
+    const download = () => {
+        props.dispatch({
+            type: 'user/download',
+            payload: {},
+        });
+    };
+
     const handleClear = () => {
         formRef.current.resetFields();
     };
@@ -41,9 +48,18 @@ const Com = props => {
             <Card
                 title="客户列表"
                 extra={
-                    <Button type="primary" onClick={() => setVisible(true)}>
-                        添加
-                    </Button>
+                    <div>
+                        <Button type="primary" onClick={() => setVisible(true)}>
+                            添加
+                        </Button>
+                        <Button
+                            style={{ marginLeft: '20px' }}
+                            type="primary"
+                            onClick={() => download()}
+                        >
+                            导出
+                        </Button>
+                    </div>
                 }
                 style={{ marginBottom: '20px' }}
             >

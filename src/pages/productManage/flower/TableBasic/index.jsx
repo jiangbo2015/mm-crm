@@ -46,12 +46,18 @@ const Com = props => {
                     >
                         <a href="#">删除</a>
                     </Popconfirm>
+                    <a style={{ marginLeft: '20px' }} onClick={() => setVisiblePreview(record)}>
+                        预览
+                    </a>
                 </div>
             ),
         },
     ];
     const formRef = useRef();
     const [visible, setVisible] = useState(false);
+    const [visiblePreview, setVisiblePreview] = useState(null);
+
+    const handlePreview = () => {};
 
     const handleUpdate = () => {
         // formRef.current.validateFields((err, values) => {
@@ -122,6 +128,27 @@ const Com = props => {
                 }}
             >
                 <Form ref={v => (formRef.current = v)} />
+            </Modal>
+            <Modal
+                title="预览"
+                visible={Boolean(visiblePreview)}
+                width="400px"
+                footer={null}
+                onCancel={() => {
+                    setVisiblePreview(null);
+                }}
+            >
+                <div style={{ textAlign: 'center' }}>
+                    {visiblePreview && (
+                        <img
+                            width="auto"
+                            height="auto"
+                            style={{ maxWidth: '100%' }}
+                            src={`${api}/${visiblePreview.value}`}
+                            alt=""
+                        />
+                    )}
+                </div>
             </Modal>
             <Table
                 columns={columns}

@@ -6,6 +6,7 @@ import styles from './index.less';
 
 @connect(state => ({
     currentSize: state.global.currentSize,
+    goods: state.goods.list,
 }))
 class RegistrationForm extends React.Component {
     state = {};
@@ -44,6 +45,7 @@ class RegistrationForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         console.log(this.props);
+        const { goods } = this.props;
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -77,7 +79,7 @@ class RegistrationForm extends React.Component {
                                             whitespace: true,
                                         },
                                     ],
-                                })(<Input />)}
+                                })(<Input placeholder="尺码" />)}
                             </Form.Item>
                             {index > 0 && (
                                 <Button
@@ -99,6 +101,27 @@ class RegistrationForm extends React.Component {
                             style={{ marginTop: '5px' }}
                             onClick={this.handleAdd}
                         />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="8">
+                        <Form.Item label="选择商品">
+                            {getFieldDecorator(`category`, {
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: 'Please input category!',
+                                        whitespace: true,
+                                    },
+                                ],
+                            })(
+                                <Select style={{ width: 120 }} placeholder="请选择">
+                                    {goods.map(x => (
+                                        <Option value={x._id}>{x.name}</Option>
+                                    ))}
+                                </Select>,
+                            )}
+                        </Form.Item>
                     </Col>
                 </Row>
             </Form>

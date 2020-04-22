@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Modal } from 'antd';
+import { Card, Button, Modal, message } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 
 import Form from './Form';
@@ -14,21 +14,33 @@ const Com = props => {
         props.dispatch({
             type: 'global/fetchSizeList',
         });
+        props.dispatch({
+            type: 'goods/getList',
+        });
     }, []);
 
     const handleSubmit = () => {
         formRef.current.validateFields((err, values) => {
             console.log(err, values);
             if (!err) {
-                setVisible(false);
+                console.log('do dispathc');
+
+                const payload = {
+                    values: Object.keys(values)
+                        .filter(x => x !== 'category')
+                        .map((item, index) => ({
+                            name: values[item],
+                        })),
+                    category: values['category'],
+                };
+                console.log(payload);
                 props.dispatch({
                     type: 'global/addSize',
-                    payload: {
-                        values: Object.values(values).map((item, index) => ({
-                            name: item,
-                        })),
-                    },
+                    payload,
                 });
+                setVisible(false);
+            } else {
+                message.error('请填写完整');
             }
         });
     };

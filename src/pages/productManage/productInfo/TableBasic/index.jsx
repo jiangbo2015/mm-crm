@@ -48,10 +48,12 @@ const Com = props => {
                     type: 'global/updateSize',
                     payload: {
                         _id: data._id,
-                        values: currentSize.values.map((x, i) => ({
-                            ...x,
-                            name: values[`name${i}`],
-                        })),
+                        values: Object.keys(values)
+                            .filter(x => x !== 'category')
+                            .map((item, index) => ({
+                                name: values[item],
+                            })),
+                        category: values['category'],
                     },
                 });
             }
@@ -66,6 +68,9 @@ const Com = props => {
                     formRef.current.setFieldsValue({
                         [`name${i}`]: x.name,
                     });
+                });
+                formRef.current.setFieldsValue({
+                    category: data.category || '',
                 });
             }, 100);
         }
