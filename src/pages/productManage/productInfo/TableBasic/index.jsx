@@ -49,11 +49,11 @@ const Com = props => {
                     payload: {
                         _id: data._id,
                         values: Object.keys(values)
-                            .filter(x => x !== 'category')
+                            .filter(x => x !== 'goods')
                             .map((item, index) => ({
                                 name: values[item],
                             })),
-                        category: values['category'],
+                        goods: values['goods'],
                     },
                 });
             }
@@ -70,7 +70,7 @@ const Com = props => {
                     });
                 });
                 formRef.current.setFieldsValue({
-                    category: data.category || '',
+                    goods: data.goods || '',
                 });
             }, 100);
         }

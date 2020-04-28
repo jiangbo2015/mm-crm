@@ -155,22 +155,22 @@ class RegistrationForm extends React.Component {
             _id: x._id,
             name: x.values.map(i => i.name).join('/'),
         }));
-        const sizeSelector = getFieldDecorator('size', {
-            rules: [
-                {
-                    required: true,
-                    message: '请选择尺寸',
-                },
-            ],
-        })(
-            <Select placeholder="请选择">
-                {sizes.map((item, index) => (
-                    <Option key={index} value={item._id}>
-                        {item.name}
-                    </Option>
-                ))}
-            </Select>,
-        );
+        // const sizeSelector = getFieldDecorator('size', {
+        //     rules: [
+        //         {
+        //             required: true,
+        //             message: '请选择尺寸',
+        //         },
+        //     ],
+        // })(
+        //     <Select placeholder="请选择">
+        //         {sizes.map((item, index) => (
+        //             <Option key={index} value={item._id}>
+        //                 {item.name}
+        //             </Option>
+        //         ))}
+        //     </Select>,
+        // );
 
         const checkboxOptions = [
             { label: 'SOUTHERN', value: 'SOUTHERN' },
@@ -348,9 +348,9 @@ class RegistrationForm extends React.Component {
                 </Row>
                 <Divider className={styles.divider} />
                 <Row>
-                    <Col span="8">
+                    {/* <Col span="8">
                         <Form.Item label="尺码">{sizeSelector}</Form.Item>
-                    </Col>
+                    </Col> */}
                     <Col span="8">
                         <Form.Item label="商品">{goodsSelector}</Form.Item>
                     </Col>

@@ -27,11 +27,11 @@ const Com = props => {
 
                 const payload = {
                     values: Object.keys(values)
-                        .filter(x => x !== 'category')
+                        .filter(x => x !== 'goods')
                         .map((item, index) => ({
                             name: values[item],
                         })),
-                    category: values['category'],
+                    goods: values['goods'],
                 };
                 console.log(payload);
                 props.dispatch({

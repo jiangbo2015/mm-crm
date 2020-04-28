@@ -106,11 +106,11 @@ class RegistrationForm extends React.Component {
                 <Row>
                     <Col span="8">
                         <Form.Item label="选择商品">
-                            {getFieldDecorator(`category`, {
+                            {getFieldDecorator(`goods`, {
                                 rules: [
                                     {
                                         required: true,
-                                        message: 'Please input category!',
+                                        message: 'Please input!',
                                         whitespace: true,
                                     },
                                 ],
