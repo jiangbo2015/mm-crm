@@ -92,11 +92,13 @@ const Com = props => {
         if (visible) {
             setTimeout(() => {
                 console.log(formRef);
-                formRef.current.setFieldsValue({
-                    code: data.code,
-                    value: data.value,
-                });
-            }, 100);
+                if (formRef && formRef.current) {
+                    formRef.current.setFieldsValue({
+                        code: data.code,
+                        value: data.value,
+                    });
+                }
+            }, 500);
         }
     }, [visible]);
 
