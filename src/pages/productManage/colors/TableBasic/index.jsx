@@ -54,9 +54,9 @@ const Com = props => {
                         okText="是"
                         cancelText="否"
                     >
-                        <a href="#">删除</a>
+                        <a>删除</a>
                     </Popconfirm>
-                    <a style={{ marginLeft: '5px' }} href="#" onClick={() => handleEdit(record)}>
+                    <a style={{ marginLeft: '5px' }} onClick={() => handleEdit(record)}>
                         编辑
                     </a>
                 </div>
