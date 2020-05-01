@@ -88,24 +88,16 @@ const Com = props => {
         });
     };
 
-    const doSet = () => {
-        console.log('doSet');
-        setTimeout(() => {
-            console.log(formRef);
-            if (formRef && formRef.current) {
-                formRef.current.setFieldsValue({
-                    code: data.code,
-                    value: data.value,
-                });
-            } else {
-                doSet();
-            }
-        }, 500);
-    };
-
     useEffect(() => {
         if (visible) {
-            doSet();
+            setTimeout(() => {
+                if (formRef && formRef.current) {
+                    formRef.current.setFieldsValue({
+                        code: data.code,
+                        value: data.value,
+                    });
+                }
+            }, 100);
         }
     }, [visible]);
 

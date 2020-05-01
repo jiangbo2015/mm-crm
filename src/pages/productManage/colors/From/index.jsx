@@ -212,5 +212,5 @@ class RegistrationForm extends React.Component {
 }
 
 export default Form.create({
-    name: 'inputDesiner',
+    name: 'inputColor',
 })(RegistrationForm);
