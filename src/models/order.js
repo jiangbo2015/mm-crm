@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'querystring';
-import { getList as queryList } from '@/services/order';
+import { getList as queryList, del } from '@/services/order';
 
 const Model = {
     namespace: 'order',
@@ -15,6 +15,15 @@ const Model = {
                 yield put({
                     type: 'setOrderList',
                     payload: res.data,
+                });
+            }
+        },
+        *del({ payload }, { call, put }) {
+            const res = yield call(del, payload);
+            console.log(res);
+            if (res.success) {
+                yield put({
+                    type: 'getList',
                 });
             }
         },

@@ -24,7 +24,10 @@ const Com = props => {
             key: 'price',
             render: (text, record) => {
                 let price = 0;
-                record.orderData.map(x => (price += x.totalPrice));
+                if (!record.order || !orderData.items) {
+                    return 0;
+                }
+                record.orderData.items.map(x => (price += x.totalPrice));
                 return price;
             },
         },
@@ -40,7 +43,18 @@ const Com = props => {
             key: 'action',
             render: (text, record) => (
                 <div>
-                    <a href={`http://${location.hostname}:4000/download?id=${record._id}`}>
+                    <Popconfirm
+                        title="确认要删除吗"
+                        onConfirm={() => handleDelete(record)}
+                        okText="是"
+                        cancelText="否"
+                    >
+                        <a>删除</a>
+                    </Popconfirm>
+                    <a
+                        style={{ marginLeft: '10px' }}
+                        href={`http://${location.hostname}:4000/download?id=${record._id}`}
+                    >
                         订单文件
                     </a>
                 </div>
@@ -55,6 +69,15 @@ const Com = props => {
         props.getOrderList({
             styleNo,
             userName,
+        });
+    };
+
+    const handleDelete = record => {
+        props.dispatch({
+            type: 'order/del',
+            payload: {
+                _id: record._id,
+            },
         });
     };
 
