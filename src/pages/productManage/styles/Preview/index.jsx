@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Spin, Row, Col, Slider, InputNumber, Icon, Button } from 'antd';
 
-import ReactSVG from './react-svg'
-import StyleImg from './style-img'
+import ReactSVG from './react-svg';
+import StyleImg from './style-img';
 import ColorList from './ColorList';
 import styles from './index.less';
 import { api } from '@/utils/apiconfig';
@@ -33,7 +33,6 @@ class Preview extends Component {
             curEditGroupIndex: 0,
             curColors: [],
             curColor: { type: 0 },
-            
         };
         this.props.dispatch({
             type: 'style/getQueryColor',
@@ -54,39 +53,40 @@ class Preview extends Component {
     }
 
     addColorSelectListener(color) {
-        let {curColors, curEditGroupIndex } = this.state
-        let attrsIndex = this.props.attrs.find(x => x.colorId === color._id)
-       
-        let tempAttr = attrsIndex ? attrsIndex : {
-            scale: 1,
-            x: 0, y: 0
-        }
-        curColors[curEditGroupIndex] = color
-        this.setState({ curColor: color, imgVals: {...tempAttr},curColors: [...curColors] });
-
+        let { curColors, curEditGroupIndex } = this.state;
+        let attrsIndex = this.props.attrs.find(x => x.colorId === color._id);
+        console.log({ attrsIndex });
+        let tempAttr = attrsIndex
+            ? attrsIndex
+            : {
+                  scale: 1,
+                  x: 0,
+                  y: 0,
+              };
+        curColors[curEditGroupIndex] = color;
+        this.setState({ curColor: color, imgVals: { ...tempAttr }, curColors: [...curColors] });
     }
 
     handleSetCurEditGroupIndex(index) {
-        console.log('handleSetCurEditGroupIndex(index)=>', index)
+        console.log('handleSetCurEditGroupIndex(index)=>', index);
         this.setState({
-            curEditGroupIndex: index
-        })
+            curEditGroupIndex: index,
+        });
     }
     changeImgColorPos(x, y) {
         this.setState({
             imgVals: {
                 ...this.state.imgVals,
-                x: this.state.imgVals.x+x,
-                y: this.state.imgVals.y+y,
+                x: this.state.imgVals.x + x,
+                y: this.state.imgVals.y + y,
             },
         });
     }
 
     onScaleChange(scale) {
-        this.setState(
-            {
-                imgVals: { ...this.state.imgVals, scale },
-            });
+        this.setState({
+            imgVals: { ...this.state.imgVals, scale },
+        });
     }
 
     onSearchColor(params) {
@@ -100,16 +100,34 @@ class Preview extends Component {
         });
     }
 
-    handleSaveImgVals(){
-        const { curColor, imgVals } = this.state
-        const { _id } = this.props
+    handleSaveImgVals() {
+        const { curColor, imgVals } = this.state;
+        const { _id } = this.props;
         this.props.dispatch({
             type: 'style/updateArr',
-            payload:   {
+            payload: {
                 colorId: curColor._id,
                 ...imgVals,
                 _id,
-               }
+            },
+        });
+        let newAttrs = [...this.props.attrs];
+        let attrsIndex = this.props.attrs.findIndex(x => x.colorId === curColor._id);
+        if (attrsIndex >= 0) {
+            newAttrs[attrsIndex] = {
+                colorId: curColor._id,
+                ...imgVals,
+            };
+        } else {
+            newAttrs.push({
+                colorId: curColor._id,
+                ...imgVals,
+            });
+        }
+
+        this.props.onSetData({
+            ...this.props.data,
+            attrs: newAttrs,
         });
     }
     render() {
@@ -209,29 +227,32 @@ class Preview extends Component {
                             ref={ref => (this.styleWrapper = ref)}
                         >
                             <Col span={12}>
-                    
-                                    <StyleImg
-                                        svgId={styleId}
-                                        styleId={styleId}
-                                        width="200px"
-                                        svgUrl={svgUrl}
-                                        shadowUrl={shadowUrl}
-                                        colors={curColors}
-                                        imgVals={imgVals}
-                                        onSetEditSvgGroupIndex={this.handleSetCurEditGroupIndex.bind(this)}
-                                    />
+                                <StyleImg
+                                    svgId={styleId}
+                                    styleId={styleId}
+                                    width="200px"
+                                    svgUrl={svgUrl}
+                                    shadowUrl={shadowUrl}
+                                    colors={curColors}
+                                    imgVals={imgVals}
+                                    onSetEditSvgGroupIndex={this.handleSetCurEditGroupIndex.bind(
+                                        this,
+                                    )}
+                                />
                             </Col>
                             <Col span={12}>
                                 <StyleImg
-                                        svgId={`${styleId}-back`}
-                                        styleId={styleId}
-                                        width="200px"
-                                        svgUrl={svgUrlBack}
-                                        shadowUrl={shadowUrlBack}
-                                        colors={curColors}
-                                        imgVals={imgVals}
-                                        onSetEditSvgGroupIndex={this.handleSetCurEditGroupIndex.bind(this)}
-                                    />
+                                    svgId={`${styleId}-back`}
+                                    styleId={styleId}
+                                    width="200px"
+                                    svgUrl={svgUrlBack}
+                                    shadowUrl={shadowUrlBack}
+                                    colors={curColors}
+                                    imgVals={imgVals}
+                                    onSetEditSvgGroupIndex={this.handleSetCurEditGroupIndex.bind(
+                                        this,
+                                    )}
+                                />
                             </Col>
                         </Row>
                     </div>

@@ -172,7 +172,7 @@ const Com = props => {
                     setPreview(false);
                 }}
             >
-                <Preview {...data} />
+                <Preview {...data} data={data} onSetData={setData} />
                 {/* <Form ref={v => (formRef.current = v)} editData={data}/> */}
             </Modal>
             <Table columns={columns} dataSource={props.styleList} />

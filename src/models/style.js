@@ -146,11 +146,15 @@ const Model = {
                 });
             }
         },
-        *updateArr({ payload }, { call }) {
+        *updateArr({ payload }, { call, put }) {
             console.log('update', payload);
             const res = yield call(updateArr, payload);
-            // console.log(res);
+            console.log(res);
             if (res.success) {
+                yield put({
+                    type: 'get',
+                });
+                console.log('get');
                 notification.success({
                     message: '保存成功',
                 });
