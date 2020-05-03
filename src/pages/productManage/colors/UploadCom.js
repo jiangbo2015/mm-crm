@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { api } from '@/utils/apiconfig';
 import { Form, Input, Row, Select, Col, Upload, Icon, Divider, Button, notification } from 'antd';
 import styles from './index.less';
-export const Avatar = ({ src, onLoad }) => (
-    <img src={`${api}/${src}`} alt="avatar" style={{ width: '100%' }} onLoad={onLoad} />
+export const Avatar = ({ src, onLoad, ...others }) => (
+    <img src={`${api}/${src}`} alt="avatar" style={{ width: '100%' }} onLoad={onLoad} {...others} />
 );
 
 const typeProps = {

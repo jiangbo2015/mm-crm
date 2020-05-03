@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Input, Button, Icon, notification, Row, Col } from 'antd';
+import { Card, Input, Button, Icon, notification, Row, Col, Upload } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
+import { uploadProps, Avatar, UploadBtn } from '../productManage/colors/UploadCom';
 
 const Com = props => {
     useEffect(() => {
@@ -13,12 +14,15 @@ const Com = props => {
     const [email, setEmail] = useState(props.email);
     const [meiyuan, setMeiyuan] = useState();
     const [ouyuan, setOuyuan] = useState();
+    const [loading, setLoading] = useState(false);
+    const [colorImgUrl, setColorImgUrl] = useState(false);
 
     useEffect(() => {
         setEmail(props.email);
         setMeiyuan(props.meiyuan);
         setOuyuan(props.ouyuan);
-    }, [props.email, props.meiyuan, props.ouyuan]);
+        setColorImgUrl(props.img);
+    }, [props.email, props.meiyuan, props.ouyuan, props.img]);
 
     const handleSubmit = () => {
         if (!/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(email)) {
@@ -39,10 +43,22 @@ const Com = props => {
                 email,
                 ouyuan: parseFloat(ouyuan),
                 meiyuan: parseFloat(meiyuan),
+                img: colorImgUrl,
             },
         });
     };
     console.log(props.email);
+
+    const handleAdd = info => {
+        if (info.file.status === 'uploading') {
+            setLoading(true);
+            return;
+        }
+        if (info.file.status === 'done') {
+            setLoading(false);
+            setColorImgUrl(info.file.response.data.url);
+        }
+    };
     return (
         <PageHeaderWrapper>
             <Card>
@@ -67,6 +83,18 @@ const Com = props => {
                     value={ouyuan}
                     onChange={e => setOuyuan(e.target.value)}
                 />
+                <Row style={{ marginTop: '20px' }}>
+                    <Col span="2">封面图</Col>
+                    <Col span="4">
+                        <Upload {...uploadProps} onChange={handleAdd}>
+                            {colorImgUrl ? (
+                                <Avatar src={colorImgUrl}></Avatar>
+                            ) : (
+                                <UploadBtn type={loading ? 'loading' : 'plus'}></UploadBtn>
+                            )}
+                        </Upload>
+                    </Col>
+                </Row>
                 <Row type="flex" justify="center" style={{ margin: '20px' }}>
                     <Button type="primary" onClick={() => handleSubmit()}>
                         确认更新
