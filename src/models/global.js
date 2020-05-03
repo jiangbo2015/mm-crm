@@ -52,6 +52,9 @@ const GlobalModel = {
                 notification.success({
                     message: '修改成功',
                 });
+                yield put({
+                    type: 'fetchSizeList',
+                });
             }
         },
 
