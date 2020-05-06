@@ -1,4 +1,5 @@
 import { queryNotices } from '@/services/user';
+import { notification } from 'antd';
 import { getSizeList, add, del, update } from '@/services/size';
 
 const GlobalModel = {
@@ -51,9 +52,6 @@ const GlobalModel = {
                 });
                 notification.success({
                     message: '修改成功',
-                });
-                yield put({
-                    type: 'fetchSizeList',
                 });
             }
         },
