@@ -99,7 +99,7 @@ const Com = props => {
                     styleNo: data.styleNo,
                     styleName: data.styleName,
                     price: data.price,
-                    // size: data.size,
+                    scale: data.scale ? data.scale : 58,
                     goodsId: data.goodsId,
                     categoryId: data.categoryId,
                     tags: data.tags,

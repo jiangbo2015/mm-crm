@@ -34,6 +34,7 @@ import { api } from '@/utils/apiconfig';
 }))
 class RegistrationForm extends React.Component {
     state = {
+        scale: this.props.editData && this.props.editData.scale ? this.props.editData.scale : 58,
         loading: {
             imgUrl: false,
             svgUrl: false,
@@ -150,11 +151,10 @@ class RegistrationForm extends React.Component {
         );
 
         const { sizeList = [] } = this.props;
+
         const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = this.state.urls;
-        const sizes = sizeList.map(x => ({
-            _id: x._id,
-            name: x.values.map(i => i.name).join('/'),
-        }));
+        const { scale } = this.state;
+        console.log({ scale });
         // const sizeSelector = getFieldDecorator('size', {
         //     rules: [
         //         {
@@ -197,7 +197,13 @@ class RegistrationForm extends React.Component {
                             onChange={args => this.handleChange(args, 'imgUrl')}
                         >
                             {imgUrl ? (
-                                <Avatar src={imgUrl}></Avatar>
+                                <Avatar
+                                    src={imgUrl}
+                                    style={{
+                                        width: '100%',
+                                        transform: `scale(0.${scale})`,
+                                    }}
+                                ></Avatar>
                             ) : (
                                 <UploadBtn
                                     type={this.state.loading.imgUrl ? 'loading' : 'plus'}
@@ -227,6 +233,22 @@ class RegistrationForm extends React.Component {
                                     },
                                 ],
                             })(<Input />)}
+                        </Form.Item>
+                        <Form.Item label="缩放比">
+                            {getFieldDecorator('scale')(
+                                <InputNumber
+                                    min={20}
+                                    max={100}
+                                    step={1}
+                                    onChange={val => {
+                                        this.setState({
+                                            ...this.state,
+                                            scale: val,
+                                        });
+                                    }}
+                                />,
+                            )}
+                            %(默认值58%)
                         </Form.Item>
                     </Col>
                     <Col span="10">
