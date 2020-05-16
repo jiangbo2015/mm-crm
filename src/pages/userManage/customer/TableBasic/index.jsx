@@ -18,11 +18,13 @@ const Com = props => {
             key: 'name',
         },
         {
-            title: '角色',
+            title: '所属通道',
             dataIndex: 'role',
-            key: 'role',
+            render: (text, record) => {
+                const channelsName = record.channels.map(c => c.name);
+                return <div>{channelsName.toString()}</div>;
+            },
         },
-
         {
             title: '操作',
             dataIndex: 'action',
@@ -121,7 +123,7 @@ const Com = props => {
             </Modal>
             <Table columns={columns} dataSource={props.user.customerList.docs} />
         </>
-        )
+    );
 };
 
 export default connect(({ user, loading }) => ({

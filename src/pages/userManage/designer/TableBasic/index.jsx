@@ -18,11 +18,6 @@ const Com = props => {
             dataIndex: 'name',
             key: 'name',
         },
-        {
-            title: '角色',
-            dataIndex: 'role',
-            key: 'role',
-        },
 
         {
             title: '操作',

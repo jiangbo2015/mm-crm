@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Table, Divider, Tag, Modal, Popconfirm, message } from 'antd';
-import styles from './index.less';
+import lodash from 'lodash';
 import { connect } from 'dva';
 import Form from '../Form';
 
@@ -18,9 +18,12 @@ const Com = props => {
             key: 'name',
         },
         {
-            title: '角色',
+            title: '通道管理',
             dataIndex: 'role',
-            key: 'role',
+            render: (text, record) => {
+                const channelsName = record.channels.map(c => c.name);
+                return <div>{channelsName.toString()}</div>;
+            },
         },
 
         {
@@ -124,7 +127,7 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form ref={v => (formRef.current = v)} />
+                <Form ref={v => (formRef.current = v)} editId={data._id} />
             </Modal>
             <Table columns={columns} dataSource={props.user.productorList.docs} />;
         </>

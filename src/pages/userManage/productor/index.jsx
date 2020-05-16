@@ -11,7 +11,7 @@ const Com = props => {
     useEffect(() => {
         props.dispatch({
             type: 'channel/getList',
-            payload: {},
+            payload: { limit: 100, page: 1 },
         });
     }, []);
 

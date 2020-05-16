@@ -1,4 +1,5 @@
 import React from 'react';
+import lodash from 'lodash';
 import { Form, Input, Checkbox, Select } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 import { connect } from 'dva';
@@ -6,11 +7,12 @@ const { Option } = Select;
 
 @connect(state => ({
     channelList: state.channel.list || [],
+    productorList: state.user.productorList.docs || [],
 }))
 class RegistrationForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
-
+        const { channelList, productorList, editId } = this.props;
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -29,12 +31,20 @@ class RegistrationForm extends React.Component {
                 },
             },
         };
+        let usedChannels = [];
+        productorList.map(p => {
+            if (p._id != editId) {
+                usedChannels = usedChannels.concat(usedChannels, p.channels);
+            }
+        });
+        let selectChannels = lodash.differenceBy(channelList.docs, usedChannels, '_id');
 
-        const plainOptions = this.props.channelList.docs.map(x => {
-            return {
+        let plainOptions = [];
+        selectChannels.map(x => {
+            plainOptions.push({
                 label: x.name,
                 value: x._id,
-            };
+            });
         });
 
         const productorSelector = getFieldDecorator('currency', {
