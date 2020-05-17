@@ -15,7 +15,11 @@ const Com = props => {
             dataIndex: 'name',
             key: 'name',
             render: (text, record) => {
-                return record.user.name;
+                if (record.user) {
+                    return record.user.name;
+                } else {
+                    return '无效用户';
+                }
             },
         },
         {
