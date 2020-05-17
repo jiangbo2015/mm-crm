@@ -23,22 +23,31 @@ class RegistrationForm extends React.Component {
     };
 
     handleDelete = index => {
+        console.log('handleDelete', { index });
         const { currentSize } = this.props;
         const { getFieldsValue, setFieldsValue } = this.props.form;
-        const fields = getFieldsValue();
+        let fields = getFieldsValue();
+        delete fields.goods;
         const values = Object.values(fields);
+
         values.splice(index, 1);
+        console.log({ values });
+        console.log({ fields });
+        console.log({ currentSize });
+        // return;
         currentSize.values.splice(index, 1);
         this.props.dispatch({
             type: 'global/setCurrentSize',
             payload: {
                 ...currentSize,
             },
-        });
-        values.map((item, i) => {
-            setFieldsValue({
-                [`name${i}`]: values[i],
-            });
+            callback: () => {
+                values.map((item, i) => {
+                    setFieldsValue({
+                        [`name${i}`]: values[i],
+                    });
+                });
+            },
         });
     };
 

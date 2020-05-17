@@ -125,7 +125,8 @@ const GlobalModel = {
             };
         },
 
-        setCurrentSize(state, { payload }) {
+        setCurrentSize(state, { payload, callback }) {
+            callback && callback();
             return {
                 ...state,
                 currentSize: payload,
