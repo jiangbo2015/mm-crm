@@ -7,8 +7,8 @@ const Com = props => {
     const columns = [
         {
             title: '订单编号',
-            dataIndex: '_id',
-            key: '_id',
+            dataIndex: 'orderNo',
+            key: 'orderNo',
         },
         {
             title: '用户名',
@@ -19,22 +19,24 @@ const Com = props => {
             },
         },
         {
-            title: '金额',
+            title: '金额/¥',
             dataIndex: 'price',
             key: 'price',
             render: (text, record) => {
                 let price = 0;
-                if (!record.order || !orderData.items) {
+                if (!record.orderData) {
                     return 0;
                 }
-                record.orderData.items.map(x => (price += x.totalPrice));
-                return price;
+                record.orderData.map(order => {
+                    order.items.map(x => (price += x.totalPrice));
+                });
+                return price.toFixed(2);
             },
         },
         {
             title: '时间',
-            dataIndex: 'createTime',
-            key: 'createTime',
+            dataIndex: 'date',
+            key: 'date',
         },
 
         {
