@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Table, Row, Col, Button, Input, Divider, Tag, Modal, Popconfirm } from 'antd';
-import styles from './index.less';
 import { connect } from 'dva';
 
 const Com = props => {
@@ -59,7 +58,11 @@ const Com = props => {
                     </Popconfirm>
                     <a
                         style={{ marginLeft: '10px' }}
-                        href={`http://${location.hostname}:4000/download?id=${record._id}`}
+                        href={
+                            location.hostname.indexOf('we-idesign')
+                                ? `http://we-idesign.com/download?id=${record._id}`
+                                : `http://${location.hostname}:4000/download?id=${record._id}`
+                        }
                     >
                         订单文件
                     </a>
