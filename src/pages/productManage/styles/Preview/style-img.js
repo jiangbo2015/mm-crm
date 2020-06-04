@@ -37,6 +37,7 @@ export default props => {
                 style={{
                     width: width,
                     minWidth: '14px',
+                    fill: '#fff',
                 }}
                 afterInjection={(error, svg) => {
                     if (error) {
@@ -50,6 +51,11 @@ export default props => {
                                 svg.children[i].tagName === 'g' ||
                                 svg.children[i].tagName === 'path'
                             ) {
+                                let block = svg.children[i];
+                                for (let i = 0; i < block.children.length; i++) {
+                                    let cblock = block.children[i];
+                                    cblock.removeAttribute('class');
+                                }
                                 if (onSetEditSvgGroupIndex) {
                                     let jj = j;
                                     svg.children[i].onclick = e => {
