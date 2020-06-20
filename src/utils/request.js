@@ -53,7 +53,7 @@ const errorHandler = error => {
 const request = extend({
     errorHandler,
     // 默认错误处理
-    credentials: 'include', // 默认请求是否带上cookie
+    // credentials: 'include', // 默认请求是否带上cookie
 });
 
 request.interceptors.request.use(async (url, options) => {
