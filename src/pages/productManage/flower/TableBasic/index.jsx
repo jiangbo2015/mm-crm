@@ -49,15 +49,22 @@ const Com = props => {
                     <a style={{ marginLeft: '20px' }} onClick={() => setVisiblePreview(record)}>
                         预览
                     </a>
+                    <a onClick={() => handleEdit(record)}>编辑</a>
                 </div>
             ),
         },
     ];
     const formRef = useRef();
     const [visible, setVisible] = useState(false);
+    const [data, setData] = useState({});
     const [visiblePreview, setVisiblePreview] = useState(null);
 
     const handlePreview = () => {};
+
+    const handleEdit = record => {
+        setVisible(true);
+        setData(record);
+    };
 
     const handleUpdate = () => {
         // formRef.current.validateFields((err, values) => {
@@ -79,16 +86,15 @@ const Com = props => {
     };
 
     useEffect(() => {
-        // if (visible) {
-        //     setTimeout(() => {
-        //         console.log(formRef);
-        //         data.values.map((x, i) => {
-        //             formRef.current.setFieldsValue({
-        //                 [`name${i}`]: x.name,
-        //             });
-        //         });
-        //     }, 100);
-        // }
+        if (visible) {
+            setTimeout(() => {
+                if (formRef && formRef.current) {
+                    formRef.current.setFieldsValue({
+                        ...data,
+                    });
+                }
+            }, 100);
+        }
     }, [visible]);
 
     const handleDelete = record => {
@@ -118,16 +124,24 @@ const Com = props => {
                 title="编辑"
                 visible={visible}
                 width="800px"
+                footer={null}
                 onOk={() => {
                     handleUpdate();
                     handleClear();
                 }}
                 onCancel={() => {
                     setVisible(false);
-                    handleClear();
+                    // handleClear();
                 }}
             >
-                <Form ref={v => (formRef.current = v)} />
+                <Form
+                    ref={v => (formRef.current = v)}
+                    colorImgWidth={data.width}
+                    colorImgHeight={data.height}
+                    colorImgUrl={data.value}
+                    colorId={data._id}
+                    updateColor={true}
+                />
             </Modal>
             <Modal
                 title="预览"

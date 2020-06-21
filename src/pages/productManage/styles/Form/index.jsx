@@ -190,7 +190,7 @@ class RegistrationForm extends React.Component {
         return (
             <Form {...formItemLayout} className="wrap">
                 <Row>
-                    <Col span="6">
+                    <Col span="4">
                         <Upload
                             {...uploadProps}
                             beforeUpload={this.beforeUpload}
@@ -248,13 +248,13 @@ class RegistrationForm extends React.Component {
                                     }}
                                 />,
                             )}
-                            %(默认值58%)
+                            {'默认值58'}
                         </Form.Item>
                     </Col>
-                    <Col span="10">
+                    <Col span="12" style={{ paddingLeft: '12px' }}>
                         <Form.Item
                             label={
-                                <Tooltip title="不同通道会根据当时汇率自动转为对应货币价格">
+                                <Tooltip title="不同通道会根据系统设施汇率显示价格">
                                     <span>
                                         价格(人民币)&nbsp;
                                         <Icon
@@ -280,6 +280,26 @@ class RegistrationForm extends React.Component {
                                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                 />,
                             )}
+                        </Form.Item>
+                        <Form.Item
+                            label="款式宽"
+                            style={{
+                                height: 0,
+                                marginTop: '-10px',
+                            }}
+                        >
+                            {getFieldDecorator('styleSize', {
+                                rules: [],
+                                initialValue: 32,
+                            })(
+                                <InputNumber
+                                    formatter={value =>
+                                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                    }
+                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                />,
+                            )}
+                            cm
                         </Form.Item>
                         <Form.Item
                             label="货币"

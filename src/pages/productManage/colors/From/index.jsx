@@ -17,8 +17,8 @@ class RegistrationForm extends React.Component {
     handleSubmit() {
         this.props.form.validateFields((err, values) => {
             if (err) return;
-            if (this.props.colorType) {
-                this.addFlowerColor(values);
+            if (this.props.updateColor) {
+                this.updatePlainColor(values);
             } else {
                 this.addPlainColor(values);
             }
@@ -56,6 +56,23 @@ class RegistrationForm extends React.Component {
             });
         }
     };
+    updatePlainColor = params => {
+        if (isHexcolor(params.value)) {
+            this.props.dispatch({
+                type: 'style/updateColor',
+                payload: {
+                    _id: this.props.colorId,
+                    // value,
+                    ...params,
+                },
+            });
+        } else {
+            notification.error({
+                message: '颜色格式不合法',
+            });
+        }
+    };
+
     addPlainColor = params => {
         if (isHexcolor(params.value)) {
             this.props.dispatch({
@@ -102,106 +119,62 @@ class RegistrationForm extends React.Component {
                 },
             },
         };
-        const { colorImgUrl } = this.state;
-        const { colorType } = this.props;
         return (
             <Form {...formItemLayout} name="inputDesiner">
                 <Row>
-                    {colorType ? (
-                        <>
-                            {' '}
-                            <Col span="8">
-                                <Upload {...uploadProps} onChange={this.handleAdd}>
-                                    {colorImgUrl ? (
-                                        <Avatar src={colorImgUrl} onLoad={this.imgOnLoad}></Avatar>
-                                    ) : (
-                                        <UploadBtn
-                                            type={this.state.loading ? 'loading' : 'plus'}
-                                        ></UploadBtn>
-                                    )}
-                                </Upload>
-                                <p style={{ textAlign: 'center' }}>花布图</p>
-                            </Col>
-                            <Col span="16">
-                                <Form.Item label={<span>编号</span>}>
-                                    {getFieldDecorator('code', {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message: 'Please input code!',
-                                                whitespace: true,
-                                            },
-                                        ],
-                                    })(<Input style={{ width: '160px' }} />)}
-                                </Form.Item>
-                                <Form.Item label={<span>画布单循环宽度(cm)</span>}>
-                                    {getFieldDecorator('size', {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message: 'Please input width!',
-                                                whitespace: true,
-                                            },
-                                        ],
-                                    })(<Input style={{ width: '60px' }} />)}
-                                </Form.Item>
-                            </Col>
-                        </>
-                    ) : (
-                        <Col span="8">
-                            <Form.Item label={<span>编号</span>}>
-                                {getFieldDecorator('code', {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: 'Please input codex!',
-                                            whitespace: true,
-                                        },
-                                    ],
-                                })(<Input style={{ width: '160px' }} />)}
-                            </Form.Item>
-                            <Form.Item label={<span>颜色值</span>}>
-                                {getFieldDecorator('value', {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: 'Please input value!',
-                                            whitespace: true,
-                                        },
-                                    ],
-                                })(<Input style={{ width: '160px' }} />)}
-                            </Form.Item>
-                            <Form.Item label={<span>中文名</span>}>
-                                {getFieldDecorator('namecn', {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: 'Please input namecn!',
-                                            whitespace: true,
-                                        },
-                                    ],
-                                })(<Input style={{ width: '160px' }} />)}
-                            </Form.Item>
-                            <Form.Item label={<span>英文名</span>}>
-                                {getFieldDecorator('nameen', {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: 'Please input nameen!',
-                                            whitespace: true,
-                                        },
-                                    ],
-                                })(<Input style={{ width: '160px' }} />)}
-                            </Form.Item>
-                        </Col>
-                    )}
+                    <Col span="8">
+                        <Form.Item label={<span>编号</span>}>
+                            {getFieldDecorator('code', {
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: 'Please input codex!',
+                                        whitespace: true,
+                                    },
+                                ],
+                            })(<Input style={{ width: '160px' }} />)}
+                        </Form.Item>
+                        <Form.Item label={<span>颜色值</span>}>
+                            {getFieldDecorator('value', {
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: 'Please input value!',
+                                        whitespace: true,
+                                    },
+                                ],
+                            })(<Input style={{ width: '160px' }} />)}
+                        </Form.Item>
+                        <Form.Item label={<span>中文名</span>}>
+                            {getFieldDecorator('namecn', {
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: 'Please input namecn!',
+                                        whitespace: true,
+                                    },
+                                ],
+                            })(<Input style={{ width: '160px' }} />)}
+                        </Form.Item>
+                        <Form.Item label={<span>英文名</span>}>
+                            {getFieldDecorator('nameen', {
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: 'Please input nameen!',
+                                        whitespace: true,
+                                    },
+                                ],
+                            })(<Input style={{ width: '160px' }} />)}
+                        </Form.Item>
+                    </Col>
                 </Row>
                 <Row>
                     <Col span="2"></Col>
                     <Col span="8">
                         <Form.Item>
                             <Button type="primary" onClick={this.handleSubmit.bind(this)}>
-                                确认添加
+                                确认
                             </Button>
                         </Form.Item>
                     </Col>
