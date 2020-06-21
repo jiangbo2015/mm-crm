@@ -102,6 +102,7 @@ export default {
                             path: '/',
                             redirect: '/welcome',
                         },
+                        { path: '/welcome', component: './Welcome' },
                         {
                             path: '/userManage',
                             name: '用户管理',
@@ -196,6 +197,7 @@ export default {
                 },
             ],
         },
+
         {
             component: './404',
         },
@@ -205,7 +207,8 @@ export default {
         'primary-color': primaryColor,
     },
     define: {
-        'process.env.APIURL': 'http://8.209.64.159:3001',
+        'process.env.APIURL': 'http://localhost:3000',
+        // 'process.env.APIURL': 'http://8.209.64.159:3001',
         // 'process.env.APIURL': 'http://192.168.124.25:3000',
         ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION:
             ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION || '', // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
@@ -249,14 +252,16 @@ export default {
         '/api/': {
             //192.168.8.107
             // target: 'http://192.168.124.25:3000',
-            target: 'http://8.209.64.159:3001',
+            // target: 'http://8.209.64.159:3001',
+            target: 'http://localhost:3000',
             changeOrigin: true,
             //   pathRewrite: { '^/server': '' },
         },
         '/uploads/': {
             //192.168.8.107
             // target: 'http://192.168.124.25:3000',
-            target: 'http://8.209.64.159:3001',
+            // target: 'http://8.209.64.159:3001',
+            target: 'http://localhost:3000',
             changeOrigin: true,
         },
     },

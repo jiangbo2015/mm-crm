@@ -78,7 +78,7 @@ const Com = props => {
                 setVisible(false);
                 const { currentSize } = props;
                 props.dispatch({
-                    type: 'style/update',
+                    type: 'color/update',
                     payload: {
                         _id: data._id,
                         ...values,
@@ -95,6 +95,8 @@ const Com = props => {
                     formRef.current.setFieldsValue({
                         code: data.code,
                         value: data.value,
+                        namecn: data.namecn,
+                        nameen: data.nameen,
                     });
                 }
             }, 100);
@@ -128,6 +130,7 @@ const Com = props => {
                 title="编辑"
                 visible={visible}
                 width="800px"
+                footer={null}
                 onOk={() => {
                     handleUpdate();
                     // handleClear();
@@ -137,7 +140,7 @@ const Com = props => {
                     // handleClear();
                 }}
             >
-                <Form ref={v => (formRef.current = v)} />
+                <Form ref={v => (formRef.current = v)} colorId={data._id} updateColor={true} />
             </Modal>
 
             <Table

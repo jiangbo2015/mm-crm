@@ -8,25 +8,47 @@ import { uploadProps, Avatar, UploadBtn } from '../UploadCom';
     currentSize: state.global.currentSize,
 }))
 class RegistrationForm extends React.Component {
-    state = {
-        colorImgUrl: '',
-        colorImgWidth: 0,
-        colorImgHeight: 0,
-        onLoad: false,
-    };
+    constructor(props) {
+        super(props);
+        const { colorImgUrl = '', colorImgWidth = 0, colorImgHeight = 0, onLoad = false } = props;
+        this.state = {
+            colorImgUrl,
+            colorImgWidth,
+            colorImgHeight,
+            onLoad,
+        };
+    }
+
     // formRef = React.createRef()
     handleSubmit() {
         this.props.form.validateFields((err, values) => {
             console.log(err, values);
             if (err) return;
-            if (this.props.colorType) {
-                this.addFlowerColor(values);
+            if (this.props.updateColor) {
+                this.updateFlowerColor(values);
             } else {
-                this.addPlainColor(values);
+                this.addFlowerColor(values);
             }
             this.props.onClose();
         });
     }
+    updateFlowerColor = params => {
+        const { colorImgWidth, colorImgHeight, colorImgUrl } = this.state;
+        if (!colorImgUrl) {
+            notification.error({
+                message: '请先上传图片',
+            });
+        } else {
+            this.props.dispatch({
+                type: 'style/updateColor',
+                payload: {
+                    _id: this.props.colorId,
+                    // value,
+                    ...params,
+                },
+            });
+        }
+    };
     handleAdd = info => {
         console.log(info, 'info info info');
         this.setState({
@@ -60,22 +82,6 @@ class RegistrationForm extends React.Component {
                     height: colorImgHeight,
                     ...params,
                 },
-            });
-        }
-    };
-    addPlainColor = params => {
-        if (isHexcolor(value)) {
-            this.props.dispatch({
-                type: 'style/addColor',
-                payload: {
-                    type: 0,
-                    value,
-                    ...params,
-                },
-            });
-        } else {
-            notification.error({
-                message: '颜色格式不合法',
             });
         }
     };
@@ -124,80 +130,49 @@ class RegistrationForm extends React.Component {
             },
         };
         const { colorImgUrl } = this.state;
-        const { colorType } = this.props;
         return (
             <Form {...formItemLayout} name="inputDesiner">
                 <Row>
-                    {colorType ? (
-                        <>
-                            {' '}
-                            <Col span="8">
-                                <Upload
-                                    {...uploadProps}
-                                    beforeUpload={this.beforeUpload}
-                                    onChange={this.handleAdd}
-                                >
-                                    {colorImgUrl ? (
-                                        <Avatar src={colorImgUrl} onLoad={this.imgOnLoad}></Avatar>
-                                    ) : (
-                                        <UploadBtn
-                                            type={this.state.loading ? 'loading' : 'plus'}
-                                        ></UploadBtn>
-                                    )}
-                                </Upload>
-                                <p style={{ textAlign: 'center' }}>花布图</p>
-                            </Col>
-                            <Col span="16">
-                                <Form.Item label={<span>编号</span>}>
-                                    {getFieldDecorator('code', {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message: 'Please input code!',
-                                                whitespace: true,
-                                            },
-                                        ],
-                                    })(<Input style={{ width: '160px' }} />)}
-                                </Form.Item>
-                                <Form.Item label={<span>画布单循环宽度(cm)</span>}>
-                                    {getFieldDecorator('size', {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message: 'Please input width!',
-                                                whitespace: true,
-                                            },
-                                        ],
-                                    })(<Input style={{ width: '160px' }} />)}
-                                </Form.Item>
-                            </Col>
-                        </>
-                    ) : (
-                        <Col span="8">
-                            <Form.Item label={<span>编号</span>}>
-                                {getFieldDecorator('code', {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: 'Please input codex!',
-                                            whitespace: true,
-                                        },
-                                    ],
-                                })(<Input style={{ width: '160px' }} />)}
-                            </Form.Item>
-                            <Form.Item label={<span>颜色值</span>}>
-                                {getFieldDecorator('value', {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: 'Please input value!',
-                                            whitespace: true,
-                                        },
-                                    ],
-                                })(<Input style={{ width: '160px' }} />)}
-                            </Form.Item>
-                        </Col>
-                    )}
+                    <Col span="8">
+                        <Upload
+                            {...uploadProps}
+                            beforeUpload={this.beforeUpload}
+                            onChange={this.handleAdd}
+                        >
+                            {colorImgUrl ? (
+                                <Avatar src={colorImgUrl} onLoad={this.imgOnLoad}></Avatar>
+                            ) : (
+                                <UploadBtn
+                                    type={this.state.loading ? 'loading' : 'plus'}
+                                ></UploadBtn>
+                            )}
+                        </Upload>
+                        <p style={{ textAlign: 'center' }}>花布图</p>
+                    </Col>
+                    <Col span="16">
+                        <Form.Item label={<span>编号</span>}>
+                            {getFieldDecorator('code', {
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: 'Please input code!',
+                                        whitespace: true,
+                                    },
+                                ],
+                            })(<Input style={{ width: '160px' }} />)}
+                        </Form.Item>
+                        <Form.Item label={<span>画布单循环宽度(cm)</span>}>
+                            {getFieldDecorator('size', {
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: 'Please input width!',
+                                        whitespace: true,
+                                    },
+                                ],
+                            })(<Input style={{ width: '160px' }} />)}
+                        </Form.Item>
+                    </Col>
                 </Row>
                 <Row>
                     <Col span="2"></Col>

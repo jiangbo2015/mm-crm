@@ -139,7 +139,9 @@ class Preview extends Component {
             queryFlowerColor,
             shadowUrl,
             shadowUrlBack,
+            styleSize,
         } = this.props;
+        console.log('this.props', this.props);
         const { imgVals, curColors, curColor } = this.state;
         return (
             <div>
@@ -230,6 +232,7 @@ class Preview extends Component {
                                 <StyleImg
                                     svgId={styleId}
                                     styleId={styleId}
+                                    styleSize={styleSize}
                                     width="200px"
                                     svgUrl={svgUrl}
                                     shadowUrl={shadowUrl}
@@ -242,6 +245,7 @@ class Preview extends Component {
                             </Col>
                             <Col span={12}>
                                 <StyleImg
+                                    styleSize={styleSize}
                                     svgId={`${styleId}-back`}
                                     styleId={styleId}
                                     width="200px"
