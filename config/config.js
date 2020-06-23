@@ -208,7 +208,7 @@ export default {
         'primary-color': primaryColor,
     },
     define: {
-        'process.env.APIURL': 'http://localhost:3000',
+        'process.env.APIURL': 'http://localhost:3006',
         // 'process.env.APIURL': 'http://8.209.64.159:3001',
         // 'process.env.APIURL': 'http://192.168.124.25:3000',
         ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION:
@@ -254,7 +254,7 @@ export default {
             //192.168.8.107
             // target: 'http://192.168.124.25:3000',
             // target: 'http://8.209.64.159:3001',
-            target: 'http://localhost:3000',
+            target: 'http://localhost:3006',
             changeOrigin: true,
             //   pathRewrite: { '^/server': '' },
         },
@@ -262,7 +262,7 @@ export default {
             //192.168.8.107
             // target: 'http://192.168.124.25:3000',
             // target: 'http://8.209.64.159:3001',
-            target: 'http://localhost:3000',
+            target: 'http://localhost:3006',
             changeOrigin: true,
         },
     },

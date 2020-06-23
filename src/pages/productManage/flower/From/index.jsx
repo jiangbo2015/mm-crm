@@ -44,6 +44,7 @@ class RegistrationForm extends React.Component {
                 payload: {
                     _id: this.props.colorId,
                     // value,
+                    type: 1,
                     ...params,
                 },
             });

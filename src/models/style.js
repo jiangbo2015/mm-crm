@@ -173,7 +173,7 @@ const Model = {
                 });
             }
         },
-        *updateColor({ payload }, { put, call }) {
+        *updateColor({ payload }, { put, call, select }) {
             console.log('update', payload);
             const res = yield call(colorUpdate, payload);
             // console.log(res);
@@ -181,14 +181,42 @@ const Model = {
                 notification.success({
                     message: '修改成功',
                 });
-                yield put({
-                    type: 'getColorList',
-                    payload: {
-                        page: 1,
-                        limit: 10,
-                        type: 0,
-                    },
-                });
+                if (!payload.type) {
+                    let colorList = yield select(state => state.style.colorList);
+                    let objIndex = colorList.docs.findIndex(x => x._id === payload._id);
+                    if (objIndex >= 0) {
+                        colorList.docs[objIndex] = {
+                            ...colorList.docs[objIndex],
+                            ...payload,
+                        };
+                        yield put({
+                            type: 'getColorList',
+                            payload: [...colorList],
+                        });
+                    }
+                } else {
+                    let colorListFlower = yield select(state => state.style.colorListFlower);
+
+                    let objIndex = colorListFlower.docs.findIndex(x => x._id === payload._id);
+                    if (objIndex >= 0) {
+                        colorListFlower.docs[objIndex] = {
+                            ...colorListFlower.docs[objIndex],
+                            ...payload,
+                        };
+                        yield put({
+                            type: 'setFlowerList',
+                            payload: [...colorListFlower],
+                        });
+                    }
+                }
+                // yield put({
+                //     type: 'getColorList',
+                //     payload: {
+                //         page: 1,
+                //         limit: 10,
+                //         type: payload.type ? payload.type : 0,
+                //     },
+                // });
             }
         },
     },

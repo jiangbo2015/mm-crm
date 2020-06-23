@@ -46,9 +46,9 @@ const Com = props => {
                     >
                         <a href="#">删除</a>
                     </Popconfirm>
-                    <a style={{ marginLeft: '20px' }} onClick={() => setVisiblePreview(record)}>
-                        预览
-                    </a>
+                    <Divider type="vertical" />
+                    <a onClick={() => setVisiblePreview(record)}>预览</a>
+                    <Divider type="vertical" />
                     <a onClick={() => handleEdit(record)}>编辑</a>
                 </div>
             ),
