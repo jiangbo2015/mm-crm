@@ -14,7 +14,7 @@ export default props => {
         svgId,
         styleId,
         imgVals,
-        styleSize,
+        styleSize = 27,
         onSetEditSvgGroupIndex,
     } = props;
 
@@ -102,7 +102,9 @@ export default props => {
                             if (svg.width.baseVal.unitType === 2) {
                                 svg.setAttribute('width', `${svg.viewBox.baseVal.width}px`);
                             }
-                            let W = ((color.size * svg.width.baseVal.value) / 20) * imgVals.scale;
+                            let W =
+                                ((color.size * svg.width.baseVal.value) / styleSize) *
+                                imgVals.scale;
                             let H = (W * color.height) / color.width;
 
                             svgPattern.setAttribute('width', `${W}px`);

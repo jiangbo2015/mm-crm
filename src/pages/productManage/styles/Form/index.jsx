@@ -290,7 +290,7 @@ class RegistrationForm extends React.Component {
                         >
                             {getFieldDecorator('styleSize', {
                                 rules: [],
-                                initialValue: 32,
+                                initialValue: 27,
                             })(
                                 <InputNumber
                                     formatter={value =>
