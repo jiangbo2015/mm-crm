@@ -19,17 +19,24 @@ class RegistrationForm extends React.Component {
         };
     }
 
+    componentDidMount() {
+        if (this.props.updateColor) {
+            this.props.onUpdateForm();
+        }
+    }
+
     // formRef = React.createRef()
     handleSubmit() {
         this.props.form.validateFields((err, values) => {
             console.log(err, values);
             if (err) return;
             if (this.props.updateColor) {
+                console.log('updateColor', values);
                 this.updateFlowerColor(values);
             } else {
                 this.addFlowerColor(values);
+                this.props.onClose();
             }
-            this.props.onClose();
         });
     }
     updateFlowerColor = params => {
@@ -45,6 +52,9 @@ class RegistrationForm extends React.Component {
                     _id: this.props.colorId,
                     // value,
                     type: 1,
+                    value: colorImgUrl,
+                    width: colorImgWidth,
+                    height: colorImgHeight,
                     ...params,
                 },
             });
@@ -167,11 +177,10 @@ class RegistrationForm extends React.Component {
                                 rules: [
                                     {
                                         required: true,
-                                        message: 'Please input width!',
-                                        whitespace: true,
+                                        message: 'Please input size!',
                                     },
                                 ],
-                            })(<Input style={{ width: '160px' }} />)}
+                            })(<Input type="number" style={{ width: '160px' }} />)}
                         </Form.Item>
                     </Col>
                 </Row>
@@ -184,7 +193,7 @@ class RegistrationForm extends React.Component {
                                 type="primary"
                                 onClick={this.handleSubmit.bind(this)}
                             >
-                                确认添加
+                                {this.props.updateColor ? '确认修改' : '确认添加'}
                             </Button>
                         </Form.Item>
                     </Col>

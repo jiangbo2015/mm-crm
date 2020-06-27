@@ -59,33 +59,30 @@ const Com = props => {
     const [data, setData] = useState({});
     const [visiblePreview, setVisiblePreview] = useState(null);
 
-    const handlePreview = () => {};
+    const handleClear = () => {
+        setVisible(false);
+        formRef.current.resetFields();
+        setData({});
+    };
 
     const handleEdit = record => {
         setVisible(true);
         setData(record);
     };
 
-    const handleUpdate = () => {
-        // formRef.current.validateFields((err, values) => {
-        //     if (!err) {
-        //         setVisible(false);
-        //         const { currentSize } = props;
-        //         props.dispatch({
-        //             type: 'global/updateSize',
-        //             payload: {
-        //                 _id: data._id,
-        //                 values: currentSize.values.map((x, i) => ({
-        //                     ...x,
-        //                     name: values[`name${i}`],
-        //                 })),
-        //             },
-        //         });
-        //     }
-        // });
-    };
+    // useEffect(() => {
+    //     if (visible) {
+    //         setTimeout(() => {
+    //             if (formRef && formRef.current) {
+    //                 formRef.current.setFieldsValue({
+    //                     ...data,
+    //                 });
+    //             }
+    //         }, 100);
+    //     }
+    // }, [visible]);
 
-    useEffect(() => {
+    const handleUpdateForm = () => {
         if (visible) {
             setTimeout(() => {
                 if (formRef && formRef.current) {
@@ -95,7 +92,7 @@ const Com = props => {
                 }
             }, 100);
         }
-    }, [visible]);
+    };
 
     const handleDelete = record => {
         props.dispatch({
@@ -125,13 +122,9 @@ const Com = props => {
                 visible={visible}
                 width="800px"
                 footer={null}
-                onOk={() => {
-                    handleUpdate();
-                    handleClear();
-                }}
+                destroyOnClose={true}
                 onCancel={() => {
-                    setVisible(false);
-                    // handleClear();
+                    handleClear();
                 }}
             >
                 <Form
@@ -140,7 +133,9 @@ const Com = props => {
                     colorImgHeight={data.height}
                     colorImgUrl={data.value}
                     colorId={data._id}
+                    onUpdateForm={handleUpdateForm}
                     updateColor={true}
+                    onClose={handleClear}
                 />
             </Modal>
             <Modal

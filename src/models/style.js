@@ -176,7 +176,7 @@ const Model = {
         *updateColor({ payload }, { put, call, select }) {
             console.log('update', payload);
             const res = yield call(colorUpdate, payload);
-            // console.log(res);
+            console.log(res);
             if (res.success) {
                 notification.success({
                     message: '修改成功',
@@ -191,7 +191,7 @@ const Model = {
                         };
                         yield put({
                             type: 'getColorList',
-                            payload: [...colorList],
+                            payload: { ...colorList },
                         });
                     }
                 } else {
@@ -205,7 +205,7 @@ const Model = {
                         };
                         yield put({
                             type: 'setFlowerList',
-                            payload: [...colorListFlower],
+                            payload: { ...colorListFlower },
                         });
                     }
                 }

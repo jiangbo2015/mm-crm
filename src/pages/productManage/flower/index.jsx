@@ -90,6 +90,7 @@ const Com = props => {
                 title="添加"
                 visible={visible}
                 width="800px"
+                destroyOnClose={true}
                 footer={false}
                 onOk={() => {
                     handleSubmit();
