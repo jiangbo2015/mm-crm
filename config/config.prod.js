@@ -1,5 +1,5 @@
 export default {
     define: {
-        'process.env.APIURL': 'http://8.209.64.159:3002',
+        'process.env.APIURL': 'https://we-idesign.com',
     },
 };
