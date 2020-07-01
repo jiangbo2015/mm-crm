@@ -1,9 +1,10 @@
 import React from 'react';
-import { Form, Input, Select, Row, Col, Button } from 'antd';
+import { Form, Input, Select, Checkbox, Row, Col, Button } from 'antd';
 const { Option } = Select;
 import { connect } from 'dva';
 import styles from './index.less';
 
+const CheckboxGroup = Checkbox.Group;
 @connect(state => ({
     currentSize: state.global.currentSize,
     goods: state.goods.list,
@@ -74,6 +75,10 @@ class RegistrationForm extends React.Component {
             },
         };
         const { currentSize } = this.props;
+        const plainOptions = goods.map(g => ({
+            value: g._id,
+            label: g.name,
+        }));
         return (
             <Form {...formItemLayout}>
                 <Row>
@@ -116,19 +121,18 @@ class RegistrationForm extends React.Component {
                     <Col span="8">
                         <Form.Item label="选择商品">
                             {getFieldDecorator(`goods`, {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input!',
-                                        whitespace: true,
-                                    },
-                                ],
+                                rules: [],
                             })(
-                                <Select style={{ width: 120 }} placeholder="请选择">
-                                    {goods.map(x => (
-                                        <Option value={x._id}>{x.name}</Option>
-                                    ))}
-                                </Select>,
+                                // <Select style={{ width: 120 }} placeholder="请选择">
+                                //     {goods.map(x => (
+                                //         <Option value={x._id}>{x.name}</Option>
+                                //     ))}
+                                // </Select>,
+                                <CheckboxGroup
+                                    options={plainOptions}
+                                    // value={this.state.checkedList}
+                                    // onChange={this.onChange}
+                                />,
                             )}
                         </Form.Item>
                     </Col>

@@ -23,6 +23,9 @@ const Com = props => {
         props.dispatch({
             type: 'goods/getList',
         });
+        props.dispatch({
+            type: 'style/getTagList',
+        });
     }, []);
 
     const handleSearch = value => {

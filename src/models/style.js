@@ -5,6 +5,8 @@ import {
     getSvgText,
     update as updateStyle,
     colorList,
+    tagList,
+    tagAdd,
     colorAdd,
     colorUpdate,
     add,
@@ -21,6 +23,7 @@ const Model = {
     state: {
         list: [],
         colorList: [],
+        tagList: [],
         colorListFlower: [],
         queryPlainColor: [], //模糊查询的素色列表
         queryFlowerColor: [], //模糊查询的花色列表
@@ -90,7 +93,31 @@ const Model = {
                 });
             }
         },
-
+        *addStyleTag({ payload }, { call, put, select }) {
+            const res = yield call(tagAdd, payload);
+            console.log(res);
+            if (res.success && res.data) {
+                notification.success({
+                    message: '添加成功',
+                });
+                const tagList = yield select(state => state.style.tagList);
+                console.log({ tagList });
+                yield put({
+                    type: 'setTagList',
+                    payload: [...tagList, payload.name],
+                });
+            }
+        },
+        *getTagList({ payload }, { call, put }) {
+            const res = yield call(tagList, payload);
+            console.log(res);
+            if (res.success && res.data) {
+                yield put({
+                    type: 'setTagList',
+                    payload: res.data.map(d => d.name),
+                });
+            }
+        },
         *getColorList({ payload }, { call, put }) {
             const res = yield call(colorList, payload);
             console.log(res);
@@ -225,6 +252,12 @@ const Model = {
             return {
                 ...state,
                 list: payload,
+            };
+        },
+        setTagList(state, { payload }) {
+            return {
+                ...state,
+                tagList: payload,
             };
         },
         setColorList(state, { payload }) {

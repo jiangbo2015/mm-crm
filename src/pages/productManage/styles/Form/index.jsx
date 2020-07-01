@@ -12,6 +12,8 @@ import {
     Icon,
     Checkbox,
     message,
+    Popover,
+    Button,
 } from 'antd';
 import styles from './index.less';
 const { Option } = Select;
@@ -29,11 +31,13 @@ import { api } from '@/utils/apiconfig';
     shadowUrl: state.style.shadowUrl || '',
     shadowUrlBack: state.style.shadowUrlBack || '',
     sizeList: state.global.sizeList,
+    tagList: state.style.tagList || [],
     goodsList: state.goods.list,
     currentCategorys: state.style.currentCategorys,
 }))
 class RegistrationForm extends React.Component {
     state = {
+        addTagName: '',
         scale: this.props.editData && this.props.editData.scale ? this.props.editData.scale : 58,
         loading: {
             imgUrl: false,
@@ -99,6 +103,14 @@ class RegistrationForm extends React.Component {
             message.error('Image must smaller than 200K!');
         }
         return limit;
+    };
+
+    handleAddTag = () => {
+        const { addTagName } = this.state;
+        this.props.dispatch({
+            type: 'style/addStyleTag',
+            payload: { name: addTagName },
+        });
     };
 
     render() {
@@ -172,12 +184,14 @@ class RegistrationForm extends React.Component {
         //     </Select>,
         // );
 
-        const checkboxOptions = [
-            { label: 'SOUTHERN', value: 'SOUTHERN' },
-            { label: 'CENTER', value: 'CENTER' },
-            { label: 'NORTH', value: 'NORTH' },
-        ];
+        // const checkboxOptions = [
+        //     { label: 'SOUTHERN', value: 'SOUTHERN' },
+        //     { label: 'CENTER', value: 'CENTER' },
+        //     { label: 'NORTH', value: 'NORTH' },
+        // ];
 
+        console.log('this.props.tagList', this.props.tagList);
+        const checkboxOptions = this.props.tagList.map(tag => ({ label: tag, value: tag }));
         const checkboxSelector = getFieldDecorator('tags', {
             rules: [
                 {
@@ -400,9 +414,37 @@ class RegistrationForm extends React.Component {
                         <Form.Item label="分类">{categorySelector}</Form.Item>
                     </Col>
                 </Row>
+                <Divider className={styles.divider} />
                 <Row style={{ marginLeft: '-14%' }}>
                     <Col span="16">
                         <Form.Item label="标签">{checkboxSelector}</Form.Item>
+                    </Col>
+                    <Col span="8">
+                        <div style={{ lineHeight: '36px' }}>
+                            <Popover
+                                content={
+                                    <div style={{ display: 'flex' }}>
+                                        <Input
+                                            onChange={e => {
+                                                this.setState({
+                                                    ...this.state,
+                                                    addTagName: e.target.value,
+                                                });
+                                            }}
+                                        />
+                                        <Button
+                                            onClick={this.handleAddTag.bind(this)}
+                                            style={{ marginLeft: '4px' }}
+                                            type="primary"
+                                        >
+                                            确认
+                                        </Button>
+                                    </div>
+                                }
+                            >
+                                <Icon type="plus-square" />
+                            </Popover>
+                        </div>
                     </Col>
                 </Row>
             </Form>
