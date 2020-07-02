@@ -14,7 +14,7 @@ export default props => {
         svgId,
         styleId,
         imgVals,
-        styleSize = 27,
+        styleSize,
         onSetEditSvgGroupIndex,
     } = props;
 

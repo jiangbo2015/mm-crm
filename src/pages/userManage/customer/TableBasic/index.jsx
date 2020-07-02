@@ -5,17 +5,28 @@ import { connect } from 'dva';
 import Form from '../Form';
 
 const Com = props => {
+    // 客户名称、客户类型、国家、所属产品经理、通道
     const columns = [
         {
-            title: '账号',
-            dataIndex: 'account',
-            key: 'account',
-            render: text => <a>{text}</a>,
-        },
-        {
-            title: '名字',
+            title: '客户名称',
             dataIndex: 'name',
             key: 'name',
+        },
+        {
+            title: '客户类型',
+            dataIndex: 'customerType',
+            key: 'customerType',
+        },
+        {
+            title: '国家',
+            dataIndex: 'countries',
+            key: 'countries',
+        },
+        {
+            title: '所属产品经理',
+            dataIndex: 'map',
+            key: 'map',
+            render: (text, record) => <a>{props.channels.map[record.channels[0]._id]}</a>,
         },
         {
             title: '所属通道',
@@ -109,6 +120,7 @@ const Com = props => {
         <>
             <Modal
                 title="编辑"
+                width="800px"
                 visible={visible}
                 onOk={() => {
                     handleUpdate();
@@ -119,14 +131,18 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form ref={v => (formRef.current = v)} />
+                <Form
+                    ref={v => (formRef.current = v)}
+                    channelId={visible ? data.channels[0]._id : ''}
+                />
             </Modal>
             <Table columns={columns} dataSource={props.user.customerList.docs} />
         </>
     );
 };
 
-export default connect(({ user, loading }) => ({
+export default connect(({ user, loading, channel }) => ({
     user,
+    channels: channel.list,
     fetching: loading.effects['user/fetch'],
 }))(Com);

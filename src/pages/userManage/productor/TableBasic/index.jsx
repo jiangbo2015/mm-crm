@@ -82,6 +82,7 @@ const Com = props => {
                     address: data.address,
                     currency: data.currency,
                     channels: data.channels.map(x => x._id),
+                    goods: data.goods,
                 });
             }, 600);
         }
@@ -129,7 +130,7 @@ const Com = props => {
             >
                 <Form ref={v => (formRef.current = v)} editId={data._id} />
             </Modal>
-            <Table columns={columns} dataSource={props.user.productorList.docs} />;
+            <Table columns={columns} dataSource={props.user.productorList.docs} />
         </>
     );
 };

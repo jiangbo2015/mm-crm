@@ -1,16 +1,20 @@
 import React from 'react';
 import { Form, Input, Row, Select, Col } from 'antd';
-
-const { Option } = Select;
-
+import wcc from 'world-countries-capitals';
 import { connect } from 'dva';
 
+const { Option } = Select;
+const allCountries = wcc.getAllCountries();
+// console.log(allCountries);
 @connect(state => ({
     channelList: state.channel.list || [],
 }))
 class RegistrationForm extends React.Component {
+    state = {
+        productorName: this.props.channelId,
+    };
     render() {
-        const { channelList = { docs: [] } } = this.props;
+        const { channelList = { docs: [], map: {} } } = this.props;
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -38,13 +42,62 @@ class RegistrationForm extends React.Component {
                 },
             ],
         })(
-            <Select placeholder="请选择">
+            <Select
+                placeholder="请选择"
+                onChange={val => {
+                    this.setState({
+                        productorName: val,
+                    });
+                }}
+            >
                 {channelList.docs.map((item, index) => (
                     <Option value={item._id}>{item.name}</Option>
                 ))}
             </Select>,
         );
 
+        const allCountriesSelector = getFieldDecorator('countries', {
+            rules: [
+                {
+                    message: '请选择国家!',
+                },
+            ],
+        })(
+            <Select
+                placeholder="请选择国家"
+                showSearch
+                filterOption={(input, option) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+            >
+                {allCountries.map((item, index) => (
+                    <Option value={item.toUpperCase()} key={`${item}-${index}`}>
+                        {item.toUpperCase()}
+                    </Option>
+                ))}
+            </Select>,
+        );
+        const allShippingCountriesSelector = getFieldDecorator('shippingcountries', {
+            rules: [
+                {
+                    message: '请选择国家!',
+                },
+            ],
+        })(
+            <Select
+                placeholder="请选择国家"
+                showSearch
+                filterOption={(input, option) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+            >
+                {allCountries.map((item, index) => (
+                    <Option value={item.toUpperCase()} key={`${item}-${index}`}>
+                        {item.toUpperCase()}
+                    </Option>
+                ))}
+            </Select>,
+        );
         // const productorSelector = getFieldDecorator('currency', {
         //     rules: [
         //         {
@@ -133,7 +186,19 @@ class RegistrationForm extends React.Component {
                         </Form.Item>
                     </Col>
                 </Row>
+                <Row></Row>
                 <Row>
+                    <Col span="12">
+                        <Form.Item label="通道">
+                            {tdSelector}
+                            <div>
+                                产品经理：
+                                {channelList.map[this.state.productorName]
+                                    ? channelList.map[this.state.productorName]
+                                    : ''}
+                            </div>
+                        </Form.Item>
+                    </Col>
                     <Col span="12">
                         <Form.Item label="客户类型">
                             {getFieldDecorator('customerType', {
@@ -141,24 +206,22 @@ class RegistrationForm extends React.Component {
                             })(<Input />)}
                         </Form.Item>
                     </Col>
-                    <Col span="12">
-                        <Form.Item label="地址">
-                            {getFieldDecorator('address', {
-                                rules: [],
-                            })(<Input />)}
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="12">
-                        <Form.Item label="通道">{tdSelector}</Form.Item>
-                    </Col>
-                    {/* <Col span="12">
-                        <Form.Item label="货币">{productorSelector}</Form.Item>
-                    </Col> */}
                 </Row>
 
                 <Row>
+                    <Col span="12">
+                        <Form.Item label="地址">
+                            {allCountriesSelector}
+
+                            {getFieldDecorator('address', {
+                                rules: [],
+                            })(<Input placeholder="详细地址" />)}
+                            {getFieldDecorator('postcode', {
+                                rules: [],
+                            })(<Input placeholder="邮编" />)}
+                        </Form.Item>
+                    </Col>
+                    {/* Shipping address */}
                     <Col span="12">
                         <Form.Item label="备注">
                             {getFieldDecorator('remark', {
@@ -166,6 +229,28 @@ class RegistrationForm extends React.Component {
                             })(<Input.TextArea />)}
                         </Form.Item>
                     </Col>
+                </Row>
+                <Row>
+                    <Col span="12">
+                        <Form.Item label="税号">
+                            {getFieldDecorator('dutyparagraph', {
+                                rules: [],
+                            })(<Input />)}
+                        </Form.Item>
+                    </Col>
+                    <Col span="12">
+                        <Form.Item label="托运地址">
+                            {allShippingCountriesSelector}
+
+                            {getFieldDecorator('shippingaddress', {
+                                rules: [],
+                            })(<Input placeholder="详细地址" />)}
+                            {getFieldDecorator('shippingpostcode', {
+                                rules: [],
+                            })(<Input placeholder="邮编" />)}
+                        </Form.Item>
+                    </Col>
+                    {/* Shipping address */}
                 </Row>
             </Form>
         );
