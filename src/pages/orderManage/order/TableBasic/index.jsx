@@ -59,7 +59,7 @@ const Com = props => {
                     <a
                         style={{ marginLeft: '10px' }}
                         href={
-                            location.hostname.indexOf('we-idesign')
+                            location.hostname.indexOf('we-idesign') >= 0
                                 ? `http://we-idesign.com/download?id=${record._id}`
                                 : `http://${location.hostname}:4000/download?id=${record._id}`
                         }
