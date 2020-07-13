@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form, Input, Row, Select, Col } from 'antd';
-import wcc from 'world-countries-capitals';
+// import wcc from 'world-countries-capitals';
 import { connect } from 'dva';
 
 const { Option } = Select;
-const allCountries = wcc.getAllCountries();
+// const allCountries = wcc.getAllCountries();
 // console.log(allCountries);
 @connect(state => ({
     channelList: state.channel.list || [],
@@ -56,48 +56,48 @@ class RegistrationForm extends React.Component {
             </Select>,
         );
 
-        const allCountriesSelector = getFieldDecorator('countries', {
-            rules: [
-                {
-                    message: '请选择国家!',
-                },
-            ],
-        })(
-            <Select
-                placeholder="请选择国家"
-                showSearch
-                filterOption={(input, option) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-            >
-                {allCountries.map((item, index) => (
-                    <Option value={item.toUpperCase()} key={`${item}-${index}`}>
-                        {item.toUpperCase()}
-                    </Option>
-                ))}
-            </Select>,
-        );
-        const allShippingCountriesSelector = getFieldDecorator('shippingcountries', {
-            rules: [
-                {
-                    message: '请选择国家!',
-                },
-            ],
-        })(
-            <Select
-                placeholder="请选择国家"
-                showSearch
-                filterOption={(input, option) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-            >
-                {allCountries.map((item, index) => (
-                    <Option value={item.toUpperCase()} key={`${item}-${index}`}>
-                        {item.toUpperCase()}
-                    </Option>
-                ))}
-            </Select>,
-        );
+        // const allCountriesSelector = getFieldDecorator('countries', {
+        //     rules: [
+        //         {
+        //             message: '请选择国家!',
+        //         },
+        //     ],
+        // })(
+        //     <Select
+        //         placeholder="请选择国家"
+        //         showSearch
+        //         filterOption={(input, option) =>
+        //             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        //         }
+        //     >
+        //         {allCountries.map((item, index) => (
+        //             <Option value={item.toUpperCase()} key={`${item}-${index}`}>
+        //                 {item.toUpperCase()}
+        //             </Option>
+        //         ))}
+        //     </Select>,
+        // );
+        // const allShippingCountriesSelector = getFieldDecorator('shippingcountries', {
+        //     rules: [
+        //         {
+        //             message: '请选择国家!',
+        //         },
+        //     ],
+        // })(
+        //     <Select
+        //         placeholder="请选择国家"
+        //         showSearch
+        //         filterOption={(input, option) =>
+        //             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        //         }
+        //     >
+        //         {allCountries.map((item, index) => (
+        //             <Option value={item.toUpperCase()} key={`${item}-${index}`}>
+        //                 {item.toUpperCase()}
+        //             </Option>
+        //         ))}
+        //     </Select>,
+        // );
         // const productorSelector = getFieldDecorator('currency', {
         //     rules: [
         //         {
@@ -211,7 +211,7 @@ class RegistrationForm extends React.Component {
                 <Row>
                     <Col span="12">
                         <Form.Item label="地址">
-                            {allCountriesSelector}
+                            {/* {allCountriesSelector} */}
 
                             {getFieldDecorator('address', {
                                 rules: [],
@@ -240,7 +240,7 @@ class RegistrationForm extends React.Component {
                     </Col>
                     <Col span="12">
                         <Form.Item label="托运地址">
-                            {allShippingCountriesSelector}
+                            {/* {allShippingCountriesSelector} */}
 
                             {getFieldDecorator('shippingaddress', {
                                 rules: [],
