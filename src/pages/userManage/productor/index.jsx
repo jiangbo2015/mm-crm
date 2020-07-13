@@ -13,6 +13,9 @@ const Com = props => {
             type: 'channel/getList',
             payload: { limit: 100, page: 1 },
         });
+        props.dispatch({
+            type: 'goods/getList',
+        });
     }, []);
 
     const handleSubmit = () => {

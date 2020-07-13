@@ -78,3 +78,17 @@ export async function colorDel(data) {
         data,
     });
 }
+
+// tag
+export async function tagList() {
+    return request('/api/style/getStyleTagList', {
+        method: 'get',
+    });
+}
+
+export async function tagAdd(data) {
+    return request('/api/style/addStyleTag', {
+        method: 'post',
+        data,
+    });
+}

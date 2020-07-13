@@ -7,12 +7,13 @@ const { Option } = Select;
 
 @connect(state => ({
     channelList: state.channel.list || [],
+    goodsList: state.goods.list || [],
     productorList: state.user.productorList.docs || [],
 }))
 class RegistrationForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { channelList, productorList, editId } = this.props;
+        const { channelList, productorList, editId, goodsList } = this.props;
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -46,7 +47,10 @@ class RegistrationForm extends React.Component {
                 value: x._id,
             });
         });
-
+        const goodsOptions = goodsList.map(g => ({
+            label: g.name,
+            value: g._id,
+        }));
         const productorSelector = getFieldDecorator('currency', {
             rules: [
                 {
@@ -117,6 +121,11 @@ class RegistrationForm extends React.Component {
                     })(<CheckboxGroup options={plainOptions} />)}
                 </Form.Item>
 
+                <Form.Item label="可见商品">
+                    {getFieldDecorator('goods', {
+                        rules: [],
+                    })(<CheckboxGroup options={goodsOptions} />)}
+                </Form.Item>
                 <Form.Item label="货币">{productorSelector}</Form.Item>
 
                 <Form.Item label="备注">

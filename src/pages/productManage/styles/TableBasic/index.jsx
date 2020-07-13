@@ -98,6 +98,7 @@ const Com = props => {
                 formRef.current.setFieldsValue({
                     styleNo: data.styleNo,
                     styleName: data.styleName,
+                    styleSize: data.styleSize ? data.styleSize : 27,
                     price: data.price,
                     scale: data.scale ? data.scale : 58,
                     goodsId: data.goodsId,
