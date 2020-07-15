@@ -81,7 +81,7 @@ const Com = props => {
                 formRef.current.setFieldsValue({
                     name: data.name,
                     account: data.account,
-                    password: data.name,
+                    password: data.password,
                 });
             });
         }
