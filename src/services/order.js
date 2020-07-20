@@ -13,3 +13,10 @@ export async function del(data) {
         data,
     });
 }
+
+export async function orderDownload(data) {
+    return request('/api/order/download', {
+        method: 'get',
+        params: data,
+    });
+}

@@ -58,11 +58,14 @@ const Com = props => {
                     </Popconfirm>
                     <a
                         style={{ marginLeft: '10px' }}
-                        href={
-                            location.hostname.indexOf('we-idesign') >= 0
-                                ? `http://we-idesign.com/download?id=${record._id}`
-                                : `http://${location.hostname}:4000/download?id=${record._id}`
-                        }
+                        // href={
+                        //     location.hostname.indexOf('we-idesign') >= 0
+                        //         ? `http://we-idesign.com/download?id=${record._id}`
+                        //         : `http://${location.hostname}:4000/download?id=${record._id}`
+                        // }
+                        onClick={() => {
+                            props.getOrderDownLoadUrl({ _id: record._id });
+                        }}
                     >
                         订单文件
                     </a>

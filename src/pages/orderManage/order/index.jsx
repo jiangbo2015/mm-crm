@@ -12,6 +12,12 @@ const Com = props => {
             payload,
         });
     };
+    const getOrderDownLoadUrl = (payload = {}) => {
+        props.dispatch({
+            type: 'order/download',
+            payload,
+        });
+    };
     useEffect(() => {
         getOrderList();
     }, []);
@@ -19,7 +25,7 @@ const Com = props => {
     return (
         <PageHeaderWrapper>
             <Card style={{ marginBottom: '20px' }}>
-                <TableBasic getOrderList={getOrderList} />
+                <TableBasic getOrderList={getOrderList} getOrderDownLoadUrl={getOrderDownLoadUrl} />
             </Card>
         </PageHeaderWrapper>
     );

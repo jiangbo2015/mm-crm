@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'querystring';
-import { getList as queryList, del } from '@/services/order';
+import { getList as queryList, del, orderDownload } from '@/services/order';
 
 const Model = {
     namespace: 'order',
@@ -16,6 +16,14 @@ const Model = {
                     type: 'setOrderList',
                     payload: res.data,
                 });
+            }
+        },
+        *download({ payload }, { call, put }) {
+            console.log('downloaddownloaddownload');
+            const res = yield call(orderDownload, payload);
+            console.log(res);
+            if (res && res.data && res.data.url) {
+                window.open(`http://crm.we-idesign.com/${res.data.url}`);
             }
         },
         *del({ payload }, { call, put }) {
