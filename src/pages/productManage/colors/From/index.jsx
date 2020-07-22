@@ -1,11 +1,11 @@
 import React from 'react';
-import { Form, Input, Select, Row, Col, notification, Upload, Button } from 'antd';
+import { Form, Input, Checkbox, Divider, Row, Col, notification, Upload, Button } from 'antd';
 var isHexcolor = require('is-hexcolor');
 import { connect } from 'dva';
-import { uploadProps, Avatar, UploadBtn } from '../UploadCom';
 
 @connect(state => ({
     currentSize: state.global.currentSize,
+    goodsList: state.goods.list,
 }))
 class RegistrationForm extends React.Component {
     state = {
@@ -101,6 +101,13 @@ class RegistrationForm extends React.Component {
     };
     render() {
         const { getFieldDecorator } = this.props.form;
+        const checkboxOptions = this.props.goodsList.map(good => {
+            let checkList = good.category.map(tag => ({ label: tag.name, value: tag._id }));
+            return {
+                name: good.name,
+                checkList,
+            };
+        });
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -166,6 +173,32 @@ class RegistrationForm extends React.Component {
                                     },
                                 ],
                             })(<Input style={{ width: '160px' }} />)}
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="16">
+                        <Form.Item label="商品分类">
+                            {checkboxOptions.map((options, index) => (
+                                <>
+                                    <Divider orientation="left" plain>
+                                        {options.name}
+                                    </Divider>
+                                    {getFieldDecorator(`categories-${index}`, {
+                                        // rules: [
+                                        //     {
+                                        //         required: true,
+                                        //         message: '请选择标签!',
+                                        //     },
+                                        // ],
+                                    })(
+                                        <Checkbox.Group
+                                            options={options.checkList}
+                                            defaultValue={['']}
+                                        />,
+                                    )}
+                                </>
+                            ))}
                         </Form.Item>
                     </Col>
                 </Row>
