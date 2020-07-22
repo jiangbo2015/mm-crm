@@ -15,6 +15,9 @@ const Com = props => {
 
     useEffect(() => {
         handleSearch();
+        props.dispatch({
+            type: 'goods/getList',
+        });
     }, []);
 
     const handleSearch = code => {

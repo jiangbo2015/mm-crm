@@ -1,11 +1,23 @@
 import React from 'react';
-import { Form, Input, message, Row, Col, notification, Upload, Button } from 'antd';
+import {
+    Form,
+    Input,
+    message,
+    Row,
+    Col,
+    notification,
+    Upload,
+    Button,
+    Checkbox,
+    Divider,
+} from 'antd';
 var isHexcolor = require('is-hexcolor');
 import { connect } from 'dva';
 import { uploadProps, Avatar, UploadBtn } from '../UploadCom';
 
 @connect(state => ({
     currentSize: state.global.currentSize,
+    goodsList: state.goods.list,
 }))
 class RegistrationForm extends React.Component {
     constructor(props) {
@@ -141,6 +153,30 @@ class RegistrationForm extends React.Component {
             },
         };
         const { colorImgUrl } = this.state;
+        // let goodsList = [
+        //     {
+        //         name: 'AAA',
+        //         category: [
+        //             { _id: '5eef25742ab395036d644eb0', name: '单衣' },
+        //             { _id: '5ef6f9f19e479c06df85b327', name: '单裤' },
+        //         ],
+        //     },
+        //     {
+        //         name: 'BBB',
+        //         category: [
+        //             { _id: '5eef25742ab395036d644eb2', name: '单衣' },
+        //             { _id: '5ef6f9f19e479c06df85b328', name: '单裤' },
+        //         ],
+        //     },
+        // ];
+        const checkboxOptions = this.props.goodsList.map(good => {
+            let checkList = good.category.map(tag => ({ label: tag.name, value: tag._id }));
+            return {
+                name: good.name,
+                checkList,
+            };
+        });
+
         return (
             <Form {...formItemLayout} name="inputDesiner">
                 <Row>
@@ -181,6 +217,32 @@ class RegistrationForm extends React.Component {
                                     },
                                 ],
                             })(<Input type="number" style={{ width: '160px' }} />)}
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="16">
+                        <Form.Item label="商品分类">
+                            {checkboxOptions.map((options, index) => (
+                                <>
+                                    <Divider orientation="left" plain>
+                                        {options.name}
+                                    </Divider>
+                                    {getFieldDecorator(`categories-${index}`, {
+                                        // rules: [
+                                        //     {
+                                        //         required: true,
+                                        //         message: '请选择标签!',
+                                        //     },
+                                        // ],
+                                    })(
+                                        <Checkbox.Group
+                                            options={options.checkList}
+                                            defaultValue={['']}
+                                        />,
+                                    )}
+                                </>
+                            ))}
                         </Form.Item>
                     </Col>
                 </Row>
