@@ -4,6 +4,7 @@ import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../From';
 import { api } from '@/utils/apiconfig';
+import { getGoodsParamsToValue } from '@/utils/utils';
 
 const Com = props => {
     const columns = [
