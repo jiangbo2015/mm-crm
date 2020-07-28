@@ -13,6 +13,14 @@ class RegistrationForm extends React.Component {
         colorImgWidth: 0,
         colorImgHeight: 0,
     };
+    checkboxOptions = this.props.goodsList.map(good => {
+        let checkList = good.category.map(tag => ({ label: tag.name, value: tag._id }));
+        return {
+            name: good.name,
+            id: good._id,
+            checkList,
+        };
+    });
     // formRef = React.createRef()
     handleSubmit() {
         this.props.form.validateFields((err, values) => {
@@ -25,6 +33,21 @@ class RegistrationForm extends React.Component {
             this.props.onClose();
         });
     }
+    handleSelectAllByGoodId = (goodId, bool) => {
+        let temp = {};
+        if (bool) {
+            let obj = this.checkboxOptions.find(c => c.id === goodId);
+            if (obj) {
+                temp[`goods-${goodId}`] = obj.checkList.map(c => c.value);
+            }
+        } else {
+            temp[`goods-${goodId}`] = [];
+        }
+
+        this.props.form.setFieldsValue({
+            ...temp,
+        });
+    };
     handleAdd = info => {
         if (info.file.status === 'uploading') {
             this.setState({ loading: true });
@@ -37,25 +60,7 @@ class RegistrationForm extends React.Component {
             });
         }
     };
-    addFlowerColor = params => {
-        const { colorImgWidth, colorImgHeight, colorImgUrl } = this.state;
-        if (!colorImgUrl) {
-            notification.error({
-                message: '请先上传图片',
-            });
-        } else {
-            this.props.dispatch({
-                type: 'style/addColor',
-                payload: {
-                    type: 1,
-                    value: colorImgUrl,
-                    width: colorImgWidth,
-                    height: colorImgHeight,
-                    ...params,
-                },
-            });
-        }
-    };
+
     updatePlainColor = params => {
         if (isHexcolor(params.value)) {
             this.props.dispatch({
@@ -101,13 +106,7 @@ class RegistrationForm extends React.Component {
     };
     render() {
         const { getFieldDecorator } = this.props.form;
-        const checkboxOptions = this.props.goodsList.map(good => {
-            let checkList = good.category.map(tag => ({ label: tag.name, value: tag._id }));
-            return {
-                name: good.name,
-                checkList,
-            };
-        });
+
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -179,12 +178,40 @@ class RegistrationForm extends React.Component {
                 <Row>
                     <Col span="16">
                         <Form.Item label="商品分类">
-                            {checkboxOptions.map((options, index) => (
+                            {this.checkboxOptions.map((options, index) => (
                                 <>
-                                    <Divider orientation="left" plain>
+                                    <Divider orientation="left" plain style={{ margin: 0 }}>
                                         {options.name}
                                     </Divider>
-                                    {getFieldDecorator(`categories-${index}`, {
+                                    <div
+                                        style={{
+                                            lineHeight: '20px',
+                                            textDecorationLine: 'underline',
+                                        }}
+                                    >
+                                        <a
+                                            style={{
+                                                color: 'rgba(0, 0, 0, 0.65)',
+                                            }}
+                                            onClick={() => {
+                                                this.handleSelectAllByGoodId(options.id, true);
+                                            }}
+                                        >
+                                            全选
+                                        </a>
+                                        |
+                                        <a
+                                            onClick={() => {
+                                                this.handleSelectAllByGoodId(options.id, false);
+                                            }}
+                                            style={{
+                                                color: 'rgba(0, 0, 0, 0.65)',
+                                            }}
+                                        >
+                                            全不选
+                                        </a>
+                                    </div>
+                                    {getFieldDecorator(`goods-${options.id}`, {
                                         // rules: [
                                         //     {
                                         //         required: true,

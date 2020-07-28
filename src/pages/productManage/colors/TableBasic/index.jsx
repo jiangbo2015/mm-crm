@@ -4,6 +4,7 @@ import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../From';
 import { api } from '@/utils/apiconfig';
+import { getGoodsParamsToValue } from '@/utils/utils';
 
 const Com = props => {
     const columns = [
@@ -92,11 +93,13 @@ const Com = props => {
         if (visible) {
             setTimeout(() => {
                 if (formRef && formRef.current) {
+                    let goods = getGoodsParamsToValue(data.goods || {});
                     formRef.current.setFieldsValue({
                         code: data.code,
                         value: data.value,
                         namecn: data.namecn,
                         nameen: data.nameen,
+                        ...goods,
                     });
                 }
             }, 100);
@@ -131,6 +134,7 @@ const Com = props => {
                 visible={visible}
                 width="800px"
                 footer={null}
+                destroyOnClose={true}
                 onOk={() => {
                     handleUpdate();
                     // handleClear();

@@ -72,6 +72,7 @@ const Com = props => {
             type: 'style/resetFields',
         });
     };
+
     return (
         <PageHeaderWrapper>
             <Row style={{ marginBottom: '10px' }}>

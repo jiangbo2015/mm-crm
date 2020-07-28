@@ -85,9 +85,11 @@ const Com = props => {
     const handleUpdateForm = () => {
         if (visible) {
             setTimeout(() => {
+                let goods = getGoodsParamsToValue(data.goodsId, data.categoryId);
                 if (formRef && formRef.current) {
                     formRef.current.setFieldsValue({
                         ...data,
+                        ...goods,
                     });
                 }
             }, 100);

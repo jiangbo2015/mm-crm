@@ -173,6 +173,7 @@ class RegistrationForm extends React.Component {
             let checkList = good.category.map(tag => ({ label: tag.name, value: tag._id }));
             return {
                 name: good.name,
+                id: good._id,
                 checkList,
             };
         });
@@ -228,7 +229,7 @@ class RegistrationForm extends React.Component {
                                     <Divider orientation="left" plain>
                                         {options.name}
                                     </Divider>
-                                    {getFieldDecorator(`categories-${index}`, {
+                                    {getFieldDecorator(`goods-${options.id}`, {
                                         // rules: [
                                         //     {
                                         //         required: true,

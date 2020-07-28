@@ -15,7 +15,7 @@ import {
     colorDel,
     updateArr,
 } from '@/services/style';
-import { getPageQuery } from '@/utils/utils';
+import { getGoodsParams } from '@/utils/utils';
 import { notification } from 'antd';
 
 const Model = {
@@ -60,7 +60,9 @@ const Model = {
             }
         },
         *addStyle({ payload }, { call, put }) {
-            const res = yield call(add, payload);
+            let goods = getGoodsParams(payload);
+            const res = yield call(add, { ...payload, ...goods });
+
             console.log(res);
             if (res.success && res.data) {
                 yield put({
@@ -140,7 +142,8 @@ const Model = {
         },
 
         *addColor({ payload }, { call, put }) {
-            const res = yield call(colorAdd, payload);
+            let goods = getGoodsParams(payload);
+            const res = yield call(colorAdd, { ...payload, ...goods });
             console.log(res);
             if (res.success && res.data) {
                 notification.success({
@@ -188,8 +191,10 @@ const Model = {
             }
         },
         *update({ payload }, { put, call }) {
-            console.log('update', payload);
-            const res = yield call(updateStyle, payload);
+            // console.log('update', payload);
+            let goods = getGoodsParams(payload);
+            const res = yield call(updateStyle, { ...payload, ...goods });
+            // const res = yield call(updateStyle, payload);
             // console.log(res);
             if (res.success) {
                 notification.success({
@@ -201,8 +206,9 @@ const Model = {
             }
         },
         *updateColor({ payload }, { put, call, select }) {
-            console.log('update', payload);
-            const res = yield call(colorUpdate, payload);
+            let goods = getGoodsParams(payload);
+            const res = yield call(colorUpdate, { ...payload, ...goods });
+
             console.log(res);
             if (res.success) {
                 notification.success({

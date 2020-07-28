@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import Form from '../Form';
 import Preview from '../Preview';
 import { api } from '@/utils/apiconfig';
+import { getGoodsParamsToValue } from '@/utils/utils';
 
 const Com = props => {
     const columns = [
@@ -72,13 +73,12 @@ const Com = props => {
                     currentCategorys,
                 } = props;
 
-                // console.log(plainColors, flowerColors, styleImgUrl);
+                console.log('style/update', values);
                 props.dispatch({
                     type: 'style/update',
                     payload: {
                         _id: styleEditData._id,
                         ...values,
-                        categoryName: currentCategorys.find(x => x._id === values.categoryId).name,
                         imgUrl,
                         svgUrl,
                         svgUrlBack,
@@ -94,16 +94,18 @@ const Com = props => {
     useEffect(() => {
         if (visible) {
             setTimeout(() => {
-                console.log(formRef);
+                let goods = getGoodsParamsToValue(data.goodsId, data.categoryId);
+                console.log(goods);
                 formRef.current.setFieldsValue({
                     styleNo: data.styleNo,
                     styleName: data.styleName,
                     styleSize: data.styleSize ? data.styleSize : 27,
                     price: data.price,
                     scale: data.scale ? data.scale : 58,
-                    goodsId: data.goodsId,
-                    categoryId: data.categoryId,
+                    // goodsId: data.goodsId,
+                    // categoryId: data.categoryId,
                     tags: data.tags,
+                    ...goods,
                 });
                 props.dispatch({
                     type: 'style/getDetail',
@@ -111,10 +113,10 @@ const Com = props => {
                         _id: data._id,
                     },
                 });
-                props.dispatch({
-                    type: 'style/setCurrentCategorys',
-                    payload: props.goodsList.find(x => x._id === data.goodsId).category,
-                });
+                // props.dispatch({
+                //     type: 'style/setCurrentCategorys',
+                //     payload: props.goodsList.find(x => x._id === data.goodsId).category,
+                // });
             }, 100);
         }
     }, [visible]);

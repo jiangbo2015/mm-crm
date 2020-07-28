@@ -54,6 +54,14 @@ class RegistrationForm extends React.Component {
             shadowUrlBack: this.props.editData ? this.props.editData.shadowUrlBack : '',
         },
     };
+    checkboxOptions = this.props.goodsList.map(good => {
+        let checkList = good.category.map(tag => ({ label: tag.name, value: tag._id }));
+        return {
+            name: good.name,
+            id: good._id,
+            checkList,
+        };
+    });
 
     handleChange = (info, type) => {
         console.log(info);
@@ -89,13 +97,13 @@ class RegistrationForm extends React.Component {
         }
     };
 
-    handleCategoryChange = (value, option) => {
-        console.log('value', value);
-        this.props.dispatch({
-            type: 'style/setCurrentCategorys',
-            payload: this.props.goodsList.find(x => x._id === value).category,
-        });
-    };
+    // handleCategoryChange = (value, option) => {
+    //     console.log('value', value);
+    //     this.props.dispatch({
+    //         type: 'style/setCurrentCategorys',
+    //         payload: this.props.goodsList.find(x => x._id === value).category,
+    //     });
+    // };
 
     beforeUpload = file => {
         const limit = file.size / 1024 < 300;
@@ -110,6 +118,22 @@ class RegistrationForm extends React.Component {
         this.props.dispatch({
             type: 'style/addStyleTag',
             payload: { name: addTagName },
+        });
+    };
+
+    handleSelectAllByGoodId = (goodId, bool) => {
+        let temp = {};
+        if (bool) {
+            let obj = this.checkboxOptions.find(c => c.id === goodId);
+            if (obj) {
+                temp[`goods-${goodId}`] = obj.checkList.map(c => c.value);
+            }
+        } else {
+            temp[`goods-${goodId}`] = [];
+        }
+
+        this.props.form.setFieldsValue({
+            ...temp,
         });
     };
 
@@ -133,34 +157,6 @@ class RegistrationForm extends React.Component {
                 },
             },
         };
-        const goodsSelector = getFieldDecorator('goodsId', {
-            rules: [
-                {
-                    required: true,
-                    message: '请选择商品!',
-                },
-            ],
-        })(
-            <Select placeholder="请选择" onChange={this.handleCategoryChange}>
-                {this.props.goodsList.map((item, index) => (
-                    <Option value={item._id}>{item.name}</Option>
-                ))}
-            </Select>,
-        );
-        const categorySelector = getFieldDecorator('categoryId', {
-            rules: [
-                {
-                    required: true,
-                    message: '请选择分类!',
-                },
-            ],
-        })(
-            <Select placeholder="请选择">
-                {this.props.currentCategorys.map((item, index) => (
-                    <Option value={item._id}>{item.name}</Option>
-                ))}
-            </Select>,
-        );
 
         const { sizeList = [] } = this.props;
 
@@ -402,16 +398,62 @@ class RegistrationForm extends React.Component {
                         <p style={{ textAlign: 'center' }}>光阴覆盖层</p>
                     </Col>
                 </Row>
-                <Divider className={styles.divider} />
+                <Divider className={styles.divider} orientation="left">
+                    商品分类
+                </Divider>
                 <Row>
-                    {/* <Col span="8">
-                        <Form.Item label="尺码">{sizeSelector}</Form.Item>
-                    </Col> */}
-                    <Col span="8">
-                        <Form.Item label="商品">{goodsSelector}</Form.Item>
-                    </Col>
-                    <Col span="8">
-                        <Form.Item label="分类">{categorySelector}</Form.Item>
+                    <Col span="2"></Col>
+                    <Col span="22">
+                        <Form.Item>
+                            {this.checkboxOptions.map((options, index) => (
+                                <>
+                                    <Divider orientation="left" plain style={{ margin: 0 }}>
+                                        {options.name}
+                                    </Divider>
+                                    <div
+                                        style={{
+                                            lineHeight: '20px',
+                                            textDecorationLine: 'underline',
+                                        }}
+                                    >
+                                        <a
+                                            style={{
+                                                color: 'rgba(0, 0, 0, 0.65)',
+                                            }}
+                                            onClick={() => {
+                                                this.handleSelectAllByGoodId(options.id, true);
+                                            }}
+                                        >
+                                            全选
+                                        </a>
+                                        |
+                                        <a
+                                            onClick={() => {
+                                                this.handleSelectAllByGoodId(options.id, false);
+                                            }}
+                                            style={{
+                                                color: 'rgba(0, 0, 0, 0.65)',
+                                            }}
+                                        >
+                                            全不选
+                                        </a>
+                                    </div>
+                                    {getFieldDecorator(`goods-${options.id}`, {
+                                        // rules: [
+                                        //     {
+                                        //         required: true,
+                                        //         message: '请选择标签!',
+                                        //     },
+                                        // ],
+                                    })(
+                                        <Checkbox.Group
+                                            options={options.checkList}
+                                            defaultValue={['']}
+                                        />,
+                                    )}
+                                </>
+                            ))}
+                        </Form.Item>
                     </Col>
                 </Row>
                 <Divider className={styles.divider} />
