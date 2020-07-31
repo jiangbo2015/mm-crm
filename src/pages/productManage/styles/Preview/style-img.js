@@ -2,7 +2,8 @@ import React, { useEffect, useMemo } from 'react';
 import { ReactSVG } from 'react-svg';
 // import { Image } from 'rebass';
 
-import { api } from '@/utils/apiconfig';
+import { imgUrl } from '@/utils/apiconfig';
+import { filterImageUrl } from '@/utils/utils';
 
 export default props => {
     const {
@@ -26,7 +27,7 @@ export default props => {
             }}
         >
             <img
-                src={`${api}/${shadowUrl}`}
+                src={`${imgUrl}${filterImageUrl(shadowUrl)}`}
                 style={{
                     width: width,
                     position: 'absolute',
@@ -119,7 +120,9 @@ export default props => {
 
                             svgPatternImage.setAttribute('width', `${W}px`);
                             svgPatternImage.setAttribute('height', `${H}px`);
-                            svgPatternImage.href.baseVal = `${api}/${color.value}`;
+                            svgPatternImage.href.baseVal = `${imgUrl}${filterImageUrl(
+                                color.value,
+                            )}`;
 
                             // editSvgs.svgDefs.appendChild(svgPattern)
                             svgPattern.appendChild(svgPatternImage);
@@ -128,7 +131,7 @@ export default props => {
                     }
                 }}
                 evalScripts="always"
-                src={`${api}/${svgUrl}`}
+                src={`${imgUrl}${filterImageUrl(svgUrl)}`}
             />
         </div>
     );

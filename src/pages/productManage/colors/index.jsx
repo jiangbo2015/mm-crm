@@ -10,6 +10,7 @@ const { Search } = Input;
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
+    const [code, setCode] = useState(false);
     const [addColorType, setAddColorType] = useState(0); //0:素色  1: 画布
 
     const formRef = React.useRef();
@@ -20,29 +21,40 @@ const Com = props => {
             type: 'goods/getList',
         });
     }, []);
-
+    const handlePageChange = page => {
+        props.dispatch({
+            type: 'style/getColorList',
+            payload: {
+                page,
+                code,
+                limit: props.colorList.limit,
+                type: 0,
+            },
+        });
+    };
     const handleSearch = code => {
+        setCode(code);
         props.dispatch({
             type: 'style/getColorList',
             payload: { limit: 10, page: 1, type: 0, code },
         });
     };
 
-    const handleSubmit = () => {
-        formRef.current.validateFields((err, values) => {
-            console.log(err, values);
-            if (!err) {
-                const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = props;
-                props.dispatch({
-                    type: 'style/addStyle',
-                    payload: {
-                        ...values,
-                    },
-                });
-                setVisible(false);
-            }
-        });
-    };
+    // const handleSubmit = () => {
+    //     formRef.current.validateFields((err, values) => {
+    //         console.log(err, values);
+    //         if (!err) {
+    //             // const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = props;
+    //             props.dispatch({
+    //                 type: 'style/addStyle',
+    //                 payload: {
+    //                     ...values,
+    //                 },
+    //             });
+    //             setVisible(false);
+    //         }
+    //     });
+    // };
 
     const handleClear = () => {
         setVisible(false);
@@ -87,22 +99,13 @@ const Com = props => {
                 }
                 style={{ marginBottom: '20px' }}
             >
-                <TableBasic />
+                <TableBasic
+                    onPageChange={page => {
+                        handlePageChange(page);
+                    }}
+                />
             </Card>
-            <Modal
-                title="添加"
-                visible={visible}
-                width="800px"
-                footer={false}
-                onOk={() => {
-                    handleSubmit();
-                    handleClear();
-                }}
-                onCancel={() => {
-                    setVisible(false);
-                    handleClear();
-                }}
-            >
+            <Modal title="添加" visible={visible} width="800px" footer={false}>
                 <Form colorType={addColorType} onClose={handleClear} />
             </Modal>
         </PageHeaderWrapper>

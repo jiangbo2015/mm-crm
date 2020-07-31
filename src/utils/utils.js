@@ -60,3 +60,12 @@ export const getGoodsParamsToValue = (goodsParams, categories) => {
     });
     return values;
 };
+
+export const filterImageUrl = url => {
+    let arrs = url.split('/');
+    let res = url;
+    if (arrs.length >= 3) {
+        res = `mrmiss//${arrs[2]}`;
+    }
+    return res;
+};

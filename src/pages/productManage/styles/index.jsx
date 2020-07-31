@@ -10,6 +10,7 @@ const { Search } = Input;
 const Com = props => {
     const formRef = useRef();
     const [visible, setVisible] = useState(false);
+    const [styleNo, setStyleNo] = useState(false);
     useEffect(() => {
         props.dispatch({
             type: 'style/get',
@@ -29,6 +30,7 @@ const Com = props => {
     }, []);
 
     const handleSearch = value => {
+        setStyleNo(value);
         props.dispatch({
             type: 'style/get',
             payload: {
@@ -38,23 +40,17 @@ const Com = props => {
     };
 
     const handleSubmit = () => {
+        console.log('handleSubmit');
         formRef.current.validateFields((err, values) => {
             console.log(err, values);
             if (!err) {
-                const {
-                    imgUrl,
-                    svgUrl,
-                    svgUrlBack,
-                    shadowUrl,
-                    shadowUrlBack,
-                    currentCategorys,
-                } = props;
+                const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = props;
                 // console.log(plainColors, flowerColors, styleImgUrl);
                 props.dispatch({
                     type: 'style/addStyle',
                     payload: {
                         ...values,
-                        categoryName: currentCategorys.find(x => x._id === values.categoryId).name,
+
                         imgUrl,
                         svgUrl,
                         svgUrlBack,
@@ -63,16 +59,27 @@ const Com = props => {
                     },
                 });
                 setVisible(false);
+                this.handleClear();
             }
         });
     };
     const handleClear = () => {
+        console.log('handleClear');
         formRef.current.resetFields();
         props.dispatch({
             type: 'style/resetFields',
         });
     };
-
+    const handlePageChange = page => {
+        props.dispatch({
+            type: 'style/getList',
+            payload: {
+                page,
+                limit: props.styleList.limit,
+                styleNo: value,
+            },
+        });
+    };
     return (
         <PageHeaderWrapper>
             <Row style={{ marginBottom: '10px' }}>
@@ -92,7 +99,11 @@ const Com = props => {
                     </Button>
                 }
             >
-                <TableBasic />
+                <TableBasic
+                    onPageChange={page => {
+                        handlePageChange(page);
+                    }}
+                />
             </Card>
 
             <Modal
@@ -102,7 +113,6 @@ const Com = props => {
                 destroyOnClose={true}
                 onOk={() => {
                     handleSubmit();
-                    handleClear();
                 }}
                 onCancel={() => {
                     setVisible(false);

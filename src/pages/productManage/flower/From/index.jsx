@@ -11,7 +11,6 @@ import {
     Checkbox,
     Divider,
 } from 'antd';
-var isHexcolor = require('is-hexcolor');
 import { connect } from 'dva';
 import { uploadProps, Avatar, UploadBtn } from '../UploadCom';
 

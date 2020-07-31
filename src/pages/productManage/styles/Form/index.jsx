@@ -3,7 +3,6 @@ import {
     Form,
     Input,
     Row,
-    Select,
     Col,
     Upload,
     InputNumber,
@@ -16,12 +15,9 @@ import {
     Button,
 } from 'antd';
 import styles from './index.less';
-const { Option } = Select;
-const { Search } = Input;
 import { connect } from 'dva';
 // import ColorCom from '../../colors/Color';
 import { uploadProps, Avatar, UploadBtn } from '../../colors/UploadCom';
-import { api } from '@/utils/apiconfig';
 
 @connect(state => ({
     colorList: state.style.colorList || [],
@@ -158,8 +154,6 @@ class RegistrationForm extends React.Component {
             },
         };
 
-        const { sizeList = [] } = this.props;
-
         const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = this.state.urls;
         const { scale } = this.state;
         console.log({ scale });
@@ -186,7 +180,6 @@ class RegistrationForm extends React.Component {
         //     { label: 'NORTH', value: 'NORTH' },
         // ];
 
-        console.log('this.props.tagList', this.props.tagList);
         const checkboxOptions = this.props.tagList.map(tag => ({ label: tag, value: tag }));
         const checkboxSelector = getFieldDecorator('tags', {
             rules: [
@@ -195,7 +188,7 @@ class RegistrationForm extends React.Component {
                     message: '请选择标签!',
                 },
             ],
-        })(<Checkbox.Group options={checkboxOptions} defaultValue={['']} />);
+        })(<Checkbox.Group options={checkboxOptions} />);
 
         return (
             <Form {...formItemLayout} className="wrap">
@@ -445,12 +438,7 @@ class RegistrationForm extends React.Component {
                                         //         message: '请选择标签!',
                                         //     },
                                         // ],
-                                    })(
-                                        <Checkbox.Group
-                                            options={options.checkList}
-                                            defaultValue={['']}
-                                        />,
-                                    )}
+                                    })(<Checkbox.Group options={options.checkList} />)}
                                 </>
                             ))}
                         </Form.Item>

@@ -4,7 +4,8 @@ import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../Form';
 import Preview from '../Preview';
-import { api } from '@/utils/apiconfig';
+import { imgUrl } from '@/utils/apiconfig';
+import { filterImageUrl } from '@/utils/utils';
 import { getGoodsParamsToValue } from '@/utils/utils';
 
 const Com = props => {
@@ -18,7 +19,7 @@ const Com = props => {
                     style={{
                         width: '80px',
                     }}
-                    src={`${api}/${obj.imgUrl}`}
+                    src={`${imgUrl}${filterImageUrl(obj.imgUrl)}?tr=w-80`}
                 />
             ),
         },
@@ -70,7 +71,6 @@ const Com = props => {
                     shadowUrl,
                     shadowUrlBack,
                     styleEditData,
-                    currentCategorys,
                 } = props;
 
                 console.log('style/update', values);
@@ -178,7 +178,17 @@ const Com = props => {
                 <Preview {...data} data={data} onSetData={setData} />
                 {/* <Form ref={v => (formRef.current = v)} editData={data}/> */}
             </Modal>
-            <Table columns={columns} dataSource={props.styleList} />
+            <Table
+                pagination={{
+                    total: props.styleList.total,
+                    current: parseInt(props.styleList.page, 10),
+                    pageSize: props.styleList.limit,
+                    onChange: props.onPageChange,
+                }}
+                columns={columns}
+                dataSource={props.styleList.docs}
+                loading={props.fetching}
+            />
         </>
     );
 };
@@ -191,7 +201,7 @@ export default connect(({ style, goods, loading }) => ({
     shadowUrl: style.shadowUrl || '',
     shadowUrlBack: style.shadowUrlBack || '',
     styleEditData: style.styleEditData,
-    fetching: loading.effects['style/get'],
+    fetching: loading.effects['style/getList'],
     goodsList: goods.list,
     currentCategorys: style.currentCategorys,
 }))(Com);

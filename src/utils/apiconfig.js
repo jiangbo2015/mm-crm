@@ -1,3 +1,3 @@
 const api = location.host.includes('we-idesign.com') ? '' : process.env.APIURL;
-
-export { api };
+const imgUrl = 'https://ik.imagekit.io/';
+export { api, imgUrl };

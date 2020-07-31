@@ -252,13 +252,20 @@ export default {
     proxy: {
         '/api/': {
             //192.168.8.107
-            // target: 'http://192.168.124.25:3000',
+            target: 'https://crm.we-idesign.com/',
             // target: 'http://8.209.64.159:3001',
-            target: 'http://localhost:3001',
+            // target: 'http://localhost:3001',
             changeOrigin: true,
             //   pathRewrite: { '^/server': '' },
         },
         '/uploads/': {
+            //192.168.8.107
+            // target: 'http://192.168.124.25:3000',
+            // target: 'http://8.209.64.159:3001',
+            target: 'http://localhost:3001',
+            changeOrigin: true,
+        },
+        '/uploadskit/': {
             //192.168.8.107
             // target: 'http://192.168.124.25:3000',
             // target: 'http://8.209.64.159:3001',

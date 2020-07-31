@@ -6,7 +6,8 @@ var axios = require('axios');
 const random = arrars => arrars[Math.round(Math.random() * (arrars.length - 1))];
 console.log(random([1, 2, 3]));
 
-var url = 'http://192.168.124.25:3000/api/common/upload';
+// var url = 'http://192.168.124.25:3000/api/common/upload';
+var url = 'http://localhost:3001/api/common/uploadkit';
 
 var dirs = fs.readdirSync('./images');
 

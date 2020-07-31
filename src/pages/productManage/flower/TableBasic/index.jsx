@@ -3,7 +3,8 @@ import { Table, Divider, Modal, Popconfirm } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../From';
-import { api } from '@/utils/apiconfig';
+import { imgUrl } from '@/utils/apiconfig';
+import { getGoodsParamsToValue, filterImageUrl } from '@/utils/utils';
 
 const Com = props => {
     const columns = [
@@ -14,7 +15,10 @@ const Com = props => {
             render: (val, obj) => (
                 <div
                     className={styles.color}
-                    style={{ background: obj.type === 1 ? `url(${api}/${val})` : val }}
+                    style={{
+                        background:
+                            obj.type === 1 ? `url(${imgUrl}${filterImageUrl(val)}?tr=w-50)` : val,
+                    }}
                 />
             ),
         },
@@ -106,17 +110,6 @@ const Com = props => {
         });
     };
 
-    const onPageChange = page => {
-        props.dispatch({
-            type: 'style/getColorList',
-            payload: {
-                page,
-                limit: props.colorList.limit,
-                type: 1,
-            },
-        });
-    };
-
     return (
         <>
             <Modal
@@ -155,7 +148,7 @@ const Com = props => {
                             width="auto"
                             height="auto"
                             style={{ maxWidth: '100%' }}
-                            src={`${api}/${visiblePreview.value}`}
+                            src={`${imgUrl}${filterImageUrl(visiblePreview.value)}`}
                             alt=""
                         />
                     )}
@@ -163,18 +156,20 @@ const Com = props => {
             </Modal>
             <Table
                 columns={columns}
+                loading={props.fetching}
                 dataSource={props.colorList.docs}
                 pagination={{
                     total: props.colorList.total,
-                    current: props.colorList.page,
+                    current: parseInt(props.colorList.page, 10),
                     pageSize: props.colorList.limit,
-                    onChange: onPageChange,
+                    onChange: props.onPageChange,
                 }}
             />
         </>
     );
 };
 
-export default connect(({ style }) => ({
+export default connect(({ style, loading }) => ({
     colorList: style.colorListFlower,
+    fetching: loading.effects['style/getColorList'],
 }))(Com);

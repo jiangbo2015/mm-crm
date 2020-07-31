@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
-import { api } from '@/utils/apiconfig';
-import { Form, Input, Row, Select, Col, Upload, Icon, Divider, Button, notification } from 'antd';
+import React from 'react';
+import { imgUrl } from '@/utils/apiconfig';
+import { filterImageUrl } from '@/utils/utils';
+import { Col, Upload, Icon } from 'antd';
+
+import { ReactSVG } from 'react-svg';
 import styles from './index.less';
-export const Avatar = ({ src, onLoad, ...others }) => (
-    <img src={`${api}/${src}`} alt="avatar" style={{ width: '100%' }} onLoad={onLoad} {...others} />
-);
+
+export const Avatar = ({ src, onLoad, ...others }) => {
+    return src.indexOf('.svg') >= 0 ? (
+        <ReactSVG src={`${imgUrl}${filterImageUrl(src)}`} />
+    ) : (
+        <img
+            src={`${imgUrl}${filterImageUrl(src)}`}
+            alt="avatar"
+            style={{ width: '100%' }}
+            onLoad={onLoad}
+            {...others}
+        />
+    );
+};
 
 const typeProps = {
     front: '前视图',
@@ -16,7 +30,7 @@ export const uploadProps = {
     listType: 'picture-card',
     className: styles.uploader,
     showUploadList: false,
-    action: `/api/common/upload`,
+    action: `/api/common/uploadkit`,
 };
 
 export const UploadBtn = ({ type }) => (

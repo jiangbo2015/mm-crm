@@ -3,7 +3,6 @@ import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../From';
-import { api } from '@/utils/apiconfig';
 import { getGoodsParamsToValue } from '@/utils/utils';
 
 const Com = props => {
@@ -12,12 +11,7 @@ const Com = props => {
             title: '色块',
             dataIndex: 'value',
             key: 'value',
-            render: (val, obj) => (
-                <div
-                    className={styles.color}
-                    style={{ background: obj.type === 1 ? `url(${api}/${val})` : val }}
-                />
-            ),
+            render: (val, obj) => <div className={styles.color} style={{ background: val }} />,
         },
         {
             title: '编码',
@@ -93,7 +87,7 @@ const Com = props => {
         if (visible) {
             setTimeout(() => {
                 if (formRef && formRef.current) {
-                    let goods = getGoodsParamsToValue(data.goods || {});
+                    let goods = getGoodsParamsToValue(data.goodsId, data.categoryId);
                     formRef.current.setFieldsValue({
                         code: data.code,
                         value: data.value,
@@ -111,17 +105,6 @@ const Com = props => {
             type: 'style/deleteColor',
             payload: {
                 _id: record._id,
-                type: 0,
-            },
-        });
-    };
-
-    const onPageChange = page => {
-        props.dispatch({
-            type: 'style/getColorList',
-            payload: {
-                page,
-                limit: props.colorList.limit,
                 type: 0,
             },
         });
@@ -149,18 +132,20 @@ const Com = props => {
 
             <Table
                 columns={columns}
+                loading={props.fetching}
                 dataSource={props.colorList.docs}
                 pagination={{
                     total: props.colorList.total,
-                    current: props.colorList.page,
+                    current: parseInt(props.colorList.page, 10),
                     pageSize: props.colorList.limit,
-                    onChange: onPageChange,
+                    onChange: props.onPageChange,
                 }}
             />
         </>
     );
 };
 
-export default connect(({ style }) => ({
+export default connect(({ style, loading }) => ({
     colorList: style.colorList,
+    fetching: loading.effects['style/getColorList'],
 }))(Com);

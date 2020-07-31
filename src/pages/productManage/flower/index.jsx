@@ -9,6 +9,7 @@ const { Search } = Input;
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
+    const [code, setCode] = useState(false);
     const [addColorType, setAddColorType] = useState(0); //0:素色  1: 画布
 
     const formRef = React.useRef();
@@ -20,7 +21,20 @@ const Com = props => {
         });
     }, []);
 
+    const handlePageChange = page => {
+        props.dispatch({
+            type: 'style/getColorList',
+            payload: {
+                page,
+                code,
+                limit: 10,
+                type: 1,
+            },
+        });
+    };
+
     const handleSearch = code => {
+        setCode(code);
         props.dispatch({
             type: 'style/getColorList',
             payload: { limit: 10, page: 1, type: 1, code },
@@ -87,7 +101,11 @@ const Com = props => {
                 }
                 style={{ marginBottom: '20px' }}
             >
-                <TableBasic />
+                <TableBasic
+                    onPageChange={page => {
+                        handlePageChange(page);
+                    }}
+                />
             </Card>
             <Modal
                 title="添加"

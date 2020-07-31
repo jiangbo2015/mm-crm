@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
-import { api } from '@/utils/apiconfig';
-import { Form, Input, Row, Select, Col, Upload, Icon, Divider, Button, notification } from 'antd';
+import React from 'react';
+import { imgUrl } from '@/utils/apiconfig';
+import { filterImageUrl } from '@/utils/utils';
+import { Col, Upload, Icon } from 'antd';
 import styles from './index.less';
 export const Avatar = ({ src, onLoad }) => (
-    <img src={`${api}/${src}`} alt="avatar" style={{ width: '100%' }} onLoad={onLoad} />
+    <img
+        src={`${imgUrl}${filterImageUrl(src)}`}
+        alt="avatar"
+        style={{ width: '100%' }}
+        onLoad={onLoad}
+    />
 );
 
 const typeProps = {
@@ -16,7 +22,7 @@ export const uploadProps = {
     listType: 'picture-card',
     className: styles.uploader,
     showUploadList: false,
-    action: `/api/common/upload`,
+    action: `/api/common/uploadkit`,
 };
 
 export const UploadBtn = ({ type }) => (
