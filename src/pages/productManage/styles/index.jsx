@@ -14,6 +14,9 @@ const Com = props => {
     useEffect(() => {
         props.dispatch({
             type: 'style/get',
+            payload: {
+                limit: 10,
+            },
         });
         // props.dispatch({
         //     type: 'style/getColorList',
@@ -75,8 +78,8 @@ const Com = props => {
             type: 'style/getList',
             payload: {
                 page,
-                limit: props.styleList.limit,
-                styleNo: value,
+                limit: 10,
+                styleNo,
             },
         });
     };
