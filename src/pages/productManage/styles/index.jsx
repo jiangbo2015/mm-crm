@@ -79,7 +79,7 @@ const Com = props => {
             payload: {
                 page,
                 limit: 10,
-                styleNo,
+                styleNo: styleNo ? styleNo : '',
             },
         });
     };

@@ -201,7 +201,7 @@ export default connect(({ style, goods, loading }) => ({
     shadowUrl: style.shadowUrl || '',
     shadowUrlBack: style.shadowUrlBack || '',
     styleEditData: style.styleEditData,
-    fetching: loading.effects['style/getList'],
+    fetching: loading.effects['style/get'],
     goodsList: goods.list,
     currentCategorys: style.currentCategorys,
 }))(Com);
