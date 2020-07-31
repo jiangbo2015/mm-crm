@@ -75,7 +75,7 @@ const Com = props => {
     };
     const handlePageChange = page => {
         props.dispatch({
-            type: 'style/getList',
+            type: 'style/get',
             payload: {
                 page,
                 limit: 10,
