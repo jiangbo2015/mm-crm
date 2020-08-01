@@ -3,7 +3,7 @@ import { Table, Divider, Modal, Popconfirm } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../From';
-import { imgUrl } from '@/utils/apiconfig';
+// import { imgUrl } from '@/utils/apiconfig';
 import { getGoodsParamsToValue, filterImageUrl } from '@/utils/utils';
 
 const Com = props => {
@@ -16,8 +16,7 @@ const Com = props => {
                 <div
                     className={styles.color}
                     style={{
-                        background:
-                            obj.type === 1 ? `url(${imgUrl}${filterImageUrl(val)}?tr=w-50)` : val,
+                        background: obj.type === 1 ? `url(${filterImageUrl(val)}?tr=w-50)` : val,
                     }}
                 />
             ),
@@ -148,7 +147,7 @@ const Com = props => {
                             width="auto"
                             height="auto"
                             style={{ maxWidth: '100%' }}
-                            src={`${imgUrl}${filterImageUrl(visiblePreview.value)}`}
+                            src={`${filterImageUrl(visiblePreview.value)}`}
                             alt=""
                         />
                     )}

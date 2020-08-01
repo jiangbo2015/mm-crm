@@ -1,5 +1,6 @@
 import { parse } from 'querystring';
 import pathRegexp from 'path-to-regexp';
+import { imgUrl } from '@/utils/apiconfig';
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
@@ -64,8 +65,16 @@ export const getGoodsParamsToValue = (goodsParams, categories) => {
 export const filterImageUrl = url => {
     let arrs = url.split('/');
     let res = url;
+
+    // 本地数据
     if (arrs.length >= 3) {
-        res = `mrmiss//${arrs[2]}`;
+        if (url.indexOf('.svg') >= 0) {
+            console.log('url', `/${url}`);
+            return `/${url}`;
+        } else {
+            return `${imgUrl}mrmiss//${arrs[2]}`;
+        }
+    } else {
+        return `${imgUrl}${url}`;
     }
-    return res;
 };

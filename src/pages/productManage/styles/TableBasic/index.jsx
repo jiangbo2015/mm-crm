@@ -4,7 +4,7 @@ import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../Form';
 import Preview from '../Preview';
-import { imgUrl } from '@/utils/apiconfig';
+// import { imgUrl } from '@/utils/apiconfig';
 import { filterImageUrl } from '@/utils/utils';
 import { getGoodsParamsToValue } from '@/utils/utils';
 
@@ -19,7 +19,7 @@ const Com = props => {
                     style={{
                         width: '80px',
                     }}
-                    src={`${imgUrl}${filterImageUrl(obj.imgUrl)}?tr=w-80`}
+                    src={`${filterImageUrl(obj.imgUrl)}?tr=w-80`}
                 />
             ),
         },

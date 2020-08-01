@@ -1,5 +1,4 @@
 import React from 'react';
-import { imgUrl } from '@/utils/apiconfig';
 import { filterImageUrl } from '@/utils/utils';
 import { Col, Upload, Icon } from 'antd';
 
@@ -8,10 +7,10 @@ import styles from './index.less';
 
 export const Avatar = ({ src, onLoad, ...others }) => {
     return src.indexOf('.svg') >= 0 ? (
-        <ReactSVG src={`${imgUrl}${filterImageUrl(src)}`} />
+        <ReactSVG src={filterImageUrl(src)} />
     ) : (
         <img
-            src={`${imgUrl}${filterImageUrl(src)}`}
+            src={filterImageUrl(src)}
             alt="avatar"
             style={{ width: '100%' }}
             onLoad={onLoad}
