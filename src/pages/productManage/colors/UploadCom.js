@@ -5,19 +5,15 @@ import { Col, Upload, Icon } from 'antd';
 import { ReactSVG } from 'react-svg';
 import styles from './index.less';
 
-export const Avatar = ({ src, onLoad, ...others }) => {
-    return src.indexOf('.svg') >= 0 ? (
-        <ReactSVG src={filterImageUrl(src)} />
-    ) : (
-        <img
-            src={filterImageUrl(src)}
-            alt="avatar"
-            style={{ width: '100%' }}
-            onLoad={onLoad}
-            {...others}
-        />
-    );
-};
+export const Avatar = ({ src, onLoad, ...others }) => (
+    <img
+        src={filterImageUrl(src)}
+        alt="avatar"
+        style={{ width: '100%' }}
+        onLoad={onLoad}
+        {...others}
+    />
+);
 
 const typeProps = {
     front: '前视图',
