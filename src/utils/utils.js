@@ -64,8 +64,6 @@ export const getGoodsParamsToValue = (goodsParams, categories) => {
 
 export const filterImageUrl = url => {
     let arrs = url.split('/');
-    let res = url;
-
     // 本地数据
     if (arrs.length >= 3) {
         if (url.indexOf('.svg') >= 0) {
@@ -75,6 +73,7 @@ export const filterImageUrl = url => {
             return `${imgUrl}mrmiss//${arrs[2]}`;
         }
     } else {
+        console.log(`${imgUrl}${url}`);
         return `${imgUrl}${url}`;
     }
 };
