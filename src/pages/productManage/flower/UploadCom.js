@@ -3,12 +3,7 @@ import { filterImageUrl } from '@/utils/utils';
 import { Col, Upload, Icon } from 'antd';
 import styles from './index.less';
 export const Avatar = ({ src, onLoad }) => (
-    <img
-        src={`${filterImageUrl(src)}?tr=w-100`}
-        alt="avatar"
-        style={{ width: '100%' }}
-        onLoad={onLoad}
-    />
+    <img src={`${filterImageUrl(src)}`} alt="avatar" style={{ width: '100%' }} onLoad={onLoad} />
 );
 
 const typeProps = {
