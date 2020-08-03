@@ -122,10 +122,17 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form colorType={addColorType} onClose={handleClear} />
+                <Form
+                    colorType={addColorType}
+                    onClose={handleClear}
+                    submitFetching={props.submitFetching}
+                />
             </Modal>
         </PageHeaderWrapper>
     );
 };
 // colorList: state.style.colorList || [],
-export default connect(state => ({ colorList: state.style.colorList || [] }))(Com);
+export default connect(state => ({
+    colorList: state.style.colorList || [],
+    submitFetching: state.loading.effects['style/add'],
+}))(Com);

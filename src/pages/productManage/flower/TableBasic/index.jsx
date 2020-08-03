@@ -130,6 +130,7 @@ const Com = props => {
                     onUpdateForm={handleUpdateForm}
                     updateColor={true}
                     onClose={handleClear}
+                    submitFetching={props.submitFetching}
                 />
             </Modal>
             <Modal
@@ -171,4 +172,5 @@ const Com = props => {
 export default connect(({ style, loading }) => ({
     colorList: style.colorListFlower,
     fetching: loading.effects['style/getColorList'],
+    submitFetching: loading.effects['style/update'],
 }))(Com);

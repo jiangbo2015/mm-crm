@@ -251,6 +251,7 @@ class RegistrationForm extends React.Component {
                     <Col span="8">
                         <Form.Item>
                             <Button
+                                loading={this.props.submitFetching}
                                 disabled={!this.state.onLoad}
                                 type="primary"
                                 onClick={this.handleSubmit.bind(this)}
