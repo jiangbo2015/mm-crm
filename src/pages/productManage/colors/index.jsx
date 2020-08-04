@@ -105,7 +105,13 @@ const Com = props => {
                     }}
                 />
             </Card>
-            <Modal title="添加" visible={visible} width="800px" footer={false}>
+            <Modal
+                title="添加"
+                visible={visible}
+                width="800px"
+                footer={false}
+                onCancel={handleClear}
+            >
                 <Form colorType={addColorType} onClose={handleClear} />
             </Modal>
         </PageHeaderWrapper>
