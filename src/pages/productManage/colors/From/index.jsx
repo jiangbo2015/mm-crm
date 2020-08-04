@@ -175,14 +175,9 @@ class RegistrationForm extends React.Component {
                 <Row>
                     <Col span="16">
                         <Form.Item label="可用商品">
-                            {getFieldDecorator('goodsId', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: '请选择!',
-                                    },
-                                ],
-                            })(<Checkbox.Group options={this.checkboxOptions} />)}
+                            {getFieldDecorator('goodsId')(
+                                <Checkbox.Group options={this.checkboxOptions} />,
+                            )}
                         </Form.Item>
                     </Col>
                 </Row>
