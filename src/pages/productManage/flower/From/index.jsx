@@ -172,14 +172,9 @@ class RegistrationForm extends React.Component {
             label: good.aliasName,
             value: good._id,
         }));
-        const checkboxSelector = getFieldDecorator('goodsId', {
-            rules: [
-                {
-                    required: true,
-                    message: '请选择!',
-                },
-            ],
-        })(<Checkbox.Group options={checkboxOptions} />);
+        const checkboxSelector = getFieldDecorator('goodsId')(
+            <Checkbox.Group options={checkboxOptions} />,
+        );
         return (
             <Form {...formItemLayout} name="inputDesiner">
                 <Row>
@@ -224,7 +219,7 @@ class RegistrationForm extends React.Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col span="16">
+                    <Col span="24">
                         <Form.Item label="可用商品">{checkboxSelector}</Form.Item>
                     </Col>
                 </Row>
