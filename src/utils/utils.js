@@ -1,5 +1,6 @@
 import { parse } from 'querystring';
 import pathRegexp from 'path-to-regexp';
+import lodash from 'lodash';
 import { imgUrl } from '@/utils/apiconfig';
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 
@@ -45,19 +46,24 @@ export const getGoodsParams = params => {
         console.log(params);
         if (arr.length >= 2 && params[good] && params[good].length > 0) {
             goodsParams.push(arr[1]);
-            categoriesParams.push(...params[good]);
+            categoriesParams.push(...lodash.union(params[good]));
         }
     });
     return {
         goodsId: goodsParams,
-        categoryId: categoriesParams,
+        categoryId: lodash.union(categoriesParams),
     };
 };
 
-export const getGoodsParamsToValue = (goodsParams, categories) => {
+export const getGoodsParamsToValue = (goodsParams, categories, goodsList = []) => {
     let values = {};
     goodsParams.map(goodId => {
-        values[`goods-${goodId}`] = categories;
+        let goodObject = goodsList.find(x => x._id === goodId);
+        if (goodObject) {
+            values[`goods-${goodId}`] = lodash.union(
+                categories.filter(c => goodObject.category.findIndex(x => x._id === c) >= 0),
+            );
+        }
     });
     return values;
 };

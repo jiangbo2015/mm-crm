@@ -225,18 +225,12 @@ const Model = {
             if (res.success) {
                 let styleList = yield select(state => state.style.list);
 
-                let objIndex = styleList.docs.findIndex(x => x._id === payload._id);
-
-                if (objIndex >= 0) {
-                    styleList.docs[objIndex] = {
-                        ...styleList.docs[objIndex],
-                        ...payload,
-                        ...goods,
-                    };
-                }
                 yield put({
-                    type: 'set',
-                    payload: { ...styleList },
+                    type: 'get',
+                    payload: {
+                        limit: styleList.limit,
+                        page: styleList.page,
+                    },
                 });
                 notification.success({
                     message: '修改成功',

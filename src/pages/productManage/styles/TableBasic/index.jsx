@@ -94,7 +94,7 @@ const Com = props => {
     useEffect(() => {
         if (visible) {
             setTimeout(() => {
-                let goods = getGoodsParamsToValue(data.goodsId, data.categoryId);
+                let goods = getGoodsParamsToValue(data.goodsId, data.categoryId, props.goodsList);
                 console.log(goods);
                 formRef.current.setFieldsValue({
                     styleNo: data.styleNo,
