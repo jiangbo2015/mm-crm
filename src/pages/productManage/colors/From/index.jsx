@@ -13,14 +13,11 @@ class RegistrationForm extends React.Component {
         colorImgWidth: 0,
         colorImgHeight: 0,
     };
-    checkboxOptions = this.props.goodsList.map(good => {
-        let checkList = good.category.map(tag => ({ label: tag.name, value: tag._id }));
-        return {
-            name: good.name,
-            id: good._id,
-            checkList,
-        };
-    });
+    checkboxOptions = this.props.goodsList.map(good => ({
+        label: good.aliasName,
+        value: good._id,
+    }));
+
     // formRef = React.createRef()
     handleSubmit() {
         this.props.form.validateFields((err, values) => {
@@ -177,55 +174,15 @@ class RegistrationForm extends React.Component {
                 </Row>
                 <Row>
                     <Col span="16">
-                        <Form.Item label="商品分类">
-                            {this.checkboxOptions.map((options, index) => (
-                                <>
-                                    <Divider orientation="left" plain style={{ margin: 0 }}>
-                                        {options.name}
-                                    </Divider>
-                                    <div
-                                        style={{
-                                            lineHeight: '20px',
-                                            textDecorationLine: 'underline',
-                                        }}
-                                    >
-                                        <a
-                                            style={{
-                                                color: 'rgba(0, 0, 0, 0.65)',
-                                            }}
-                                            onClick={() => {
-                                                this.handleSelectAllByGoodId(options.id, true);
-                                            }}
-                                        >
-                                            全选
-                                        </a>
-                                        |
-                                        <a
-                                            onClick={() => {
-                                                this.handleSelectAllByGoodId(options.id, false);
-                                            }}
-                                            style={{
-                                                color: 'rgba(0, 0, 0, 0.65)',
-                                            }}
-                                        >
-                                            全不选
-                                        </a>
-                                    </div>
-                                    {getFieldDecorator(`goods-${options.id}`, {
-                                        // rules: [
-                                        //     {
-                                        //         required: true,
-                                        //         message: '请选择标签!',
-                                        //     },
-                                        // ],
-                                    })(
-                                        <Checkbox.Group
-                                            options={options.checkList}
-                                            defaultValue={['']}
-                                        />,
-                                    )}
-                                </>
-                            ))}
+                        <Form.Item label="可用商品">
+                            {getFieldDecorator('goodsId', {
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: '请选择!',
+                                    },
+                                ],
+                            })(<Checkbox.Group options={checkboxOptions} />)}
                         </Form.Item>
                     </Col>
                 </Row>

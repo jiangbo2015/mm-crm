@@ -131,19 +131,27 @@ const Model = {
             }
         },
 
-        *delete({ payload }, { call, put }) {
+        *delete({ payload }, { call, put, select }) {
             const res = yield call(del, payload);
             console.log(res);
             if (res.success) {
+                let styleList = yield select(state => state.style.list);
                 yield put({
                     type: 'get',
+                    payload: {
+                        limit: styleList.limit,
+                        page: styleList.page,
+                    },
+                });
+                notification.success({
+                    message: '删除成功',
                 });
             }
         },
 
         *addColor({ payload }, { call, put }) {
-            let goods = getGoodsParams(payload);
-            const res = yield call(colorAdd, { ...payload, ...goods });
+            // let goods = getGoodsParams(payload);
+            const res = yield call(colorAdd, { ...payload });
             console.log(res);
             if (res.success && res.data) {
                 notification.success({
@@ -159,55 +167,84 @@ const Model = {
                 });
             }
         },
-        *deleteColor({ payload }, { call, put }) {
+        *deleteColor({ payload }, { call, put, select }) {
             const res = yield call(colorDel, payload);
             console.log(res);
             if (res.success && res.data) {
                 notification.success({
                     message: '删除成功',
                 });
-                yield put({
-                    type: 'getColorList',
-                    payload: {
-                        page: 1,
-                        limit: 10,
-                        type: payload.type,
-                    },
-                });
+                let colorList = yield select(state => state.style.colorList);
+                let colorListFlower = yield select(state => state.style.colorListFlower);
+                if (!payload.type) {
+                    yield put({
+                        type: 'getColorList',
+                        payload: {
+                            page: colorList.page,
+                            limit: colorList.limit,
+                            type: payload.type,
+                        },
+                    });
+                } else {
+                    yield put({
+                        type: 'getColorList',
+                        payload: {
+                            page: colorListFlower.page,
+                            limit: colorListFlower.limit,
+                            type: payload.type,
+                        },
+                    });
+                }
             }
         },
-        *updateArr({ payload }, { call, put }) {
+        *updateArr({ payload }, { call, put, select }) {
             console.log('update', payload);
             const res = yield call(updateArr, payload);
             console.log(res);
             if (res.success) {
+                let styleList = yield select(state => state.style.list);
                 yield put({
                     type: 'get',
+                    payload: {
+                        limit: styleList.limit,
+                        page: styleList.page,
+                    },
                 });
-                console.log('get');
+                // console.log('get');
                 notification.success({
                     message: '保存成功',
                 });
             }
         },
-        *update({ payload }, { put, call }) {
+        *update({ payload }, { put, call, select }) {
             // console.log('update', payload);
             let goods = getGoodsParams(payload);
             const res = yield call(updateStyle, { ...payload, ...goods });
             // const res = yield call(updateStyle, payload);
             // console.log(res);
             if (res.success) {
+                let styleList = yield select(state => state.style.list);
+
+                let objIndex = styleList.docs.findIndex(x => x._id === payload._id);
+
+                if (objIndex >= 0) {
+                    styleList.docs[objIndex] = {
+                        ...styleList.docs[objIndex],
+                        ...payload,
+                    };
+                }
+                yield put({
+                    type: 'set',
+                    payload: { ...styleList },
+                });
                 notification.success({
                     message: '修改成功',
-                });
-                yield put({
-                    type: 'get',
                 });
             }
         },
         *updateColor({ payload }, { put, call, select }) {
-            let goods = getGoodsParams(payload);
-            const res = yield call(colorUpdate, { ...payload, ...goods });
+            // let goods = getGoodsParams(payload);
+            const res = yield call(colorUpdate, { ...payload });
 
             console.log(res);
             if (res.success) {
@@ -223,7 +260,7 @@ const Model = {
                             ...payload,
                         };
                         yield put({
-                            type: 'getColorList',
+                            type: 'setColorList',
                             payload: { ...colorList },
                         });
                     }

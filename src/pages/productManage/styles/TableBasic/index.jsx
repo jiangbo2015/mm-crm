@@ -86,7 +86,7 @@ const Com = props => {
                         shadowUrlBack,
                     },
                 });
-                setVisible(false);
+                // setVisible(false);
             }
         });
     };
@@ -156,7 +156,7 @@ const Com = props => {
                 destroyOnClose={true}
                 onOk={() => {
                     handleUpdate();
-                    handleClear();
+                    // handleClear();
                 }}
                 onCancel={() => {
                     setVisible(false);

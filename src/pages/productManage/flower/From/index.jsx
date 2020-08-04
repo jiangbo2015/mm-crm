@@ -168,15 +168,18 @@ class RegistrationForm extends React.Component {
         //         ],
         //     },
         // ];
-        const checkboxOptions = this.props.goodsList.map(good => {
-            let checkList = good.category.map(tag => ({ label: tag.name, value: tag._id }));
-            return {
-                name: good.name,
-                id: good._id,
-                checkList,
-            };
-        });
-
+        const checkboxOptions = this.props.goodsList.map(good => ({
+            label: good.aliasName,
+            value: good._id,
+        }));
+        const checkboxSelector = getFieldDecorator('goodsId', {
+            rules: [
+                {
+                    required: true,
+                    message: '请选择!',
+                },
+            ],
+        })(<Checkbox.Group options={checkboxOptions} />);
         return (
             <Form {...formItemLayout} name="inputDesiner">
                 <Row>
@@ -222,28 +225,7 @@ class RegistrationForm extends React.Component {
                 </Row>
                 <Row>
                     <Col span="16">
-                        <Form.Item label="商品分类">
-                            {checkboxOptions.map((options, index) => (
-                                <>
-                                    <Divider orientation="left" plain>
-                                        {options.name}
-                                    </Divider>
-                                    {getFieldDecorator(`goods-${options.id}`, {
-                                        // rules: [
-                                        //     {
-                                        //         required: true,
-                                        //         message: '请选择标签!',
-                                        //     },
-                                        // ],
-                                    })(
-                                        <Checkbox.Group
-                                            options={options.checkList}
-                                            defaultValue={['']}
-                                        />,
-                                    )}
-                                </>
-                            ))}
-                        </Form.Item>
+                        <Form.Item label="可用商品">{checkboxSelector}</Form.Item>
                     </Col>
                 </Row>
                 <Row>

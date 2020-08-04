@@ -87,13 +87,14 @@ const Com = props => {
         if (visible) {
             setTimeout(() => {
                 if (formRef && formRef.current) {
-                    let goods = getGoodsParamsToValue(data.goodsId, data.categoryId);
+                    // let goods = getGoodsParamsToValue(data.goodsId, data.categoryId);
                     formRef.current.setFieldsValue({
                         code: data.code,
                         value: data.value,
                         namecn: data.namecn,
                         nameen: data.nameen,
-                        ...goods,
+                        goodsId: data.goodsId,
+                        // ...goods,
                     });
                 }
             }, 100);
