@@ -9,7 +9,7 @@
     "pm2-prod": "pm2 start http-server --name crm-prod -- -p 3007 -P http://8.209.64.159:3002 -g",
     "build-test": "UMI_ENV=test umi build && gulp",
     "build-prod": "UMI_ENV=prod umi build && gulp",
-    "start": "APIENV=dev umi dev",
+    "start": "cross-env APIENV=dev umi dev",
     "ui": "umi ui"
   },
   "browserslist": [

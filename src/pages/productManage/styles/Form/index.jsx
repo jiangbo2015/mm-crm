@@ -53,7 +53,7 @@ class RegistrationForm extends React.Component {
     checkboxOptions = this.props.goodsList.map(good => {
         let checkList = good.category.map(tag => ({ label: tag.name, value: tag._id }));
         return {
-            name: good.name,
+            name: `${good.name}-${good.aliasName}`,
             id: good._id,
             checkList,
         };

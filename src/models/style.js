@@ -231,6 +231,7 @@ const Model = {
                     styleList.docs[objIndex] = {
                         ...styleList.docs[objIndex],
                         ...payload,
+                        ...goods,
                     };
                 }
                 yield put({
