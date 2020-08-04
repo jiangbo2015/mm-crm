@@ -182,7 +182,7 @@ class RegistrationForm extends React.Component {
                                         message: '请选择!',
                                     },
                                 ],
-                            })(<Checkbox.Group options={checkboxOptions} />)}
+                            })(<Checkbox.Group options={this.checkboxOptions} />)}
                         </Form.Item>
                     </Col>
                 </Row>
