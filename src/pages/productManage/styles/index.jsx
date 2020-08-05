@@ -38,6 +38,7 @@ const Com = props => {
             type: 'style/get',
             payload: {
                 styleNo: value,
+                limit: 10,
             },
         });
     };

@@ -285,13 +285,33 @@ class RegistrationForm extends React.Component {
                             )}
                         </Form.Item>
                         <Form.Item
-                            label="款式宽"
+                            label="款式正面宽"
                             style={{
                                 height: 0,
                                 marginTop: '-10px',
                             }}
                         >
                             {getFieldDecorator('styleSize', {
+                                rules: [],
+                                initialValue: 27,
+                            })(
+                                <InputNumber
+                                    formatter={value =>
+                                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                    }
+                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                />,
+                            )}
+                            cm
+                        </Form.Item>
+                        <Form.Item
+                            label="款式背面宽"
+                            style={{
+                                height: 0,
+                                marginTop: '-10px',
+                            }}
+                        >
+                            {getFieldDecorator('styleBackSize', {
                                 rules: [],
                                 initialValue: 27,
                             })(

@@ -221,17 +221,26 @@ const Model = {
             let goods = getGoodsParams(payload);
             const res = yield call(updateStyle, { ...payload, ...goods });
             // const res = yield call(updateStyle, payload);
-            // console.log(res);
+
             if (res.success) {
                 let styleList = yield select(state => state.style.list);
-
-                yield put({
-                    type: 'get',
-                    payload: {
-                        limit: styleList.limit,
-                        page: styleList.page,
-                    },
-                });
+                let objIndex = styleList.docs.findIndex(x => x._id === payload._id);
+                if (objIndex >= 0) {
+                    styleList.docs[objIndex] = {
+                        ...res.data,
+                    };
+                    yield put({
+                        type: 'setStyleList',
+                        payload: { ...styleList },
+                    });
+                }
+                // yield put({
+                //     type: 'get',
+                //     payload: {
+                //         limit: styleList.limit,
+                //         page: styleList.page,
+                //     },
+                // });
                 notification.success({
                     message: '修改成功',
                 });
