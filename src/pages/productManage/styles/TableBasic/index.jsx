@@ -179,6 +179,7 @@ const Com = props => {
                 {/* <Form ref={v => (formRef.current = v)} editData={data}/> */}
             </Modal>
             <Table
+                rowKey={record => record._id}
                 pagination={{
                     total: props.styleList.total,
                     current: parseInt(props.styleList.page, 10),

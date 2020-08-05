@@ -118,7 +118,12 @@ const Com = props => {
                     </Button>
                 </Col>
             </Row>
-            <Table columns={columns} dataSource={props.orderList} bordered />
+            <Table
+                rowKey={record => record._id}
+                columns={columns}
+                dataSource={props.orderList}
+                bordered
+            />
         </>
     );
 };

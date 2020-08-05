@@ -155,6 +155,7 @@ const Com = props => {
                 </div>
             </Modal>
             <Table
+                rowKey={record => record._id}
                 columns={columns}
                 loading={props.fetching}
                 dataSource={props.colorList.docs}
