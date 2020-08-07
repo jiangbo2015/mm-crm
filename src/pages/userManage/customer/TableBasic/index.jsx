@@ -26,7 +26,13 @@ const Com = props => {
             title: '所属产品经理',
             dataIndex: 'map',
             key: 'map',
-            render: (text, record) => <a>{props.channels.map[record.channels[0]._id]}</a>,
+            render: (text, record) => (
+                <p>
+                    {Array.isArray(record.channels) && record.channels.length > 0
+                        ? props.channels.map[record.channels[0]._id]
+                        : ''}
+                </p>
+            ),
         },
         {
             title: '所属通道',
