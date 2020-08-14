@@ -98,6 +98,7 @@ const Com = props => {
                 console.log(goods);
                 formRef.current.setFieldsValue({
                     styleNo: data.styleNo,
+                    vposition: data.vposition ? data.vposition : 'center',
                     styleName: data.styleName,
                     styleSize: data.styleSize ? data.styleSize : 27,
                     styleBackSize: data.styleBackSize ? data.styleBackSize : 27,

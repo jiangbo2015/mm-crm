@@ -13,11 +13,14 @@ import {
     message,
     Popover,
     Button,
+    Select,
 } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 // import ColorCom from '../../colors/Color';
 import { uploadProps, Avatar, UploadBtn } from '../../colors/UploadCom';
+
+const Option = Select.Option;
 
 @connect(state => ({
     colorList: state.style.colorList || [],
@@ -237,24 +240,6 @@ class RegistrationForm extends React.Component {
                                 ],
                             })(<Input />)}
                         </Form.Item>
-                        <Form.Item label="缩放比">
-                            {getFieldDecorator('scale')(
-                                <InputNumber
-                                    min={20}
-                                    max={100}
-                                    step={1}
-                                    onChange={val => {
-                                        this.setState({
-                                            ...this.state,
-                                            scale: val,
-                                        });
-                                    }}
-                                />,
-                            )}
-                            {'默认值58'}
-                        </Form.Item>
-                    </Col>
-                    <Col span="12" style={{ paddingLeft: '12px' }}>
                         <Form.Item
                             label={
                                 <Tooltip title="不同通道会根据系统设施汇率显示价格">
@@ -284,13 +269,31 @@ class RegistrationForm extends React.Component {
                                 />,
                             )}
                         </Form.Item>
-                        <Form.Item
-                            label="款式正面宽"
-                            style={{
-                                height: 0,
-                                marginTop: '-10px',
-                            }}
-                        >
+                    </Col>
+                </Row>
+                <Divider className={styles.divider} orientation="left">
+                    款式显示相关
+                </Divider>
+                <Row>
+                    <Col span="6">
+                        <Form.Item label="缩放比">
+                            {getFieldDecorator('scale', { initialValue: 58 })(
+                                <InputNumber
+                                    min={20}
+                                    max={100}
+                                    step={1}
+                                    onChange={val => {
+                                        this.setState({
+                                            ...this.state,
+                                            scale: val,
+                                        });
+                                    }}
+                                />,
+                            )}
+                        </Form.Item>
+                    </Col>
+                    <Col span="6">
+                        <Form.Item label="款式正面宽">
                             {getFieldDecorator('styleSize', {
                                 rules: [],
                                 initialValue: 27,
@@ -304,13 +307,9 @@ class RegistrationForm extends React.Component {
                             )}
                             cm
                         </Form.Item>
-                        <Form.Item
-                            label="款式背面宽"
-                            style={{
-                                height: 0,
-                                marginTop: '-10px',
-                            }}
-                        >
+                    </Col>
+                    <Col span="6">
+                        <Form.Item label="款式背面宽">
                             {getFieldDecorator('styleBackSize', {
                                 rules: [],
                                 initialValue: 27,
@@ -324,18 +323,33 @@ class RegistrationForm extends React.Component {
                             )}
                             cm
                         </Form.Item>
-                        <Form.Item
-                            label="货币"
-                            style={{
-                                visibility: 'hidden',
-                                height: 0,
-                                marginTop: '-10px',
-                            }}
-                        >
-                            {getFieldDecorator('currency', {
-                                rules: [],
-                                initialValue: 1,
-                            })(<Input />)}
+                    </Col>
+                    {/* <Col span="6"> */}
+                    <Form.Item
+                        label="货币"
+                        style={{
+                            visibility: 'hidden',
+                            height: 0,
+                            marginTop: '-10px',
+                        }}
+                    >
+                        {getFieldDecorator('currency', {
+                            rules: [],
+                            initialValue: 1,
+                        })(<Input />)}
+                    </Form.Item>
+                    {/* </Col> */}
+                </Row>
+                <Row>
+                    <Col span="12">
+                        <Form.Item label="正背面对齐方式" info="决定搭配页面正背面对齐方式">
+                            {getFieldDecorator('vposition', { initialValue: 'center' })(
+                                <Select>
+                                    <Option value="center">垂直居中</Option>
+                                    <Option value="flex-start">顶部对齐</Option>
+                                    <Option value="flex-end">底部对齐</Option>
+                                </Select>,
+                            )}
                         </Form.Item>
                     </Col>
                 </Row>
