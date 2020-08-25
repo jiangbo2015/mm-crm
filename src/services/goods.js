@@ -27,3 +27,10 @@ export async function update(data) {
         data,
     });
 }
+
+export async function sort(data) {
+    return request('/api/goods/sort', {
+        method: 'post',
+        data,
+    });
+}

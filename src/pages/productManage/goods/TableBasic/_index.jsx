@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Divider, Spin, Modal, Popconfirm } from 'antd';
-// import styles from './index.less';
-import Table from '@/components/Table/SortTable';
+import { Table, Divider, Tag, Modal, Popconfirm } from 'antd';
+import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../Form';
 
@@ -18,36 +17,30 @@ const Com = props => {
             key: 'aliasName',
         },
 
-        // {
-        //     title: '操作',
-        //     dataIndex: 'action',
-        //     key: 'action',
-        //     render: (text, record) => (
-        //         <div>
-        //             <a onClick={e => handleEdit(record)}>编辑</a>
-        //             <Divider type="vertical" />
-        //             <Popconfirm
-        //                 title="确认要删除吗"
-        //                 onConfirm={() => handleDelete(record)}
-        //                 okText="是"
-        //                 cancelText="否"
-        //             >
-        //                 <a href="#">删除</a>
-        //             </Popconfirm>
-        //         </div>
-        //     ),
-        // },
+        {
+            title: '操作',
+            dataIndex: 'action',
+            key: 'action',
+            render: (text, record) => (
+                <div>
+                    <a onClick={e => handleEdit(record)}>编辑</a>
+                    <Divider type="vertical" />
+                    <Popconfirm
+                        title="确认要删除吗"
+                        onConfirm={() => handleDelete(record)}
+                        okText="是"
+                        cancelText="否"
+                    >
+                        <a href="#">删除</a>
+                    </Popconfirm>
+                </div>
+            ),
+        },
     ];
     const formRef = useRef();
     const [visible, setVisible] = useState(false);
     const [data, setData] = useState({});
 
-    const handleSort = options => {
-        props.dispatch({
-            type: 'goods/sort',
-            payload: options,
-        });
-    };
     const handleUpdate = () => {
         formRef.current.validateFields((err, values) => {
             if (!err) {
@@ -132,11 +125,7 @@ const Com = props => {
             >
                 <Form ref={v => (formRef.current = v)} />
             </Modal>
-            {props.fetching ? (
-                <Spin />
-            ) : (
-                <Table columns={columns} dataSource={props.goodsList} onMoveArray={handleSort} />
-            )}
+            <Table columns={columns} dataSource={props.goodsList} />
         </>
     );
 };
