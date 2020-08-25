@@ -31,11 +31,12 @@ const Model = {
         *sort({ payload }, { put, call, select }) {
             const list = yield select(state => state.goods.list);
             const { dragIndex, hoverIndex } = payload;
-            yield call(sortGoods, {
-                _id: list[dragIndex]._id,
-                newIndex: hoverIndex,
-            });
+
             const newList = arrayMove(list, dragIndex, hoverIndex);
+            const newSort = newList.map((l, index) => ({ _id: l._id, sort: index }));
+            const res = yield call(sortGoods, {
+                newSort,
+            });
             if (newList) {
                 yield put({
                     type: 'setGoodsList',
