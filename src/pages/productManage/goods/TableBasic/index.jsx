@@ -18,25 +18,25 @@ const Com = props => {
             key: 'aliasName',
         },
 
-        // {
-        //     title: '操作',
-        //     dataIndex: 'action',
-        //     key: 'action',
-        //     render: (text, record) => (
-        //         <div>
-        //             <a onClick={e => handleEdit(record)}>编辑</a>
-        //             <Divider type="vertical" />
-        //             <Popconfirm
-        //                 title="确认要删除吗"
-        //                 onConfirm={() => handleDelete(record)}
-        //                 okText="是"
-        //                 cancelText="否"
-        //             >
-        //                 <a href="#">删除</a>
-        //             </Popconfirm>
-        //         </div>
-        //     ),
-        // },
+        {
+            title: '操作',
+            dataIndex: 'action',
+            key: 'action',
+            render: (text, record) => (
+                <div>
+                    <a onClick={e => handleEdit(record)}>编辑</a>
+                    <Divider type="vertical" />
+                    <Popconfirm
+                        title="确认要删除吗"
+                        onConfirm={() => handleDelete(record)}
+                        okText="是"
+                        cancelText="否"
+                    >
+                        <a href="#">删除</a>
+                    </Popconfirm>
+                </div>
+            ),
+        },
     ];
     const formRef = useRef();
     const [visible, setVisible] = useState(false);
