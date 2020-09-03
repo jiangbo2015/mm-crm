@@ -53,15 +53,23 @@ const Com = props => {
             if (!err) {
                 setVisible(false);
                 const { category = [], imgUrl } = props;
-                const newCategory = category.map((item, index) => {
+                const newCategory = [];
+
+                const fieldsCategoryName = Object.keys(values).filter(
+                    x => x.indexOf('cname') === 0,
+                );
+                fieldsCategoryName.map((name, index) => {
                     let obj = {
-                        name: values[`cname${index}`],
-                        sizeId: values[`size${index}`],
+                        name: values[name],
                     };
-                    if (item._id) {
-                        obj._id = item._id;
+                    let nameGroup = name.split('-');
+                    if (nameGroup.length >= 2) {
+                        obj._id = nameGroup[1];
                     }
-                    return obj;
+                    if (obj.name) {
+                        newCategory.push(obj);
+                    }
+                    // return obj;
                 });
                 props.dispatch({
                     type: 'goods/update',
@@ -76,7 +84,17 @@ const Com = props => {
             }
         });
     };
-
+    const handleClear = () => {
+        formRef.current.resetFields();
+        props.dispatch({
+            type: 'goods/setImgUrl',
+            payload: '',
+        });
+        props.dispatch({
+            type: 'goods/setCategories',
+            payload: [],
+        });
+    };
     useEffect(() => {
         if (visible) {
             setTimeout(() => {
@@ -95,8 +113,8 @@ const Com = props => {
                 });
                 data.category.map((x, index) => {
                     formRef.current.setFieldsValue({
-                        [`cname${index}`]: x.name,
-                        [`size${index}`]: x.sizeId,
+                        [`cname-${x._id}`]: x.name,
+                        [`size-${x._id}`]: x.sizeId,
                     });
                 });
             }, 100);
@@ -127,8 +145,12 @@ const Com = props => {
                 visible={visible}
                 onOk={() => {
                     handleUpdate();
+                    handleClear();
                 }}
-                onCancel={() => setVisible(false)}
+                onCancel={() => {
+                    setVisible(false);
+                    handleClear();
+                }}
             >
                 <Form ref={v => (formRef.current = v)} />
             </Modal>

@@ -14,7 +14,7 @@ const Model = {
     state: {
         list: [],
         imgUrl: '', //商品图
-        category: [{}],
+        category: [],
     },
     effects: {
         *getList({ payload }, { call, put }) {

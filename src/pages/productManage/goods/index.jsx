@@ -33,17 +33,27 @@ const Com = props => {
             if (!err) {
                 setVisible(false);
                 const { category = [], imgUrl } = props;
-                const newCategory = category.map((item, index) => ({
-                    name: values[`cname${index}`],
-                    sizeId: values[`size${index}`],
-                }));
+                const newCategory = [];
+                const fieldsCategoryName = Object.keys(values).filter(
+                    x => x.indexOf('cname') === 0,
+                );
+                fieldsCategoryName.map((name, index) => {
+                    let obj = {
+                        name: values[name],
+                    };
+
+                    if (obj.name) {
+                        newCategory.push(obj);
+                    }
+                    // return obj;
+                });
                 props.dispatch({
                     type: 'goods/add',
                     payload: {
                         name: values.name,
                         aliasName: values.aliasName,
                         imgUrl,
-                        category: newCategory,
+                        category: newCategory.filter(c => c.name),
                     },
                 });
             } else {
@@ -60,7 +70,7 @@ const Com = props => {
         });
         props.dispatch({
             type: 'goods/setCategories',
-            payload: [{}],
+            payload: [],
         });
     };
 

@@ -41,7 +41,7 @@ class RegistrationForm extends React.Component {
     handleAdd = () => {
         this.props.dispatch({
             type: 'goods/setCategories',
-            payload: this.props.category.concat({}),
+            payload: this.props.category.concat({ time: new Date().getTime() }),
         });
     };
 
@@ -121,22 +121,22 @@ class RegistrationForm extends React.Component {
                     <Col span="10">名称</Col>
                     {/* <Col span="10">尺码</Col> */}
                 </Row>
-                {category.map((item, index) => (
-                    <Row gutter={[20]}>
-                        <Col span="10">
-                            <Form.Item label="">
-                                {getFieldDecorator(`cname${index}`, {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: 'Please input name!',
-                                            whitespace: true,
-                                        },
-                                    ],
-                                })(<Input />)}
-                            </Form.Item>
-                        </Col>
-                        {/* <Col span="10">
+                {category.map((item, index) => {
+                    const keyLast = item._id ? `-${item._id}` : item.time;
+                    return (
+                        <Row gutter={[20]} key={`${item._id}-${index}`}>
+                            <Col span="10">
+                                <Form.Item label="">
+                                    {getFieldDecorator(`cname${keyLast}`, {
+                                        rules: [
+                                            {
+                                                whitespace: true,
+                                            },
+                                        ],
+                                    })(<Input />)}
+                                </Form.Item>
+                            </Col>
+                            {/* <Col span="10">
                             <Form.Item label="">
                                 {getFieldDecorator(`size${index}`, {
                                     rules: [
@@ -156,28 +156,27 @@ class RegistrationForm extends React.Component {
                                 )}
                             </Form.Item>
                         </Col> */}
-                        <Col span="2">
-                            {index > 0 && (
+                            <Col span="2">
                                 <Button
                                     shape="circle"
                                     icon="delete"
                                     type="danger"
                                     onClick={e => this.handleDelete(e, index)}
                                 />
-                            )}
-                        </Col>
-                        <Col span="2">
-                            {index === category.length - 1 && (
-                                <Button
-                                    shape="circle"
-                                    icon="plus"
-                                    type="primary"
-                                    onClick={this.handleAdd}
-                                />
-                            )}
-                        </Col>
-                    </Row>
-                ))}
+                            </Col>
+                        </Row>
+                    );
+                })}
+                <Row>
+                    <Col span="2">
+                        <Button
+                            shape="circle"
+                            icon="plus"
+                            type="primary"
+                            onClick={this.handleAdd}
+                        />
+                    </Col>
+                </Row>
             </Form>
         );
     }
