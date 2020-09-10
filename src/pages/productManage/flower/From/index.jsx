@@ -9,6 +9,7 @@ import {
     Upload,
     Button,
     Checkbox,
+    InputNumber,
     Divider,
 } from 'antd';
 import { connect } from 'dva';
@@ -206,6 +207,16 @@ class RegistrationForm extends React.Component {
                                 ],
                             })(<Input style={{ width: '160px' }} />)}
                         </Form.Item>
+                        <Form.Item label={<span>原始画布单循环宽度(cm)</span>}>
+                            {getFieldDecorator('sizeOrigin', {
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: 'Please input size!',
+                                    },
+                                ],
+                            })(<InputNumber min={1} step={1} />)}
+                        </Form.Item>
                         <Form.Item label={<span>画布单循环宽度(cm)</span>}>
                             {getFieldDecorator('size', {
                                 rules: [
@@ -214,7 +225,7 @@ class RegistrationForm extends React.Component {
                                         message: 'Please input size!',
                                     },
                                 ],
-                            })(<Input type="number" style={{ width: '160px' }} />)}
+                            })(<InputNumber min={1} step={1} />)}
                         </Form.Item>
                     </Col>
                 </Row>

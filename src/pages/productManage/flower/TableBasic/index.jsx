@@ -92,6 +92,7 @@ const Com = props => {
                 if (formRef && formRef.current) {
                     formRef.current.setFieldsValue({
                         ...data,
+                        sizeOrigin: data.sizeOrigin || data.size,
                         // ...goods,
                     });
                 }
