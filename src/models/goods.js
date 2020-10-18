@@ -44,6 +44,22 @@ const Model = {
                 });
             }
         },
+        *categrySort({ payload }, { put, call, select }) {
+            const list = yield select(state => state.goods.category);
+            const { dragIndex, hoverIndex } = payload;
+
+            const newList = arrayMove(list, dragIndex, hoverIndex);
+            const newSort = newList.map((l, index) => ({ _id: l._id, sort: index }));
+            // const res = yield call(sortGoods, {
+            //     newSort,
+            // });
+            if (newList) {
+                yield put({
+                    type: 'setCategories',
+                    payload: newList,
+                });
+            }
+        },
         *add({ payload }, { call, put }) {
             const res = yield call(addGoods, payload);
             console.log(res);

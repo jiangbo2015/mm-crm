@@ -1,13 +1,14 @@
 import React from 'react';
-import { Form, Input, Select, Upload, Button, Row, Col, Divider } from 'antd';
-const { Option } = Select;
+import { Form, Input, Upload, Button, Row, Col, Divider, Popconfirm } from 'antd';
+
 import { uploadProps, Avatar, UploadBtn } from '../../colors/UploadCom';
+import Table from '@/components/Table/SortTable';
 import { connect } from 'dva';
 
 @connect(state => ({
     imgUrl: state.goods.imgUrl,
     category: state.goods.category,
-    sizeList: state.global.sizeList,
+    // sizeList: state.global.sizeList,
 }))
 class RegistrationForm extends React.Component {
     state = {
@@ -49,17 +50,22 @@ class RegistrationForm extends React.Component {
         console.log(index);
         const copy = [].concat(this.props.category);
         copy.splice(index, 1);
-        console.log(copy);
         this.props.dispatch({
             type: 'goods/setCategories',
             payload: copy,
         });
     };
 
+    handleSort = options => {
+        this.props.dispatch({
+            type: 'goods/categrySort',
+            payload: options,
+        });
+    };
+
     render() {
         const { imgUrl, category } = this.props;
         const { getFieldDecorator } = this.props.form;
-        console.log(this.props);
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -78,11 +84,7 @@ class RegistrationForm extends React.Component {
                 },
             },
         };
-        const { sizeList } = this.props;
-        const sizes = sizeList.map(x => ({
-            _id: x._id,
-            name: x.values.map(i => i.name).join('/'),
-        }));
+
         return (
             <Form {...formItemLayout}>
                 <Form.Item label={<span>名称</span>}>
@@ -116,12 +118,54 @@ class RegistrationForm extends React.Component {
                         )}
                     </Upload>
                 </Form.Item>
-                <Divider orientation="left">商品分类</Divider>
-                <Row gutter={[20]}>
-                    <Col span="10">名称</Col>
-                    {/* <Col span="10">尺码</Col> */}
-                </Row>
-                {category.map((item, index) => {
+                <Table
+                    size="small"
+                    title="商品二级分类"
+                    columns={[
+                        {
+                            title: '名称',
+                            dataIndex: 'name',
+                            key: 'name',
+                            render: (_, record) => {
+                                const keyLast = record._id ? `-${record._id}` : record.time;
+                                return (
+                                    <Form.Item label="" style={{ marginBottom: 0 }}>
+                                        {getFieldDecorator(`cname${keyLast}`, {
+                                            rules: [
+                                                {
+                                                    whitespace: true,
+                                                },
+                                            ],
+                                        })(<Input />)}
+                                    </Form.Item>
+                                );
+                            },
+                        },
+                        {
+                            title: '操作',
+                            dataIndex: 'action',
+                            key: 'action',
+                            render: (_, record, index) => (
+                                <div>
+                                    <Popconfirm
+                                        title="确认要删除吗"
+                                        onConfirm={() => {
+                                            this.handleDelete({}, index);
+                                        }}
+                                        okText="是"
+                                        cancelText="否"
+                                    >
+                                        <a href="#">删除</a>
+                                    </Popconfirm>
+                                </div>
+                            ),
+                        },
+                    ]}
+                    dataSource={category}
+                    onMoveArray={this.handleSort}
+                />
+
+                {/* {category.map((item, index) => {
                     const keyLast = item._id ? `-${item._id}` : item.time;
                     return (
                         <Row gutter={[20]} key={`${item._id}-${index}`}>
@@ -136,26 +180,7 @@ class RegistrationForm extends React.Component {
                                     })(<Input />)}
                                 </Form.Item>
                             </Col>
-                            {/* <Col span="10">
-                            <Form.Item label="">
-                                {getFieldDecorator(`size${index}`, {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: '请选择size',
-                                        },
-                                    ],
-                                })(
-                                    <Select placeholder="请选择">
-                                        {sizes.map((x, i) => (
-                                            <Option value={x._id} key={i}>
-                                                {x.name}
-                                            </Option>
-                                        ))}
-                                    </Select>,
-                                )}
-                            </Form.Item>
-                        </Col> */}
+                            
                             <Col span="2">
                                 <Button
                                     shape="circle"
@@ -166,7 +191,7 @@ class RegistrationForm extends React.Component {
                             </Col>
                         </Row>
                     );
-                })}
+                })} */}
                 <Row>
                     <Col span="2">
                         <Button

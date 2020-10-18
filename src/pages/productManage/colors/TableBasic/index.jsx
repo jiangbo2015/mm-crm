@@ -11,7 +11,7 @@ const Com = props => {
             title: '色块',
             dataIndex: 'value',
             key: 'value',
-            render: (val, obj) => <div className={styles.color} style={{ background: val }} />,
+            render: val => <div className={styles.color} style={{ background: val }} />,
         },
         {
             title: '编码',
@@ -41,8 +41,12 @@ const Com = props => {
             key: 'action',
             render: (text, record) => (
                 <div>
-                    {/* <a onClick={e => handleEdit(record)}>编辑</a>
-                    <Divider type="vertical" /> */}
+                    {/* <a onClick={e => handleEdit(record)}>编辑</a>*/}
+
+                    <a onClick={() => handleEdit(record)}>编辑</a>
+                    <Divider type="vertical" />
+                    <a onClick={() => setVisiblePreview(record)}>预览</a>
+                    <Divider type="vertical" />
                     <Popconfirm
                         title="确认要删除吗"
                         onConfirm={() => handleDelete(record)}
@@ -51,9 +55,6 @@ const Com = props => {
                     >
                         <a>删除</a>
                     </Popconfirm>
-                    <a style={{ marginLeft: '5px' }} onClick={() => handleEdit(record)}>
-                        编辑
-                    </a>
                 </div>
             ),
         },
@@ -61,6 +62,7 @@ const Com = props => {
     const formRef = useRef();
     const [visible, setVisible] = useState(false);
     const [data, setData] = useState({});
+    const [visiblePreview, setVisiblePreview] = useState(null);
 
     const handleEdit = record => {
         setVisible(true);
@@ -130,7 +132,25 @@ const Com = props => {
             >
                 <Form ref={v => (formRef.current = v)} colorId={data._id} updateColor={true} />
             </Modal>
-
+            <Modal
+                title="预览"
+                visible={Boolean(visiblePreview)}
+                width="400px"
+                footer={null}
+                onCancel={() => {
+                    setVisiblePreview(null);
+                }}
+            >
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div
+                        style={{
+                            width: '200px',
+                            height: '200px',
+                            background: visiblePreview && visiblePreview.value,
+                        }}
+                    />
+                </div>
+            </Modal>
             <Table
                 rowKey={record => record._id}
                 columns={columns}

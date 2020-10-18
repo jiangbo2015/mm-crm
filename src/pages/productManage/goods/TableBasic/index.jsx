@@ -61,6 +61,7 @@ const Com = props => {
                 fieldsCategoryName.map((name, index) => {
                     let obj = {
                         name: values[name],
+                        sort: index + 1,
                     };
                     let nameGroup = name.split('-');
                     if (nameGroup.length >= 2) {
@@ -117,7 +118,7 @@ const Com = props => {
                         [`size-${x._id}`]: x.sizeId,
                     });
                 });
-            }, 100);
+            }, 300);
         }
     }, [visible]);
     useEffect(() => {
@@ -152,7 +153,7 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form ref={v => (formRef.current = v)} />
+                <Form ref={v => (formRef.current = v)} goodId={data._id} />
             </Modal>
             {props.fetching ? (
                 <Spin />

@@ -101,10 +101,11 @@ class DragSortingTable extends React.Component {
     };
 
     render() {
-        const { dataSource, columns } = this.props;
+        const { dataSource, columns, size, title } = this.props;
         return (
             <DndProvider backend={HTML5Backend}>
                 <Table
+                    title={() => <b>{title}</b>}
                     columns={columns}
                     dataSource={dataSource}
                     components={this.components}
@@ -112,6 +113,8 @@ class DragSortingTable extends React.Component {
                         index,
                         moveRow: this.moveRow,
                     })}
+                    pagination={false}
+                    size={size}
                 />
             </DndProvider>
         );

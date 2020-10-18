@@ -22,7 +22,7 @@ const Com = props => {
             ),
         },
         {
-            title: '编码',
+            title: '开发编号',
             dataIndex: 'code',
             key: 'code',
             // render: (val) => (<div className={styles.color} style={{background: val}}></div>)

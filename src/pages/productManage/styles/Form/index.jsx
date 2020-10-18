@@ -19,7 +19,7 @@ import styles from './index.less';
 import { connect } from 'dva';
 // import ColorCom from '../../colors/Color';
 import { uploadProps, Avatar, UploadBtn } from '../../colors/UploadCom';
-
+import { filterImageUrl } from '@/utils/utils';
 const Option = Select.Option;
 
 @connect(state => ({
@@ -37,7 +37,18 @@ const Option = Select.Option;
 class RegistrationForm extends React.Component {
     state = {
         addTagName: '',
-        scale: this.props.editData && this.props.editData.scale ? this.props.editData.scale : 58,
+        vposition:
+            this.props.editData && this.props.editData.vposition
+                ? this.props.editData.vposition
+                : 'center',
+        styleSize:
+            this.props.editData && this.props.editData.styleSize
+                ? this.props.editData.styleSize
+                : 27,
+        styleBackSize:
+            this.props.editData && this.props.editData.styleBackSize
+                ? this.props.editData.styleBackSize
+                : 27,
         loading: {
             imgUrl: false,
             svgUrl: false,
@@ -158,30 +169,8 @@ class RegistrationForm extends React.Component {
         };
 
         const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = this.state.urls;
-        const { scale } = this.state;
-        console.log({ scale });
-        // const sizeSelector = getFieldDecorator('size', {
-        //     rules: [
-        //         {
-        //             required: true,
-        //             message: '请选择尺寸',
-        //         },
-        //     ],
-        // })(
-        //     <Select placeholder="请选择">
-        //         {sizes.map((item, index) => (
-        //             <Option key={index} value={item._id}>
-        //                 {item.name}
-        //             </Option>
-        //         ))}
-        //     </Select>,
-        // );
-
-        // const checkboxOptions = [
-        //     { label: 'SOUTHERN', value: 'SOUTHERN' },
-        //     { label: 'CENTER', value: 'CENTER' },
-        //     { label: 'NORTH', value: 'NORTH' },
-        // ];
+        const { vposition, styleSize, styleBackSize } = this.state;
+        // console.log({ scale });
 
         const checkboxOptions = this.props.tagList.map(tag => ({ label: tag, value: tag }));
         const checkboxSelector = getFieldDecorator('tags', {
@@ -203,13 +192,7 @@ class RegistrationForm extends React.Component {
                             onChange={args => this.handleChange(args, 'imgUrl')}
                         >
                             {imgUrl ? (
-                                <Avatar
-                                    src={imgUrl}
-                                    style={{
-                                        width: '100%',
-                                        transform: `scale(0.${scale})`,
-                                    }}
-                                ></Avatar>
+                                <Avatar src={imgUrl}></Avatar>
                             ) : (
                                 <UploadBtn
                                     type={this.state.loading.imgUrl ? 'loading' : 'plus'}
@@ -275,7 +258,7 @@ class RegistrationForm extends React.Component {
                     款式显示相关
                 </Divider>
                 <Row>
-                    <Col span="6">
+                    {/* <Col span="6">
                         <Form.Item label="缩放比">
                             {getFieldDecorator('scale', { initialValue: 58 })(
                                 <InputNumber
@@ -291,39 +274,104 @@ class RegistrationForm extends React.Component {
                                 />,
                             )}
                         </Form.Item>
+                    </Col> */}
+                    <Col span="12">
+                        <Row>
+                            <Col span="12">
+                                <Form.Item label="款式正面宽">
+                                    {getFieldDecorator('styleSize', {
+                                        rules: [],
+                                        initialValue: 27,
+                                    })(
+                                        <InputNumber
+                                            formatter={value =>
+                                                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                            }
+                                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                            onChange={val => {
+                                                this.setState({
+                                                    ...this.state,
+                                                    styleSize: val,
+                                                });
+                                            }}
+                                        />,
+                                    )}
+                                    cm
+                                </Form.Item>
+                            </Col>
+                            <Col span="12">
+                                <Form.Item label="款式背面宽">
+                                    {getFieldDecorator('styleBackSize', {
+                                        rules: [],
+                                        initialValue: 27,
+                                    })(
+                                        <InputNumber
+                                            formatter={value =>
+                                                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                            }
+                                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                            onChange={val => {
+                                                this.setState({
+                                                    ...this.state,
+                                                    styleBackSize: val,
+                                                });
+                                            }}
+                                        />,
+                                    )}
+                                    cm
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col span="20">
+                                <Form.Item label="正背面对齐方式" info="决定搭配页面正背面对齐方式">
+                                    {getFieldDecorator('vposition', { initialValue: 'center' })(
+                                        <Select
+                                            onChange={val => {
+                                                this.setState({
+                                                    ...this.state,
+                                                    vposition: val,
+                                                });
+                                            }}
+                                        >
+                                            <Option value="center">垂直居中</Option>
+                                            <Option value="flex-start">顶部对齐</Option>
+                                            <Option value="flex-end">底部对齐</Option>
+                                        </Select>,
+                                    )}
+                                </Form.Item>
+                            </Col>
+                        </Row>
                     </Col>
-                    <Col span="6">
-                        <Form.Item label="款式正面宽">
-                            {getFieldDecorator('styleSize', {
-                                rules: [],
-                                initialValue: 27,
-                            })(
-                                <InputNumber
-                                    formatter={value =>
-                                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                    }
-                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                />,
-                            )}
-                            cm
-                        </Form.Item>
+                    <Col
+                        span="12"
+                        style={{ display: 'flex', padding: '0 50px', alignItems: vposition }}
+                    >
+                        {/* <div style={{ display: 'flex' }}> */}
+                        <div
+                            style={{
+                                width: '160px',
+                            }}
+                        >
+                            <img
+                                src={filterImageUrl(shadowUrl)}
+                                style={{ width: `${styleSize * 2}%` }}
+                            />
+                        </div>
+                        <div
+                            style={{
+                                width: '160px',
+                            }}
+                        >
+                            <img
+                                src={filterImageUrl(shadowUrlBack)}
+                                style={{ width: `${styleBackSize * 2}%` }}
+                            />
+                        </div>
+                        {/* </div> */}
                     </Col>
-                    <Col span="6">
-                        <Form.Item label="款式背面宽">
-                            {getFieldDecorator('styleBackSize', {
-                                rules: [],
-                                initialValue: 27,
-                            })(
-                                <InputNumber
-                                    formatter={value =>
-                                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                    }
-                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                />,
-                            )}
-                            cm
-                        </Form.Item>
-                    </Col>
+
                     {/* <Col span="6"> */}
                     <Form.Item
                         label="货币"
@@ -340,19 +388,7 @@ class RegistrationForm extends React.Component {
                     </Form.Item>
                     {/* </Col> */}
                 </Row>
-                <Row>
-                    <Col span="12">
-                        <Form.Item label="正背面对齐方式" info="决定搭配页面正背面对齐方式">
-                            {getFieldDecorator('vposition', { initialValue: 'center' })(
-                                <Select>
-                                    <Option value="center">垂直居中</Option>
-                                    <Option value="flex-start">顶部对齐</Option>
-                                    <Option value="flex-end">底部对齐</Option>
-                                </Select>,
-                            )}
-                        </Form.Item>
-                    </Col>
-                </Row>
+
                 <Divider className={styles.divider} orientation="left">
                     正视图
                 </Divider>

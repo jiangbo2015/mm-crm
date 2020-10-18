@@ -46,6 +46,9 @@ class RegistrationForm extends React.Component {
                 console.log('updateColor', values);
                 this.updateFlowerColor(values);
             } else {
+                if (!values.size) {
+                    values.size = values.sizeOrigin;
+                }
                 this.addFlowerColor(values);
                 this.props.onClose();
             }
@@ -196,7 +199,8 @@ class RegistrationForm extends React.Component {
                         <p style={{ textAlign: 'center' }}>花布图</p>
                     </Col>
                     <Col span="16">
-                        <Form.Item label={<span>编号</span>}>
+                        {/* 编号改“开发编号”，下面请添加一个非必填项：“印花编号”，供业务人员一旦该花布进入打样环节的时候，可以填写印花厂编号，以备后查 */}
+                        <Form.Item label={<span>开发编号</span>}>
                             {getFieldDecorator('code', {
                                 rules: [
                                     {
@@ -206,6 +210,9 @@ class RegistrationForm extends React.Component {
                                     },
                                 ],
                             })(<Input style={{ width: '160px' }} />)}
+                        </Form.Item>
+                        <Form.Item label={<span>印花编号</span>}>
+                            {getFieldDecorator('flowerCode')(<Input style={{ width: '160px' }} />)}
                         </Form.Item>
                         <Form.Item label={<span>原始画布单循环宽度(cm)</span>}>
                             {getFieldDecorator('sizeOrigin', {
@@ -217,15 +224,8 @@ class RegistrationForm extends React.Component {
                                 ],
                             })(<InputNumber min={1} step={1} />)}
                         </Form.Item>
-                        <Form.Item label={<span>画布单循环宽度(cm)</span>}>
-                            {getFieldDecorator('size', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input size!',
-                                    },
-                                ],
-                            })(<InputNumber min={1} step={1} />)}
+                        <Form.Item label={<span>实际画布单循环宽度(cm)</span>}>
+                            {getFieldDecorator('size', {})(<InputNumber min={1} step={1} />)}
                         </Form.Item>
                     </Col>
                 </Row>
