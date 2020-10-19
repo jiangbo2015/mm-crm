@@ -348,26 +348,39 @@ class RegistrationForm extends React.Component {
                         span="12"
                         style={{ display: 'flex', padding: '0 50px', alignItems: vposition }}
                     >
-                        {/* <div style={{ display: 'flex' }}> */}
                         <div
                             style={{
-                                width: '160px',
+                                color: 'rgba(0,0,0,0.2)',
+                                position: 'absolute',
+                                top: '20px',
+                                left: '160px',
                             }}
                         >
-                            <img
-                                src={filterImageUrl(shadowUrl)}
-                                style={{ width: `${styleSize * 2}%` }}
-                            />
+                            预览显示区
                         </div>
                         <div
                             style={{
                                 width: '160px',
                             }}
                         >
-                            <img
-                                src={filterImageUrl(shadowUrlBack)}
-                                style={{ width: `${styleBackSize * 2}%` }}
-                            />
+                            {shadowUrl ? (
+                                <img
+                                    src={filterImageUrl(shadowUrl)}
+                                    style={{ width: `${styleSize * 2}%` }}
+                                />
+                            ) : null}
+                        </div>
+                        <div
+                            style={{
+                                width: '160px',
+                            }}
+                        >
+                            {shadowUrlBack ? (
+                                <img
+                                    src={filterImageUrl(shadowUrlBack)}
+                                    style={{ width: `${styleBackSize * 2}%` }}
+                                />
+                            ) : null}
                         </div>
                         {/* </div> */}
                     </Col>
