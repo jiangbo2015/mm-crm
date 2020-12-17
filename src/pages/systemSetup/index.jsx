@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Input, Button, Icon, notification, Row, Col, Upload } from 'antd';
+import { Card, Input, Button, notification, Row, Col, Upload } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import { uploadProps, Avatar, UploadBtn } from '../productManage/colors/UploadCom';

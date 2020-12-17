@@ -1,19 +1,21 @@
 import React from 'react';
 import lodash from 'lodash';
-import { Form, Input, Checkbox, Select } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Checkbox, Select } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 import { connect } from 'dva';
 const { Option } = Select;
 
 @connect(state => ({
-    channelList: state.channel.list || [],
+    channelList:  {},
     goodsList: state.goods.list || [],
     productorList: state.user.productorList.docs || [],
 }))
 class RegistrationForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { channelList, productorList, editId, goodsList } = this.props;
+        const { productorList, editId, goodsList } = this.props;
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -32,21 +34,21 @@ class RegistrationForm extends React.Component {
                 },
             },
         };
-        let usedChannels = [];
-        productorList.map(p => {
-            if (p._id != editId) {
-                usedChannels = usedChannels.concat(usedChannels, p.channels);
-            }
-        });
-        let selectChannels = lodash.differenceBy(channelList.docs, usedChannels, '_id');
+        // let usedChannels = [];
+        // productorList.map(p => {
+        //     if (p._id != editId) {
+        //         usedChannels = usedChannels.concat(usedChannels, p.channels);
+        //     }
+        // });
+        // let selectChannels = lodash.differenceBy(channelList.docs, usedChannels, '_id');
 
         let plainOptions = [];
-        selectChannels.map(x => {
-            plainOptions.push({
-                label: x.name,
-                value: x._id,
-            });
-        });
+        // selectChannels.map(x => {
+        //     plainOptions.push({
+        //         label: x.name,
+        //         value: x._id,
+        //     });
+        // });
         const goodsOptions = goodsList.map(g => ({
             label: g.name,
             value: g._id,
@@ -115,11 +117,11 @@ class RegistrationForm extends React.Component {
                     })(<Input />)}
                 </Form.Item>
 
-                <Form.Item label="通道">
+                {/* <Form.Item label="通道">
                     {getFieldDecorator('channels', {
                         rules: [],
                     })(<CheckboxGroup options={plainOptions} />)}
-                </Form.Item>
+                </Form.Item> */}
 
                 <Form.Item label="可见商品">
                     {getFieldDecorator('goods', {

@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, Typography, Alert, Button, Modal, Row, Col, Input } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TableBasic from './TableBasic';
-import Form from './Form';
-import { connect } from 'dva';
+// import Form from './Form';
+import { connect } from 'umi';
 
 const { Search } = Input;
 
@@ -12,24 +12,12 @@ const Com = props => {
     const [visible, setVisible] = useState(false);
     const [styleNo, setStyleNo] = useState(false);
     useEffect(() => {
-        props.dispatch({
-            type: 'style/get',
-            payload: {
-                limit: 10,
-            },
-        });
         // props.dispatch({
-        //     type: 'style/getColorList',
+        //     type: 'style/get',
+        //     payload: {
+        //         limit: 10,
+        //     },
         // });
-        props.dispatch({
-            type: 'global/fetchSizeList',
-        });
-        props.dispatch({
-            type: 'goods/getList',
-        });
-        props.dispatch({
-            type: 'style/getTagList',
-        });
     }, []);
 
     const handleSearch = value => {
@@ -44,28 +32,7 @@ const Com = props => {
     };
 
     const handleSubmit = () => {
-        console.log('handleSubmit');
-        formRef.current.validateFields((err, values) => {
-            console.log(err, values);
-            if (!err) {
-                const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = props;
-                // console.log(plainColors, flowerColors, styleImgUrl);
-                props.dispatch({
-                    type: 'style/addStyle',
-                    payload: {
-                        ...values,
-
-                        imgUrl,
-                        svgUrl,
-                        svgUrlBack,
-                        shadowUrl,
-                        shadowUrlBack,
-                    },
-                });
-                setVisible(false);
-                this.handleClear();
-            }
-        });
+       
     };
     const handleClear = () => {
         console.log('handleClear');
@@ -87,7 +54,7 @@ const Com = props => {
     return (
         <PageHeaderWrapper>
             <Row style={{ marginBottom: '10px' }}>
-            <Col span="8">
+                <Col span="8">
                     <Search
                         placeholder="请输入款式编号"
                         onSearch={value => handleSearch(value)}
@@ -123,7 +90,7 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form ref={v => (formRef.current = v)} />
+                {/* <Form ref={v => (formRef.current = v)} /> */}
             </Modal>
         </PageHeaderWrapper>
     );

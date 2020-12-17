@@ -1,7 +1,8 @@
-import { Avatar, Icon, Menu, Spin } from 'antd';
+import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Menu, Spin } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
-import router from 'umi/router';
+import { history } from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
@@ -21,7 +22,7 @@ class AvatarDropdown extends React.Component {
             return;
         }
 
-        router.push(`/account/${key}`);
+        history.push(`/account/${key}`);
     };
 
     render() {
@@ -36,20 +37,20 @@ class AvatarDropdown extends React.Component {
             <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
                 {menu && (
                     <Menu.Item key="center">
-                        <Icon type="user" />
+                        <UserOutlined />
                         个人中心
                     </Menu.Item>
                 )}
                 {menu && (
                     <Menu.Item key="settings">
-                        <Icon type="setting" />
+                        <SettingOutlined />
                         个人设置
                     </Menu.Item>
                 )}
                 {menu && <Menu.Divider />}
 
                 <Menu.Item key="logout">
-                    <Icon type="logout" />
+                    <LogoutOutlined />
                     退出登录
                 </Menu.Item>
             </Menu>

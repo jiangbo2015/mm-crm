@@ -10,7 +10,7 @@ import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
 const Model = {
-    namespace: 'channel',
+    namespace: 'capsule',
     state: {
         list: [],
     },
@@ -20,7 +20,7 @@ const Model = {
             console.log(res);
             if (res.success) {
                 yield put({
-                    type: 'setChannelList',
+                    type: 'setCapsuleList',
                     payload: res.data,
                 });
             }
@@ -57,7 +57,7 @@ const Model = {
         },
     },
     reducers: {
-        setChannelList(state, { payload }) {
+        setCapsuleList(state, { payload }) {
             return {
                 ...state,
                 list: payload,

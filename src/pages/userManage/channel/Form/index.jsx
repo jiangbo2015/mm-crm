@@ -1,5 +1,7 @@
 import React from 'react';
-import { Form, Input, Select } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Select } from 'antd';
 const { Option } = Select;
 
 class RegistrationForm extends React.Component {

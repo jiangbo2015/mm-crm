@@ -1,5 +1,8 @@
 import React from 'react';
-import { Form, Input, Upload, Button, Row, Col, Divider, Popconfirm } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Upload, Button, Row, Col, Divider, Popconfirm } from 'antd';
 
 import { uploadProps, Avatar, UploadBtn } from '../../colors/UploadCom';
 import Table from '@/components/Table/SortTable';
@@ -196,7 +199,7 @@ class RegistrationForm extends React.Component {
                     <Col span="2">
                         <Button
                             shape="circle"
-                            icon="plus"
+                            icon={<PlusOutlined />}
                             type="primary"
                             onClick={this.handleAdd}
                         />

@@ -126,60 +126,51 @@ class RegistrationForm extends React.Component {
         };
         return (
             <Form {...formItemLayout} name="inputDesiner">
+                <Divider>基本信息</Divider>
                 <Row>
-                    <Col span="8">
-                        <Form.Item label={<span>编号</span>}>
-                            {getFieldDecorator('code', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input codex!',
-                                        whitespace: true,
-                                    },
-                                ],
-                            })(<Input style={{ width: '160px' }} />)}
+                    <Col span="16">
+                        <Form.Item
+                            label={<span>中文名</span>}
+                            name="namecn"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input namecn!',
+                                    whitespace: true,
+                                },
+                            ]}
+                        >
+                            <Input style={{ width: '160px' }} />
                         </Form.Item>
-                        <Form.Item label={<span>颜色值</span>}>
-                            {getFieldDecorator('value', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input value!',
-                                        whitespace: true,
-                                    },
-                                ],
-                            })(<Input style={{ width: '160px' }} />)}
-                        </Form.Item>
-                        <Form.Item label={<span>中文名</span>}>
-                            {getFieldDecorator('namecn', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input namecn!',
-                                        whitespace: true,
-                                    },
-                                ],
-                            })(<Input style={{ width: '160px' }} />)}
-                        </Form.Item>
-                        <Form.Item label={<span>英文名</span>}>
-                            {getFieldDecorator('nameen', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input nameen!',
-                                        whitespace: true,
-                                    },
-                                ],
-                            })(<Input style={{ width: '160px' }} />)}
+                        <Form.Item
+                            label={<span>英文名</span>}
+                            name="nameen"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input namecn!',
+                                    whitespace: true,
+                                },
+                            ]}
+                        >
+                            <Input style={{ width: '160px' }} />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row>
-                    <Col span="24">
-                        <Form.Item label="可用商品">
-                            {getFieldDecorator('goodsId')(
-                                <Checkbox.Group options={this.checkboxOptions} />,
-                            )}
+                    <Col span="16">
+                        <Form.Item
+                            label={<span>介绍</span>}
+                            name="description"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input description!',
+                                    whitespace: true,
+                                },
+                            ]}
+                        >
+                            <Input.TextArea rows={4} />
                         </Form.Item>
                     </Col>
                 </Row>

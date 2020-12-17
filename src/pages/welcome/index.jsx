@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
-import { Card, Typography, Alert, Row, Modal, Icon } from 'antd';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Card, Typography, Alert, Row, Modal } from 'antd';
 
 import From from './From';
 
@@ -29,6 +31,7 @@ const Welcome = props => {
     };
     return (
         // <PageHeaderWrapper>
+        // </PageHeaderWrapper>
         <Card style={{ height: '100%' }}>
             <Alert
                 message="使用说明"
@@ -59,8 +62,7 @@ const Welcome = props => {
                         style={{ marginRight: '20px' }}
                     >
                         {currentUser.role === 0 ? (
-                            <Icon
-                                type="delete"
+                            <DeleteOutlined
                                 style={{
                                     fontSize: '14px',
                                     position: 'absolute',
@@ -69,8 +71,7 @@ const Welcome = props => {
                                 }}
                                 onClick={() => {
                                     handleDel(h._id);
-                                }}
-                            />
+                                }} />
                         ) : null}
                         <a href={h.url}>
                             <div
@@ -81,7 +82,7 @@ const Welcome = props => {
                                     flexDirection: 'column',
                                 }}
                             >
-                                <Icon
+                                <LegacyIcon
                                     // type="play-square"
                                     // style={{
                                     //     color: 'green',
@@ -107,17 +108,14 @@ const Welcome = props => {
                             setEdit(true);
                         }}
                     >
-                        <Icon
-                            type="plus"
+                        <PlusOutlined
                             style={{
                                 fontSize: '24px',
-                            }}
-                        />
+                            }} />
                     </Card>
                 ) : null}
             </Row>
         </Card>
-        // </PageHeaderWrapper>
     );
 };
 export default connect(({ system, user }) => ({

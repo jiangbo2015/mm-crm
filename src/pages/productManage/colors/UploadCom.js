@@ -1,6 +1,7 @@
 import React from 'react';
 import { filterImageUrl } from '@/utils/utils';
-import { Col, Upload, Icon } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Col, Upload } from 'antd';
 
 import { ReactSVG } from 'react-svg';
 import styles from './index.less';
@@ -30,7 +31,7 @@ export const uploadProps = {
 
 export const UploadBtn = ({ type }) => (
     <div>
-        <Icon type={type} />
+        <LegacyIcon type={type} />
         <div className="ant-upload-text">Upload</div>
     </div>
 );

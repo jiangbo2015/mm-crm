@@ -1,6 +1,8 @@
 import React from 'react';
+import { PlusSquareOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
 import {
-    Form,
     Input,
     Row,
     Col,
@@ -8,7 +10,6 @@ import {
     InputNumber,
     Tooltip,
     Divider,
-    Icon,
     Checkbox,
     message,
     Popover,
@@ -228,10 +229,7 @@ class RegistrationForm extends React.Component {
                                 <Tooltip title="不同通道会根据系统设施汇率显示价格">
                                     <span>
                                         价格(人民币)&nbsp;
-                                        <Icon
-                                            style={{ color: 'red' }}
-                                            type="question-circle"
-                                        ></Icon>
+                                        <QuestionCircleOutlined style={{ color: 'red' }}></QuestionCircleOutlined>
                                     </span>
                                 </Tooltip>
                             }
@@ -555,7 +553,7 @@ class RegistrationForm extends React.Component {
                                     </div>
                                 }
                             >
-                                <Icon type="plus-square" />
+                                <PlusSquareOutlined />
                             </Popover>
                         </div>
                     </Col>

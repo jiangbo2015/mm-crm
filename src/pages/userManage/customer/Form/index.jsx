@@ -1,5 +1,7 @@
 import React from 'react';
-import { Form, Input, Row, Select, Col } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Row, Select, Col } from 'antd';
 // import wcc from 'world-countries-capitals';
 import { connect } from 'dva';
 
@@ -7,7 +9,7 @@ const { Option } = Select;
 // const allCountries = wcc.getAllCountries();
 // console.log(allCountries);
 @connect(state => ({
-    channelList: state.channel.list || [],
+    channelList: null,
 }))
 class RegistrationForm extends React.Component {
     state = {

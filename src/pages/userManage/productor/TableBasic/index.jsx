@@ -18,15 +18,6 @@ const Com = props => {
             key: 'name',
         },
         {
-            title: '通道管理',
-            dataIndex: 'role',
-            render: (text, record) => {
-                const channelsName = record.channels.map(c => c.name);
-                return <div>{channelsName.toString()}</div>;
-            },
-        },
-
-        {
             title: '操作',
             dataIndex: 'action',
             key: 'action',

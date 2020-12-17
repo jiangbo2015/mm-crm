@@ -1,17 +1,7 @@
 import React from 'react';
-import {
-    Form,
-    Input,
-    Row,
-    Select,
-    Col,
-    Upload,
-    Icon,
-    Divider,
-    Button,
-    notification,
-    message,
-} from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Row, Select, Col, Upload, Divider, Button, notification, message } from 'antd';
 import styles from './index.less';
 const { Option } = Select;
 const { Search } = Input;

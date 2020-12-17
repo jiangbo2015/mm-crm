@@ -1,6 +1,6 @@
-import { Alert, Checkbox, Icon } from 'antd';
+import { Alert, Checkbox } from 'antd';
 import React, { Component } from 'react';
-import Link from 'umi/link';
+import { Link } from 'umi';
 import { connect } from 'dva';
 import LoginComponents from './components/Login';
 import styles from './style.less';

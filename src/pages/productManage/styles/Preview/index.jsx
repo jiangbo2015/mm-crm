@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Spin, Row, Col, Slider, InputNumber, Icon, Button } from 'antd';
+import { MinusSquareOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { Spin, Row, Col, Slider, InputNumber, Button } from 'antd';
 
 import ReactSVG from './react-svg';
 import StyleImg from './style-img';
@@ -187,7 +188,7 @@ class Preview extends Component {
                                 type="flex"
                             >
                                 {/* <Row type="flex"> */}
-                                <Icon type="minus-square" />
+                                <MinusSquareOutlined />
                                 {/* <div> */}
                                 <Slider
                                     style={{ width: '100%' }}
@@ -200,7 +201,7 @@ class Preview extends Component {
                                     disabled={curColor.type === 0}
                                 />
                                 {/* </div> */}
-                                <Icon type="plus-square" />
+                                <PlusSquareOutlined />
                                 {/* </Row> */}
                             </Col>
                             <Col span={4}>

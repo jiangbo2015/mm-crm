@@ -1,5 +1,8 @@
 import React from 'react';
-import { Form, Input, Select, Checkbox, Row, Col, Button } from 'antd';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Select, Checkbox, Row, Col, Button } from 'antd';
 const { Option } = Select;
 import { connect } from 'dva';
 import styles from './index.less';
@@ -99,7 +102,7 @@ class RegistrationForm extends React.Component {
                                 <Button
                                     shape="circle"
                                     className={styles.del}
-                                    icon="delete"
+                                    icon={<DeleteOutlined />}
                                     type="danger"
                                     size="small"
                                     onClick={e => this.handleDelete(index)}
@@ -110,7 +113,7 @@ class RegistrationForm extends React.Component {
                     <Col span="2">
                         <Button
                             shape="circle"
-                            icon="plus"
+                            icon={<PlusOutlined />}
                             type="primary"
                             style={{ marginTop: '5px' }}
                             onClick={this.handleAdd}

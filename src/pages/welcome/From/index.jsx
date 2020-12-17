@@ -1,5 +1,7 @@
 import React from 'react';
-import { Form, Input, Select, Row, Col, notification, Upload, Button } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Select, Row, Col, notification, Upload, Button } from 'antd';
 // var isHexcolor = require('is-hexcolor');
 import { connect } from 'dva';
 
