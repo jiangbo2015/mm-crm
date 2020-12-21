@@ -1,5 +1,5 @@
-import { routerRedux } from 'dva/router';
-import { stringify } from 'querystring';
+// import { routerRedux } from 'dva/router';
+// import { stringify } from 'querystring';
 import { getList as queryList, del, orderDownload } from '@/services/order';
 
 const Model = {

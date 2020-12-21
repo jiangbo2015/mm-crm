@@ -1,7 +1,6 @@
 import React from 'react';
 import { filterImageUrl } from '@/utils/utils';
-import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { Col, Upload } from 'antd';
+import { Col, Upload, Icon } from 'antd';
 import styles from './index.less';
 export const Avatar = ({ src, onLoad }) => (
     <img src={`${filterImageUrl(src)}`} alt="avatar" style={{ width: '100%' }} onLoad={onLoad} />
@@ -15,20 +14,19 @@ const typeProps = {
 export const uploadProps = {
     name: 'file',
     listType: 'picture-card',
-    className: styles.uploader,
     showUploadList: false,
     action: `/api/common/uploadkit`,
 };
 
 export const UploadBtn = ({ type }) => (
     <div>
-        <LegacyIcon type={type} />
+        <Icon type={type} />
         <div className="ant-upload-text">Upload</div>
     </div>
 );
 
 const UploadCom = ({ type, isPlain, handleChange, selectedPlainColor, selectedFlowerColor }) => {
-    console.log(type, typeProps[type]);
+    // console.log(type, typeProps[type]);
     const selected = isPlain ? selectedPlainColor : selectedFlowerColor;
     return (
         <Col span="8" className={styles.center}>

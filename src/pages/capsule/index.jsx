@@ -42,38 +42,25 @@ const Com = props => {
             },
         });
     };
-
+    const handleClear = () => {
+        console.log('handleClear');
+        // formRef.current.resetFields();
+    };
     const handleSubmit = () => {
         // console.log('handleSubmit');
         formRef.current.validateFields((err, values) => {
-            console.log(err, values);
             if (!err) {
-                const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = props;
-                // console.log(plainColors, flowerColors, styleImgUrl);
+                console.log('values', values);
                 props.dispatch({
-                    type: 'style/addStyle',
-                    payload: {
-                        ...values,
-
-                        imgUrl,
-                        svgUrl,
-                        svgUrlBack,
-                        shadowUrl,
-                        shadowUrlBack,
-                    },
+                    type: 'capsule/add',
+                    payload: values,
                 });
                 setVisible(false);
                 this.handleClear();
             }
         });
     };
-    const handleClear = () => {
-        console.log('handleClear');
-        formRef.current.resetFields();
-        props.dispatch({
-            type: 'style/resetFields',
-        });
-    };
+
     const handlePageChange = page => {
         // props.dispatch({
         //     type: 'style/get',
@@ -115,6 +102,7 @@ const Com = props => {
                 visible={visible}
                 width="900px"
                 destroyOnClose={true}
+                footer={null}
                 onOk={() => {
                     handleSubmit();
                 }}
@@ -123,7 +111,7 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form ref={v => (formRef.current = v)} />
+                <Form />
             </Modal>
         </PageHeaderWrapper>
     );

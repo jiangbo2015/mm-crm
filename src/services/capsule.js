@@ -27,3 +27,4 @@ export async function update(data) {
         data,
     });
 }
+// {/* <Icon type="copyright" /> */}

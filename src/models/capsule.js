@@ -5,7 +5,7 @@ import {
     add as addChannel,
     update as udpateChannel,
     del as deleteChannel,
-} from '@/services/channel';
+} from '@/services/capsule';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
@@ -28,7 +28,7 @@ const Model = {
 
         *add({ payload }, { put, call }) {
             const res = yield call(addChannel, payload);
-            console.log(res);
+            console.log(payload);
             if (res.success) {
                 yield put({
                     type: 'getList',

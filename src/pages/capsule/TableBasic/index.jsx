@@ -8,6 +8,12 @@ import { getGoodsParamsToValue } from '@/utils/utils';
 const Com = props => {
     const columns = [
         {
+            title: '封面图',
+            dataIndex: 'covermap',
+            key: 'covermap',
+            render: url => <img width="100" src={url} />,
+        },
+        {
             title: '中文名',
             dataIndex: 'namecn',
             key: 'namecn',
@@ -149,11 +155,11 @@ const Com = props => {
                 rowKey={record => record._id}
                 columns={columns}
                 loading={props.fetching}
-                dataSource={props.colorList.docs}
+                dataSource={props.capsuleList.docs}
                 pagination={{
-                    total: props.colorList.total,
-                    current: parseInt(props.colorList.page, 10),
-                    pageSize: props.colorList.limit,
+                    total: props.capsuleList.total,
+                    current: parseInt(props.capsuleList.page, 10),
+                    pageSize: props.capsuleList.limit,
                     onChange: props.onPageChange,
                 }}
             />
@@ -161,7 +167,7 @@ const Com = props => {
     );
 };
 
-export default connect(({ style, loading }) => ({
-    colorList: style.colorList,
-    fetching: loading.effects['style/getColorList'],
+export default connect(({ capsule, loading }) => ({
+    capsuleList: capsule.list,
+    fetching: loading.effects['capsule/getList'],
 }))(Com);

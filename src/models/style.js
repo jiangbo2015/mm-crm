@@ -249,8 +249,6 @@ const Model = {
         *updateColor({ payload }, { put, call, select }) {
             // let goods = getGoodsParams(payload);
             const res = yield call(colorUpdate, { ...payload });
-
-            console.log(res);
             if (res.success) {
                 notification.success({
                     message: '修改成功',

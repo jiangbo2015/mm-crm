@@ -122,7 +122,7 @@ const Com = props => {
     );
 };
 
-export default connect(({ channel, loading }) => ({
+export default connect(({  loading }) => ({
     channelList: channel.list,
     fetching: loading.effects['channel/getList'],
 }))(Com);

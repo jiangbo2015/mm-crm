@@ -1,194 +1,314 @@
-import React from 'react';
-import { Form } from '@ant-design/compatible';
+import React, { useEffect, useState } from 'react';
+// import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Input, Checkbox, Divider, Row, Col, notification, Upload, Button } from 'antd';
+import { Input, Form, Divider, Row, Col, Select, Upload, Button } from 'antd';
+import { uploadProps, Avatar, UploadBtn } from '../../productManage/colors/UploadCom';
+const { Option } = Select;
+const { useForm } = Form;
+import { filterImageUrl } from '@/utils/utils';
+import styles from './index.less';
+console.log(styles);
+
 var isHexcolor = require('is-hexcolor');
 import { connect } from 'dva';
 
-@connect(state => ({
-    currentSize: state.global.currentSize,
-    goodsList: state.goods.list,
-}))
-class RegistrationForm extends React.Component {
-    state = {
-        colorImgUrl: '',
-        colorImgWidth: 0,
-        colorImgHeight: 0,
-    };
-    checkboxOptions = this.props.goodsList.map(good => ({
-        label: good.aliasName,
-        value: good._id,
-    }));
+// @connect(state => ({
+//     currentSize: state.global.currentSize,
+//     authorId: state.user.currentUser._id,
+//     goodsList: state.goods.list,
+// }))
+const CapsuleForm = props => {
+    const { editData, dispatch, initialValues = { status: '1' } } = props;
+    const [loading, setLoading] = useState({
+        covermap: false,
+        exhibition1: false,
+        exhibition2: false,
+        exhibition3: false,
+        exhibition4: false,
+        exhibition5: false,
+    });
+    const [urls, setUrls] = useState({
+        covermap: editData ? editData.covermap : '',
+        exhibition1: editData ? editData.exhibition1 : '',
+        exhibition2: editData ? editData.exhibition2 : '',
+        exhibition3: editData ? editData.exhibition3 : '',
+        exhibition4: editData ? editData.exhibition4 : '',
+        exhibition5: editData ? editData.exhibition5 : '',
+    });
 
-    // formRef = React.createRef()
-    handleSubmit() {
-        this.props.form.validateFields((err, values) => {
-            if (err) return;
-            if (this.props.updateColor) {
-                this.updatePlainColor(values);
-            } else {
-                this.addPlainColor(values);
-            }
-            this.props.onClose();
-        });
-    }
-    handleSelectAllByGoodId = (goodId, bool) => {
-        let temp = {};
-        if (bool) {
-            let obj = this.checkboxOptions.find(c => c.id === goodId);
-            if (obj) {
-                temp[`goods-${goodId}`] = obj.checkList.map(c => c.value);
-            }
-        } else {
-            temp[`goods-${goodId}`] = [];
-        }
-
-        this.props.form.setFieldsValue({
-            ...temp,
-        });
-    };
-    handleAdd = info => {
+    const handleChange = (info, type) => {
+        console.log(info);
         if (info.file.status === 'uploading') {
-            this.setState({ loading: true });
+            let tempLoading = {};
+            tempLoading[type] = true;
+            let tempUrls = {};
+            tempUrls[type] = '';
+            setLoading({
+                ...loading,
+                ...tempLoading,
+            });
+            setUrls({
+                ...urls,
+                ...tempUrls,
+            });
+
             return;
         }
         if (info.file.status === 'done') {
-            this.setState({
-                colorImgUrl: info.file.response.data.url,
-                loading: false,
+            let tempLoading = {};
+            tempLoading[type] = false;
+            let tempUrls = {};
+            tempUrls[type] = info.file.response.data.url;
+            setLoading({
+                ...loading,
+                ...tempLoading,
+            });
+            setUrls({
+                ...urls,
+                ...tempUrls,
             });
         }
     };
 
-    updatePlainColor = params => {
-        if (isHexcolor(params.value)) {
-            this.props.dispatch({
-                type: 'style/updateColor',
-                payload: {
-                    _id: this.props.colorId,
-                    // value,
-                    ...params,
-                },
-            });
-        } else {
-            notification.error({
-                message: '颜色格式不合法',
+    const onFinish = values => {
+        if (dispatch) {
+            dispatch({
+                type: 'capsule/add',
+                payload: values,
             });
         }
     };
 
-    addPlainColor = params => {
-        if (isHexcolor(params.value)) {
-            this.props.dispatch({
-                type: 'style/addColor',
-                payload: {
-                    type: 0,
-                    // value,
-                    ...params,
-                },
-            });
-        } else {
-            notification.error({
-                message: '颜色格式不合法',
-            });
-        }
-    };
-
-    imgOnLoad = e => {
-        let imgTemp = new Image();
-        imgTemp.src = e.target.src;
-        console.log(imgTemp.width, imgTemp.height);
-        this.setState({
-            colorImgHeight: imgTemp.height,
-            colorImgWidth: imgTemp.width,
-        });
-    };
-    render() {
-        const { getFieldDecorator } = this.props.form;
-
-        const formItemLayout = {
-            labelCol: {
-                xs: {
-                    span: 24,
-                },
-                sm: {
-                    span: 8,
-                },
+    const { authorId } = props;
+    const formItemLayout = {
+        labelCol: {
+            xs: {
+                span: 24,
             },
-            wrapperCol: {
-                xs: {
-                    span: 24,
-                },
-                sm: {
-                    span: 16,
-                },
+            sm: {
+                span: 8,
             },
-        };
-        return (
-            <Form {...formItemLayout} name="inputDesiner">
-                <Divider>基本信息</Divider>
-                <Row>
-                    <Col span="16">
-                        <Form.Item
-                            label={<span>中文名</span>}
-                            name="namecn"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input namecn!',
-                                    whitespace: true,
-                                },
-                            ]}
-                        >
-                            <Input style={{ width: '160px' }} />
-                        </Form.Item>
-                        <Form.Item
-                            label={<span>英文名</span>}
-                            name="nameen"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input namecn!',
-                                    whitespace: true,
-                                },
-                            ]}
-                        >
-                            <Input style={{ width: '160px' }} />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="16">
-                        <Form.Item
-                            label={<span>介绍</span>}
-                            name="description"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input description!',
-                                    whitespace: true,
-                                },
-                            ]}
-                        >
-                            <Input.TextArea rows={4} />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="2"></Col>
-                    <Col span="8">
-                        <Form.Item>
-                            <Button type="primary" onClick={this.handleSubmit.bind(this)}>
-                                确认
-                            </Button>
-                        </Form.Item>
-                    </Col>
-                </Row>
-            </Form>
-        );
-    }
-}
+        },
+        wrapperCol: {
+            xs: {
+                span: 24,
+            },
+            sm: {
+                span: 16,
+            },
+        },
+    };
+    return (
+        <Form
+            {...formItemLayout}
+            name="inputDesiner"
+            onFinish={onFinish}
+            initialValues={initialValues}
+        >
+            <Row>
+                <Col span="4">
+                    <Upload
+                        {...uploadProps}
+                        // beforeUpload={this.beforeUpload}
+                        onChange={args => handleChange(args, 'covermap')}
+                    >
+                        {urls.covermap ? (
+                            <Avatar src={urls.covermap}></Avatar>
+                        ) : (
+                            <UploadBtn type={loading.covermap ? 'loading' : 'plus'}></UploadBtn>
+                        )}
+                    </Upload>
+                    <p style={{ textAlign: 'center' }}>封面图</p>
+                </Col>
+                <Col span="8">
+                    <Form.Item
+                        style={{ marginBottom: 0 }}
+                        label={<span>中文名</span>}
+                        name="namecn"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input namecn!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        style={{ marginBottom: 0 }}
+                        label={<span>英文名</span>}
+                        name="nameen"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input nameen!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        style={{ marginBottom: 0 }}
+                        label={<span>状态</span>}
+                        name="status"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input status!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Select style={{ width: 120 }}>
+                            <Option value="1">发布</Option>
+                            <Option value="0">未发布</Option>
+                        </Select>
+                    </Form.Item>
+                </Col>
+                <Col span="12">
+                    <Form.Item
+                        labelCol={{
+                            xs: {
+                                span: 24,
+                            },
+                            sm: {
+                                span: 5,
+                            },
+                        }}
+                        label={<span>介绍</span>}
+                        name="description"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input description!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Input.TextArea rows={5} />
+                    </Form.Item>
+                </Col>
+            </Row>
 
-export default Form.create({
-    name: 'inputColor',
-})(RegistrationForm);
+            <Divider orientation="left" style={{ margin: '0 0 16px 0' }}>
+                展示图
+            </Divider>
+            <Form.Item hidden label="修改者" name="author" value={authorId}>
+                <Input />
+            </Form.Item>
+            <Form.Item hidden label="封面图" name="covermap" value={urls.covermap}>
+                <Input />
+            </Form.Item>
+            <Form.Item hidden label="展示图1" name="exhibition1" value={urls.exhibition1}>
+                <Input />
+            </Form.Item>
+            <Form.Item hidden label="展示图2" name="exhibition2" value={urls.exhibition2}>
+                <Input />
+            </Form.Item>
+            <Form.Item hidden label="展示图3" name="exhibition3" value={urls.exhibition3}>
+                <Input />
+            </Form.Item>
+            <Form.Item hidden label="展示图4" name="exhibition4" value={urls.exhibition4}>
+                <Input />
+            </Form.Item>
+            <Form.Item hidden label="展示图5" name="exhibition5" value={urls.exhibition5}>
+                <Input />
+            </Form.Item>
+            <Row flex>
+                <Col>
+                    <Upload
+                        {...uploadProps}
+                        // beforeUpload={this.beforeUpload}
+                        className={styles.uploaderCapaule1}
+                        onChange={args => handleChange(args, 'exhibition1')}
+                    >
+                        {urls.exhibition1 ? (
+                            <Avatar src={urls.exhibition1}></Avatar>
+                        ) : (
+                            <UploadBtn type={loading.exhibition1 ? 'loading' : 'plus'}></UploadBtn>
+                        )}
+                    </Upload>
+                </Col>
+                <Col>
+                    <Upload
+                        {...uploadProps}
+                        // beforeUpload={this.beforeUpload}
+                        className={styles.uploaderCapaule2}
+                        onChange={args => handleChange(args, 'exhibition2')}
+                    >
+                        {urls.exhibition2 ? (
+                            <Avatar src={urls.exhibition2}></Avatar>
+                        ) : (
+                            <UploadBtn type={loading.exhibition2 ? 'loading' : 'plus'}></UploadBtn>
+                        )}
+                    </Upload>
+                    <div style={{ display: 'flex' }}>
+                        <Upload
+                            {...uploadProps}
+                            // beforeUpload={this.beforeUpload}
+                            className={styles.uploaderCapaule3}
+                            onChange={args => handleChange(args, 'exhibition3')}
+                        >
+                            {urls.exhibition3 ? (
+                                <Avatar src={urls.exhibition3}></Avatar>
+                            ) : (
+                                <UploadBtn
+                                    type={loading.exhibition3 ? 'loading' : 'plus'}
+                                ></UploadBtn>
+                            )}
+                        </Upload>
+
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <Upload
+                                {...uploadProps}
+                                // beforeUpload={this.beforeUpload}
+                                className={styles.uploaderCapaule4}
+                                onChange={args => handleChange(args, 'exhibition4')}
+                            >
+                                {urls.exhibition4 ? (
+                                    <Avatar src={urls.exhibition4}></Avatar>
+                                ) : (
+                                    <UploadBtn
+                                        type={loading.exhibition4 ? 'loading' : 'plus'}
+                                    ></UploadBtn>
+                                )}
+                            </Upload>
+                            <Upload
+                                {...uploadProps}
+                                // beforeUpload={this.beforeUpload}
+                                className={styles.uploaderCapaule4}
+                                onChange={args => handleChange(args, 'exhibition5')}
+                            >
+                                {urls.exhibition5 ? (
+                                    <Avatar src={urls.exhibition5}></Avatar>
+                                ) : (
+                                    <UploadBtn
+                                        type={loading.exhibition5 ? 'loading' : 'plus'}
+                                    ></UploadBtn>
+                                )}
+                            </Upload>
+                        </div>
+                    </div>
+                </Col>
+            </Row>
+            <Row style={{ marginTop: '20px' }}>
+                <Col span="21"></Col>
+                <Col span="3">
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">
+                            确认
+                        </Button>
+                    </Form.Item>
+                </Col>
+            </Row>
+        </Form>
+    );
+};
+
+export default connect(state => ({
+    currentSize: state.global.currentSize,
+    authorId: state.user.currentUser._id,
+    goodsList: state.goods.list,
+}))(CapsuleForm);
