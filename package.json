@@ -23,6 +23,7 @@
     "@ant-design/compatible": "^1.0.8",
     "@ant-design/icons": "^4.0.0",
     "@ant-design/pro-layout": "^5.0.0",
+    "@ant-design/pro-table": "^2.16.4",
     "@antv/data-set": "^0.10.2",
     "@umijs/plugin-blocks": "^2.0.5",
     "@umijs/preset-ant-design-pro": "^1.0.1",

@@ -1,39 +1,32 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
+import { Table, Divider, Modal, Popconfirm, Card, Button, Input } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
-import Form from '../Form';
+import Form from '../Form/capsuleProduct';
 import { filterImageUrl } from '@/utils/utils';
 
 const Com = props => {
     const columns = [
+        // {
+        //     title: '产品',
+        //     dataIndex: 'covermap',
+        //     key: 'covermap',
+        //     render: url => <img width="100px" src={filterImageUrl(url)} />,
+        // },
         {
-            title: '封面图',
-            dataIndex: 'covermap',
-            key: 'covermap',
-            render: url => <img width="100px" src={filterImageUrl(url)} />,
+            title: '编号',
+            dataIndex: 'code',
+            key: 'code',
         },
         {
-            title: '中文名',
-            dataIndex: 'namecn',
-            key: 'namecn',
+            title: '单价',
+            dataIndex: 'price',
+            key: 'price',
         },
         {
-            title: '英文名',
-            dataIndex: 'nameen',
-            key: 'nameen',
-        },
-        {
-            title: '状态',
-            dataIndex: 'status',
-            key: 'status',
-            // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
-        },
-        {
-            title: '创建日期',
-            dataIndex: 'create_time',
-            key: 'create_time',
-            // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
+            title: '尺码段',
+            dataIndex: 'sizeList',
+            key: 'sizeList',
         },
         {
             title: '操作',
@@ -41,9 +34,6 @@ const Com = props => {
             key: 'action',
             render: (text, record) => (
                 <div>
-                    {/* <a onClick={e => handleEdit(record)}>编辑</a>*/}
-                    <a onClick={() => setVisiblePreview(record)}>产品管理</a>
-                    <Divider type="vertical" />
                     <a onClick={() => handleEdit(record)}>编辑</a>
                     <Divider type="vertical" />
                     <Popconfirm
@@ -119,18 +109,32 @@ const Com = props => {
                     />
                 </div>
             </Modal>
-            <Table
-                rowKey={record => record._id}
-                columns={columns}
-                loading={props.fetching}
-                dataSource={props.capsuleList.docs}
-                pagination={{
-                    total: props.capsuleList.total,
-                    current: parseInt(props.capsuleList.page, 10),
-                    pageSize: props.capsuleList.limit,
-                    onChange: props.onPageChange,
-                }}
-            />
+            <Card
+                title="款式列表"
+                extra={
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            setVisible(true);
+                        }}
+                    >
+                        添加
+                    </Button>
+                }
+            >
+                <Table
+                    rowKey={record => record._id}
+                    columns={columns}
+                    loading={props.fetching}
+                    dataSource={props.capsuleList.docs}
+                    pagination={{
+                        total: props.capsuleList.total,
+                        current: parseInt(props.capsuleList.page, 10),
+                        pageSize: props.capsuleList.limit,
+                        onChange: props.onPageChange,
+                    }}
+                />
+            </Card>
         </>
     );
 };

@@ -3,6 +3,7 @@ import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../Form';
+import CapsuleProduct from './capsuleProduct';
 import { filterImageUrl } from '@/utils/utils';
 
 const Com = props => {
@@ -109,15 +110,7 @@ const Com = props => {
                     setVisiblePreview(null);
                 }}
             >
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <div
-                        style={{
-                            width: '200px',
-                            height: '200px',
-                            background: visiblePreview && visiblePreview.value,
-                        }}
-                    />
-                </div>
+                <CapsuleProduct />
             </Modal>
             <Table
                 rowKey={record => record._id}
