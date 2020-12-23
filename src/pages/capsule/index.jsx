@@ -12,32 +12,20 @@ const Com = props => {
     const [visible, setVisible] = useState(false);
     const [styleNo, setStyleNo] = useState(false);
     useEffect(() => {
-        // props.dispatch({
-        //     type: 'style/get',
-        //     payload: {
-        //         limit: 10,
-        //     },
-        // });
-        // props.dispatch({
-        //     type: 'style/getColorList',
-        // });
-        // props.dispatch({
-        //     type: 'global/fetchSizeList',
-        // });
-        // props.dispatch({
-        //     type: 'goods/getList',
-        // });
-        // props.dispatch({
-        //     type: 'style/getTagList',
-        // });
+        if (props.dispatch) {
+            props.dispatch({
+                type: 'capsule/getList',
+            });
+        }
     }, []);
 
     const handleSearch = value => {
         setStyleNo(value);
         props.dispatch({
-            type: 'style/get',
+            type: 'capsule/getList',
             payload: {
-                styleNo: value,
+                namecn: value,
+                nameen: value,
                 limit: 10,
             },
         });
@@ -62,14 +50,19 @@ const Com = props => {
     };
 
     const handlePageChange = page => {
-        // props.dispatch({
-        //     type: 'style/get',
-        //     payload: {
-        //         page,
-        //         limit: 10,
-        //         styleNo: styleNo ? styleNo : '',
-        //     },
-        // });
+        let queries = {};
+        if (styleNo) {
+            queries.namecn = styleNo;
+            queries.nameen = styleNo;
+        }
+        props.dispatch({
+            type: 'capsule/getList',
+            payload: {
+                page,
+                limit: 10,
+                ...queries,
+            },
+        });
     };
     return (
         <PageHeaderWrapper>
@@ -100,7 +93,7 @@ const Com = props => {
             <Modal
                 title="添加"
                 visible={visible}
-                width="900px"
+                width="800px"
                 destroyOnClose={true}
                 footer={null}
                 onOk={() => {

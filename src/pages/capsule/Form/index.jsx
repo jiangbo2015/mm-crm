@@ -19,6 +19,8 @@ import { connect } from 'dva';
 // }))
 const CapsuleForm = props => {
     const { editData, dispatch, initialValues = { status: '1' } } = props;
+    const { authorId } = props;
+    const [form] = useForm();
     const [loading, setLoading] = useState({
         covermap: false,
         exhibition1: false,
@@ -35,7 +37,16 @@ const CapsuleForm = props => {
         exhibition4: editData ? editData.exhibition4 : '',
         exhibition5: editData ? editData.exhibition5 : '',
     });
-
+    useEffect(() => {
+        if (editData) {
+            form.setFieldsValue({
+                namecn: editData.namecn,
+                nameen: editData.nameen,
+                status: editData.status,
+                description: editData.description,
+            });
+        }
+    }, [editData]);
     const handleChange = (info, type) => {
         console.log(info);
         if (info.file.status === 'uploading') {
@@ -72,14 +83,20 @@ const CapsuleForm = props => {
 
     const onFinish = values => {
         if (dispatch) {
-            dispatch({
-                type: 'capsule/add',
-                payload: values,
-            });
+            if (editData) {
+                dispatch({
+                    type: 'capsule/update',
+                    payload: { ...values, ...urls, author: authorId, _id: editData._id },
+                });
+            } else {
+                dispatch({
+                    type: 'capsule/add',
+                    payload: { ...values, ...urls, author: authorId },
+                });
+            }
         }
     };
 
-    const { authorId } = props;
     const formItemLayout = {
         labelCol: {
             xs: {
@@ -101,6 +118,7 @@ const CapsuleForm = props => {
     return (
         <Form
             {...formItemLayout}
+            form={form}
             name="inputDesiner"
             onFinish={onFinish}
             initialValues={initialValues}
@@ -195,27 +213,6 @@ const CapsuleForm = props => {
             <Divider orientation="left" style={{ margin: '0 0 16px 0' }}>
                 展示图
             </Divider>
-            <Form.Item hidden label="修改者" name="author" value={authorId}>
-                <Input />
-            </Form.Item>
-            <Form.Item hidden label="封面图" name="covermap" value={urls.covermap}>
-                <Input />
-            </Form.Item>
-            <Form.Item hidden label="展示图1" name="exhibition1" value={urls.exhibition1}>
-                <Input />
-            </Form.Item>
-            <Form.Item hidden label="展示图2" name="exhibition2" value={urls.exhibition2}>
-                <Input />
-            </Form.Item>
-            <Form.Item hidden label="展示图3" name="exhibition3" value={urls.exhibition3}>
-                <Input />
-            </Form.Item>
-            <Form.Item hidden label="展示图4" name="exhibition4" value={urls.exhibition4}>
-                <Input />
-            </Form.Item>
-            <Form.Item hidden label="展示图5" name="exhibition5" value={urls.exhibition5}>
-                <Input />
-            </Form.Item>
             <Row flex>
                 <Col>
                     <Upload

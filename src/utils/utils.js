@@ -69,6 +69,7 @@ export const getGoodsParamsToValue = (goodsParams, categories, goodsList = []) =
 };
 
 export const filterImageUrl = url => {
+    if (!url) return null;
     let arrs = url.split('/');
     // 本地数据
     if (arrs.length >= 3) {
