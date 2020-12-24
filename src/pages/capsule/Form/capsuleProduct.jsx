@@ -10,8 +10,8 @@ import styles from './index.less';
 import { connect } from 'dva';
 const colorColumns = [
     {
-        title: '活动名称',
-        dataIndex: 'title',
+        title: '颜色/花布',
+        dataIndex: 'color',
         formItemProps: {
             rules: [
                 {
@@ -107,6 +107,12 @@ const CapsuleForm = props => {
         exhibition4: editData ? editData.exhibition4 : '',
         exhibition5: editData ? editData.exhibition5 : '',
     });
+    const [newRecord, setNewRecord] = useState({
+        id: (Math.random() * 1000000).toFixed(0),
+    });
+    const [editableKeys, setEditableRowKeys] = useState([]);
+    const [dataSource, setDataSource] = useState(defaultData);
+
     useEffect(() => {
         if (editData) {
             form.setFieldsValue({
@@ -252,11 +258,32 @@ const CapsuleForm = props => {
                 headerTitle="可编辑表格"
                 maxLength={5}
                 recordCreatorProps={{
-                    position,
+                    position: 'bottom',
                     record: newRecord,
                 }}
+                request={async () => {
+                    // console.log('--add--');
+                    return {
+                        data: dataSource,
+                    };
+                }}
+                defaultData={dataSource}
+                onChange={(...args) => {
+                    console.log(args);
+                    setDataSource(args[0]);
+                }}
+                editable={{
+                    editableKeys,
+                    onSave: async () => {
+                        // await waitTime(2000);
+                        setNewRecord({
+                            id: (Math.random() * 1000000).toFixed(0),
+                        });
+                    },
+                    onChange: setEditableRowKeys,
+                }}
                 columns={colorColumns}
-                value={defaultData}
+                value={dataSource}
             ></EditableProTable>
             <Row flex></Row>
             <Row style={{ marginTop: '20px' }}>

@@ -49,7 +49,7 @@ const Com = props => {
         },
     ];
     const formRef = useRef();
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(visible);
     const [data, setData] = useState({});
     const [visiblePreview, setVisiblePreview] = useState(null);
 
@@ -91,7 +91,7 @@ const Com = props => {
                 />
             </Modal>
             <Modal
-                title={visiblePreview ? `${visiblePreview.namecn}-产品管理` : ''}
+                title={visiblePreview ? `${visiblePreview.namecn}-款式管理` : ''}
                 visible={Boolean(visiblePreview)}
                 width="1000px"
                 footer={null}

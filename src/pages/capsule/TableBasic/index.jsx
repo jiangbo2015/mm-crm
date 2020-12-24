@@ -103,7 +103,8 @@ const Com = props => {
             </Modal>
             <Modal
                 title={visiblePreview ? `${visiblePreview.namecn}-产品管理` : ''}
-                visible={Boolean(visiblePreview)}
+                // visible={Boolean(visiblePreview)}
+                visible={true}
                 width="1000px"
                 footer={null}
                 onCancel={() => {
