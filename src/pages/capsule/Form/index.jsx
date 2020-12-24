@@ -7,7 +7,6 @@ const { Option } = Select;
 const { useForm } = Form;
 import { filterImageUrl } from '@/utils/utils';
 import styles from './index.less';
-console.log(styles);
 
 var isHexcolor = require('is-hexcolor');
 import { connect } from 'dva';
