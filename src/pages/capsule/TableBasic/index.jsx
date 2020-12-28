@@ -43,7 +43,7 @@ const Com = props => {
             render: (text, record) => (
                 <div>
                     {/* <a onClick={e => handleEdit(record)}>编辑</a>*/}
-                    <a onClick={() => setVisiblePreview(record)}>产品管理</a>
+                    <a onClick={() => setVisiblePreview(record)}>款式管理</a>
                     <Divider type="vertical" />
                     <a onClick={() => handleEdit(record)}>编辑</a>
                     <Divider type="vertical" />
@@ -67,6 +67,10 @@ const Com = props => {
     const handleEdit = record => {
         setVisible(true);
         setData(record);
+        props.dispatch({
+            type: 'capsule/setCurrentCapsule',
+            payload: record,
+        });
     };
 
     const handleDelete = record => {
@@ -102,9 +106,9 @@ const Com = props => {
                 />
             </Modal>
             <Modal
-                title={visiblePreview ? `${visiblePreview.namecn}-产品管理` : ''}
-                // visible={Boolean(visiblePreview)}
-                visible={true}
+                title={visiblePreview ? `${visiblePreview.namecn}-款式管理` : ''}
+                visible={Boolean(visiblePreview)}
+                // visible={true}
                 width="1000px"
                 footer={null}
                 onCancel={() => {

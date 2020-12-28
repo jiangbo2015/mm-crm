@@ -1,14 +1,15 @@
 import { queryNotices } from '@/services/user';
 import { notification } from 'antd';
 import { getSizeList, add, del, update } from '@/services/size';
-
+import { colorList as getColorList } from '@/services/style';
 const GlobalModel = {
     namespace: 'global',
     state: {
         collapsed: false,
         notices: [],
         sizeList: [],
-        currentSize: {
+        sizeList: [],
+        colorList: {
             values: [{}],
         },
     },
@@ -22,7 +23,16 @@ const GlobalModel = {
                 });
             }
         },
-
+        *fetchColorList({ payload }, { call, put }) {
+            const res = yield call(getColorList, { limit: 1000000 });
+            console.log('fetchColorList', res);
+            if (res.success && res.data) {
+                yield put({
+                    type: 'setColorList',
+                    payload: res.data.docs,
+                });
+            }
+        },
         *addSize({ payload }, { call, put, select }) {
             console.log(payload);
             const res = yield call(add, payload);
@@ -122,6 +132,13 @@ const GlobalModel = {
             return {
                 ...state,
                 sizeList: payload,
+            };
+        },
+
+        setColorList(state, { payload }) {
+            return {
+                ...state,
+                colorList: payload,
             };
         },
 

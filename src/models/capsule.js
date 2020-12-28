@@ -2,9 +2,13 @@ import { routerRedux } from 'dva/router';
 import { stringify } from 'querystring';
 import {
     getList as queryList,
-    add as addChannel,
-    update as udpateChannel,
-    del as deleteChannel,
+    add,
+    update,
+    del,
+    getCapsuleStyleList,
+    updateCapsuleStyle,
+    addCapsuleStyle,
+    delCapsuleStyle,
 } from '@/services/capsule';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
@@ -13,6 +17,8 @@ const Model = {
     namespace: 'capsule',
     state: {
         list: [],
+        currentCapsule: {},
+        currentCapsuleStyleList: [],
     },
     effects: {
         *getList({ payload }, { call, put }) {
@@ -27,7 +33,7 @@ const Model = {
         },
 
         *add({ payload }, { put, call }) {
-            const res = yield call(addChannel, payload);
+            const res = yield call(add, payload);
             console.log(payload);
             if (res.success) {
                 yield put({
@@ -37,7 +43,7 @@ const Model = {
         },
 
         *update({ payload }, { put, call }) {
-            const res = yield call(udpateChannel, payload);
+            const res = yield call(update, payload);
             console.log(res);
             if (res.success) {
                 yield put({
@@ -47,11 +53,52 @@ const Model = {
         },
 
         *delete({ payload }, { put, call }) {
-            const res = yield call(deleteChannel, payload);
+            const res = yield call(del, payload);
             console.log(res);
             if (res.success) {
                 yield put({
                     type: 'getList',
+                });
+            }
+        },
+        *getCapsuleStyleList(_, { call, put, select }) {
+            const currentCapsule = yield select(state => state.capsule.currentCapsule);
+            const res = yield call(getCapsuleStyleList, { capsule: currentCapsule._id });
+            console.log(res);
+            if (res.success) {
+                yield put({
+                    type: 'setCurrentCapsuleStyleList',
+                    payload: res.data,
+                });
+            }
+        },
+
+        *addCapsuleStyle({ payload }, { put, call }) {
+            const res = yield call(addCapsuleStyle, payload);
+            console.log(payload);
+            if (res.success) {
+                yield put({
+                    type: 'getCapsuleStyleList',
+                });
+            }
+        },
+
+        *updateCapsuleStyle({ payload }, { put, call }) {
+            const res = yield call(updateCapsuleStyle, payload);
+            console.log(res);
+            if (res.success) {
+                yield put({
+                    type: 'getCapsuleStyleList',
+                });
+            }
+        },
+
+        *deleteCapsuleStyle({ payload }, { put, call }) {
+            const res = yield call(delCapsuleStyle, payload);
+            console.log(res);
+            if (res.success) {
+                yield put({
+                    type: 'getCapsuleStyleList',
                 });
             }
         },
@@ -61,6 +108,18 @@ const Model = {
             return {
                 ...state,
                 list: payload,
+            };
+        },
+        setCurrentCapsule(state, { payload }) {
+            return {
+                ...state,
+                currentCapsule: payload,
+            };
+        },
+        setCurrentCapsuleStyleList(state, { payload }) {
+            return {
+                ...state,
+                currentCapsuleStyleList: payload,
             };
         },
     },

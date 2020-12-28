@@ -1,195 +1,230 @@
 import React, { useEffect, useState } from 'react';
 // import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Input, Form, Divider, Row, Col, Select, Upload, Button } from 'antd';
+import { Input, Form, Divider, Row, Col, Select, Upload, Button, InputNumber } from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
+import { PlusOutlined } from '@ant-design/icons';
 import { uploadProps, Avatar, UploadBtn } from '../../productManage/colors/UploadCom';
 const { Option } = Select;
 const { useForm } = Form;
-import styles from './index.less';
+import { filterImageUrl } from '@/utils/utils';
+// import styles from './index.less';
 import { connect } from 'dva';
-const colorColumns = [
-    {
-        title: '颜色/花布',
-        dataIndex: 'color',
-        formItemProps: {
-            rules: [
-                {
-                    required: true,
-                    message: '此项为必填项',
-                },
-            ],
-        },
-        // 第二行不允许编辑
-        editable: (text, record, index) => {
-            return index !== 1;
-        },
-        width: '30%',
-    },
-    {
-        title: '状态',
-        key: 'state',
-        dataIndex: 'state',
-        valueType: 'select',
-        valueEnum: {
-            all: { text: '全部', status: 'Default' },
-            open: {
-                text: '未解决',
-                status: 'Error',
-            },
-            closed: {
-                text: '已解决',
-                status: 'Success',
-            },
-        },
-    },
-    {
-        title: '描述',
-        dataIndex: 'decs',
-        fieldProps: (from, { rowKey }) => {
-            if (from.getFieldValue([rowKey || '', 'title']) === '不好玩') {
-                return {
-                    disabled: true,
-                };
-            }
-            return {};
-        },
-    },
-    {
-        title: '操作',
-        valueType: 'option',
-        width: 200,
-        render: (text, record, _, action) => [
-            <a
-                key="editable"
-                onClick={() => {
-                    action.startEditable?.(record.id);
-                }}
-            >
-                编辑
-            </a>,
-        ],
-    },
-];
-const defaultData = [
-    {
-        id: 624748504,
-        title: '活动名称一',
-        decs: '这个活动真好玩',
-        state: 'open',
-        created_at: '2020-05-26T09:42:56Z',
-    },
-    {
-        id: 624691229,
-        title: '活动名称二',
-        decs: '这个活动真好玩',
-        state: 'closed',
-        created_at: '2020-05-26T08:19:22Z',
-    },
-];
+
+const uploadButton = (
+    <div>
+        <PlusOutlined />
+        <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+);
+
+const ColorOptionLabel = ({ c = {} }) => (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+            style={{
+                width: '18px',
+                height: '18px',
+                background: c.type ? `url(${filterImageUrl(c.value)}?tr=w-50)` : c.value,
+            }}
+        ></div>
+        {`${c.code}(${c.namecn})`}
+    </div>
+);
+
 const CapsuleForm = props => {
-    const { editData, dispatch, initialValues = { status: '1' } } = props;
+    const { editData, dispatch, initialValues = { status: '1' }, sizeList, colorList = [] } = props;
     const { authorId } = props;
     const [form] = useForm();
-    const [loading, setLoading] = useState({
-        covermap: false,
-        exhibition1: false,
-        exhibition2: false,
-        exhibition3: false,
-        exhibition4: false,
-        exhibition5: false,
-    });
-    const [urls, setUrls] = useState({
-        covermap: editData ? editData.covermap : '',
-        exhibition1: editData ? editData.exhibition1 : '',
-        exhibition2: editData ? editData.exhibition2 : '',
-        exhibition3: editData ? editData.exhibition3 : '',
-        exhibition4: editData ? editData.exhibition4 : '',
-        exhibition5: editData ? editData.exhibition5 : '',
-    });
+    const [urls, setUrls] = useState({});
+    const [sizeOptions, setSizeOptions] = useState([]);
+    const [colorOptions, setColorOptions] = useState([]);
     const [newRecord, setNewRecord] = useState({
         id: (Math.random() * 1000000).toFixed(0),
     });
     const [editableKeys, setEditableRowKeys] = useState([]);
-    const [dataSource, setDataSource] = useState(defaultData);
-
+    const [dataSource, setDataSource] = useState([]);
+    useEffect(() => {
+        dispatch({
+            type: 'global/fetchSizeList',
+        });
+        dispatch({
+            type: 'global/fetchColorList',
+        });
+    }, []);
+    // console.log('colorList-list', colorList);
     useEffect(() => {
         if (editData) {
+            const { code, size, price, colorWithStyleImgs } = editData;
             form.setFieldsValue({
-                namecn: editData.namecn,
-                nameen: editData.nameen,
-                status: editData.status,
-                description: editData.description,
+                code,
+                size,
+                price,
             });
+            const tempData = colorWithStyleImgs.map((cs, index) => ({
+                id: (Math.random() * 1000000).toFixed(0),
+                color: cs.color,
+                imgs: {
+                    fileList: cs.imgs.map(img => ({
+                        uid: `cs-${index}`,
+                        status: 'done',
+                        url: filterImageUrl(img),
+                        response: { data: { url: img } },
+                        thumbUrl: filterImageUrl(img),
+                    })),
+                },
+            }));
+            setDataSource(tempData);
         }
     }, [editData]);
-    const handleChange = (info, type) => {
-        console.log(info);
-        if (info.file.status === 'uploading') {
-            let tempLoading = {};
-            tempLoading[type] = true;
-            let tempUrls = {};
-            tempUrls[type] = '';
-            setLoading({
-                ...loading,
-                ...tempLoading,
-            });
-            setUrls({
-                ...urls,
-                ...tempUrls,
-            });
-
-            return;
-        }
-        if (info.file.status === 'done') {
-            let tempLoading = {};
-            tempLoading[type] = false;
-            let tempUrls = {};
-            tempUrls[type] = info.file.response.data.url;
-            setLoading({
-                ...loading,
-                ...tempLoading,
-            });
-            setUrls({
-                ...urls,
-                ...tempUrls,
-            });
-        }
+    useEffect(() => {
+        setSizeOptions(
+            sizeList.map(s => ({ label: s.values.map(t => t.name).join('/'), value: s._id })),
+        );
+    }, [sizeList]);
+    useEffect(() => {
+        setColorOptions(
+            Array.isArray(colorList)
+                ? colorList.map(c => ({
+                      label: <ColorOptionLabel c={c} />,
+                      value: c._id,
+                  }))
+                : [],
+        );
+    }, [colorList]);
+    const handleChange = (info, index) => {
+        const { fileList } = info;
+        console.log(fileList);
+        const tempUrls = {
+            ...urls,
+        };
+        tempUrls[index] = fileList;
+        setUrls(tempUrls);
     };
-
+    const colorColumns = [
+        {
+            title: '颜色/花布',
+            dataIndex: 'color',
+            formItemProps: {
+                rules: [
+                    {
+                        required: true,
+                        message: '此项为必填项',
+                    },
+                ],
+            },
+            // 第二行不允许编辑
+            // editable: (text, record, index) => {
+            //     return index !== 1;
+            // },
+            valueType: 'select',
+            render: (_, record) => {
+                const c = Array.isArray(colorList)
+                    ? colorList.find(c => c._id === record.color)
+                    : {};
+                return <ColorOptionLabel c={c} />;
+            },
+            renderFormItem: item => {
+                return <Select showSearch options={colorOptions} />;
+            },
+            width: '25%',
+        },
+        {
+            title: '款式图',
+            key: 'imgs',
+            dataIndex: 'imgs',
+            width: '60%',
+            render: (text, record, _, action) => {
+                console.log(record);
+                if (record.imgs) {
+                    if (Array.isArray(record.imgs.fileList)) {
+                        return record.imgs.fileList.map(img => (
+                            <img
+                                style={{ maxHeight: '86px', maxWidth: '86px', margin: '10px' }}
+                                src={img.thumbUrl}
+                            ></img>
+                        ));
+                    }
+                }
+                return null;
+            },
+            renderFormItem: (_, data, { getFieldsValue, ...props }) => {
+                const value = Object.values(getFieldsValue())[0];
+                const fileList = value && value.imgs ? value.imgs.fileList : [];
+                return (
+                    <Upload
+                        {...uploadProps}
+                        className={'block'}
+                        listType="picture-card"
+                        showUploadList={true}
+                        fileList={fileList}
+                    >
+                        {uploadButton}
+                    </Upload>
+                );
+            },
+        },
+        {
+            title: '操作',
+            valueType: 'option',
+            width: '15%',
+            render: (text, record, _, action) => [
+                <a
+                    key="editable"
+                    onClick={() => {
+                        action.startEditable?.(record.id);
+                    }}
+                >
+                    编辑
+                </a>,
+            ],
+        },
+    ];
     const onFinish = values => {
         if (dispatch) {
+            console.log('dataSource', dataSource);
+            let colorWithStyleImgs = dataSource.map(d => ({
+                color: d.color,
+                imgs: d.imgs.fileList
+                    .filter(f => f.status === 'done')
+                    .map(f => f.response.data.url),
+            }));
             if (editData) {
                 dispatch({
-                    type: 'capsule/update',
-                    payload: { ...values, ...urls, author: authorId, _id: editData._id },
+                    type: 'capsule/updateCapsuleStyle',
+                    payload: {
+                        ...values,
+                        ...urls,
+                        author: authorId,
+                        _id: editData._id,
+                        colorWithStyleImgs,
+                    },
                 });
             } else {
                 dispatch({
-                    type: 'capsule/add',
-                    payload: { ...values, ...urls, author: authorId },
+                    type: 'capsule/addCapsuleStyle',
+                    payload: { ...values, ...urls, author: authorId, colorWithStyleImgs },
                 });
             }
         }
     };
 
     const formItemLayout = {
-        labelCol: {
-            xs: {
-                span: 24,
-            },
-            sm: {
-                span: 8,
-            },
-        },
-        wrapperCol: {
-            xs: {
-                span: 24,
-            },
-            sm: {
-                span: 16,
-            },
-        },
+        // labelCol: {
+        //     xs: {
+        //         span: 24,
+        //     },
+        //     sm: {
+        //         span: 8,
+        //     },
+        // },
+        // wrapperCol: {
+        //     xs: {
+        //         span: 24,
+        //     },
+        //     sm: {
+        //         span: 16,
+        //     },
+        // },
     };
     return (
         <Form
@@ -200,14 +235,14 @@ const CapsuleForm = props => {
             initialValues={initialValues}
         >
             <Row>
-                <Col span="8">
+                <Col span="7" style={{ paddingRight: '10px' }}>
                     <Form.Item
                         label={<span>编号</span>}
                         name="code"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input namecn!',
+                                message: 'Please input code!',
                                 whitespace: true,
                             },
                         ]}
@@ -215,25 +250,26 @@ const CapsuleForm = props => {
                         <Input />
                     </Form.Item>
                 </Col>
-                <Col span="8">
+                <Col span="5" style={{ paddingRight: '10px' }}>
                     <Form.Item
                         label={<span>单价</span>}
                         name="price"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input nameen!',
+                                message: 'Please input price!',
                                 whitespace: true,
+                                type: 'number',
                             },
                         ]}
                     >
-                        <Input />
+                        <InputNumber />
                     </Form.Item>
                 </Col>
-                <Col span="8">
+                <Col span="12">
                     <Form.Item
                         label={<span>尺码段</span>}
-                        name="status"
+                        name="size"
                         rules={[
                             {
                                 required: true,
@@ -242,10 +278,7 @@ const CapsuleForm = props => {
                             },
                         ]}
                     >
-                        <Select style={{ width: 120 }}>
-                            <Option value="1">发布</Option>
-                            <Option value="0">未发布</Option>
-                        </Select>
+                        <Select options={sizeOptions}></Select>
                     </Form.Item>
                 </Col>
             </Row>
@@ -255,7 +288,6 @@ const CapsuleForm = props => {
             </Divider>
             <EditableProTable
                 rowKey="id"
-                headerTitle="可编辑表格"
                 maxLength={5}
                 recordCreatorProps={{
                     position: 'bottom',
@@ -269,7 +301,7 @@ const CapsuleForm = props => {
                 }}
                 defaultData={dataSource}
                 onChange={(...args) => {
-                    console.log(args);
+                    // console.log(args);
                     setDataSource(args[0]);
                 }}
                 editable={{
@@ -277,7 +309,7 @@ const CapsuleForm = props => {
                     onSave: async () => {
                         // await waitTime(2000);
                         setNewRecord({
-                            id: (Math.random() * 1000000).toFixed(0),
+                            id: `eidt-${editableKeys.length}`,
                         });
                     },
                     onChange: setEditableRowKeys,
@@ -301,7 +333,8 @@ const CapsuleForm = props => {
 };
 
 export default connect(state => ({
-    currentSize: state.global.currentSize,
+    sizeList: state.global.sizeList,
+    colorList: state.global.colorList,
     authorId: state.user.currentUser._id,
     goodsList: state.goods.list,
 }))(CapsuleForm);

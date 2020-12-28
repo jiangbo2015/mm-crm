@@ -49,18 +49,18 @@ const Com = props => {
         },
     ];
     const formRef = useRef();
-    const [visible, setVisible] = useState(visible);
-    const [data, setData] = useState({});
+    const [visible, setVisible] = useState(false);
+    const [data, setData] = useState(false);
     const [visiblePreview, setVisiblePreview] = useState(null);
 
     const handleEdit = record => {
-        setVisible(true);
+        // setVisible(true);
         setData(record);
     };
 
     const handleDelete = record => {
         props.dispatch({
-            type: 'capsule/delete',
+            type: 'capsule/deleteCapsuleStyle',
             payload: {
                 _id: record._id,
                 type: 0,
@@ -68,12 +68,39 @@ const Com = props => {
         });
     };
 
+    useEffect(() => {
+        //capsule/getCapsuleStyleList
+        props.dispatch({
+            type: 'capsule/getCapsuleStyleList',
+        });
+    }, []);
+
     return (
         <>
             <Modal
-                title="编辑"
+                title="编辑胶囊款式"
+                visible={Boolean(data)}
+                width="960px"
+                footer={null}
+                destroyOnClose={true}
+                onCancel={() => {
+                    setData(false);
+                    // handleClear();
+                }}
+            >
+                <Form
+                    ref={v => (formRef.current = v)}
+                    editData={data}
+                    onClose={() => {
+                        setData(false);
+                        // handleClear();
+                    }}
+                />
+            </Modal>
+            <Modal
+                title="添加胶囊款式"
                 visible={visible}
-                width="800px"
+                width="960px"
                 footer={null}
                 destroyOnClose={true}
                 onCancel={() => {
@@ -83,32 +110,13 @@ const Com = props => {
             >
                 <Form
                     ref={v => (formRef.current = v)}
-                    editData={data}
                     onClose={() => {
                         setVisible(false);
                         // handleClear();
                     }}
                 />
             </Modal>
-            <Modal
-                title={visiblePreview ? `${visiblePreview.namecn}-款式管理` : ''}
-                visible={Boolean(visiblePreview)}
-                width="1000px"
-                footer={null}
-                onCancel={() => {
-                    setVisiblePreview(null);
-                }}
-            >
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <div
-                        style={{
-                            width: '200px',
-                            height: '200px',
-                            background: visiblePreview && visiblePreview.value,
-                        }}
-                    />
-                </div>
-            </Modal>
+
             <Card
                 title="款式列表"
                 extra={
@@ -126,11 +134,11 @@ const Com = props => {
                     rowKey={record => record._id}
                     columns={columns}
                     loading={props.fetching}
-                    dataSource={props.capsuleList.docs}
+                    dataSource={props.currentCapsuleStyleList.docs}
                     pagination={{
-                        total: props.capsuleList.total,
-                        current: parseInt(props.capsuleList.page, 10),
-                        pageSize: props.capsuleList.limit,
+                        total: props.currentCapsuleStyleList.total,
+                        current: parseInt(props.currentCapsuleStyleList.page, 10),
+                        pageSize: props.currentCapsuleStyleList.limit,
                         onChange: props.onPageChange,
                     }}
                 />
@@ -140,6 +148,6 @@ const Com = props => {
 };
 
 export default connect(({ capsule, loading }) => ({
-    capsuleList: capsule.list,
-    fetching: loading.effects['capsule/getList'],
+    currentCapsuleStyleList: capsule.currentCapsuleStyleList,
+    fetching: loading.effects['capsule/getCapsuleStyleList'],
 }))(Com);

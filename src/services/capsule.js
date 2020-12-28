@@ -27,4 +27,32 @@ export async function update(data) {
         data,
     });
 }
+
+export async function getCapsuleStyleList(data) {
+    return request('/api/capsuleStyle/getList', {
+        method: 'get',
+        params: data,
+    });
+}
+
+export async function addCapsuleStyle(data) {
+    return request('/api/capsuleStyle/add', {
+        method: 'post',
+        data,
+    });
+}
+
+export async function delCapsuleStyle(data) {
+    return request('/api/capsuleStyle/delete', {
+        method: 'post',
+        data,
+    });
+}
+
+export async function updateCapsuleStyle(data) {
+    return request('/api/capsuleStyle/update', {
+        method: 'post',
+        data,
+    });
+}
 // {/* <Icon type="copyright" /> */}
