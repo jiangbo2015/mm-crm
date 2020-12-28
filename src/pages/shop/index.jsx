@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, Typography, Alert, Button, Modal, Row, Col, Input } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TableBasic from './TableBasic';
-// import Form from './Form';
+import Form from './Form';
 import { connect } from 'umi';
 
 const { Search } = Input;
@@ -31,16 +31,6 @@ const Com = props => {
         });
     };
 
-    const handleSubmit = () => {
-       
-    };
-    const handleClear = () => {
-        console.log('handleClear');
-        formRef.current.resetFields();
-        props.dispatch({
-            type: 'style/resetFields',
-        });
-    };
     const handlePageChange = page => {
         props.dispatch({
             type: 'style/get',
@@ -63,7 +53,7 @@ const Com = props => {
                 </Col>
             </Row>
             <Card
-                title="款式管理"
+                title="网店商品管理"
                 extra={
                     <Button type="primary" onClick={() => setVisible(true)}>
                         添加
@@ -80,17 +70,15 @@ const Com = props => {
             <Modal
                 title="添加"
                 visible={visible}
-                width="900px"
+                width="1100px"
                 destroyOnClose={true}
-                onOk={() => {
-                    handleSubmit();
-                }}
+                footer={false}
                 onCancel={() => {
                     setVisible(false);
-                    handleClear();
+                    // handleClear();
                 }}
             >
-                {/* <Form ref={v => (formRef.current = v)} /> */}
+                <Form />
             </Modal>
         </PageHeaderWrapper>
     );

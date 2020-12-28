@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
-import Form from '../From';
+import Form from '../Form/index';
 import { getGoodsParamsToValue } from '@/utils/utils';
 
 const Com = props => {
