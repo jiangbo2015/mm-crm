@@ -1,6 +1,18 @@
 import { queryNotices } from '@/services/user';
 import { notification } from 'antd';
 import { getSizeList, add, del, update } from '@/services/size';
+import {
+    getBranchList,
+    add as addBranch,
+    del as delBranch,
+    update as updateBranch,
+} from '@/services/branch';
+import {
+    getBranchKindList,
+    add as addBranchKind,
+    del as delBranchKind,
+    update as updateBranchKind,
+} from '@/services/branch-kind';
 import { colorList as getColorList } from '@/services/style';
 const GlobalModel = {
     namespace: 'global',
@@ -8,7 +20,8 @@ const GlobalModel = {
         collapsed: false,
         notices: [],
         sizeList: [],
-        sizeList: [],
+        branchList: [],
+        branchKindList: [],
         colorList: {
             values: [{}],
         },
@@ -126,6 +139,92 @@ const GlobalModel = {
                 },
             });
         },
+
+        *fetchBranchList(_, { call, put, select }) {
+            const res = yield call(getBranchList);
+            if (res.success) {
+                yield put({
+                    type: 'setBranchList',
+                    payload: res.data,
+                });
+            }
+        },
+
+        *addBranch({ payload }, { call, put, select }) {
+            console.log(payload);
+            const res = yield call(addBranch, payload);
+            if (res.success) {
+                yield put({
+                    type: 'fetchBranchList',
+                });
+            }
+        },
+
+        *deleteBranch({ payload }, { call, put, select }) {
+            console.log(payload);
+            const res = yield call(delBranch, payload);
+            if (res.success) {
+                yield put({
+                    type: 'fetchBranchList',
+                });
+            }
+        },
+
+        *updateBranch({ payload }, { call, put, select }) {
+            console.log(payload);
+            const res = yield call(updateBranch, payload);
+            if (res.success) {
+                yield put({
+                    type: 'fetchBranchList',
+                });
+                notification.success({
+                    message: '修改成功',
+                });
+            }
+        },
+
+        *fetchBranchKindList({ payload }, { call, put, select }) {
+            const res = yield call(getBranchKindList, payload);
+            if (res.success) {
+                yield put({
+                    type: 'setBranchKindList',
+                    payload: res.data,
+                });
+            }
+        },
+
+        *addBranchKind({ payload }, { call, put, select }) {
+            console.log(payload);
+            const res = yield call(addBranchKind, payload);
+            if (res.success) {
+                yield put({
+                    type: 'fetchBranchKindList',
+                });
+            }
+        },
+
+        *deleteBranchKind({ payload }, { call, put, select }) {
+            console.log(payload);
+            const res = yield call(delBranchKind, payload);
+            if (res.success) {
+                yield put({
+                    type: 'fetchBranchKindList',
+                });
+            }
+        },
+
+        *updateBranchKind({ payload }, { call, put, select }) {
+            console.log(payload);
+            const res = yield call(updateBranchKind, payload);
+            if (res.success) {
+                yield put({
+                    type: 'fetchBranchKindList',
+                });
+                notification.success({
+                    message: '修改成功',
+                });
+            }
+        },
     },
     reducers: {
         setSizeList(state, { payload }) {
@@ -179,6 +278,20 @@ const GlobalModel = {
                 collapsed: false,
                 ...state,
                 notices: state.notices.filter(item => item.type !== payload),
+            };
+        },
+
+        setBranchList(state, { payload }) {
+            return {
+                ...state,
+                branchList: payload,
+            };
+        },
+
+        setBranchKindList(state, { payload }) {
+            return {
+                ...state,
+                branchKindList: payload,
             };
         },
     },

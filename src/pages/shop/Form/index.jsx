@@ -32,11 +32,24 @@ const ColorOptionLabel = ({ c = {} }) => (
 );
 
 const ShopStyleForm = props => {
-    const { editData, dispatch, initialValues = { status: '1' }, sizeList, colorList = [] } = props;
+    const {
+        editData,
+        dispatch,
+        initialValues = { status: '1' },
+        sizeList,
+        colorList = [],
+        branchList = [],
+        branchKindList = [],
+    } = props;
     const { authorId } = props;
     const [form] = useForm();
     const [urls, setUrls] = useState({});
+    const [newBranchName, setNewBranchName] = useState('');
+    const [newBranchKindName, setNewBranchKindName] = useState('');
     const [sizeOptions, setSizeOptions] = useState([]);
+    const [branchOptions, setBranchOptions] = useState([]);
+    const [branchKindOptions, setBranchKindOptions] = useState([]);
+
     const [colorOptions, setColorOptions] = useState([]);
     const [newRecord, setNewRecord] = useState({
         id: (Math.random() * 1000000).toFixed(0),
@@ -50,8 +63,14 @@ const ShopStyleForm = props => {
         dispatch({
             type: 'global/fetchColorList',
         });
+        dispatch({
+            type: 'global/fetchBranchList',
+        });
+        dispatch({
+            type: 'global/fetchBranchKindList',
+        });
     }, []);
-    // console.log('colorList-list', colorList);
+
     useEffect(() => {
         if (editData) {
             const { code, size, price, colorWithStyleImgs } = editData;
@@ -82,6 +101,14 @@ const ShopStyleForm = props => {
         );
     }, [sizeList]);
     useEffect(() => {
+        setBranchOptions(branchList.map(s => ({ label: `${s.namecn}/${s.nameen}`, value: s._id })));
+    }, [branchList]);
+    useEffect(() => {
+        setBranchKindOptions(
+            branchKindList.map(s => ({ label: `${s.namecn}/${s.nameen}`, value: s._id })),
+        );
+    }, [branchKindList]);
+    useEffect(() => {
         setColorOptions(
             Array.isArray(colorList)
                 ? colorList.map(c => ({
@@ -91,15 +118,36 @@ const ShopStyleForm = props => {
                 : [],
         );
     }, [colorList]);
-    const handleChange = (info, index) => {
-        const { fileList } = info;
-        console.log(fileList);
-        const tempUrls = {
-            ...urls,
-        };
-        tempUrls[index] = fileList;
-        setUrls(tempUrls);
+
+    const handleAddBranchItem = () => {
+        let names = newBranchName.split('/');
+        if (names.length < 2) return;
+        dispatch({
+            type: 'global/addBranch',
+            payload: {
+                namecn: names[0],
+                nameen: names[1],
+            },
+        });
+        setNewBranchName('');
     };
+
+    const handleAddBranchKindItem = () => {
+        let names = newBranchKindName.split('/');
+        const branch = form.getFieldValue('branch');
+        if (names.length < 2 && branch) return;
+
+        dispatch({
+            type: 'global/addBranchKind',
+            payload: {
+                namecn: names[0],
+                nameen: names[1],
+                branch,
+            },
+        });
+        setNewBranchKindName('');
+    };
+
     const colorColumns = [
         {
             title: '颜色/花布',
@@ -279,12 +327,12 @@ const ShopStyleForm = props => {
                             },
                         ]}
                     >
-                        <Select options={sizeOptions}></Select>
+                        <Select options={sizeOptions} />
                     </Form.Item>
                 </Col>
             </Row>
             <Row>
-                <Col span="5" style={{ paddingRight: '10px' }}>
+                <Col span="4" style={{ paddingRight: '10px' }}>
                     <Form.Item
                         label={<span>中包数</span>}
                         name="bags"
@@ -300,7 +348,7 @@ const ShopStyleForm = props => {
                         <InputNumber />
                     </Form.Item>
                 </Col>
-                <Col span="5" style={{ paddingRight: '10px' }}>
+                <Col span="4" style={{ paddingRight: '10px' }}>
                     <Form.Item
                         label={<span>装箱数</span>}
                         name="case"
@@ -316,10 +364,10 @@ const ShopStyleForm = props => {
                         <InputNumber />
                     </Form.Item>
                 </Col>
-                <Col span="12">
+                <Col span="6" style={{ paddingRight: '10px' }}>
                     <Form.Item
                         label={<span>品牌</span>}
-                        name="size"
+                        name="branch"
                         rules={[
                             {
                                 required: true,
@@ -328,7 +376,89 @@ const ShopStyleForm = props => {
                             },
                         ]}
                     >
-                        <Select options={sizeOptions}></Select>
+                        <Select
+                            options={branchOptions}
+                            onChange={() => {
+                                dispatch({
+                                    type: 'global/fetchBranchKindList',
+                                    payload: { branch: form.getFieldValue('branch') },
+                                });
+                            }}
+                            dropdownRender={menu => (
+                                <div>
+                                    {menu}
+                                    <Divider style={{ margin: '4px 0' }} />
+                                    <div
+                                        style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}
+                                    >
+                                        <Input
+                                            style={{ flex: 'auto' }}
+                                            value={newBranchName}
+                                            onChange={e => {
+                                                setNewBranchName(e.target.value);
+                                            }}
+                                        />
+                                        <a
+                                            style={{
+                                                flex: 'none',
+                                                padding: '8px',
+                                                display: 'block',
+                                                cursor: 'pointer',
+                                            }}
+                                            onClick={handleAddBranchItem}
+                                        >
+                                            <PlusOutlined /> Add item
+                                        </a>
+                                    </div>
+                                </div>
+                            )}
+                        />
+                    </Form.Item>
+                </Col>
+                <Col span="10">
+                    <Form.Item
+                        label={<span>分类</span>}
+                        name="branchKind"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input brand!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Select
+                            options={branchKindOptions}
+                            mode="multiple"
+                            dropdownRender={menu => (
+                                <div>
+                                    {menu}
+                                    <Divider style={{ margin: '4px 0' }} />
+                                    <div
+                                        style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}
+                                    >
+                                        <Input
+                                            style={{ flex: 'auto' }}
+                                            value={newBranchKindName}
+                                            onChange={e => {
+                                                setNewBranchKindName(e.target.value);
+                                            }}
+                                        />
+                                        <a
+                                            style={{
+                                                flex: 'none',
+                                                padding: '8px',
+                                                display: 'block',
+                                                cursor: 'pointer',
+                                            }}
+                                            onClick={handleAddBranchKindItem}
+                                        >
+                                            <PlusOutlined /> Add item
+                                        </a>
+                                    </div>
+                                </div>
+                            )}
+                        />
                     </Form.Item>
                 </Col>
             </Row>
@@ -383,6 +513,8 @@ const ShopStyleForm = props => {
 
 export default connect(state => ({
     sizeList: state.global.sizeList,
+    branchList: state.global.branchList,
+    branchKindList: state.global.branchKindList,
     colorList: state.global.colorList,
     authorId: state.user.currentUser._id,
     goodsList: state.goods.list,
