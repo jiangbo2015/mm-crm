@@ -229,7 +229,9 @@ class RegistrationForm extends React.Component {
                                 <Tooltip title="不同通道会根据系统设施汇率显示价格">
                                     <span>
                                         价格(人民币)&nbsp;
-                                        <QuestionCircleOutlined style={{ color: 'red' }}></QuestionCircleOutlined>
+                                        <QuestionCircleOutlined
+                                            style={{ color: 'red' }}
+                                        ></QuestionCircleOutlined>
                                     </span>
                                 </Tooltip>
                             }

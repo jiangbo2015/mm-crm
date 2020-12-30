@@ -16,7 +16,7 @@ class RegistrationForm extends React.Component {
     state = {};
 
     handleAdd = () => {
-        const { currentSize } = this.props;
+        const { currentSize = { values: [] } } = this.props;
         currentSize.values.push({});
         this.props.dispatch({
             type: 'global/setCurrentSize',
@@ -77,7 +77,7 @@ class RegistrationForm extends React.Component {
                 },
             },
         };
-        const { currentSize } = this.props;
+        const { currentSize = { values: [] } } = this.props;
         const plainOptions = goods.map(g => ({
             value: g._id,
             label: g.name,

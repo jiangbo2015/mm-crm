@@ -238,7 +238,7 @@ const ShopStyleForm = props => {
             }));
             if (editData) {
                 dispatch({
-                    type: 'capsule/updateCapsuleStyle',
+                    type: 'shop/updateShopStyle',
                     payload: {
                         ...values,
                         ...urls,
@@ -249,7 +249,7 @@ const ShopStyleForm = props => {
                 });
             } else {
                 dispatch({
-                    type: 'capsule/addCapsuleStyle',
+                    type: 'shop/addShopStyle',
                     payload: { ...values, ...urls, author: authorId, colorWithStyleImgs },
                 });
             }
@@ -421,9 +421,7 @@ const ShopStyleForm = props => {
                         name="branchKind"
                         rules={[
                             {
-                                required: true,
-                                message: 'Please input brand!',
-                                whitespace: true,
+                                message: 'Please input kind!',
                             },
                         ]}
                     >

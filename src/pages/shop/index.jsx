@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Typography, Alert, Button, Modal, Row, Col, Input } from 'antd';
+import { Card, Button, Modal, Row, Col, Input } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TableBasic from './TableBasic';
-import Form from './Form';
+import Form from './Form/index';
 import { connect } from 'umi';
 
 const { Search } = Input;
@@ -12,32 +12,55 @@ const Com = props => {
     const [visible, setVisible] = useState(false);
     const [styleNo, setStyleNo] = useState(false);
     useEffect(() => {
-        // props.dispatch({
-        //     type: 'style/get',
-        //     payload: {
-        //         limit: 10,
-        //     },
-        // });
+        if (props.dispatch) {
+            props.dispatch({
+                type: 'shop/getShopStyleList',
+            });
+        }
     }, []);
 
     const handleSearch = value => {
         setStyleNo(value);
         props.dispatch({
-            type: 'style/get',
+            type: 'shop/getShopStyleList',
             payload: {
-                styleNo: value,
+                namecn: value,
+                nameen: value,
                 limit: 10,
             },
         });
     };
+    const handleClear = () => {
+        console.log('handleClear');
+        // formRef.current.resetFields();
+    };
+    const handleSubmit = () => {
+        // console.log('handleSubmit');
+        formRef.current.validateFields((err, values) => {
+            if (!err) {
+                console.log('values', values);
+                props.dispatch({
+                    type: 'shop/addShopStyle',
+                    payload: values,
+                });
+                setVisible(false);
+                this.handleClear();
+            }
+        });
+    };
 
     const handlePageChange = page => {
+        let queries = {};
+        if (styleNo) {
+            queries.namecn = styleNo;
+            queries.nameen = styleNo;
+        }
         props.dispatch({
-            type: 'style/get',
+            type: 'shop/getStyleList',
             payload: {
                 page,
                 limit: 10,
-                styleNo: styleNo ? styleNo : '',
+                ...queries,
             },
         });
     };
@@ -53,7 +76,7 @@ const Com = props => {
                 </Col>
             </Row>
             <Card
-                title="网店商品管理"
+                title="网店商品列表"
                 extra={
                     <Button type="primary" onClick={() => setVisible(true)}>
                         添加
@@ -70,12 +93,15 @@ const Com = props => {
             <Modal
                 title="添加"
                 visible={visible}
-                width="1100px"
+                width="800px"
                 destroyOnClose={true}
-                footer={false}
+                footer={null}
+                onOk={() => {
+                    handleSubmit();
+                }}
                 onCancel={() => {
                     setVisible(false);
-                    // handleClear();
+                    handleClear();
                 }}
             >
                 <Form />
@@ -85,10 +111,5 @@ const Com = props => {
 };
 
 export default connect(state => ({
-    imgUrl: state.style.imgUrl,
-    svgUrl: state.style.svgUrl,
-    shadowUrl: state.style.shadowUrl,
-    svgUrlBack: state.style.svgUrlBack,
-    shadowUrlBack: state.style.shadowUrlBack,
-    currentCategorys: state.style.currentCategorys,
+    capsuleList: state.capsule.list,
 }))(Com);

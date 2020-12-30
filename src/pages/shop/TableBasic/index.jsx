@@ -2,27 +2,16 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
-import Form from '../Form/index';
-import { getGoodsParamsToValue } from '@/utils/utils';
+import Form from '../Form';
+import { filterImageUrl } from '@/utils/utils';
 
 const Com = props => {
     const columns = [
         {
-            title: '色块',
-            dataIndex: 'value',
-            key: 'value',
-            render: val => <div className={styles.color} style={{ background: val }} />,
-        },
-        {
-            title: '编码',
-            dataIndex: 'code',
-            key: 'code',
-            // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
-        },
-        {
-            title: '色值',
-            dataIndex: 'value',
-            key: 'value',
+            title: '产品图',
+            dataIndex: 'covermap',
+            key: 'covermap',
+            render: url => <img width="100px" src={filterImageUrl(url)} />,
         },
         {
             title: '中文名',
@@ -34,7 +23,18 @@ const Com = props => {
             dataIndex: 'nameen',
             key: 'nameen',
         },
-
+        {
+            title: '状态',
+            dataIndex: 'status',
+            key: 'status',
+            // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
+        },
+        {
+            title: '创建日期',
+            dataIndex: 'create_time',
+            key: 'create_time',
+            // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
+        },
         {
             title: '操作',
             dataIndex: 'action',
@@ -42,10 +42,9 @@ const Com = props => {
             render: (text, record) => (
                 <div>
                     {/* <a onClick={e => handleEdit(record)}>编辑</a>*/}
-
-                    <a onClick={() => handleEdit(record)}>编辑</a>
+                    <a onClick={() => setVisiblePreview(record)}>款式管理</a>
                     <Divider type="vertical" />
-                    <a onClick={() => setVisiblePreview(record)}>预览</a>
+                    <a onClick={() => handleEdit(record)}>编辑</a>
                     <Divider type="vertical" />
                     <Popconfirm
                         title="确认要删除吗"
@@ -67,45 +66,15 @@ const Com = props => {
     const handleEdit = record => {
         setVisible(true);
         setData(record);
-    };
-
-    const handleUpdate = () => {
-        formRef.current.validateFields((err, values) => {
-            if (!err) {
-                setVisible(false);
-                const { currentSize } = props;
-                props.dispatch({
-                    type: 'color/update',
-                    payload: {
-                        _id: data._id,
-                        ...values,
-                    },
-                });
-            }
+        props.dispatch({
+            type: 'shop/setCurrentShopStyle',
+            payload: record,
         });
     };
 
-    useEffect(() => {
-        if (visible) {
-            setTimeout(() => {
-                if (formRef && formRef.current) {
-                    // let goods = getGoodsParamsToValue(data.goodsId, data.categoryId);
-                    formRef.current.setFieldsValue({
-                        code: data.code,
-                        value: data.value,
-                        namecn: data.namecn,
-                        nameen: data.nameen,
-                        goodsId: data.goodsId,
-                        // ...goods,
-                    });
-                }
-            }, 100);
-        }
-    }, [visible]);
-
     const handleDelete = record => {
         props.dispatch({
-            type: 'style/deleteColor',
+            type: 'shop/deleteShopStyle',
             payload: {
                 _id: record._id,
                 type: 0,
@@ -121,45 +90,29 @@ const Com = props => {
                 width="800px"
                 footer={null}
                 destroyOnClose={true}
-                onOk={() => {
-                    handleUpdate();
-                    // handleClear();
-                }}
                 onCancel={() => {
                     setVisible(false);
                     // handleClear();
                 }}
             >
-                <Form ref={v => (formRef.current = v)} colorId={data._id} updateColor={true} />
-            </Modal>
-            <Modal
-                title="预览"
-                visible={Boolean(visiblePreview)}
-                width="400px"
-                footer={null}
-                onCancel={() => {
-                    setVisiblePreview(null);
-                }}
-            >
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <div
-                        style={{
-                            width: '200px',
-                            height: '200px',
-                            background: visiblePreview && visiblePreview.value,
-                        }}
-                    />
-                </div>
+                <Form
+                    ref={v => (formRef.current = v)}
+                    editData={data}
+                    onClose={() => {
+                        setVisible(false);
+                        // handleClear();
+                    }}
+                />
             </Modal>
             <Table
                 rowKey={record => record._id}
                 columns={columns}
                 loading={props.fetching}
-                dataSource={props.colorList.docs}
+                dataSource={props.styleList.docs}
                 pagination={{
-                    total: props.colorList.total,
-                    current: parseInt(props.colorList.page, 10),
-                    pageSize: props.colorList.limit,
+                    total: props.styleList.total,
+                    current: parseInt(props.styleList.page, 10),
+                    pageSize: props.styleList.limit,
                     onChange: props.onPageChange,
                 }}
             />
@@ -167,7 +120,7 @@ const Com = props => {
     );
 };
 
-export default connect(({ style, loading }) => ({
-    colorList: style.colorList,
-    fetching: loading.effects['style/getColorList'],
+export default connect(({ shop, loading }) => ({
+    styleList: shop.currentShopStyleList,
+    fetching: loading.effects['shop/getShopStyleList'],
 }))(Com);

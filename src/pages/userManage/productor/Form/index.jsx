@@ -8,7 +8,7 @@ import { connect } from 'dva';
 const { Option } = Select;
 
 @connect(state => ({
-    channelList:  {},
+    channelList: {},
     goodsList: state.goods.list || [],
     productorList: state.user.productorList.docs || [],
 }))
