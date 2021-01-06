@@ -10,7 +10,7 @@ export const Avatar = ({ src, onLoad, ...others }) => (
     <img
         src={filterImageUrl(src)}
         alt="avatar"
-        style={{ width: '100%' }}
+        style={{ maxWidth: '100%', maxHeight: '100%' }}
         onLoad={onLoad}
         {...others}
     />

@@ -93,7 +93,7 @@ const Com = props => {
             <Modal
                 title="添加"
                 visible={visible}
-                width="800px"
+                width="1100px"
                 destroyOnClose={true}
                 footer={null}
                 onOk={() => {

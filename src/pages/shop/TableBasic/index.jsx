@@ -8,20 +8,30 @@ import { filterImageUrl } from '@/utils/utils';
 const Com = props => {
     const columns = [
         {
-            title: '产品图',
-            dataIndex: 'covermap',
-            key: 'covermap',
-            render: url => <img width="100px" src={filterImageUrl(url)} />,
+            title: '编号',
+            dataIndex: 'code',
+            key: 'code',
+            // render: url => <img width="100px" src={filterImageUrl(url)} />,
         },
         {
-            title: '中文名',
-            dataIndex: 'namecn',
-            key: 'namecn',
+            title: '中包数',
+            dataIndex: 'bagsNum',
+            key: 'bagsNum',
         },
         {
-            title: '英文名',
-            dataIndex: 'nameen',
-            key: 'nameen',
+            title: '装箱数',
+            dataIndex: 'caseNum',
+            key: 'caseNum',
+        },
+        {
+            title: '单价',
+            dataIndex: 'price',
+            key: 'price',
+        },
+        {
+            title: '总数量',
+            dataIndex: 'total',
+            key: 'total',
         },
         {
             title: '状态',
@@ -41,9 +51,6 @@ const Com = props => {
             key: 'action',
             render: (text, record) => (
                 <div>
-                    {/* <a onClick={e => handleEdit(record)}>编辑</a>*/}
-                    <a onClick={() => setVisiblePreview(record)}>款式管理</a>
-                    <Divider type="vertical" />
                     <a onClick={() => handleEdit(record)}>编辑</a>
                     <Divider type="vertical" />
                     <Popconfirm
@@ -87,7 +94,7 @@ const Com = props => {
             <Modal
                 title="编辑"
                 visible={visible}
-                width="800px"
+                width="1100px"
                 footer={null}
                 destroyOnClose={true}
                 onCancel={() => {

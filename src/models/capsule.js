@@ -64,6 +64,7 @@ const Model = {
         *getCapsuleStyleList(_, { call, put, select }) {
             const currentCapsule = yield select(state => state.capsule.currentCapsule);
             const res = yield call(getCapsuleStyleList, { capsule: currentCapsule._id });
+            // const res = yield call(getCapsuleStyleList);
             console.log(res);
             if (res.success) {
                 yield put({
@@ -73,8 +74,10 @@ const Model = {
             }
         },
 
-        *addCapsuleStyle({ payload }, { put, call }) {
-            const res = yield call(addCapsuleStyle, payload);
+        *addCapsuleStyle({ payload }, { put, call, select }) {
+            const currentCapsule = yield select(state => state.capsule.currentCapsule);
+            // const res = yield call(getCapsuleStyleList, { capsule: currentCapsule._id });
+            const res = yield call(addCapsuleStyle, { capsule: currentCapsule._id, ...payload });
             console.log(payload);
             if (res.success) {
                 yield put({
@@ -84,6 +87,8 @@ const Model = {
         },
 
         *updateCapsuleStyle({ payload }, { put, call }) {
+            // const currentCapsule = yield select(state => state.capsule.currentCapsule);
+            // const res = yield call(updateCapsuleStyle, { capsule: currentCapsule._id, ...payload });
             const res = yield call(updateCapsuleStyle, payload);
             console.log(res);
             if (res.success) {

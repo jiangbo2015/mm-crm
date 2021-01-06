@@ -5,36 +5,59 @@ import { connect } from 'dva';
 import { uploadProps, Avatar, UploadBtn } from '../productManage/colors/UploadCom';
 import { PlusOutlined } from '@ant-design/icons';
 import styles from './index.less';
+import { filterImageUrl } from '@/utils/utils';
 
-const Com = props => {
+const Com = ({ systemData, dispatch }) => {
     useEffect(() => {
-        props.dispatch({
+        dispatch({
             type: 'system/get',
         });
     }, []);
 
-    const [email, setEmail] = useState(props.email);
+    const [email, setEmail] = useState();
     const [meiyuan, setMeiyuan] = useState();
     const [ouyuan, setOuyuan] = useState();
     const [loading, setLoading] = useState({
         img1: false,
         img2: false,
         img3: false,
+        exhibition1: false,
+        exhibition2: false,
     });
-    const [colorImgUrl, setColorImgUrl] = useState(false);
+    // const [colorImgUrl, setColorImgUrl] = useState(false);
 
     const [imgUrls, setImgUrl] = useState({
         img1: false,
         img2: false,
         img3: false,
+        exhibition1: false,
+        exhibition2: false,
     });
     const [carousels, setCarousels] = useState([]);
     useEffect(() => {
-        setEmail(props.email);
-        setMeiyuan(props.meiyuan);
-        setOuyuan(props.ouyuan);
-        setColorImgUrl(props.img);
-    }, [props.email, props.meiyuan, props.ouyuan, props.img]);
+        setEmail(systemData.email);
+        setMeiyuan(systemData.meiyuan);
+        setOuyuan(systemData.ouyuan);
+        setImgUrl({
+            img1: systemData.img1,
+            img2: systemData.img2,
+            img3: systemData.img3,
+            exhibition1: systemData.exhibition1,
+            exhibition2: systemData.exhibition2,
+        });
+        if (systemData.carousels) {
+            setCarousels(
+                systemData.carousels.map(img => ({
+                    uid: `cs-${img}`,
+                    status: 'done',
+                    url: filterImageUrl(img),
+                    response: { data: { url: img } },
+                    thumbUrl: filterImageUrl(img),
+                })),
+            );
+        }
+        // setColorImgUrl(props.img);
+    }, [systemData]);
 
     const handleSubmit = () => {
         if (!/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(email)) {
@@ -55,19 +78,21 @@ const Com = props => {
             url: f.status == 'done' ? f.response.data.url : '',
         }));
         console.log('handleSubmit', tempCarousels);
-        props.dispatch({
+        dispatch({
             type: 'system/update',
             payload: {
                 email,
                 ouyuan: parseFloat(ouyuan),
                 meiyuan: parseFloat(meiyuan),
-                img: colorImgUrl,
+                // img: colorImgUrl,
+                ...imgUrls,
+                carousels: carousels.map(f => f.response.data.url),
             },
         });
     };
     const handleChange = info => {
         const { fileList } = info;
-        console.log(fileList);
+        // console.log(fileList);
         setCarousels(fileList);
     };
 
@@ -169,7 +194,7 @@ const Com = props => {
                             {...uploadProps}
                             // beforeUpload={this.beforeUpload}
                             className={styles.uploaderCapaule1}
-                            onChange={args => handleChange(args, 'exhibition1')}
+                            onChange={args => handleAddImg(args, 'exhibition1')}
                         >
                             {imgUrls.exhibition1 ? (
                                 <Avatar src={imgUrls.exhibition1}></Avatar>
@@ -185,13 +210,13 @@ const Com = props => {
                             {...uploadProps}
                             // beforeUpload={this.beforeUpload}
                             className={styles.uploaderCapaule2}
-                            onChange={args => handleChange(args, 'exhibition2')}
+                            onChange={args => handleAddImg(args, 'exhibition2')}
                         >
-                            {imgUrls.exhibition1 ? (
-                                <Avatar src={imgUrls.exhibition1}></Avatar>
+                            {imgUrls.exhibition2 ? (
+                                <Avatar src={imgUrls.exhibition2}></Avatar>
                             ) : (
                                 <UploadBtn
-                                    type={loading.exhibition1 ? 'loading' : 'plus'}
+                                    type={loading.exhibition2 ? 'loading' : 'plus'}
                                 ></UploadBtn>
                             )}
                         </Upload>
@@ -225,5 +250,5 @@ const Com = props => {
 };
 
 export default connect(state => ({
-    ...state.system,
+    systemData: state.system,
 }))(Com);

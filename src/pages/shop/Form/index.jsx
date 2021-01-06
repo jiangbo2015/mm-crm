@@ -73,11 +73,24 @@ const ShopStyleForm = props => {
 
     useEffect(() => {
         if (editData) {
-            const { code, size, price, colorWithStyleImgs } = editData;
+            const {
+                code,
+                size,
+                price,
+                bagsNum,
+                caseNum,
+                branch,
+                branchKind,
+                colorWithStyleImgs,
+            } = editData;
             form.setFieldsValue({
                 code,
                 size,
                 price,
+                bagsNum,
+                caseNum,
+                branch,
+                branchKind,
             });
             const tempData = colorWithStyleImgs.map((cs, index) => ({
                 id: (Math.random() * 1000000).toFixed(0),
@@ -335,7 +348,7 @@ const ShopStyleForm = props => {
                 <Col span="4" style={{ paddingRight: '10px' }}>
                     <Form.Item
                         label={<span>中包数</span>}
-                        name="bags"
+                        name="bagsNum"
                         rules={[
                             {
                                 required: true,
@@ -351,7 +364,7 @@ const ShopStyleForm = props => {
                 <Col span="4" style={{ paddingRight: '10px' }}>
                     <Form.Item
                         label={<span>装箱数</span>}
-                        name="case"
+                        name="caseNum"
                         rules={[
                             {
                                 required: true,
@@ -416,15 +429,7 @@ const ShopStyleForm = props => {
                     </Form.Item>
                 </Col>
                 <Col span="10">
-                    <Form.Item
-                        label={<span>分类</span>}
-                        name="branchKind"
-                        rules={[
-                            {
-                                message: 'Please input kind!',
-                            },
-                        ]}
-                    >
+                    <Form.Item label={<span>分类</span>} name="branchKind">
                         <Select
                             options={branchKindOptions}
                             mode="multiple"

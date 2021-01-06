@@ -12,7 +12,15 @@ const Com = props => {
             title: '封面图',
             dataIndex: 'covermap',
             key: 'covermap',
-            render: url => <img width="100px" src={filterImageUrl(url)} />,
+            render: url => (
+                <img
+                    style={{
+                        maxWidth: '100px',
+                        maxHeight: '100px',
+                    }}
+                    src={filterImageUrl(url)}
+                />
+            ),
         },
         {
             title: '中文名',
@@ -43,7 +51,7 @@ const Com = props => {
             render: (text, record) => (
                 <div>
                     {/* <a onClick={e => handleEdit(record)}>编辑</a>*/}
-                    <a onClick={() => setVisiblePreview(record)}>款式管理</a>
+                    <a onClick={() => handleManageStyle(record)}>款式管理</a>
                     <Divider type="vertical" />
                     <a onClick={() => handleEdit(record)}>编辑</a>
                     <Divider type="vertical" />
@@ -72,7 +80,13 @@ const Com = props => {
             payload: record,
         });
     };
-
+    const handleManageStyle = record => {
+        setVisiblePreview(record);
+        props.dispatch({
+            type: 'capsule/setCurrentCapsule',
+            payload: record,
+        });
+    };
     const handleDelete = record => {
         props.dispatch({
             type: 'capsule/delete',
@@ -109,6 +123,7 @@ const Com = props => {
                 title={visiblePreview ? `${visiblePreview.namecn}-款式管理` : ''}
                 visible={Boolean(visiblePreview)}
                 // visible={true}
+                destroyOnClose={true}
                 width="1000px"
                 footer={null}
                 onCancel={() => {
