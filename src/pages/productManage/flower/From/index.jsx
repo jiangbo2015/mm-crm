@@ -11,14 +11,29 @@ import {
     Button,
     Checkbox,
     InputNumber,
-    Divider,
+    Select,
 } from 'antd';
 import { connect } from 'dva';
 import { uploadProps, Avatar, UploadBtn } from '../UploadCom';
+import { filterImageUrl } from '@/utils/utils';
+
+const ColorOptionLabel = ({ c = {} }) => (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+            style={{
+                width: '18px',
+                height: '18px',
+                background: c.type ? `url(${filterImageUrl(c.value)}?tr=w-50)` : c.value,
+            }}
+        ></div>
+        {`${c.code}(${c.namecn})`}
+    </div>
+);
 
 @connect(state => ({
     currentSize: state.global.currentSize,
     goodsList: state.goods.list,
+    colorList: state.global.colorList,
 }))
 class RegistrationForm extends React.Component {
     constructor(props) {
@@ -136,7 +151,8 @@ class RegistrationForm extends React.Component {
         return limit;
     };
     render() {
-        const { getFieldDecorator } = this.props.form;
+        const { colorList = [], form } = this.props;
+        const { getFieldDecorator } = form;
 
         const formItemLayout = {
             labelCol: {
@@ -144,7 +160,7 @@ class RegistrationForm extends React.Component {
                     span: 24,
                 },
                 sm: {
-                    span: 8,
+                    span: 6,
                 },
             },
             wrapperCol: {
@@ -157,22 +173,6 @@ class RegistrationForm extends React.Component {
             },
         };
         const { colorImgUrl } = this.state;
-        // let goodsList = [
-        //     {
-        //         name: 'AAA',
-        //         category: [
-        //             { _id: '5eef25742ab395036d644eb0', name: '单衣' },
-        //             { _id: '5ef6f9f19e479c06df85b327', name: '单裤' },
-        //         ],
-        //     },
-        //     {
-        //         name: 'BBB',
-        //         category: [
-        //             { _id: '5eef25742ab395036d644eb2', name: '单衣' },
-        //             { _id: '5ef6f9f19e479c06df85b328', name: '单裤' },
-        //         ],
-        //     },
-        // ];
         const checkboxOptions = this.props.goodsList.map(good => ({
             label: good.aliasName,
             value: good._id,
@@ -180,8 +180,9 @@ class RegistrationForm extends React.Component {
         const checkboxSelector = getFieldDecorator('goodsId')(
             <Checkbox.Group options={checkboxOptions} />,
         );
+
         return (
-            <Form {...formItemLayout} name="inputDesiner">
+            <Form {...formItemLayout} name="inputDesiner" layout="vertical">
                 <Row>
                     <Col span="8">
                         <Upload
@@ -197,9 +198,26 @@ class RegistrationForm extends React.Component {
                                 ></UploadBtn>
                             )}
                         </Upload>
-                        <p style={{ textAlign: 'center' }}>花布图</p>
+                        <p style={{ textAlign: 'left' }}>花布图</p>
+                        <Form.Item label="相关素色">
+                            {getFieldDecorator(
+                                'relatedColors',
+                                {},
+                            )(
+                                <Select
+                                    mode="multiple"
+                                    options={colorList
+                                        .filter(x => x.type === 0)
+                                        .map(c => ({
+                                            label: <ColorOptionLabel c={c} />,
+                                            value: c._id,
+                                        }))}
+                                />,
+                            )}
+                        </Form.Item>
                     </Col>
-                    <Col span="16">
+                    <Col span="2"></Col>
+                    <Col span="14">
                         {/* 编号改“开发编号”，下面请添加一个非必填项：“印花编号”，供业务人员一旦该花布进入打样环节的时候，可以填写印花厂编号，以备后查 */}
                         <Form.Item label={<span>开发编号</span>}>
                             {getFieldDecorator('code', {

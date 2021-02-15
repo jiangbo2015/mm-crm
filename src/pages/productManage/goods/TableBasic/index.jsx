@@ -58,6 +58,9 @@ const Com = props => {
                 const fieldsCategoryName = Object.keys(values).filter(
                     x => x.indexOf('cname') === 0,
                 );
+                // const fieldsCategoryEnName = Object.keys(values).filter(
+                //     x => x.indexOf('cenname') === 0,
+                // );
                 fieldsCategoryName.map((name, index) => {
                     let obj = {
                         name: values[name],
@@ -67,11 +70,14 @@ const Com = props => {
                     if (nameGroup.length >= 2) {
                         obj._id = nameGroup[1];
                     }
+                    obj.enname = values[`cenname-${nameGroup[1]}`];
+
                     if (obj.name) {
                         newCategory.push(obj);
                     }
                     // return obj;
                 });
+
                 props.dispatch({
                     type: 'goods/update',
                     payload: {
@@ -115,6 +121,7 @@ const Com = props => {
                 data.category.map((x, index) => {
                     formRef.current.setFieldsValue({
                         [`cname-${x._id}`]: x.name,
+                        [`cenname-${x._id}`]: x.enname,
                         [`size-${x._id}`]: x.sizeId,
                     });
                 });

@@ -7,6 +7,20 @@ export async function getSizeList(data) {
     });
 }
 
+export async function getStyleSizeList(data) {
+    return request('/api/style/getStyleSizeList', {
+        method: 'get',
+        params: data,
+    });
+}
+
+export async function addStyleSize(data) {
+    return request('/api/style/addStyleSize/', {
+        method: 'post',
+        data,
+    });
+}
+
 export async function add(data) {
     return request('/api/goodsbase/size/add', {
         method: 'post',

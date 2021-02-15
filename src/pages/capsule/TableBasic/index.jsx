@@ -12,15 +12,18 @@ const Com = props => {
             title: '封面图',
             dataIndex: 'covermap',
             key: 'covermap',
-            render: url => (
-                <img
-                    style={{
-                        maxWidth: '100px',
-                        maxHeight: '100px',
-                    }}
-                    src={filterImageUrl(url)}
-                />
-            ),
+            render: url =>
+                url ? (
+                    <img
+                        style={{
+                            maxWidth: '100px',
+                            maxHeight: '100px',
+                        }}
+                        src={filterImageUrl(url)}
+                    />
+                ) : (
+                    '未设置'
+                ),
         },
         {
             title: '中文名',
@@ -36,7 +39,7 @@ const Com = props => {
             title: '状态',
             dataIndex: 'status',
             key: 'status',
-            // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
+            render: val => (val ? '已发布' : '未发布'),
         },
         {
             title: '创建日期',

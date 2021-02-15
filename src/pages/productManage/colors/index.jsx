@@ -20,6 +20,9 @@ const Com = props => {
         props.dispatch({
             type: 'goods/getList',
         });
+        props.dispatch({
+            type: 'global/fetchColorList',
+        });
     }, []);
     const handlePageChange = page => {
         props.dispatch({

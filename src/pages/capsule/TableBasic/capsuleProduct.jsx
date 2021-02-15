@@ -7,12 +7,6 @@ import { filterImageUrl } from '@/utils/utils';
 
 const Com = props => {
     const columns = [
-        // {
-        //     title: '产品',
-        //     dataIndex: 'covermap',
-        //     key: 'covermap',
-        //     render: url => <img width="100px" src={filterImageUrl(url)} />,
-        // },
         {
             title: '编号',
             dataIndex: 'code',
@@ -25,8 +19,8 @@ const Com = props => {
         },
         {
             title: '尺码段',
-            dataIndex: 'sizeList',
-            key: 'sizeList',
+            dataIndex: 'size',
+            key: 'size',
         },
         {
             title: '操作',
@@ -51,7 +45,7 @@ const Com = props => {
     const formRef = useRef();
     const [visible, setVisible] = useState(false);
     const [data, setData] = useState(false);
-    const [visiblePreview, setVisiblePreview] = useState(null);
+    // const [visiblePreview, setVisiblePreview] = useState(null);
 
     const handleEdit = record => {
         // setVisible(true);

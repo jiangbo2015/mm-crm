@@ -1,6 +1,6 @@
 import { queryNotices } from '@/services/user';
 import { notification } from 'antd';
-import { getSizeList, add, del, update } from '@/services/size';
+import { getSizeList, getStyleSizeList, addStyleSize, add, del, update } from '@/services/size';
 import {
     getBranchList,
     add as addBranch,
@@ -20,6 +20,7 @@ const GlobalModel = {
         collapsed: false,
         notices: [],
         sizeList: [],
+        styleSizeList: [],
         branchList: [],
         branchKindList: [],
         colorList: {
@@ -32,6 +33,15 @@ const GlobalModel = {
             if (res.success) {
                 yield put({
                     type: 'setSizeList',
+                    payload: res.data,
+                });
+            }
+        },
+        *fetchStyleSizeList(_, { call, put, select }) {
+            const res = yield call(getStyleSizeList);
+            if (res.success) {
+                yield put({
+                    type: 'setStyleSizeList',
                     payload: res.data,
                 });
             }
@@ -52,6 +62,15 @@ const GlobalModel = {
             if (res.success) {
                 yield put({
                     type: 'fetchSizeList',
+                });
+            }
+        },
+        *addStyleSize({ payload }, { call, put, select }) {
+            console.log(payload);
+            const res = yield call(addStyleSize, payload);
+            if (res.success) {
+                yield put({
+                    type: 'fetchStyleSizeList',
                 });
             }
         },
@@ -232,8 +251,13 @@ const GlobalModel = {
                 ...state,
                 sizeList: payload,
             };
+        }, //styleSizeList
+        setStyleSizeList(state, { payload }) {
+            return {
+                ...state,
+                styleSizeList: payload,
+            };
         },
-
         setColorList(state, { payload }) {
             return {
                 ...state,

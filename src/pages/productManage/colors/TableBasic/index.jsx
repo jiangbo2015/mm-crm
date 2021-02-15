@@ -96,6 +96,7 @@ const Com = props => {
                         namecn: data.namecn,
                         nameen: data.nameen,
                         goodsId: data.goodsId,
+                        relatedColors: data.relatedColors,
                         // ...goods,
                     });
                 }

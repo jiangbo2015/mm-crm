@@ -20,6 +20,7 @@ import styles from './index.less';
 import { connect } from 'dva';
 // import ColorCom from '../../colors/Color';
 import { uploadProps, Avatar, UploadBtn } from '../../colors/UploadCom';
+import SizeSelect from '@/components/SizeSelect';
 import { filterImageUrl } from '@/utils/utils';
 const Option = Select.Option;
 
@@ -224,6 +225,8 @@ class RegistrationForm extends React.Component {
                                 ],
                             })(<Input />)}
                         </Form.Item>
+                    </Col>
+                    <Col span="12">
                         <Form.Item
                             label={
                                 <Tooltip title="不同通道会根据系统设施汇率显示价格">
@@ -251,6 +254,15 @@ class RegistrationForm extends React.Component {
                                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                 />,
                             )}
+                        </Form.Item>
+                        <Form.Item label="尺码段" name="size">
+                            {getFieldDecorator('size', {
+                                rules: [
+                                    {
+                                        message: 'Please input size!',
+                                    },
+                                ],
+                            })(<SizeSelect />)}
                         </Form.Item>
                     </Col>
                 </Row>

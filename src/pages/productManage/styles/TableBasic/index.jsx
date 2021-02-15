@@ -100,6 +100,7 @@ const Com = props => {
                     styleNo: data.styleNo,
                     vposition: data.vposition ? data.vposition : 'center',
                     styleName: data.styleName,
+                    size: data.size,
                     styleSize: data.styleSize ? data.styleSize : 27,
                     styleBackSize: data.styleBackSize ? data.styleBackSize : 27,
                     price: data.price,

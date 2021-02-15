@@ -29,21 +29,26 @@ const Com = props => {
             key: 'price',
         },
         {
-            title: '总数量',
-            dataIndex: 'total',
-            key: 'total',
+            title: '库存',
+            dataIndex: 'stock',
+            key: 'stock',
         },
         {
-            title: '状态',
-            dataIndex: 'status',
-            key: 'status',
-            // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
+            title: '已售数量',
+            dataIndex: 'salesNumber',
+            key: 'salesNumber',
         },
+        // {
+        //     title: '状态',
+        //     dataIndex: 'status',
+        //     key: 'status',
+        //     // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
+        // },
         {
             title: '创建日期',
-            dataIndex: 'create_time',
-            key: 'create_time',
-            // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            render: val => val.slice(0, 10),
         },
         {
             title: '操作',

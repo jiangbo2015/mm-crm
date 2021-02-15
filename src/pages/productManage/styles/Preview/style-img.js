@@ -8,13 +8,18 @@ import { filterImageUrl } from '@/utils/utils';
 export default props => {
     const {
         width,
+        style,
         svgUrl,
         shadowUrl,
         key,
         colors,
         svgId,
         styleId,
-        imgVals,
+        imgVals = {
+            scale: 1,
+            x: 0,
+            y: 0,
+        },
         styleSize = 27,
         onSetEditSvgGroupIndex,
     } = props;
@@ -24,6 +29,7 @@ export default props => {
             style={{
                 position: 'relative',
                 width: width,
+                ...style,
             }}
         >
             <img

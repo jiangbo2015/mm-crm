@@ -5,7 +5,9 @@ import { Input, Form, Divider, Row, Col, Select, Upload, Button, InputNumber } f
 import { EditableProTable } from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadProps, Avatar, UploadBtn } from '../../productManage/colors/UploadCom';
+import StyleItem from '../../productManage/styles/Preview/style-img';
 const { Option } = Select;
+import SizeSelect from '@/components/SizeSelect';
 const { useForm } = Form;
 import { filterImageUrl } from '@/utils/utils';
 // import styles from './index.less';
@@ -63,6 +65,8 @@ const CapsuleForm = props => {
             const tempData = colorWithStyleImgs.map((cs, index) => ({
                 id: (Math.random() * 1000000).toFixed(0),
                 color: cs.color,
+                favorite: cs.favorite,
+                type: cs.type,
                 imgs: {
                     fileList: cs.imgs.map(img => ({
                         uid: `cs-${index}`,
@@ -118,6 +122,9 @@ const CapsuleForm = props => {
             // },
             valueType: 'select',
             render: (_, record) => {
+                if (record.type) {
+                    console.log(record);
+                }
                 const c = Array.isArray(colorList)
                     ? colorList.find(c => c._id === record.color)
                     : {};
@@ -135,7 +142,7 @@ const CapsuleForm = props => {
             width: '60%',
             render: (text, record, _, action) => {
                 console.log(record);
-                if (record.imgs) {
+                if (!record.type && record.imgs) {
                     if (Array.isArray(record.imgs.fileList)) {
                         return record.imgs.fileList.map(img => (
                             <img
@@ -144,6 +151,36 @@ const CapsuleForm = props => {
                             ></img>
                         ));
                     }
+                }
+                if (record.type && record.favorite) {
+                    return record.favorite.styleAndColor.map(d => (
+                        <div style={{ display: 'flex' }}>
+                            <StyleItem
+                                width="86px"
+                                styleId={`${d._id}-item`}
+                                colors={d.colorIds}
+                                key={`${d._id}-${Math.random() * 1000000}`}
+                                {...d.styleId}
+                                style={{
+                                    cursor: 'pointer',
+                                    marginRight: '10px',
+                                }}
+                            />
+                            <StyleItem
+                                width="86px"
+                                styleId={`${d._id}-item`}
+                                colors={d.colorIds}
+                                key={`${d._id}-${Math.random() * 1000000}`}
+                                {...d.styleId}
+                                svgUrl={d.styleId.svgUrlBack}
+                                shadowUrl={d.styleId.shadowUrlBack}
+                                styleSize={d.styleId.styleBackSize}
+                                style={{
+                                    cursor: 'pointer',
+                                }}
+                            />
+                        </div>
+                    ));
                 }
                 return null;
             },
@@ -168,14 +205,18 @@ const CapsuleForm = props => {
             valueType: 'option',
             width: '15%',
             render: (text, record, _, action) => [
-                <a
-                    key="editable"
-                    onClick={() => {
-                        action.startEditable?.(record.id);
-                    }}
-                >
-                    编辑
-                </a>,
+                record.type ? (
+                    '来自收藏'
+                ) : (
+                    <a
+                        key="editable"
+                        onClick={() => {
+                            action.startEditable?.(record.id);
+                        }}
+                    >
+                        编辑
+                    </a>
+                ),
             ],
         },
     ];
@@ -278,7 +319,7 @@ const CapsuleForm = props => {
                             },
                         ]}
                     >
-                        <Select options={sizeOptions}></Select>
+                        <SizeSelect />
                     </Form.Item>
                 </Col>
             </Row>
@@ -316,7 +357,7 @@ const CapsuleForm = props => {
                 }}
                 columns={colorColumns}
                 value={dataSource}
-            ></EditableProTable>
+            />
             <Row flex></Row>
             <Row style={{ marginTop: '20px' }}>
                 <Col span="21"></Col>

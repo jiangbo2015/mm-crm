@@ -145,6 +145,25 @@ class RegistrationForm extends React.Component {
                             },
                         },
                         {
+                            title: '英文名',
+                            dataIndex: 'enname',
+                            key: 'enname',
+                            render: (_, record) => {
+                                const keyLast = record._id ? `-${record._id}` : record.time;
+                                return (
+                                    <Form.Item label="" style={{ marginBottom: 0 }}>
+                                        {getFieldDecorator(`cenname${keyLast}`, {
+                                            rules: [
+                                                {
+                                                    whitespace: true,
+                                                },
+                                            ],
+                                        })(<Input />)}
+                                    </Form.Item>
+                                );
+                            },
+                        },
+                        {
                             title: '操作',
                             dataIndex: 'action',
                             key: 'action',

@@ -1,13 +1,29 @@
 import React from 'react';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Input, Checkbox, Divider, Row, Col, notification, Upload, Button } from 'antd';
+import { Input, Checkbox, Select, Row, Col, notification, Upload, Button } from 'antd';
 var isHexcolor = require('is-hexcolor');
 import { connect } from 'dva';
+
+import { filterImageUrl } from '@/utils/utils';
+
+const ColorOptionLabel = ({ c = {} }) => (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+            style={{
+                width: '18px',
+                height: '18px',
+                background: c.type ? `url(${filterImageUrl(c.value)}?tr=w-50)` : c.value,
+            }}
+        />
+        {`${c.code}`}
+    </div>
+);
 
 @connect(state => ({
     currentSize: state.global.currentSize,
     goodsList: state.goods.list,
+    colorList: state.global.colorList,
 }))
 class RegistrationForm extends React.Component {
     state = {
@@ -104,6 +120,7 @@ class RegistrationForm extends React.Component {
         });
     };
     render() {
+        const { colorList = [] } = this.props;
         const { getFieldDecorator } = this.props.form;
 
         const formItemLayout = {
@@ -171,6 +188,25 @@ class RegistrationForm extends React.Component {
                                     },
                                 ],
                             })(<Input style={{ width: '160px' }} />)}
+                        </Form.Item>
+                    </Col>
+                    <Col span="1" />
+                    <Col span="15">
+                        <Form.Item label="相关花布">
+                            {getFieldDecorator(
+                                'relatedColors',
+                                {},
+                            )(
+                                <Select
+                                    mode="multiple"
+                                    options={colorList
+                                        .filter(x => x.type === 1)
+                                        .map(c => ({
+                                            label: <ColorOptionLabel c={c} />,
+                                            value: c._id,
+                                        }))}
+                                />,
+                            )}
                         </Form.Item>
                     </Col>
                 </Row>
