@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
 import { Card, Typography, Alert, Button, Modal } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TableBasic from './TableBasic';
 import Form from './Form';
 import { connect } from 'dva';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
