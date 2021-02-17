@@ -11,6 +11,8 @@ const Com = props => {
     const [visible, setVisible] = useState(false);
     const [code, setCode] = useState(false);
     const [selectedKeys, setSelectedKeys] = useState([]);
+    const [batchVisible, setBatchVisible] = useState(false);
+
     const [addColorType, setAddColorType] = useState(0); //0:素色  1: 画布
 
     const formRef = React.useRef();
@@ -79,6 +81,23 @@ const Com = props => {
         });
     };
 
+    const handleBatchUpdate = () => {
+        formRef.current.validateFields((err, values) => {
+            if (!err) {
+                console.log(values, 'vlues');
+                props.dispatch({
+                    type: 'style/updateColor',
+                    payload: {
+                        ids: selectedKeys,
+                        type: 1,
+                        ...values,
+                    },
+                });
+                setBatchVisible(false);
+            }
+        });
+    };
+
     return (
         <PageHeaderWrapper>
             <Row style={{ marginBottom: '10px' }}>
@@ -96,6 +115,7 @@ const Com = props => {
                     <>
                         <Button
                             type="primary"
+                            style={{ marginRight: '10px' }}
                             onClick={() => {
                                 setVisible(true);
                                 setAddColorType(1);
@@ -103,9 +123,17 @@ const Com = props => {
                         >
                             添加花布
                         </Button>
+                        <Button
+                            style={{ marginRight: '10px' }}
+                            type="primary"
+                            onClick={() => {
+                                setBatchVisible(true);
+                            }}
+                        >
+                            批量编辑
+                        </Button>
 
                         <Button
-                            style={{ marginLeft: '10px' }}
                             type="danger"
                             onClick={() => {
                                 handleDeleteBatch();
@@ -124,6 +152,23 @@ const Com = props => {
                     setSelectedKeys={setSelectedKeys}
                 />
             </Card>
+            <Modal
+                title="批量编辑"
+                visible={batchVisible}
+                width="800px"
+                footer={null}
+                destroyOnClose={true}
+                onCancel={() => {
+                    setBatchVisible(false);
+                }}
+            >
+                <Form
+                    ref={v => (formRef.current = v)}
+                    isBatch
+                    updateColor={true}
+                    handleBatchUpdate={handleBatchUpdate}
+                />
+            </Modal>
             <Modal
                 title="添加"
                 visible={visible}
