@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
-import styles from './index.less';
+import { Divider, Modal, Popconfirm, Table } from 'antd';
 import { connect } from 'dva';
+import React, { useEffect, useRef, useState } from 'react';
 import Form from '../From';
-import { getGoodsParamsToValue } from '@/utils/utils';
+import styles from './index.less';
 
 const Com = props => {
     const columns = [
@@ -156,12 +155,18 @@ const Com = props => {
                 rowKey={record => record._id}
                 columns={columns}
                 loading={props.fetching}
+                rowSelection={{
+                    onChange: (selectedRowKeys, selectedRows) => {
+                        props.setSelectedKeys(selectedRowKeys);
+                    },
+                }}
                 dataSource={props.colorList.docs}
                 pagination={{
                     total: props.colorList.total,
                     current: parseInt(props.colorList.page, 10),
                     pageSize: props.colorList.limit,
                     onChange: props.onPageChange,
+                    showSizeChanger: true,
                 }}
             />
         </>

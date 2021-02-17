@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Table, Divider, Modal, Popconfirm } from 'antd';
-import styles from './index.less';
-import { connect } from 'dva';
-import Form from '../From';
 // import { imgUrl } from '@/utils/apiconfig';
-import { getGoodsParamsToValue, filterImageUrl } from '@/utils/utils';
+import { filterImageUrl } from '@/utils/utils';
+import { Divider, Modal, Popconfirm, Table } from 'antd';
+import { connect } from 'dva';
+import React, { useRef, useState } from 'react';
+import Form from '../From';
+import styles from './index.less';
 
 const Com = props => {
     const columns = [
@@ -161,11 +161,17 @@ const Com = props => {
                 columns={columns}
                 loading={props.fetching}
                 dataSource={props.colorList.docs}
+                rowSelection={{
+                    onChange: (selectedRowKeys, selectedRows) => {
+                        props.setSelectedKeys(selectedRowKeys);
+                    },
+                }}
                 pagination={{
                     total: props.colorList.total,
                     current: parseInt(props.colorList.page, 10),
                     pageSize: props.colorList.limit,
                     onChange: props.onPageChange,
+                    showSizeChanger: true,
                 }}
             />
         </>

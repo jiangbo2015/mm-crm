@@ -1,49 +1,50 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Card, Typography, Alert, Button, Modal } from 'antd';
+// import { Card, Typography, Alert, Button, Modal } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import TableBasic from './TableBasic';
-import Form from './Form';
+// import TableBasic from './TableBasic';
+// import Form from './Form';
 import { connect } from 'dva';
+// import React, { useEffect, useRef, useState } from 'react';
 
 const Com = props => {
-    const [visible, setVisible] = useState(false);
-    const formRef = useRef();
-    useEffect(() => {
-        props.dispatch({
-            type: 'channel/getList',
-            payload: { limit: 100, page: 1 },
-        });
-        props.dispatch({
-            type: 'goods/getList',
-        });
-    }, []);
+    // const [visible, setVisible] = useState(false);
+    // const formRef = useRef();
+    // useEffect(() => {
+    //     props.dispatch({
+    //         type: 'channel/getList',
+    //         payload: { limit: 100, page: 1 },
+    //     });
+    //     props.dispatch({
+    //         type: 'goods/getList',
+    //     });
+    // }, []);
 
-    const handleSubmit = () => {
-        console.log(formRef);
-        formRef.current.validateFields((err, values) => {
-            if (!err) {
-                console.log(values);
-                setVisible(false);
-                props.dispatch({
-                    type: 'user/add',
-                    payload: {
-                        role: 1,
-                        ...values,
-                    },
-                });
-            } else {
-                console.log(err);
-            }
-        });
-    };
+    // const handleSubmit = () => {
+    //     console.log(formRef);
+    //     formRef.current.validateFields((err, values) => {
+    //         if (!err) {
+    //             console.log(values);
+    //             setVisible(false);
+    //             props.dispatch({
+    //                 type: 'user/add',
+    //                 payload: {
+    //                     role: 1,
+    //                     ...values,
+    //                 },
+    //             });
+    //         } else {
+    //             console.log(err);
+    //         }
+    //     });
+    // };
 
-    const handleClear = () => {
-        formRef.current.resetFields();
-    };
+    // const handleClear = () => {
+    //     formRef.current.resetFields();
+    // };
 
     return (
         <PageHeaderWrapper>
-            <Card
+            <h1>good</h1>
+            {/* <Card
                 title="产品经理列表"
                 extra={
                     <Button type="primary" onClick={() => setVisible(true)}>
@@ -67,7 +68,7 @@ const Com = props => {
                 }}
             >
                 <Form ref={v => (formRef.current = v)} />
-            </Modal>
+            </Modal> */}
         </PageHeaderWrapper>
     );
 };
