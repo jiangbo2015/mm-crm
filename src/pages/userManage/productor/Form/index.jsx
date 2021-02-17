@@ -10,12 +10,14 @@ const { Option } = Select;
 @connect(state => ({
     channelList: {},
     goodsList: state.goods.list || [],
+    branchList: state.global.branchList || [],
+    capsuleList: state.global.capsuleList || [],
     productorList: state.user.productorList.docs || [],
 }))
 class RegistrationForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { productorList, editId, goodsList } = this.props;
+        const { capsuleList, branchList, goodsList } = this.props;
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -34,23 +36,17 @@ class RegistrationForm extends React.Component {
                 },
             },
         };
-        // let usedChannels = [];
-        // productorList.map(p => {
-        //     if (p._id != editId) {
-        //         usedChannels = usedChannels.concat(usedChannels, p.channels);
-        //     }
-        // });
-        // let selectChannels = lodash.differenceBy(channelList.docs, usedChannels, '_id');
 
-        let plainOptions = [];
-        // selectChannels.map(x => {
-        //     plainOptions.push({
-        //         label: x.name,
-        //         value: x._id,
-        //     });
-        // });
         const goodsOptions = goodsList.map(g => ({
             label: g.name,
+            value: g._id,
+        }));
+        const branchOptions = branchList.map(g => ({
+            label: g.namecn,
+            value: g._id,
+        }));
+        const capsuleOptions = capsuleList.map(g => ({
+            label: g.namecn,
             value: g._id,
         }));
         const productorSelector = getFieldDecorator('currency', {
@@ -117,16 +113,20 @@ class RegistrationForm extends React.Component {
                     })(<Input />)}
                 </Form.Item>
 
-                {/* <Form.Item label="通道">
-                    {getFieldDecorator('channels', {
-                        rules: [],
-                    })(<CheckboxGroup options={plainOptions} />)}
-                </Form.Item> */}
-
                 <Form.Item label="可见商品">
                     {getFieldDecorator('goods', {
                         rules: [],
                     })(<CheckboxGroup options={goodsOptions} />)}
+                </Form.Item>
+                <Form.Item label="可见品牌">
+                    {getFieldDecorator('branchs', {
+                        rules: [],
+                    })(<CheckboxGroup options={branchOptions} />)}
+                </Form.Item>
+                <Form.Item label="可见胶囊">
+                    {getFieldDecorator('capsules', {
+                        rules: [],
+                    })(<CheckboxGroup options={capsuleOptions} />)}
                 </Form.Item>
                 <Form.Item label="货币">{productorSelector}</Form.Item>
 

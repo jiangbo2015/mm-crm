@@ -1,5 +1,12 @@
 import request from '@/utils/request';
 
+export async function getAllCapsule(data) {
+    return request('/api/capsule/getVisibleList', {
+        method: 'get',
+        params: data,
+    });
+}
+
 export async function getList(data) {
     return request('/api/capsule/getList', {
         method: 'get',

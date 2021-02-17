@@ -13,6 +13,9 @@ import {
     del as delBranchKind,
     update as updateBranchKind,
 } from '@/services/branch-kind';
+
+import { getAllCapsule } from '@/services/capsule';
+
 import { colorList as getColorList } from '@/services/style';
 const GlobalModel = {
     namespace: 'global',
@@ -23,6 +26,7 @@ const GlobalModel = {
         styleSizeList: [],
         branchList: [],
         branchKindList: [],
+        capsuleList: [],
         colorList: {
             values: [{}],
         },
@@ -53,6 +57,15 @@ const GlobalModel = {
                 yield put({
                     type: 'setColorList',
                     payload: res.data.docs,
+                });
+            }
+        },
+        *fetchCapsuleList({ payload }, { call, put }) {
+            const res = yield call(getAllCapsule);
+            if (res.success && res.data) {
+                yield put({
+                    type: 'setCapsuleList',
+                    payload: res.data,
                 });
             }
         },
@@ -218,6 +231,7 @@ const GlobalModel = {
             if (res.success) {
                 yield put({
                     type: 'fetchBranchKindList',
+                    payload: { branch: payload.branch },
                 });
             }
         },
@@ -316,6 +330,12 @@ const GlobalModel = {
             return {
                 ...state,
                 branchKindList: payload,
+            };
+        },
+        setCapsuleList(state, { payload }) {
+            return {
+                ...state,
+                capsuleList: payload,
             };
         },
     },

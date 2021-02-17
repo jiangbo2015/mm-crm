@@ -16,6 +16,12 @@ const Com = props => {
         props.dispatch({
             type: 'goods/getList',
         });
+        props.dispatch({
+            type: 'global/fetchBranchList',
+        });
+        props.dispatch({
+            type: 'global/fetchCapsuleList',
+        });
     }, []);
 
     const handleSubmit = () => {
