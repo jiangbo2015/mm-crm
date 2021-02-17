@@ -1,18 +1,16 @@
-import { routerRedux } from 'dva/router';
-import { stringify } from 'querystring';
 import {
+    add,
+    colorAdd,
+    colorDel,
+    colorList,
+    colorUpdate,
+    del,
+    detail,
     getList,
     getSvgText,
-    update as updateStyle,
-    colorList,
-    tagList,
     tagAdd,
-    colorAdd,
-    colorUpdate,
-    add,
-    detail,
-    del,
-    colorDel,
+    tagList,
+    update as updateStyle,
     updateArr,
 } from '@/services/style';
 import { getGoodsParams } from '@/utils/utils';
@@ -253,42 +251,59 @@ const Model = {
                 notification.success({
                     message: '修改成功',
                 });
-                if (!payload.type) {
-                    let colorList = yield select(state => state.style.colorList);
-                    let objIndex = colorList.docs.findIndex(x => x._id === payload._id);
-                    if (objIndex >= 0) {
-                        colorList.docs[objIndex] = {
-                            ...colorList.docs[objIndex],
-                            ...payload,
-                        };
-                        yield put({
-                            type: 'setColorList',
-                            payload: { ...colorList },
-                        });
-                    }
-                } else {
-                    let colorListFlower = yield select(state => state.style.colorListFlower);
 
-                    let objIndex = colorListFlower.docs.findIndex(x => x._id === payload._id);
-                    if (objIndex >= 0) {
-                        colorListFlower.docs[objIndex] = {
-                            ...colorListFlower.docs[objIndex],
-                            ...payload,
-                        };
-                        yield put({
-                            type: 'setFlowerList',
-                            payload: { ...colorListFlower },
-                        });
-                    }
+                // 更新后重新请求
+
+                let colorList = yield select(state => state.style.colorList);
+                let colorListFlower = yield select(state => state.style.colorListFlower);
+                if (!payload.type) {
+                    yield put({
+                        type: 'getColorList',
+                        payload: {
+                            page: colorList.page,
+                            limit: colorList.limit,
+                            type: payload.type,
+                        },
+                    });
+                } else {
+                    yield put({
+                        type: 'getColorList',
+                        payload: {
+                            page: colorListFlower.page,
+                            limit: colorListFlower.limit,
+                            type: payload.type,
+                        },
+                    });
                 }
-                // yield put({
-                //     type: 'getColorList',
-                //     payload: {
-                //         page: 1,
-                //         limit: 10,
-                //         type: payload.type ? payload.type : 0,
-                //     },
-                // });
+
+                // if (!payload.type) {
+                //     let colorList = yield select(state => state.style.colorList);
+                //     let objIndex = colorList.docs.findIndex(x => x._id === payload._id);
+                //     if (objIndex >= 0) {
+                //         colorList.docs[objIndex] = {
+                //             ...colorList.docs[objIndex],
+                //             ...payload,
+                //         };
+                //         yield put({
+                //             type: 'setColorList',
+                //             payload: { ...colorList },
+                //         });
+                //     }
+                // } else {
+                //     let colorListFlower = yield select(state => state.style.colorListFlower);
+
+                //     let objIndex = colorListFlower.docs.findIndex(x => x._id === payload._id);
+                //     if (objIndex >= 0) {
+                //         colorListFlower.docs[objIndex] = {
+                //             ...colorListFlower.docs[objIndex],
+                //             ...payload,
+                //         };
+                //         yield put({
+                //             type: 'setFlowerList',
+                //             payload: { ...colorListFlower },
+                //         });
+                //     }
+                // }
             }
         },
     },

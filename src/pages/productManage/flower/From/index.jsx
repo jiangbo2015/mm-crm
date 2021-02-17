@@ -1,21 +1,21 @@
-import React from 'react';
+import { filterImageUrl } from '@/utils/utils';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import {
-    Input,
-    message,
-    Row,
-    Col,
-    notification,
-    Upload,
     Button,
     Checkbox,
+    Col,
+    Input,
     InputNumber,
+    message,
+    notification,
+    Row,
     Select,
+    Upload,
 } from 'antd';
 import { connect } from 'dva';
-import { uploadProps, Avatar, UploadBtn } from '../UploadCom';
-import { filterImageUrl } from '@/utils/utils';
+import React from 'react';
+import { Avatar, UploadBtn, uploadProps } from '../UploadCom';
 
 const ColorOptionLabel = ({ c = {} }) => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -49,12 +49,16 @@ class RegistrationForm extends React.Component {
 
     componentDidMount() {
         if (this.props.updateColor) {
-            this.props.onUpdateForm();
+            this.props?.onUpdateForm?.();
         }
     }
 
     // formRef = React.createRef()
     handleSubmit() {
+        if (this.props.isBatch) {
+            this.props.handleBatchUpdate();
+            return;
+        }
         this.props.form.validateFields((err, values) => {
             console.log(err, values);
             if (err) return;
@@ -183,71 +187,75 @@ class RegistrationForm extends React.Component {
 
         return (
             <Form {...formItemLayout} name="inputDesiner" layout="vertical">
-                <Row>
-                    <Col span="8">
-                        <Upload
-                            {...uploadProps}
-                            beforeUpload={this.beforeUpload}
-                            onChange={this.handleAdd}
-                        >
-                            {colorImgUrl ? (
-                                <Avatar src={colorImgUrl} onLoad={this.imgOnLoad}></Avatar>
-                            ) : (
-                                <UploadBtn
-                                    type={this.state.loading ? 'loading' : 'plus'}
-                                ></UploadBtn>
-                            )}
-                        </Upload>
-                        <p style={{ textAlign: 'left' }}>花布图</p>
-                        <Form.Item label="相关素色">
-                            {getFieldDecorator(
-                                'relatedColors',
-                                {},
-                            )(
-                                <Select
-                                    mode="multiple"
-                                    options={colorList
-                                        .filter(x => x.type === 0)
-                                        .map(c => ({
-                                            label: <ColorOptionLabel c={c} />,
-                                            value: c._id,
-                                        }))}
-                                />,
-                            )}
-                        </Form.Item>
-                    </Col>
-                    <Col span="2"></Col>
-                    <Col span="14">
-                        {/* 编号改“开发编号”，下面请添加一个非必填项：“印花编号”，供业务人员一旦该花布进入打样环节的时候，可以填写印花厂编号，以备后查 */}
-                        <Form.Item label={<span>开发编号</span>}>
-                            {getFieldDecorator('code', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input code!',
-                                        whitespace: true,
-                                    },
-                                ],
-                            })(<Input style={{ width: '160px' }} />)}
-                        </Form.Item>
-                        <Form.Item label={<span>印花编号</span>}>
-                            {getFieldDecorator('flowerCode')(<Input style={{ width: '160px' }} />)}
-                        </Form.Item>
-                        <Form.Item label={<span>原始画布单循环宽度(cm)</span>}>
-                            {getFieldDecorator('sizeOrigin', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input size!',
-                                    },
-                                ],
-                            })(<InputNumber min={1} step={1} />)}
-                        </Form.Item>
-                        <Form.Item label={<span>实际画布单循环宽度(cm)</span>}>
-                            {getFieldDecorator('size', {})(<InputNumber min={1} step={1} />)}
-                        </Form.Item>
-                    </Col>
-                </Row>
+                {!this.props.isBatch && (
+                    <Row>
+                        <Col span="8">
+                            <Upload
+                                {...uploadProps}
+                                beforeUpload={this.beforeUpload}
+                                onChange={this.handleAdd}
+                            >
+                                {colorImgUrl ? (
+                                    <Avatar src={colorImgUrl} onLoad={this.imgOnLoad}></Avatar>
+                                ) : (
+                                    <UploadBtn
+                                        type={this.state.loading ? 'loading' : 'plus'}
+                                    ></UploadBtn>
+                                )}
+                            </Upload>
+                            <p style={{ textAlign: 'left' }}>花布图</p>
+                            <Form.Item label="相关素色">
+                                {getFieldDecorator(
+                                    'relatedColors',
+                                    {},
+                                )(
+                                    <Select
+                                        mode="multiple"
+                                        options={colorList
+                                            .filter(x => x.type === 0)
+                                            .map(c => ({
+                                                label: <ColorOptionLabel c={c} />,
+                                                value: c._id,
+                                            }))}
+                                    />,
+                                )}
+                            </Form.Item>
+                        </Col>
+                        <Col span="2"></Col>
+                        <Col span="14">
+                            {/* 编号改“开发编号”，下面请添加一个非必填项：“印花编号”，供业务人员一旦该花布进入打样环节的时候，可以填写印花厂编号，以备后查 */}
+                            <Form.Item label={<span>开发编号</span>}>
+                                {getFieldDecorator('code', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input code!',
+                                            whitespace: true,
+                                        },
+                                    ],
+                                })(<Input style={{ width: '160px' }} />)}
+                            </Form.Item>
+                            <Form.Item label={<span>印花编号</span>}>
+                                {getFieldDecorator('flowerCode')(
+                                    <Input style={{ width: '160px' }} />,
+                                )}
+                            </Form.Item>
+                            <Form.Item label={<span>原始画布单循环宽度(cm)</span>}>
+                                {getFieldDecorator('sizeOrigin', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input size!',
+                                        },
+                                    ],
+                                })(<InputNumber min={1} step={1} />)}
+                            </Form.Item>
+                            <Form.Item label={<span>实际画布单循环宽度(cm)</span>}>
+                                {getFieldDecorator('size', {})(<InputNumber min={1} step={1} />)}
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                )}
                 <Row>
                     <Col span="24">
                         <Form.Item label="可用商品">{checkboxSelector}</Form.Item>
@@ -259,7 +267,7 @@ class RegistrationForm extends React.Component {
                         <Form.Item>
                             <Button
                                 loading={this.props.submitFetching}
-                                disabled={!this.state.onLoad}
+                                disabled={this.props.isBatch ? false : !this.state.onLoad}
                                 type="primary"
                                 onClick={this.handleSubmit.bind(this)}
                             >

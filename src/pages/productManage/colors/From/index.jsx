@@ -1,11 +1,10 @@
-import React from 'react';
+import { filterImageUrl } from '@/utils/utils';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Input, Checkbox, Select, Row, Col, notification, Upload, Button } from 'antd';
-var isHexcolor = require('is-hexcolor');
+import { Button, Checkbox, Col, Input, notification, Row, Select } from 'antd';
 import { connect } from 'dva';
-
-import { filterImageUrl } from '@/utils/utils';
+import React from 'react';
+var isHexcolor = require('is-hexcolor');
 
 const ColorOptionLabel = ({ c = {} }) => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -38,6 +37,10 @@ class RegistrationForm extends React.Component {
 
     // formRef = React.createRef()
     handleSubmit() {
+        if (this.props.isBatch) {
+            this.props.handleBatchUpdate();
+            return;
+        }
         this.props.form.validateFields((err, values) => {
             if (err) return;
             if (this.props.updateColor) {
@@ -82,6 +85,7 @@ class RegistrationForm extends React.Component {
                 type: 'style/updateColor',
                 payload: {
                     _id: this.props.colorId,
+                    type: 0,
                     // value,
                     ...params,
                 },
@@ -143,73 +147,75 @@ class RegistrationForm extends React.Component {
         };
         return (
             <Form {...formItemLayout} name="inputDesiner">
-                <Row>
-                    <Col span="8">
-                        <Form.Item label={<span>编号</span>}>
-                            {getFieldDecorator('code', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input codex!',
-                                        whitespace: true,
-                                    },
-                                ],
-                            })(<Input style={{ width: '160px' }} />)}
-                        </Form.Item>
-                        <Form.Item label={<span>颜色值</span>}>
-                            {getFieldDecorator('value', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input value!',
-                                        whitespace: true,
-                                    },
-                                ],
-                            })(<Input style={{ width: '160px' }} />)}
-                        </Form.Item>
-                        <Form.Item label={<span>中文名</span>}>
-                            {getFieldDecorator('namecn', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input namecn!',
-                                        whitespace: true,
-                                    },
-                                ],
-                            })(<Input style={{ width: '160px' }} />)}
-                        </Form.Item>
-                        <Form.Item label={<span>英文名</span>}>
-                            {getFieldDecorator('nameen', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input nameen!',
-                                        whitespace: true,
-                                    },
-                                ],
-                            })(<Input style={{ width: '160px' }} />)}
-                        </Form.Item>
-                    </Col>
-                    <Col span="1" />
-                    <Col span="15">
-                        <Form.Item label="相关花布">
-                            {getFieldDecorator(
-                                'relatedColors',
-                                {},
-                            )(
-                                <Select
-                                    mode="multiple"
-                                    options={colorList
-                                        .filter(x => x.type === 1)
-                                        .map(c => ({
-                                            label: <ColorOptionLabel c={c} />,
-                                            value: c._id,
-                                        }))}
-                                />,
-                            )}
-                        </Form.Item>
-                    </Col>
-                </Row>
+                {!this.props.isBatch && (
+                    <Row>
+                        <Col span="8">
+                            <Form.Item label={<span>编号</span>}>
+                                {getFieldDecorator('code', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input codex!',
+                                            whitespace: true,
+                                        },
+                                    ],
+                                })(<Input style={{ width: '160px' }} />)}
+                            </Form.Item>
+                            <Form.Item label={<span>颜色值</span>}>
+                                {getFieldDecorator('value', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input value!',
+                                            whitespace: true,
+                                        },
+                                    ],
+                                })(<Input style={{ width: '160px' }} />)}
+                            </Form.Item>
+                            <Form.Item label={<span>中文名</span>}>
+                                {getFieldDecorator('namecn', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input namecn!',
+                                            whitespace: true,
+                                        },
+                                    ],
+                                })(<Input style={{ width: '160px' }} />)}
+                            </Form.Item>
+                            <Form.Item label={<span>英文名</span>}>
+                                {getFieldDecorator('nameen', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input nameen!',
+                                            whitespace: true,
+                                        },
+                                    ],
+                                })(<Input style={{ width: '160px' }} />)}
+                            </Form.Item>
+                        </Col>
+                        <Col span="1" />
+                        <Col span="15">
+                            <Form.Item label="相关花布">
+                                {getFieldDecorator(
+                                    'relatedColors',
+                                    {},
+                                )(
+                                    <Select
+                                        mode="multiple"
+                                        options={colorList
+                                            .filter(x => x.type === 1)
+                                            .map(c => ({
+                                                label: <ColorOptionLabel c={c} />,
+                                                value: c._id,
+                                            }))}
+                                    />,
+                                )}
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                )}
                 <Row>
                     <Col span="24">
                         <Form.Item label="可用商品">
