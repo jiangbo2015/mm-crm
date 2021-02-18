@@ -61,13 +61,14 @@ const Com = props => {
                 // const fieldsCategoryEnName = Object.keys(values).filter(
                 //     x => x.indexOf('cenname') === 0,
                 // );
+
                 fieldsCategoryName.map((name, index) => {
                     let obj = {
                         name: values[name],
                         sort: index + 1,
                     };
                     let nameGroup = name.split('-');
-                    if (nameGroup.length >= 2) {
+                    if (nameGroup.length >= 2 && nameGroup[1].length >= 24) {
                         obj._id = nameGroup[1];
                     }
                     obj.enname = values[`cenname-${nameGroup[1]}`];

@@ -31,16 +31,25 @@ const Com = props => {
         formRef.current.validateFields((err, values) => {
             console.log(err, values);
             if (!err) {
-                setVisible(false);
+                // setVisible(false);
+
                 const { category = [], imgUrl } = props;
                 const newCategory = [];
                 const fieldsCategoryName = Object.keys(values).filter(
                     x => x.indexOf('cname') === 0,
                 );
+                console.log('fieldsCategoryName', fieldsCategoryName);
+
                 fieldsCategoryName.map((name, index) => {
                     let obj = {
                         name: values[name],
+                        sort: index + 1,
                     };
+                    let nameGroup = name.split('-');
+                    if (nameGroup.length >= 2 && nameGroup[1].length >= 24) {
+                        obj._id = nameGroup[1];
+                    }
+                    obj.enname = values[`cenname-${nameGroup[1]}`];
 
                     if (obj.name) {
                         newCategory.push(obj);

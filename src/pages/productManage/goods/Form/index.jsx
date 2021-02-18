@@ -130,10 +130,10 @@ class RegistrationForm extends React.Component {
                             dataIndex: 'name',
                             key: 'name',
                             render: (_, record) => {
-                                const keyLast = record._id ? `-${record._id}` : record.time;
+                                const keyLast = record._id ? record._id : record.time;
                                 return (
                                     <Form.Item label="" style={{ marginBottom: 0 }}>
-                                        {getFieldDecorator(`cname${keyLast}`, {
+                                        {getFieldDecorator(`cname-${keyLast}`, {
                                             rules: [
                                                 {
                                                     whitespace: true,
@@ -149,10 +149,10 @@ class RegistrationForm extends React.Component {
                             dataIndex: 'enname',
                             key: 'enname',
                             render: (_, record) => {
-                                const keyLast = record._id ? `-${record._id}` : record.time;
+                                const keyLast = record._id ? record._id : record.time;
                                 return (
                                     <Form.Item label="" style={{ marginBottom: 0 }}>
-                                        {getFieldDecorator(`cenname${keyLast}`, {
+                                        {getFieldDecorator(`cenname-${keyLast}`, {
                                             rules: [
                                                 {
                                                     whitespace: true,
