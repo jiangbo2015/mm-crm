@@ -74,6 +74,8 @@ const Com = props => {
                     currency: data.currency,
                     channels: data.channels.map(x => x._id),
                     goods: data.goods,
+                    branchs: data.branchs,
+                    capsules: data.capsules,
                 });
             }, 600);
         }
