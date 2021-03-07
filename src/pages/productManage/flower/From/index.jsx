@@ -16,6 +16,7 @@ import {
 import { connect } from 'dva';
 import React from 'react';
 import { Avatar, UploadBtn, uploadProps } from '../UploadCom';
+import { colorSystemList } from '../../colors/From/index';
 
 const ColorOptionLabel = ({ c = {} }) => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -259,6 +260,16 @@ class RegistrationForm extends React.Component {
                 <Row>
                     <Col span="24">
                         <Form.Item label="可用商品">{checkboxSelector}</Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="8">
+                        <Form.Item label="色系">
+                            {getFieldDecorator(
+                                'colorSystem',
+                                {},
+                            )(<Select options={colorSystemList} />)}
+                        </Form.Item>
                     </Col>
                 </Row>
                 <Row>

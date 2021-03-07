@@ -225,6 +225,14 @@ class RegistrationForm extends React.Component {
                                 ],
                             })(<Input />)}
                         </Form.Item>
+
+                        <Form.Item label="重量">
+                            {getFieldDecorator('weight', {
+                                rules: [],
+                                initialValue: 0,
+                            })(<InputNumber />)}
+                            g
+                        </Form.Item>
                     </Col>
                     <Col span="12">
                         <Form.Item

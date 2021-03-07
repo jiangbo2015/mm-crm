@@ -126,11 +126,11 @@ export default {
                             name: '定制产品管理',
                             icon: 'sketch',
                             routes: [
-                                {
-                                    path: '/productManage/productInfo',
-                                    name: '产品基础信息',
-                                    component: './productManage/productInfo/index.jsx',
-                                },
+                                // {
+                                //     path: '/productManage/productInfo',
+                                //     name: '产品基础信息',
+                                //     component: './productManage/productInfo/index.jsx',
+                                // },
                                 {
                                     path: '/productManage/colors',
                                     name: '素色管理',
@@ -268,8 +268,8 @@ export default {
         '/uploadskit/': {
             //192.168.8.107
             // target: 'http://192.168.124.25:3000',
-            // target: 'http://8.209.64.159:3001',
-            target: 'http://localhost:3001',
+            target: 'http://8.209.64.159:3001',
+            // target: 'http://localhost:3001',
             changeOrigin: true,
         },
     },

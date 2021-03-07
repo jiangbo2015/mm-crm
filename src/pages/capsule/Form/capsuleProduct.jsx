@@ -56,11 +56,14 @@ const CapsuleForm = props => {
     // console.log('colorList-list', colorList);
     useEffect(() => {
         if (editData) {
-            const { code, size, price, colorWithStyleImgs } = editData;
+            const { code, size, price, colorWithStyleImgs, goodCategory = {} } = editData;
+            const { name, enname } = goodCategory;
             form.setFieldsValue({
                 code,
                 size,
                 price,
+                goodCategorycn: name,
+                goodCategoryen: enname,
             });
             const tempData = colorWithStyleImgs.map((cs, index) => ({
                 id: (Math.random() * 1000000).toFixed(0),
@@ -140,7 +143,7 @@ const CapsuleForm = props => {
             key: 'imgs',
             dataIndex: 'imgs',
             width: '60%',
-            render: (text, record, _, action) => {
+            render: (_, record) => {
                 console.log(record);
                 if (!record.type && record.imgs) {
                     if (Array.isArray(record.imgs.fileList)) {
@@ -238,12 +241,25 @@ const CapsuleForm = props => {
                         author: authorId,
                         _id: editData._id,
                         colorWithStyleImgs,
+                        goodCategory: {
+                            name: values.goodCategorycn,
+                            enname: values.goodCategoryen,
+                        },
                     },
                 });
             } else {
                 dispatch({
                     type: 'capsule/addCapsuleStyle',
-                    payload: { ...values, ...urls, author: authorId, colorWithStyleImgs },
+                    payload: {
+                        ...values,
+                        ...urls,
+                        author: authorId,
+                        colorWithStyleImgs,
+                        goodCategory: {
+                            name: values.goodCategorycn,
+                            enname: values.goodCategoryen,
+                        },
+                    },
                 });
             }
         }
@@ -293,6 +309,7 @@ const CapsuleForm = props => {
                 </Col>
                 <Col span="5" style={{ paddingRight: '10px' }}>
                     <Form.Item
+                        initialValue={0}
                         label={<span>单价</span>}
                         name="price"
                         rules={[
@@ -304,10 +321,29 @@ const CapsuleForm = props => {
                             },
                         ]}
                     >
-                        <InputNumber />
+                        <InputNumber />¥
                     </Form.Item>
                 </Col>
-                <Col span="12">
+                <Col span="5" style={{ paddingRight: '10px' }}>
+                    <Form.Item
+                        label={<span>重量</span>}
+                        name="weight"
+                        initialValue={0}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input weight!',
+                                whitespace: true,
+                                type: 'number',
+                            },
+                        ]}
+                    >
+                        <InputNumber />g
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row>
+                <Col span="7">
                     <Form.Item
                         label={<span>尺码段</span>}
                         name="size"
@@ -320,6 +356,38 @@ const CapsuleForm = props => {
                         ]}
                     >
                         <SizeSelect />
+                    </Form.Item>
+                </Col>
+                <Col span="8" style={{ paddingRight: '10px' }}>
+                    <Form.Item
+                        label={<span>分类(中文名)</span>}
+                        name="goodCategorycn"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input kind!',
+                                whitespace: true,
+                                type: 'number',
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                </Col>
+                <Col span="8" style={{ paddingRight: '10px' }}>
+                    <Form.Item
+                        label={<span>分类(英文名)</span>}
+                        name="goodCategoryen"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input kind!',
+                                whitespace: true,
+                                type: 'number',
+                            },
+                        ]}
+                    >
+                        <Input />
                     </Form.Item>
                 </Col>
             </Row>

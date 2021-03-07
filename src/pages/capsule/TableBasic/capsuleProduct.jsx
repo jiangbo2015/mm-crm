@@ -23,6 +23,13 @@ const Com = props => {
             key: 'size',
         },
         {
+            title: '分类',
+            valueType: 'option',
+            render: (text, record, _, action) => {
+                return record.goodCategory ? record.goodCategory.name : '';
+            },
+        },
+        {
             title: '操作',
             dataIndex: 'action',
             key: 'action',

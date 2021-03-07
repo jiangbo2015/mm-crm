@@ -41,7 +41,7 @@ const CapsuleForm = props => {
             form.setFieldsValue({
                 namecn: editData.namecn,
                 nameen: editData.nameen,
-                status: editData.status,
+                status: `${editData.status}`,
                 description: editData.description,
             });
         }
@@ -172,7 +172,6 @@ const CapsuleForm = props => {
                         name="status"
                         rules={[
                             {
-                                required: true,
                                 message: 'Please input status!',
                                 whitespace: true,
                             },

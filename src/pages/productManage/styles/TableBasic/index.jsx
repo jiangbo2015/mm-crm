@@ -108,6 +108,7 @@ const Com = props => {
                     // goodsId: data.goodsId,
                     // categoryId: data.categoryId,
                     tags: data.tags,
+                    weight: data.weight,
                     ...goods,
                 });
                 props.dispatch({

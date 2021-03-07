@@ -97,7 +97,7 @@ export default props => {
                     for (let i = 0; i < colors.length; i++) {
                         let color = colors[i];
                         if (color && color.type) {
-                            console.log('imgVals', imgVals);
+                            // console.log('imgVals', imgVals);
                             let svgPattern = document.createElementNS(
                                 'http://www.w3.org/2000/svg',
                                 'pattern',

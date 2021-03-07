@@ -5,7 +5,14 @@ import { Button, Checkbox, Col, Input, notification, Row, Select } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
 var isHexcolor = require('is-hexcolor');
-
+export const colorSystemList = [
+    { label: '红色系', value: 6 },
+    { label: '黄色系', value: 5 },
+    { label: '蓝色系', value: 4 },
+    { label: '绿色系', value: 3 },
+    { label: '棕色系', value: 2 },
+    { label: '紫色系', value: 1 },
+];
 const ColorOptionLabel = ({ c = {} }) => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
         <div
@@ -225,6 +232,17 @@ class RegistrationForm extends React.Component {
                         </Form.Item>
                     </Col>
                 </Row>
+                <Row>
+                    <Col span="8">
+                        <Form.Item label="色系">
+                            {getFieldDecorator(
+                                'colorSystem',
+                                {},
+                            )(<Select options={colorSystemList} />)}
+                        </Form.Item>
+                    </Col>
+                </Row>
+
                 <Row>
                     <Col span="2"></Col>
                     <Col span="8">
