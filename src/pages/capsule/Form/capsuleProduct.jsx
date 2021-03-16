@@ -34,7 +34,7 @@ const ColorOptionLabel = ({ c = {} }) => (
 );
 
 const CapsuleForm = props => {
-    const { editData, dispatch, initialValues = { status: '1' }, sizeList, colorList = [] } = props;
+    const { editData, dispatch, sizeList, colorList = [] } = props;
     const { authorId } = props;
     const [form] = useForm();
     const [urls, setUrls] = useState({});
@@ -56,12 +56,15 @@ const CapsuleForm = props => {
     // console.log('colorList-list', colorList);
     useEffect(() => {
         if (editData) {
-            const { code, size, price, colorWithStyleImgs, goodCategory = {} } = editData;
+            const { code, size, price, weight, colorWithStyleImgs, goodCategory = {} } = editData;
             const { name, enname } = goodCategory;
+            console.log('price', price);
+            console.log('weight', weight);
             form.setFieldsValue({
                 code,
                 size,
-                price,
+                price: price,
+                weight: weight,
                 goodCategorycn: name,
                 goodCategoryen: enname,
             });
@@ -208,30 +211,29 @@ const CapsuleForm = props => {
             valueType: 'option',
             width: '15%',
             render: (text, record, _, action) => [
-                record.type ? (
-                    '来自收藏'
-                ) : (
-                    <a
-                        key="editable"
-                        onClick={() => {
-                            action.startEditable?.(record.id);
-                        }}
-                    >
-                        编辑
-                    </a>
-                ),
+                <a
+                    key="editable"
+                    onClick={() => {
+                        action.startEditable?.(record.id);
+                    }}
+                >
+                    编辑
+                </a>,
             ],
         },
     ];
     const onFinish = values => {
         if (dispatch) {
             console.log('dataSource', dataSource);
-            let colorWithStyleImgs = dataSource.map(d => ({
-                color: d.color,
-                imgs: d.imgs.fileList
-                    .filter(f => f.status === 'done')
-                    .map(f => f.response.data.url),
-            }));
+            let colorWithStyleImgs = dataSource.map(d => {
+                return {
+                    ...d,
+                    color: d.color,
+                    imgs: d.imgs.fileList
+                        .filter(f => f.status === 'done')
+                        .map(f => f.response.data.url),
+                };
+            });
             if (editData) {
                 dispatch({
                     type: 'capsule/updateCapsuleStyle',
@@ -284,13 +286,7 @@ const CapsuleForm = props => {
         // },
     };
     return (
-        <Form
-            {...formItemLayout}
-            form={form}
-            name="inputDesiner"
-            onFinish={onFinish}
-            initialValues={initialValues}
-        >
+        <Form {...formItemLayout} form={form} name="inputDesiner" onFinish={onFinish}>
             <Row>
                 <Col span="7" style={{ paddingRight: '10px' }}>
                     <Form.Item
@@ -309,8 +305,7 @@ const CapsuleForm = props => {
                 </Col>
                 <Col span="5" style={{ paddingRight: '10px' }}>
                     <Form.Item
-                        initialValue={0}
-                        label={<span>单价</span>}
+                        label={<span>单价 ¥</span>}
                         name="price"
                         rules={[
                             {
@@ -321,14 +316,13 @@ const CapsuleForm = props => {
                             },
                         ]}
                     >
-                        <InputNumber />¥
+                        <InputNumber />
                     </Form.Item>
                 </Col>
                 <Col span="5" style={{ paddingRight: '10px' }}>
                     <Form.Item
-                        label={<span>重量</span>}
+                        label={<span>重量 g</span>}
                         name="weight"
-                        initialValue={0}
                         rules={[
                             {
                                 required: true,
@@ -338,7 +332,7 @@ const CapsuleForm = props => {
                             },
                         ]}
                     >
-                        <InputNumber />g
+                        <InputNumber />
                     </Form.Item>
                 </Col>
             </Row>
@@ -367,7 +361,6 @@ const CapsuleForm = props => {
                                 required: true,
                                 message: 'Please input kind!',
                                 whitespace: true,
-                                type: 'number',
                             },
                         ]}
                     >
@@ -383,7 +376,6 @@ const CapsuleForm = props => {
                                 required: true,
                                 message: 'Please input kind!',
                                 whitespace: true,
-                                type: 'number',
                             },
                         ]}
                     >
