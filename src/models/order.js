@@ -1,6 +1,12 @@
 // import { routerRedux } from 'dva/router';
 // import { stringify } from 'querystring';
-import { getList as queryList, del, orderDownload } from '@/services/order';
+import {
+    getList as queryList,
+    getCapsuleList as queryCapsuleList,
+    getShopList as queryShopList,
+    del,
+    orderDownload,
+} from '@/services/order';
 
 const Model = {
     namespace: 'order',
@@ -9,7 +15,13 @@ const Model = {
     },
     effects: {
         *getList({ payload }, { call, put }) {
-            const res = yield call(queryList, payload);
+            let queryListFun = queryList;
+            if (payload.orderType === 'capsule') {
+                queryListFun = queryCapsuleList;
+            } else if (payload.orderType === 'shop') {
+                queryListFun = queryShopList;
+            }
+            const res = yield call(queryListFun, payload);
             console.log(res);
             if (res.success) {
                 yield put({

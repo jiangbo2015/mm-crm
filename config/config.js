@@ -181,6 +181,11 @@ export default {
                                     name: '订单列表',
                                     component: './orderManage/order/index.jsx',
                                 },
+                                {
+                                    path: '/orderManage/order',
+                                    name: '订单进度管理',
+                                    component: './orderManage/order/index.jsx',
+                                },
                             ],
                         },
                         {

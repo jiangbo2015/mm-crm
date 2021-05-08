@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Table, Row, Col, Button, Input, Divider, Tag, Modal, Popconfirm } from 'antd';
+import { Table, Row, Col, Button, Input, Select, Tag, Modal, Popconfirm } from 'antd';
 import { connect } from 'dva';
 
 const Com = props => {
@@ -23,18 +23,8 @@ const Com = props => {
         },
         {
             title: '金额/¥',
-            dataIndex: 'price',
-            key: 'price',
-            render: (text, record) => {
-                let price = 0;
-                if (!record.orderData) {
-                    return 0;
-                }
-                record.orderData.map(order => {
-                    order.items.map(x => (price += x.totalPrice));
-                });
-                return price.toFixed(2);
-            },
+            dataIndex: 'sumPrice',
+            key: 'sumPrice',
         },
         {
             title: '时间',
@@ -74,6 +64,7 @@ const Com = props => {
         },
     ];
 
+    const [orderType, setOrderType] = useState('order');
     const [styleNo, setStyleNo] = useState('');
     const [userName, setUserName] = useState('');
 
@@ -81,6 +72,7 @@ const Com = props => {
         props.getOrderList({
             styleNo,
             userName,
+            orderType,
         });
     };
 
@@ -96,7 +88,19 @@ const Com = props => {
     return (
         <>
             <Row style={{ marginBottom: '20px' }}>
-                <Col span="6">
+                <Col span="5">
+                    <Select
+                        style={{ width: 160 }}
+                        options={[
+                            { label: '定制', value: 'order' },
+                            { label: '胶囊', value: 'capsule' },
+                            { label: '网店', value: 'shop' },
+                        ]}
+                        value={orderType}
+                        onChange={val => setOrderType(val)}
+                    />
+                </Col>
+                <Col span="5">
                     <Input
                         addonBefore="订单号"
                         value={styleNo}
@@ -104,7 +108,7 @@ const Com = props => {
                     />
                 </Col>
                 <Col span="2"></Col>
-                <Col span="6">
+                <Col span="5">
                     <Input
                         addonBefore="下单人"
                         value={userName}
