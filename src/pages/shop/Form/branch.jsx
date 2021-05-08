@@ -1,184 +1,228 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Input, Upload, Button, Row, Col, Divider, Popconfirm } from 'antd';
-
-
+import { Input, Form, Button, Row, Col, Divider, Popconfirm } from 'antd';
+const { useForm } = Form;
 import Table from '@/components/Table/SortTable';
 import { connect } from 'dva';
 
-@connect(state => ({
-    imgUrl: state.goods.imgUrl,
-    category: state.goods.category,
-    // sizeList: state.global.sizeList,
-}))
-class RegistrationForm extends React.Component {
-    state = {
-        imgUrl: '',
-        loading: false,
-    };
-
-    handleChange = info => {
-        console.log(info);
-        if (info.file.status === 'uploading') {
-            this.setState({ loading: true });
-            return;
-        }
-        if (this.props.imgUrl) {
-            this.props.dispatch({
-                type: 'goods/setImgUrl',
-                payload: '',
-            });
-        }
-        if (info.file.status === 'done') {
-            this.setState({
-                loading: false,
-            });
-            this.props.dispatch({
-                type: 'goods/setImgUrl',
-                payload: info.file.response.data.url,
-            });
-        }
-    };
-
-    handleAdd = () => {
-        this.props.dispatch({
-            type: 'goods/setCategories',
-            payload: this.props.category.concat({ time: new Date().getTime() }),
+const formItemLayout = {
+    labelCol: {
+        xs: {
+            span: 24,
+        },
+        sm: {
+            span: 8,
+        },
+    },
+    wrapperCol: {
+        xs: {
+            span: 24,
+        },
+        sm: {
+            span: 16,
+        },
+    },
+};
+const BranchForm = props => {
+    const { editData, dispatch, branchKindList, initialValues = { status: '1' } } = props;
+    const [form] = useForm();
+    // const { getFieldDecorator } = props.form;
+    const handleAdd = () => {
+        dispatch({
+            type: 'global/setBranchKindList',
+            payload: branchKindList.concat({ time: new Date().getTime() }),
         });
     };
 
-    handleDelete = (e, index) => {
+    useEffect(() => {
+        if (editData) {
+            const editValues = {
+                namecn: editData.namecn,
+                nameen: editData.nameen,
+            };
+            editData.children.map(x => {
+                editValues[`cname-${x._id}`] = x.namecn;
+                editValues[`cenname-${x._id}`] = x.nameen;
+            });
+            dispatch({
+                type: 'global/setBranchKindList',
+                payload: editData.children,
+            });
+            form.setFieldsValue(editValues);
+        }
+    }, [editData]);
+
+    const handleDelete = (e, index) => {
         console.log(index);
-        const copy = [].concat(this.props.category);
+        const copy = [].concat(branchKindList);
         copy.splice(index, 1);
-        this.props.dispatch({
-            type: 'goods/setCategories',
+        dispatch({
+            type: 'global/setBranchKindList',
             payload: copy,
         });
     };
 
-    handleSort = options => {
-        this.props.dispatch({
-            type: 'goods/categrySort',
-            payload: options,
-        });
+    const onFinish = async values => {
+        if (dispatch) {
+            const newCategory = [];
+            const fieldsCategoryName = Object.keys(values).filter(x => x.indexOf('cname') === 0);
+            // console.log('fieldsCategoryName', fieldsCategoryName);
+
+            fieldsCategoryName.map((name, index) => {
+                let obj = {
+                    namecn: values[name],
+                };
+                let nameGroup = name.split('-');
+                if (nameGroup.length >= 2 && nameGroup[1].length >= 24) {
+                    obj._id = nameGroup[1];
+                }
+                obj.nameen = values[`cenname-${nameGroup[1]}`];
+
+                if (obj.namecn) {
+                    newCategory.push(obj);
+                }
+                // return obj;
+            });
+
+            if (editData) {
+                await dispatch({
+                    type: 'global/updateBranch',
+                    payload: {
+                        namecn: values.namecn,
+                        nameen: values.nameen,
+                        _id: editData._id,
+                        kind: newCategory.filter(c => c.namecn),
+                    },
+                });
+            } else {
+                await dispatch({
+                    type: 'global/addBranch',
+                    payload: {
+                        namecn: values.namecn,
+                        nameen: values.nameen,
+                        kind: newCategory.filter(c => c.namecn),
+                    },
+                });
+            }
+            props.onClose();
+        }
     };
 
-    render() {
-        const { imgUrl, category } = this.props;
-        const { getFieldDecorator } = this.props.form;
-        const formItemLayout = {
-            labelCol: {
-                xs: {
-                    span: 24,
-                },
-                sm: {
-                    span: 8,
-                },
-            },
-            wrapperCol: {
-                xs: {
-                    span: 24,
-                },
-                sm: {
-                    span: 16,
-                },
-            },
-        };
+    return (
+        <Form
+            {...formItemLayout}
+            form={form}
+            name="inputDesiner"
+            onFinish={onFinish}
+            initialValues={initialValues}
+        >
+            <Form.Item
+                style={{ marginBottom: 0 }}
+                label={<span>中文名</span>}
+                name="namecn"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input namecn!',
+                        whitespace: true,
+                    },
+                ]}
+            >
+                <Input />
+            </Form.Item>
+            <Form.Item
+                style={{ marginBottom: 0 }}
+                label={<span>英文名</span>}
+                name="nameen"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input nameen!',
+                        whitespace: true,
+                    },
+                ]}
+            >
+                <Input />
+            </Form.Item>
 
-        return (
-            <Form {...formItemLayout}>
-                <Form.Item label={<span>中文名</span>}>
-                    {getFieldDecorator('namecn', {
-                        rules: [
-                            {
-                                required: true,
-                                message: 'Please input name!',
-                                whitespace: true,
-                            },
-                        ],
-                    })(<Input />)}
-                </Form.Item>
-                <Form.Item label={<span>英文名</span>}>
-                    {getFieldDecorator('nameen', {
-                        rules: [
-                            {
-                                required: true,
-                                message: 'Please input name!',
-                                whitespace: true,
-                            },
-                        ],
-                    })(<Input />)}
-                </Form.Item>
-                <Table
-                    size="small"
-                    title="分类"
-                    columns={[
-                        {
-                            title: '名称',
-                            dataIndex: 'name',
-                            key: 'name',
-                            render: (_, record) => {
-                                const keyLast = record._id ? record._id : record.time;
-                                return (
-                                    <Form.Item label="" style={{ marginBottom: 0 }}>
-                                        {getFieldDecorator(`cname-${keyLast}`, {
-                                            rules: [
-                                                {
-                                                    whitespace: true,
-                                                },
-                                            ],
-                                        })(<Input />)}
-                                    </Form.Item>
-                                );
-                            },
+            <Table
+                size="small"
+                title="分类"
+                columns={[
+                    {
+                        title: '名称',
+                        dataIndex: 'namecn',
+                        key: 'namecn',
+                        render: (_, record) => {
+                            const keyLast = record._id ? record._id : record.time;
+                            return (
+                                <Form.Item
+                                    style={{ marginBottom: 0 }}
+                                    label=""
+                                    name={`cname-${keyLast}`}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please input nameen!',
+                                            whitespace: true,
+                                        },
+                                    ]}
+                                >
+                                    <Input />
+                                </Form.Item>
+                            );
                         },
-                        {
-                            title: '英文名',
-                            dataIndex: 'enname',
-                            key: 'enname',
-                            render: (_, record) => {
-                                const keyLast = record._id ? record._id : record.time;
-                                return (
-                                    <Form.Item label="" style={{ marginBottom: 0 }}>
-                                        {getFieldDecorator(`cenname-${keyLast}`, {
-                                            rules: [
-                                                {
-                                                    whitespace: true,
-                                                },
-                                            ],
-                                        })(<Input />)}
-                                    </Form.Item>
-                                );
-                            },
+                    },
+                    {
+                        title: '英文名',
+                        dataIndex: 'nameen',
+                        key: 'nameen',
+                        render: (_, record) => {
+                            const keyLast = record._id ? record._id : record.time;
+                            return (
+                                <Form.Item
+                                    style={{ marginBottom: 0 }}
+                                    label=""
+                                    name={`cenname-${keyLast}`}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please input nameen!',
+                                            whitespace: true,
+                                        },
+                                    ]}
+                                >
+                                    <Input />
+                                </Form.Item>
+                            );
                         },
-                        {
-                            title: '操作',
-                            dataIndex: 'action',
-                            key: 'action',
-                            render: (_, record, index) => (
-                                <div>
-                                    <Popconfirm
-                                        title="确认要删除吗"
-                                        onConfirm={() => {
-                                            this.handleDelete({}, index);
-                                        }}
-                                        okText="是"
-                                        cancelText="否"
-                                    >
-                                        <a href="#">删除</a>
-                                    </Popconfirm>
-                                </div>
-                            ),
-                        },
-                    ]}
-                    dataSource={category}
-                    // onMoveArray={this.handleSort}
-                />
+                    },
+                    {
+                        title: '操作',
+                        dataIndex: 'action',
+                        key: 'action',
+                        render: (_, record, index) => (
+                            <div>
+                                <Popconfirm
+                                    title="确认要删除吗"
+                                    onConfirm={() => {
+                                        handleDelete({}, index);
+                                    }}
+                                    okText="是"
+                                    cancelText="否"
+                                >
+                                    <a href="#">删除</a>
+                                </Popconfirm>
+                            </div>
+                        ),
+                    },
+                ]}
+                dataSource={branchKindList}
+                // onMoveArray={this.handleSort}
+            />
 
-                {/* {category.map((item, index) => {
+            {/* {category.map((item, index) => {
                     const keyLast = item._id ? `-${item._id}` : item.time;
                     return (
                         <Row gutter={[20]} key={`${item._id}-${index}`}>
@@ -205,21 +249,30 @@ class RegistrationForm extends React.Component {
                         </Row>
                     );
                 })} */}
-                <Row>
-                    <Col span="2">
-                        <Button
-                            shape="circle"
-                            icon={<PlusOutlined />}
-                            type="primary"
-                            onClick={this.handleAdd}
-                        />
-                    </Col>
-                </Row>
-            </Form>
-        );
-    }
-}
+            <Row>
+                <Col span="2">
+                    <Button
+                        shape="circle"
+                        icon={<PlusOutlined />}
+                        type="primary"
+                        onClick={handleAdd}
+                    />
+                </Col>
+            </Row>
+            <Row style={{ marginTop: '20px' }}>
+                <Col span="21"></Col>
+                <Col span="3">
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">
+                            确认
+                        </Button>
+                    </Form.Item>
+                </Col>
+            </Row>
+        </Form>
+    );
+};
 
-export default Form.create({
-    name: 'inputBranch',
-})(RegistrationForm);
+export default connect(state => ({
+    branchKindList: state.global.branchKindList,
+}))(BranchForm);

@@ -159,12 +159,12 @@ export default {
                             icon: 'copyright',
                             component: './capsule',
                         },
-                        {
-                            path: '/shop',
-                            name: '网店管理',
-                            icon: 'shop',
-                            component: './shop',
-                        },
+                        // {
+                        //     path: '/shop',
+                        //     name: '网店管理',
+                        //     icon: 'shop',
+                        //     component: './shop',
+                        // },
                         {
                             path: '/shop2',
                             name: '网店品牌管理',
@@ -215,8 +215,8 @@ export default {
         'primary-color': primaryColor,
     },
     define: {
-        'process.env.APIURL': 'http://localhost:3001',
-        // 'process.env.APIURL': 'http://8.209.64.159:3001',
+        // 'process.env.APIURL': 'http://localhost:3001',
+        'process.env.APIURL': 'http://8.209.64.159:3001',
         // 'process.env.APIURL': 'http://192.168.124.25:3000',
         ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION:
             ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION || '', // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。

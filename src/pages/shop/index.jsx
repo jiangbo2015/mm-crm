@@ -16,6 +16,10 @@ const Com = props => {
             props.dispatch({
                 type: 'shop/getShopStyleList',
             });
+            props.dispatch({
+                type: 'global/setCurrentBranch',
+                payload: {},
+            });
         }
     }, []);
 

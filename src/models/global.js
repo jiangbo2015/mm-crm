@@ -17,6 +17,7 @@ import {
 import { getAllCapsule } from '@/services/capsule';
 
 import { colorList as getColorList } from '@/services/style';
+import { PropertySafetyFilled } from '@ant-design/icons';
 const GlobalModel = {
     namespace: 'global',
     state: {
@@ -24,6 +25,7 @@ const GlobalModel = {
         notices: [],
         sizeList: [],
         styleSizeList: [],
+        currentBranch: {},
         branchList: [],
         branchKindList: [],
         capsuleList: [],
@@ -184,7 +186,14 @@ const GlobalModel = {
 
         *addBranch({ payload }, { call, put, select }) {
             console.log(payload);
-            const res = yield call(addBranch, payload);
+            const { kind, ...props } = payload;
+            const res = yield call(addBranch, props);
+            if (payload.kind) {
+                console.log('res.data._id', res.data._id);
+                for (let i = 0; i < payload.kind.length; i++) {
+                    yield call(addBranchKind, { ...payload.kind[i], branch: res.data._id });
+                }
+            }
             if (res.success) {
                 yield put({
                     type: 'fetchBranchList',
@@ -203,8 +212,23 @@ const GlobalModel = {
         },
 
         *updateBranch({ payload }, { call, put, select }) {
-            console.log(payload);
-            const res = yield call(updateBranch, payload);
+            const { kind, ...props } = payload;
+            const res = yield call(updateBranch, props);
+            if (kind) {
+                console.log('res.data._id', res.data._id);
+                for (let i = 0; i < kind.length; i++) {
+                    if (kind[i]._id) {
+                        yield call(updateBranchKind, { ...kind[i], branch: res.data._id });
+                    } else {
+                        yield call(addBranchKind, { ...kind[i], branch: res.data._id });
+                    }
+                }
+            }
+            if (res.success) {
+                yield put({
+                    type: 'fetchBranchList',
+                });
+            }
             if (res.success) {
                 yield put({
                     type: 'fetchBranchList',
@@ -260,6 +284,12 @@ const GlobalModel = {
         },
     },
     reducers: {
+        setCurrentBranch(state, { payload }) {
+            return {
+                ...state,
+                currentBranch: payload,
+            };
+        }, //styleSizeList
         setSizeList(state, { payload }) {
             return {
                 ...state,

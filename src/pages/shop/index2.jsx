@@ -66,28 +66,15 @@ const Com = props => {
     };
     return (
         <PageHeaderWrapper>
-            <Row style={{ marginBottom: '10px' }}>
-                <Col span="8">
-                    <Search
-                        placeholder="请输入款式编号"
-                        onSearch={value => handleSearch(value)}
-                        enterButton
-                    />
-                </Col>
-            </Row>
             <Card
-                title="网店商品列表"
+                title="网店-品牌列表"
                 extra={
                     <Button type="primary" onClick={() => setVisible(true)}>
                         添加
                     </Button>
                 }
             >
-                <TableBasic
-                    onPageChange={page => {
-                        handlePageChange(page);
-                    }}
-                />
+                <TableBasic />
             </Card>
 
             <Modal
@@ -96,15 +83,12 @@ const Com = props => {
                 width="1100px"
                 destroyOnClose={true}
                 footer={null}
-                onOk={() => {
-                    handleSubmit();
-                }}
-                onCancel={() => {
-                    setVisible(false);
-                    handleClear();
-                }}
             >
-                <Form />
+                <Form
+                    onClose={() => {
+                        setVisible(false);
+                    }}
+                />
             </Modal>
         </PageHeaderWrapper>
     );

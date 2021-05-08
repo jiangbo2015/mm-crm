@@ -2,7 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
-import Form from '../Form';
+import Form from '../Form/branch.jsx';
+import ShopProductTable from './shopProduct';
 import { filterImageUrl } from '@/utils/utils';
 
 const Com = props => {
@@ -25,7 +26,7 @@ const Com = props => {
             key: 'action',
             render: (text, record) => (
                 <div>
-                    <a onClick={() => handleEdit(record)}>款式管理</a>
+                    <a onClick={() => handleSystemStyle(record)}>款式管理</a>
                     <Divider type="vertical" />
                     <a onClick={() => handleEdit(record)}>编辑</a>
                     <Divider type="vertical" />
@@ -41,23 +42,28 @@ const Com = props => {
             ),
         },
     ];
-    const formRef = useRef();
+    // const formRef = useRef();
     const [visible, setVisible] = useState(false);
     const [data, setData] = useState({});
-    const [visiblePreview, setVisiblePreview] = useState(null);
+    const [visibleSystemStyle, setVisibleSystemStyle] = useState(null);
 
     const handleEdit = record => {
         setVisible(true);
         setData(record);
+    };
+
+    const handleSystemStyle = record => {
         props.dispatch({
-            type: 'shop/setCurrentShopStyle',
+            type: 'global/setCurrentBranch',
             payload: record,
         });
+        setVisibleSystemStyle(true);
     };
 
     const handleDelete = record => {
+        // onClose;
         props.dispatch({
-            type: 'shop/deleteShopStyle',
+            type: 'global/deleteBranch',
             payload: {
                 _id: record._id,
                 type: 0,
@@ -70,7 +76,7 @@ const Com = props => {
             <Modal
                 title="编辑"
                 visible={visible}
-                width="1100px"
+                width="500px"
                 footer={null}
                 destroyOnClose={true}
                 onCancel={() => {
@@ -79,7 +85,6 @@ const Com = props => {
                 }}
             >
                 <Form
-                    ref={v => (formRef.current = v)}
                     editData={data}
                     onClose={() => {
                         setVisible(false);
@@ -87,20 +92,34 @@ const Com = props => {
                     }}
                 />
             </Modal>
+            <Modal
+                title={`${props.currentBranch.namecn}-款式管理`}
+                visible={visibleSystemStyle}
+                width="1100px"
+                footer={null}
+                destroyOnClose={true}
+                onCancel={() => {
+                    setVisibleSystemStyle(false);
+                    // handleClear();
+                }}
+            >
+                <ShopProductTable />
+            </Modal>
             <Table
                 rowKey={record => record._id}
                 columns={columns}
                 loading={props.fetching}
                 dataSource={props.branchList}
                 pagination={null}
-                childrenColumnName='dfdrfrf5fgfsg'
+                childrenColumnName="dfdrfrf5fgfsg"
             />
         </>
     );
 };
 
-export default connect(({ shop, loading,global  }) => ({
+export default connect(({ shop, loading, global }) => ({
     styleList: shop.currentShopStyleList,
     branchList: global.branchList,
-    fetching: loading.effects['shop/getShopStyleList'],
+    currentBranch: global.currentBranch,
+    fetching: loading.effects['global/fetchBranchList'],
 }))(Com);

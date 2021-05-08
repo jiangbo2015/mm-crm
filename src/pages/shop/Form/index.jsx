@@ -417,6 +417,7 @@ const ShopStyleForm = props => {
                                     type: 'global/fetchBranchKindList',
                                     payload: { branch: form.getFieldValue('branch') },
                                 });
+                                form.setFieldsValue({ branchKind: [] });
                             }}
                             dropdownRender={menu => (
                                 <div>

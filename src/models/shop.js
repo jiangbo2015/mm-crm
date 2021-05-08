@@ -8,8 +8,12 @@ const Model = {
     },
     effects: {
         *getShopStyleList(_, { call, put, select }) {
-            const currentCapsule = yield select(state => state.capsule.currentCapsule);
-            const res = yield call(getShopStyleList, { capsule: currentCapsule._id });
+            const currentBranch = yield select(state => state.global.currentBranch);
+            const params = {};
+            if (currentBranch && currentBranch._id) {
+                params.branch = currentBranch._id;
+            }
+            const res = yield call(getShopStyleList, params);
             console.log(res);
             if (res.success) {
                 yield put({
@@ -19,7 +23,7 @@ const Model = {
             }
         },
 
-        *addShopStyle({ payload }, { put, call }) {
+        *addShopStyle({ payload }, { put, call, select }) {
             const res = yield call(addShopStyle, payload);
             console.log(payload);
             if (res.success) {
