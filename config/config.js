@@ -166,6 +166,12 @@ export default {
                             component: './shop',
                         },
                         {
+                            path: '/shop2',
+                            name: '网店品牌管理',
+                            icon: 'shop',
+                            component: './shop/index2.jsx',
+                        },
+                        {
                             path: '/orderManage',
                             name: '订单管理',
                             icon: 'dollar',

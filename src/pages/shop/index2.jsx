@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Modal, Row, Col, Input } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import TableBasic from './TableBasic';
-import Form from './Form/index';
+import TableBasic from './TableBasic2';
+import Form from './Form/branch.jsx';
 import { connect } from 'umi';
 
 const { Search } = Input;
@@ -14,7 +14,7 @@ const Com = props => {
     useEffect(() => {
         if (props.dispatch) {
             props.dispatch({
-                type: 'shop/getShopStyleList',
+                type: 'global/fetchBranchList',
             });
         }
     }, []);
@@ -76,7 +76,7 @@ const Com = props => {
                 </Col>
             </Row>
             <Card
-                title="网店品牌列表"
+                title="网店商品列表"
                 extra={
                     <Button type="primary" onClick={() => setVisible(true)}>
                         添加
@@ -111,5 +111,5 @@ const Com = props => {
 };
 
 export default connect(state => ({
-    capsuleList: state.capsule.list,
+    branchList: state.global.branchList,
 }))(Com);
