@@ -49,21 +49,21 @@ const Com = props => {
         });
     };
 
-    const handlePageChange = page => {
-        let queries = {};
-        if (styleNo) {
-            queries.namecn = styleNo;
-            queries.nameen = styleNo;
-        }
-        props.dispatch({
-            type: 'shop/getStyleList',
-            payload: {
-                page,
-                limit: 10,
-                ...queries,
-            },
-        });
-    };
+    // const handlePageChange = page => {
+    //     let queries = {};
+    //     if (styleNo) {
+    //         queries.namecn = styleNo;
+    //         queries.nameen = styleNo;
+    //     }
+    //     props.dispatch({
+    //         type: 'shop/getStyleList',
+    //         payload: {
+    //             page,
+    //             limit: 10,
+    //             ...queries,
+    //         },
+    //     });
+    // };
     return (
         <PageHeaderWrapper>
             <Card
