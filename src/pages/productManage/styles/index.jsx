@@ -74,12 +74,13 @@ const Com = props => {
             type: 'style/resetFields',
         });
     };
-    const handlePageChange = page => {
+    const handlePageChange = (page,limit) => {
+        // console.log('others', others)
         props.dispatch({
             type: 'style/get',
             payload: {
                 page,
-                limit: 10,
+                limit: limit,
                 styleNo: styleNo ? styleNo : '',
             },
         });
@@ -104,8 +105,8 @@ const Com = props => {
                 }
             >
                 <TableBasic
-                    onPageChange={page => {
-                        handlePageChange(page);
+                    onPageChange={(page, pageSize) => {
+                        handlePageChange(page, pageSize);
                     }}
                 />
             </Card>
