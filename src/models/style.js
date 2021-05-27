@@ -220,16 +220,20 @@ const Model = {
             const res = yield call(updateStyle, { ...payload, ...goods });
             // const res = yield call(updateStyle, payload);
 
+            console.log('update res', res)
             if (res.success) {
                 let styleList = yield select(state => state.style.list);
                 let objIndex = styleList.docs.findIndex(x => x._id === payload._id);
+
+                console.log('objIndex', objIndex)
                 if (objIndex >= 0) {
                     styleList.docs[objIndex] = {
                         ...res.data,
                     };
+                    console.log('styleList.docs[objIndex]', styleList.docs[objIndex].size)
                     yield put({
                         type: 'setStyleList',
-                        payload: { ...styleList },
+                        payload: { ...styleList , docs: [...styleList.docs]},
                     });
                 }
                 // yield put({

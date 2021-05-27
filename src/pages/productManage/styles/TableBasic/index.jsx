@@ -62,7 +62,7 @@ const Com = props => {
     const [data, setData] = useState({});
 
     const handleUpdate = () => {
-        formRef.current.validateFields((err, values) => {
+        formRef.current.validateFields(async (err, values) => {
             if (!err) {
                 const {
                     imgUrl,
@@ -74,10 +74,10 @@ const Com = props => {
                 } = props;
 
                 console.log('style/update', values);
-                props.dispatch({
+                await props.dispatch({
                     type: 'style/update',
                     payload: {
-                        _id: styleEditData._id,
+                        _id: data._id,
                         ...values,
                         imgUrl,
                         svgUrl,
@@ -86,7 +86,7 @@ const Com = props => {
                         shadowUrlBack,
                     },
                 });
-                // setVisible(false);
+                setVisible(false);
             }
         });
     };
@@ -189,6 +189,7 @@ const Com = props => {
                     current: parseInt(props.styleList.page, 10),
                     pageSize: props.styleList.limit,
                     onChange: props.onPageChange,
+                    pageSizeOptions: [10, 20, 50, 100, 500],
                 }}
                 columns={columns}
                 dataSource={props.styleList.docs}
