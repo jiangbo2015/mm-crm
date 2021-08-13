@@ -29,7 +29,7 @@ const ColorOptionLabel = ({ c = {} }) => (
                 background: c.type ? `url(${filterImageUrl(c.value)}?tr=w-50)` : c.value,
             }}
         ></div>
-        {`${c.code}(${c.namecn})`}
+        {c.namecn ? `${c.code}(${c.namecn})` : c.code}
     </div>
 );
 
@@ -137,7 +137,12 @@ const CapsuleForm = props => {
                 return <ColorOptionLabel c={c} />;
             },
             renderFormItem: item => {
-                return <Select showSearch options={colorOptions} />;
+                return <Select showSearch options={colorOptions} filterOption={(inputValue, option) => {
+                    console.log(option)
+                    return option.label.props.c.code.includes(inputValue)
+                 
+
+                }} />;
             },
             width: '25%',
         },
@@ -192,6 +197,8 @@ const CapsuleForm = props => {
             },
             renderFormItem: (_, data, { getFieldsValue, ...props }) => {
                 const value = Object.values(getFieldsValue())[0];
+                console.log('renderFormItem data',data)
+                console.log('renderFormItem props',props)
                 const fileList = value && value.imgs ? value.imgs.fileList : [];
                 return (
                     <Upload
@@ -226,6 +233,7 @@ const CapsuleForm = props => {
         if (dispatch) {
             console.log('dataSource', dataSource);
             let colorWithStyleImgs = dataSource.map(d => {
+
                 return {
                     ...d,
                     color: d.color,

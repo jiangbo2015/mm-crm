@@ -10,7 +10,7 @@ import {
     addCapsuleStyle,
     delCapsuleStyle,
 } from '@/services/capsule';
-import { setAuthority } from '@/utils/authority';
+import { message } from 'antd';
 import { getPageQuery } from '@/utils/utils';
 
 const Model = {
@@ -75,6 +75,7 @@ const Model = {
         },
 
         *addCapsuleStyle({ payload }, { put, call, select }) {
+            const hide = message.loading('保存中...', 0)
             const currentCapsule = yield select(state => state.capsule.currentCapsule);
             // const res = yield call(getCapsuleStyleList, { capsule: currentCapsule._id });
             const res = yield call(addCapsuleStyle, { capsule: currentCapsule._id, ...payload });
@@ -83,10 +84,16 @@ const Model = {
                 yield put({
                     type: 'getCapsuleStyleList',
                 });
+                message.success('保存成功')
+                hide()
+            }else{
+                message.error('保存失败')
+                hide()
             }
         },
 
         *updateCapsuleStyle({ payload }, { put, call }) {
+            const hide = message.loading('保存中...', 0)
             // const currentCapsule = yield select(state => state.capsule.currentCapsule);
             // const res = yield call(updateCapsuleStyle, { capsule: currentCapsule._id, ...payload });
             const res = yield call(updateCapsuleStyle, payload);
@@ -95,6 +102,8 @@ const Model = {
                 yield put({
                     type: 'getCapsuleStyleList',
                 });
+                message.error('保存失败')
+                hide()
             }
         },
 

@@ -190,7 +190,7 @@ class RegistrationForm extends React.Component {
             <Form {...formItemLayout} name="inputDesiner" layout="vertical">
                 {!this.props.isBatch && (
                     <Row>
-                        <Col span="8">
+                        <Col span="13">
                             <Upload
                                 {...uploadProps}
                                 beforeUpload={this.beforeUpload}
@@ -211,6 +211,12 @@ class RegistrationForm extends React.Component {
                                     {},
                                 )(
                                     <Select
+                                    filterOption={(inputValue, option) => {
+                                        // console.log(option)
+                                        return option.label.props.c.code.includes(inputValue)
+                                     
+                    
+                                    }} 
                                         mode="multiple"
                                         options={colorList
                                             .filter(x => x.type === 0)
@@ -222,8 +228,8 @@ class RegistrationForm extends React.Component {
                                 )}
                             </Form.Item>
                         </Col>
-                        <Col span="2"></Col>
-                        <Col span="14">
+                        <Col span="1"></Col>
+                        <Col span="10">
                             {/* 编号改“开发编号”，下面请添加一个非必填项：“印花编号”，供业务人员一旦该花布进入打样环节的时候，可以填写印花厂编号，以备后查 */}
                             <Form.Item label={<span>开发编号</span>}>
                                 {getFieldDecorator('code', {

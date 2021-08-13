@@ -12,9 +12,10 @@ import {
     tagList,
     update as updateStyle,
     updateArr,
+    updateMany
 } from '@/services/style';
 import { getGoodsParams } from '@/utils/utils';
-import { notification } from 'antd';
+import { notification,message } from 'antd';
 
 const Model = {
     namespace: 'style',
@@ -247,6 +248,29 @@ const Model = {
                     message: '修改成功',
                 });
             }
+        },
+        *updateMany({ payload }, { put, call, select }) {
+            const hide = message.loading('修改中...', 0)
+            // console.log('update', payload);
+            let goods = getGoodsParams(payload);
+            const res = yield call(updateMany, { ...payload, ...goods });
+            // const res = yield call(updateStyle, payload);
+            const styleList = yield select(state => state.style.list);
+            // console.log('update res', res)
+            if (res.success) {
+                yield put({
+                    type: 'get',
+                    payload: {
+                        limit: styleList.limit,
+                        page: styleList.page,
+                    },
+                });
+                hide()
+                notification.success({
+                    message: '修改成功',
+                });
+            }
+            hide()
         },
         *updateColor({ payload }, { put, call, select }) {
             // let goods = getGoodsParams(payload);

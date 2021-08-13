@@ -36,6 +36,13 @@ export async function update(data) {
     });
 }
 
+export async function updateMany(data) {
+    return request('/api/style/updateMany', {
+        method: 'post',
+        data,
+    });
+}
+
 export async function updateArr(data) {
     return request('/api/style/updateAttr', {
         method: 'post',

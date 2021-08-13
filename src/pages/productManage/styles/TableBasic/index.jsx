@@ -194,6 +194,11 @@ const Com = props => {
                 columns={columns}
                 dataSource={props.styleList.docs}
                 loading={props.fetching}
+                rowSelection={{
+                    onChange: (selectedRowKeys) => {
+                        props.setSelectedKeys(selectedRowKeys);
+                    },
+                }}
             />
         </>
     );

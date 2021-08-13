@@ -43,8 +43,8 @@ const Com = props => {
         },
         {
             title: '创建日期',
-            dataIndex: 'create_time',
-            key: 'create_time',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
             // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
         },
         {

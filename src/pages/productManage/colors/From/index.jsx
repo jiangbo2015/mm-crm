@@ -211,6 +211,12 @@ class RegistrationForm extends React.Component {
                                 )(
                                     <Select
                                         mode="multiple"
+                                        filterOption={(inputValue, option) => {
+                                            // console.log(option)
+                                            return option.label.props.c.code.includes(inputValue)
+                                         
+                        
+                                        }} 
                                         options={colorList
                                             .filter(x => x.type === 1)
                                             .map(c => ({

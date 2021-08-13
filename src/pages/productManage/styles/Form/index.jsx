@@ -186,7 +186,8 @@ class RegistrationForm extends React.Component {
 
         return (
             <Form {...formItemLayout} className="wrap">
-                <Row>
+                {this.props.isBatch ? null : <>
+                    <Row>
                     <Col span="4">
                         <Upload
                             {...uploadProps}
@@ -494,6 +495,8 @@ class RegistrationForm extends React.Component {
                         <p style={{ textAlign: 'center' }}>光阴覆盖层</p>
                     </Col>
                 </Row>
+                
+                </>}
                 <Divider className={styles.divider} orientation="left">
                     商品分类
                 </Divider>

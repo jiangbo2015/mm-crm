@@ -9,8 +9,12 @@ const { Search } = Input;
 
 const Com = props => {
     const formRef = useRef();
+    const formRef2 = useRef();
     const [visible, setVisible] = useState(false);
     const [styleNo, setStyleNo] = useState(false);
+    const [selectedKeys, setSelectedKeys] = useState([]);
+    const [batchVisible, setBatchVisible] = useState(false);
+
     useEffect(() => {
         props.dispatch({
             type: 'style/get',
@@ -85,6 +89,35 @@ const Com = props => {
             },
         });
     };
+
+    const handleDeleteBatch = () => {
+        if (selectedKeys.length < 1) {
+            return;
+        }
+        props.dispatch({
+            type: 'style/delete',
+            payload: {
+                ids: selectedKeys,
+            },
+        });
+    };
+
+    const handleBatchUpdate = () => {
+        formRef2.current.validateFields((err, values) => {
+            if (!err) {
+                console.log(values, 'vlues');
+                props.dispatch({
+                    type: 'style/updateMany',
+                    payload: {
+                        ids: selectedKeys,
+                        type: 0,
+                        ...values,
+                    },
+                });
+                setBatchVisible(false);
+            }
+        });
+    };
     return (
         <PageHeaderWrapper>
             <Row style={{ marginBottom: '10px' }}>
@@ -99,15 +132,36 @@ const Com = props => {
             <Card
                 title="款式管理"
                 extra={
-                    <Button type="primary" onClick={() => setVisible(true)}>
-                        添加
-                    </Button>
+                    <>
+                        
+                        <Button style={{ marginRight: '10px' }} type="primary" onClick={() => setVisible(true)}>
+                            添加
+                        </Button>
+                        <Button
+                            style={{ marginRight: '10px' }}
+                            type="primary"
+                            onClick={() => {
+                                setBatchVisible(true);
+                            }}
+                        >
+                            批量编辑
+                        </Button>
+                        <Button
+                            type="danger"
+                            onClick={() => {
+                                handleDeleteBatch();
+                            }}
+                        >
+                            批量删除
+                        </Button>
+                    </>
                 }
             >
                 <TableBasic
                     onPageChange={(page, pageSize) => {
                         handlePageChange(page, pageSize);
                     }}
+                    setSelectedKeys={setSelectedKeys}
                 />
             </Card>
 
@@ -125,6 +179,27 @@ const Com = props => {
                 }}
             >
                 <Form ref={v => (formRef.current = v)} />
+            </Modal>
+            <Modal
+                title="批量编辑"
+                visible={batchVisible}
+                width="800px"
+                // footer={null}
+                destroyOnClose={true}
+                onCancel={() => {
+                    setBatchVisible(false);
+                    handleClear();
+                }}
+                onOk={() => {
+                    handleBatchUpdate();
+                }}
+            >
+                <Form
+                    ref={v => (formRef2.current = v)}
+                    isBatch
+                    updateColor={true}
+                    handleBatchUpdate={handleBatchUpdate}
+                />
             </Modal>
         </PageHeaderWrapper>
     );
