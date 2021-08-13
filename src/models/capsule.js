@@ -102,6 +102,9 @@ const Model = {
                 yield put({
                     type: 'getCapsuleStyleList',
                 });
+                message.success('保存成功')
+                hide()
+            }else{
                 message.error('保存失败')
                 hide()
             }
