@@ -45,7 +45,7 @@ const Com = props => {
             title: '创建日期',
             dataIndex: 'createdAt',
             key: 'createdAt',
-            // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
+            render: (val) => (<div>{val.slice(0,10)}</div>)
         },
         {
             title: '操作',
