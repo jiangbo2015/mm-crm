@@ -138,7 +138,7 @@ const CapsuleForm = props => {
             },
             renderFormItem: item => {
                 return <Select showSearch options={colorOptions} filterOption={(inputValue, option) => {
-                    console.log(option)
+                    // console.log(option)
                     return option.label.props.c.code.includes(inputValue)
                  
 
@@ -197,8 +197,8 @@ const CapsuleForm = props => {
             },
             renderFormItem: (_, data, { getFieldsValue, ...props }) => {
                 const value = Object.values(getFieldsValue())[0];
-                console.log('renderFormItem data',data)
-                console.log('renderFormItem props',props)
+                // console.log('renderFormItem data',data)
+                // console.log('renderFormItem props',props)
                 const fileList = value && value.imgs ? value.imgs.fileList : [];
                 return (
                     <Upload
@@ -417,8 +417,9 @@ const CapsuleForm = props => {
                     editableKeys,
                     onSave: async () => {
                         // await waitTime(2000);
+                        console.log(`eidt-${dataSource.length}`)
                         setNewRecord({
-                            id: `eidt-${editableKeys.length}`,
+                            id: `eidt-${dataSource.length}`,
                         });
                     },
                     onChange: setEditableRowKeys,

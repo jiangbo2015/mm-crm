@@ -21,6 +21,18 @@ const Com = props => {
             // render: url => <img width="100px" src={filterImageUrl(url)} />,
         },
         {
+            title: '状态',
+            dataIndex: 'status',
+            key: 'status',
+            render: val => (val ? '已发布' : '未发布'),
+        },
+        {
+            title: '创建日期',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            render: (val) => (<div>{val.slice(0,10)}</div>)
+        },
+        {
             title: '操作',
             dataIndex: 'action',
             key: 'action',

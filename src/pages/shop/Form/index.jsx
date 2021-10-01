@@ -70,7 +70,7 @@ const ShopStyleForm = props => {
         editData,
         dispatch,
         initialValues = { status: '1' },
-        sizeList,
+        onClose,
         colorList = [],
         branchList = [],
         branchKindList = [],
@@ -109,7 +109,7 @@ const ShopStyleForm = props => {
         });
     }, []);
     useEffect(() => {
-        setNumInbag(_.sum(dataSource.map(cs => _.sum(Object.values(cs.sizeWithQuantity)))));
+        setNumInbag(_.sum(dataSource.map(cs => cs.sizeWithQuantity ? _.sum(Object.values(cs.sizeWithQuantity)) : 0)));
     }, [dataSource]);
     useEffect(() => {
         if (editData) {
@@ -314,7 +314,7 @@ const ShopStyleForm = props => {
             ],
         },
     ];
-    const onFinish = values => {
+    const onFinish = async values => {
         if (dispatch) {
             // console.log('dataSource', dataSource);
             let colorWithStyleImgs = dataSource.map(d => ({
@@ -328,7 +328,7 @@ const ShopStyleForm = props => {
             // console.log('colorWithStyleImgs', colorWithStyleImgs);
             // return;
             if (editData) {
-                dispatch({
+                await dispatch({
                     type: 'shop/updateShopStyle',
                     payload: {
                         ...values,
@@ -338,12 +338,14 @@ const ShopStyleForm = props => {
                         colorWithStyleImgs,
                     },
                 });
+
             } else {
                 dispatch({
                     type: 'shop/addShopStyle',
                     payload: { ...values, ...urls, author: authorId, colorWithStyleImgs },
                 });
             }
+            onClose()
         }
     };
 
@@ -541,7 +543,7 @@ const ShopStyleForm = props => {
                         <InputNumber disabled />
                     </Form.Item>
                 </Col>
-                <Col span="6" style={{ paddingRight: '10px' }}>
+                {/* <Col span="6" style={{ paddingRight: '10px' }}>
                     <Form.Item
                         label={<span>库存</span>}
                         name="stock"
@@ -556,7 +558,7 @@ const ShopStyleForm = props => {
                     >
                         <InputNumber min={0} />
                     </Form.Item>
-                </Col>
+                </Col> */}
             </Row>
 
             <Divider orientation="left" style={{ margin: '0 0 16px 0' }}>
@@ -577,15 +579,14 @@ const ShopStyleForm = props => {
                 }}
                 defaultData={dataSource}
                 onChange={(...args) => {
-                    // console.log(args);
+                    console.log(args[0]);
                     setDataSource(args[0]);
                 }}
                 editable={{
                     editableKeys,
                     onSave: async () => {
-                        // await waitTime(2000);
                         setNewRecord({
-                            id: `eidt-${editableKeys.length}`,
+                            id: `eidt-${dataSource.length}`,
                         });
                     },
                     onChange: setEditableRowKeys,
@@ -615,4 +616,5 @@ export default connect(state => ({
     colorList: state.global.colorList,
     authorId: state.user.currentUser._id,
     goodsList: state.goods.list,
+    submitting: state.loading.effects['']
 }))(ShopStyleForm);

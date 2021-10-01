@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import '@ant-design/compatible/assets/index.css';
-import { Input, Form, Button, Row, Col, Divider, Popconfirm } from 'antd';
+import { Input, Form, Button, Row, Col, Select, Popconfirm } from 'antd';
+const {Option} = Select
 const { useForm } = Form;
 import Table from '@/components/Table/SortTable';
 import { connect } from 'dva';
@@ -9,23 +10,23 @@ import { connect } from 'dva';
 const formItemLayout = {
     labelCol: {
         xs: {
-            span: 24,
+            span: 4,
         },
         sm: {
-            span: 8,
+            span: 4,
         },
     },
     wrapperCol: {
         xs: {
-            span: 24,
+            span: 20,
         },
         sm: {
-            span: 16,
+            span: 20,
         },
     },
 };
 const BranchForm = props => {
-    const { editData, dispatch, branchKindList, initialValues = { status: '1' } } = props;
+    const { editData, dispatch, branchKindList, initialValues = { status: '1' } ,onClose} = props;
     const [form] = useForm();
     // const { getFieldDecorator } = props.form;
     const handleAdd = () => {
@@ -40,6 +41,8 @@ const BranchForm = props => {
             const editValues = {
                 namecn: editData.namecn,
                 nameen: editData.nameen,
+                status: editData.status,
+                description: editData.description,
             };
             editData.children.map(x => {
                 editValues[`cname-${x._id}`] = x.namecn;
@@ -91,16 +94,21 @@ const BranchForm = props => {
                     payload: {
                         namecn: values.namecn,
                         nameen: values.nameen,
+                        status: values.status,
+                        description: values.description,
                         _id: editData._id,
                         kind: newCategory.filter(c => c.namecn),
                     },
                 });
+
             } else {
                 await dispatch({
                     type: 'global/addBranch',
                     payload: {
                         namecn: values.namecn,
                         nameen: values.nameen,
+                        status: values.status,
+                        description: values.description,
                         kind: newCategory.filter(c => c.namecn),
                     },
                 });
@@ -117,34 +125,85 @@ const BranchForm = props => {
             onFinish={onFinish}
             initialValues={initialValues}
         >
-            <Form.Item
-                style={{ marginBottom: 0 }}
-                label={<span>中文名</span>}
-                name="namecn"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input namecn!',
-                        whitespace: true,
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                style={{ marginBottom: 0 }}
-                label={<span>英文名</span>}
-                name="nameen"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input nameen!',
-                        whitespace: true,
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
+            <Row>
+                <Col>
+                    <Form.Item
+                    style={{ marginBottom: 0 }}
+                    label={<span>中文名</span>}
+                    name="namecn"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input namecn!',
+                            whitespace: true,
+                        },
+                    ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                </Col>
+                <Col>
+                    <Form.Item
+                    style={{ marginBottom: 0 }}
+                    label={<span>英文名</span>}
+                    name="nameen"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input nameen!',
+                            whitespace: true,
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                </Col>
+            </Row>
+            
+            <Row>
+                <Col>
+                    <Form.Item
+                            style={{ marginBottom: 0 }}
+                            label={<span>状态</span>}
+                            name="status"
+                            rules={[
+                                {
+                                    message: 'Please input status!',
+                                    whitespace: true,
+                                },
+                            ]}
+                    >
+                        <Select style={{ width: 120 }}>
+                            <Option value="1">发布</Option>
+                            <Option value="0">未发布</Option>
+                        </Select>
+                    </Form.Item>
+                </Col>
+                <Col>
+                    <Form.Item
+                        labelCol={{
+                            xs: {
+                                span: 24,
+                            },
+                            sm: {
+                                span: 5,
+                            },
+                        }}
+                        label={<span>介绍</span>}
+                        name="description"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input description!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Input.TextArea rows={5} />
+                    </Form.Item>
+
+                </Col>
+            </Row>
 
             <Table
                 size="small"
