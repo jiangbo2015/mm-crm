@@ -1,5 +1,12 @@
 import request from '@/utils/request';
 
+export async function getBranchList(data) {
+    return request('/api/branch/getList', {
+        method: 'get',
+        params: data,
+    });
+}
+
 // export async function getList(data) {
 //     return request('/api/capsule/getList', {
 //         method: 'get',

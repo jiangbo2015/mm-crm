@@ -1,6 +1,13 @@
 import request from '@/utils/request';
 
 export async function getBranchList(data) {
+    return request('/api/branch/getVisibleList', {
+        method: 'get',
+        params: data,
+    });
+}
+
+export async function  getBranchAll(data) {
     return request('/api/branch/getList', {
         method: 'get',
         params: data,

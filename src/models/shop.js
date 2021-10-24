@@ -1,10 +1,11 @@
-import { getShopStyleList, updateShopStyle, addShopStyle, delShopStyle } from '@/services/shop';
+import { getShopStyleList, updateShopStyle, addShopStyle, delShopStyle, getBranchList } from '@/services/shop';
 
 const Model = {
     namespace: 'shop',
     state: {
         currentShopStyleList: { docs: [] },
         currentShopStyle: {},
+        branchList: []
     },
     effects: {
         *getShopStyleList(_, { call, put, select }) {
@@ -22,7 +23,15 @@ const Model = {
                 });
             }
         },
-
+        *fetchBranchList(_, { call, put, select }) {
+            const res = yield call(getBranchList);
+            if (res.success) {
+                yield put({
+                    type: 'setBranchList',
+                    payload: res.data,
+                });
+            }
+        },
         *addShopStyle({ payload }, { put, call, select }) {
             const res = yield call(addShopStyle, payload);
             console.log(payload);
@@ -54,6 +63,12 @@ const Model = {
         },
     },
     reducers: {
+        setBranchList(state, { payload }) {
+            return {
+                ...state,
+                branchList: payload,
+            };
+        },
         setCurrentShopStyleList(state, { payload }) {
             return {
                 ...state,

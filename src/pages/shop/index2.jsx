@@ -14,7 +14,7 @@ const Com = props => {
     useEffect(() => {
         if (props.dispatch) {
             props.dispatch({
-                type: 'global/fetchBranchList',
+                type: 'global/fetchAllBranchList',
             });
         }
     }, []);

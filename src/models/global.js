@@ -2,6 +2,7 @@ import { queryNotices } from '@/services/user';
 import { notification } from 'antd';
 import { getSizeList, getStyleSizeList, addStyleSize, add, del, update } from '@/services/size';
 import {
+    getBranchAll,
     getBranchList,
     add as addBranch,
     del as delBranch,
@@ -183,6 +184,15 @@ const GlobalModel = {
                 });
             }
         },
+        *fetchAllBranchList(_, { call, put, select }) {
+            const res = yield call(getBranchAll);
+            if (res.success) {
+                yield put({
+                    type: 'setBranchList',
+                    payload: res.data,
+                });
+            }
+        },
 
         *addBranch({ payload }, { call, put, select }) {
             console.log(payload);
@@ -196,7 +206,7 @@ const GlobalModel = {
             }
             if (res.success) {
                 yield put({
-                    type: 'fetchBranchList',
+                    type: 'fetchAllBranchList',
                 });
             }
         },
@@ -206,7 +216,7 @@ const GlobalModel = {
             const res = yield call(delBranch, payload);
             if (res.success) {
                 yield put({
-                    type: 'fetchBranchList',
+                    type: 'fetchAllBranchList',
                 });
             }
         },
@@ -226,12 +236,12 @@ const GlobalModel = {
             }
             if (res.success) {
                 yield put({
-                    type: 'fetchBranchList',
+                    type: 'fetchAllBranchList',
                 });
             }
             if (res.success) {
                 yield put({
-                    type: 'fetchBranchList',
+                    type: 'fetchAllBranchList',
                 });
                 notification.success({
                     message: '修改成功',
