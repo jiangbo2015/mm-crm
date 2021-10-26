@@ -83,6 +83,9 @@ const Com = props => {
                 width="1100px"
                 destroyOnClose={true}
                 footer={null}
+                onCancel={() => {
+                    setVisible(false);
+                }}
             >
                 <Form
                     onClose={() => {

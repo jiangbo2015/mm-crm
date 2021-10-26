@@ -104,7 +104,10 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form />
+                <Form onClose={() => {
+                    setVisible(false);
+                    // handleClear();
+                }}/>
             </Modal>
         </PageHeaderWrapper>
     );

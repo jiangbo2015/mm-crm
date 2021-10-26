@@ -93,6 +93,7 @@ const CapsuleForm = props => {
                     payload: { ...values, ...urls, author: authorId },
                 });
             }
+            props.onClose()
         }
     };
 

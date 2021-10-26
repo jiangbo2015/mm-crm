@@ -41,7 +41,7 @@ const BranchForm = props => {
             const editValues = {
                 namecn: editData.namecn,
                 nameen: editData.nameen,
-                status: editData.status,
+                status: `${editData.status}`,
                 description: editData.description,
             };
             editData.children.map(x => {
