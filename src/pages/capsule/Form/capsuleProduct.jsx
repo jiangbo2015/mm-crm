@@ -34,11 +34,11 @@ const ColorOptionLabel = ({ c = {} }) => (
 );
 
 const CapsuleForm = props => {
-    const { editData, dispatch, sizeList, colorList = [] } = props;
+    const { editData, dispatch, onClose, colorList = [] } = props;
     const { authorId } = props;
     const [form] = useForm();
     const [urls, setUrls] = useState({});
-    const [sizeOptions, setSizeOptions] = useState([]);
+    // const [sizeOptions, setSizeOptions] = useState([]);
     const [colorOptions, setColorOptions] = useState([]);
     const [newRecord, setNewRecord] = useState({
         id: (Math.random() * 1000000).toFixed(0),
@@ -86,11 +86,11 @@ const CapsuleForm = props => {
             setDataSource(tempData);
         }
     }, [editData]);
-    useEffect(() => {
-        setSizeOptions(
-            sizeList.map(s => ({ label: s.values.map(t => t.name).join('/'), value: s._id })),
-        );
-    }, [sizeList]);
+    // useEffect(() => {
+    //     setSizeOptions(
+    //         sizeList.map(s => ({ label: s.values.map(t => t.name).join('/'), value: s._id })),
+    //     );
+    // }, [sizeList]);
     useEffect(() => {
         setColorOptions(
             Array.isArray(colorList)
@@ -272,6 +272,7 @@ const CapsuleForm = props => {
                     },
                 });
             }
+            onClose()
         }
     };
 
