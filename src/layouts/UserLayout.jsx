@@ -46,7 +46,7 @@ const UserLayout = props => {
                     </div>
                     {children}
                 </div>
-                <DefaultFooter copyright="2019 MRMISS" links={[]} />
+                <DefaultFooter copyright="2021 MRMISS" links={[]} />
             </div>
         </>
     );

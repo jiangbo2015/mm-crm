@@ -5,7 +5,9 @@ import {
     getCapsuleList as queryCapsuleList,
     getShopList as queryShopList,
     del,
-    orderDownload,
+    diyOrderDownload,
+    shopOrderDownload,
+    capsuleOrderDownload,
 } from '@/services/order';
 
 const Model = {
@@ -32,10 +34,16 @@ const Model = {
         },
         *download({ payload }, { call, put }) {
             console.log('downloaddownloaddownload');
+            let orderDownload = diyOrderDownload;
+            if (payload.orderType === 'capsule') {
+                queryListFun = capsuleOrderDownload;
+            } else if (payload.orderType === 'shop') {
+                queryListFun = shopOrderDownload;
+            }
             const res = yield call(orderDownload, payload);
             console.log(res);
             if (res && res.data && res.data.url) {
-                window.open(`http://crm.we-idesign.com/${res.data.url}`);
+                window.open(`https://crm.we-idesign.com/${res.data.url}`);
             }
         },
         *del({ payload }, { call, put }) {

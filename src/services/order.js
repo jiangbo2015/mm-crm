@@ -34,3 +34,25 @@ export async function orderDownload(data) {
         params: data,
     });
 }
+
+export async function diyOrderDownload(data) {
+    return request('/api/order/postDownload', {
+        method: 'post',
+        data,
+    });
+}
+
+export async function shopOrderDownload(data) {
+    return request('/api/shopOrder/postDownload', {
+        method: 'post',
+        data,
+    });
+}
+
+
+export async function capsuleOrderDownload(data) {
+    return request('/api/capsuleOrder/postDownload', {
+        method: 'post',
+        data,
+    });
+}
