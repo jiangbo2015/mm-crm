@@ -74,6 +74,7 @@ const ShopStyleForm = props => {
         colorList = [],
         branchList = [],
         branchKindList = [],
+        currentBranch,
     } = props;
     const { authorId } = props;
     const [form] = useForm();
@@ -104,13 +105,25 @@ const ShopStyleForm = props => {
         dispatch({
             type: 'global/fetchBranchList',
         });
-        dispatch({
-            type: 'global/fetchBranchKindList',
-        });
+
     }, []);
     useEffect(() => {
         setNumInbag(_.sum(dataSource.map(cs => cs.sizeWithQuantity ? _.sum(Object.values(cs.sizeWithQuantity)) : 0)));
     }, [dataSource]);
+    useEffect(() => {
+        if(currentBranch) {
+
+        }
+        form.setFieldsValue({
+            branch : currentBranch._id,
+        });
+        dispatch({
+            type: 'global/fetchBranchKindList',
+            payload: {
+                branch : currentBranch._id,
+            },
+        });
+    }, [currentBranch]);
     useEffect(() => {
         if (editData) {
             const {
@@ -124,6 +137,12 @@ const ShopStyleForm = props => {
                 branchKind,
                 colorWithStyleImgs,
             } = editData;
+            dispatch({
+                type: 'global/fetchBranchKindList',
+                payload: {
+                    branch,
+                },
+            });
             setCurrentSize(size.split('/'));
             form.setFieldsValue({
                 code,
@@ -411,6 +430,7 @@ const ShopStyleForm = props => {
                                 whitespace: true,
                             },
                         ]}
+                        initValue={currentBranch ? currentBranch._id : ''}
                     >
                         <Select
                             options={branchOptions}

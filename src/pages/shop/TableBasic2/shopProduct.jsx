@@ -70,7 +70,7 @@ const Com = props => {
             ),
         },
     ];
-    const formRef = useRef();
+    // const formRef = useRef();
     const [visible, setVisible] = useState(false);
     const [addVisible, setAddVisible] = useState(false);
     const [data, setData] = useState({});
@@ -159,11 +159,16 @@ const Com = props => {
                 width="1100px"
                 destroyOnClose={true}
                 footer={null}
+                onCancel={() => {
+                    setAddVisible(false);
+                    // handleClear();
+                }}
             >
                 <Form
                     onClose={() => {
                         setAddVisible(false);
                     }}
+                    currentBranch={props.currentBranch}
                 />
             </Modal>
             <Modal

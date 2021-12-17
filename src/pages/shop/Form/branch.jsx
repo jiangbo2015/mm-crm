@@ -44,7 +44,7 @@ const BranchForm = props => {
                 status: `${editData.status}`,
                 description: editData.description,
             };
-            editData.children.map(x => {
+            editData?.children?.map(x => {
                 editValues[`cname-${x._id}`] = x.namecn;
                 editValues[`cenname-${x._id}`] = x.nameen;
             });
@@ -72,7 +72,7 @@ const BranchForm = props => {
             const fieldsCategoryName = Object.keys(values).filter(x => x.indexOf('cname') === 0);
             // console.log('fieldsCategoryName', fieldsCategoryName);
 
-            fieldsCategoryName.map((name, index) => {
+            fieldsCategoryName?.map((name, index) => {
                 let obj = {
                     namecn: values[name],
                 };
