@@ -188,7 +188,7 @@ const GlobalModel = {
             const res = yield call(getBranchAll);
             if (res.success) {
                 yield put({
-                    type: 'setBranchList',
+                    type: 'setAllBranchList',
                     payload: res.data,
                 });
             }
@@ -365,7 +365,13 @@ const GlobalModel = {
                 branchList: payload,
             };
         },
-
+        setAllBranchList(state, { payload }) {
+            return {
+                ...state,
+                allBranchList: payload,
+            };
+        },
+        
         setBranchKindList(state, { payload }) {
             return {
                 ...state,

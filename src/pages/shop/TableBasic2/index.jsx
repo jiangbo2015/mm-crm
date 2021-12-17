@@ -121,7 +121,7 @@ const Com = props => {
                 rowKey={record => record._id}
                 columns={columns}
                 loading={props.fetching}
-                dataSource={props.branchList}
+                dataSource={props.allBranchList}
                 pagination={null}
                 childrenColumnName="dfdrfrf5fgfsg"
             />
@@ -132,6 +132,7 @@ const Com = props => {
 export default connect(({ shop, loading, global }) => ({
     styleList: shop.currentShopStyleList,
     branchList: global.branchList,
+    allBranchList: global.allBranchList,
     currentBranch: global.currentBranch,
-    fetching: loading.effects['global/fetchBranchList'],
+    fetching: loading.effects['global/fetchAllBranchList'],
 }))(Com);

@@ -98,5 +98,5 @@ const Com = props => {
 };
 
 export default connect(state => ({
-    branchList: state.global.branchList,
+    branchList: state.global.allBranchList,
 }))(Com);

@@ -112,17 +112,17 @@ const ShopStyleForm = props => {
     }, [dataSource]);
     useEffect(() => {
         if(currentBranch) {
-
-        }
-        form.setFieldsValue({
-            branch : currentBranch._id,
-        });
-        dispatch({
-            type: 'global/fetchBranchKindList',
-            payload: {
+            form.setFieldsValue({
                 branch : currentBranch._id,
-            },
-        });
+            });
+            dispatch({
+                type: 'global/fetchBranchKindList',
+                payload: {
+                    branch : currentBranch._id,
+                },
+            });
+        }
+
     }, [currentBranch]);
     useEffect(() => {
         if (editData) {

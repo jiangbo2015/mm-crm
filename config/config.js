@@ -263,9 +263,9 @@ export default {
     proxy: {
         '/api/': {
             //192.168.8.107
-            // target: 'https://crm.we-idesign.com/',
+            target: 'https://crm.we-idesign.com/',
             // target: 'http://8.209.64.159:3001',
-            target: 'http://localhost:3001',
+            // target: 'http://localhost:3001',
             changeOrigin: true, //   pathRewrite: { '^/server': '' },
         },
         '/uploads/': {
