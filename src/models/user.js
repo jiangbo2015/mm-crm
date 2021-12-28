@@ -1,5 +1,7 @@
 import { queryCurrent, getList, add, del, update as updateUser, download } from '@/services/user';
 import { api } from '@/utils/apiconfig';
+import { setAuthority } from '@/utils/authority';
+
 const KEY = {
     // 0: 'productorList',
     1: 'productorList',
@@ -73,7 +75,6 @@ const UserModel = {
 
         *fetchCurrent(_, { call, put }) {
             const response = yield call(queryCurrent);
-            console.log(response);
             yield put({
                 type: 'saveCurrentUser',
                 payload: response.data,
@@ -82,6 +83,7 @@ const UserModel = {
     },
     reducers: {
         saveCurrentUser(state, action) {
+            setAuthority(action?.payload?.role === 0 ? 'admin' : 'user');
             return { ...state, currentUser: action.payload || {} };
         },
         setUsers(state, { payload }) {

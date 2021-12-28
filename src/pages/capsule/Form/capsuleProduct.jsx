@@ -34,7 +34,7 @@ const ColorOptionLabel = ({ c = {} }) => (
 );
 
 const CapsuleForm = props => {
-    const { editData, dispatch, onClose, colorList = [] } = props;
+    const { editData, dispatch, onClose, colorList = [],goodsList } = props;
     const { authorId } = props;
     const [form] = useForm();
     const [urls, setUrls] = useState({});
@@ -45,6 +45,9 @@ const CapsuleForm = props => {
     });
     const [editableKeys, setEditableRowKeys] = useState([]);
     const [dataSource, setDataSource] = useState([]);
+    const [good, setGood] = useState(null);
+    const [goodsOptions, setGoodsOptions] = useState([]);
+    const [goodCategrayOptions, setGoodsCategrayOptions] = useState([]);
     useEffect(() => {
         dispatch({
             type: 'global/fetchSizeList',
@@ -53,10 +56,21 @@ const CapsuleForm = props => {
             type: 'global/fetchColorList',
         });
     }, []);
+    useEffect(()=>{
+        const item = goodsList.find(x => x._id === good)
+        if(item) {
+            setGoodsCategrayOptions(item.category?.map(s => ({ label: `${s.name}/${s.enname}`, value: s._id })),
+            )
+        }
+    }, [good])
+    
+    useEffect(() => {
+        setGoodsOptions(goodsList.map(s => ({ label: `${s.name}/${s.aliasName}`, value: s._id })));
+    }, [goodsList]);
     // console.log('colorList-list', colorList);
     useEffect(() => {
         if (editData) {
-            const { code, size, price, weight, colorWithStyleImgs, goodCategory = {} } = editData;
+            const { code, size, price, weight, colorWithStyleImgs, goodCategory = {},goodCategoryId, goodId } = editData;
             const { name, enname } = goodCategory;
             console.log('price', price);
             console.log('weight', weight);
@@ -65,17 +79,18 @@ const CapsuleForm = props => {
                 size,
                 price: price,
                 weight: weight,
-                goodCategorycn: name,
-                goodCategoryen: enname,
+                goodCategoryId,
+                goodId
             });
+            setGood(goodId)
             const tempData = colorWithStyleImgs.map((cs, index) => ({
                 id: (Math.random() * 1000000).toFixed(0),
                 color: cs.color,
                 favorite: cs.favorite,
                 type: cs.type,
                 imgs: {
-                    fileList: cs.imgs.map(img => ({
-                        uid: `cs-${index}`,
+                    fileList: cs.imgs.map((img,fi) => ({
+                        uid: `cs-${fi}`,
                         status: 'done',
                         url: filterImageUrl(img),
                         response: { data: { url: img } },
@@ -231,7 +246,10 @@ const CapsuleForm = props => {
     ];
     const onFinish = values => {
         if (dispatch) {
-            console.log('dataSource', dataSource);
+            // console.log('dataSource', dataSource);
+            const item = goodCategrayOptions.find(x => x.value === values.goodCategoryId)
+            const goodCategory = item ? {name: item?.label.split('/')[0], enname: item?.label.split('/')[1]} : {}
+                    
             let colorWithStyleImgs = dataSource.map(d => {
 
                 return {
@@ -240,6 +258,7 @@ const CapsuleForm = props => {
                     imgs: d.imgs.fileList
                         .filter(f => f.status === 'done')
                         .map(f => f.response.data.url),
+                        
                 };
             });
             if (editData) {
@@ -251,10 +270,7 @@ const CapsuleForm = props => {
                         author: authorId,
                         _id: editData._id,
                         colorWithStyleImgs,
-                        goodCategory: {
-                            name: values.goodCategorycn,
-                            enname: values.goodCategoryen,
-                        },
+                        goodCategory,
                     },
                 });
             } else {
@@ -265,10 +281,7 @@ const CapsuleForm = props => {
                         ...urls,
                         author: authorId,
                         colorWithStyleImgs,
-                        goodCategory: {
-                            name: values.goodCategorycn,
-                            enname: values.goodCategoryen,
-                        },
+                        goodCategory,
                     },
                 });
             }
@@ -363,8 +376,8 @@ const CapsuleForm = props => {
                 </Col>
                 <Col span="8" style={{ paddingRight: '10px' }}>
                     <Form.Item
-                        label={<span>分类(中文名)</span>}
-                        name="goodCategorycn"
+                        label={<span>分类</span>}
+                        name="goodId"
                         rules={[
                             {
                                 required: true,
@@ -373,13 +386,17 @@ const CapsuleForm = props => {
                             },
                         ]}
                     >
-                        <Input />
+                        <Select
+                            options={goodsOptions}
+                            onChange={(val) => {
+                                setGood(val)
+                            }}
+                        />
                     </Form.Item>
                 </Col>
                 <Col span="8" style={{ paddingRight: '10px' }}>
                     <Form.Item
-                        label={<span>分类(英文名)</span>}
-                        name="goodCategoryen"
+                        name="goodCategoryId"
                         rules={[
                             {
                                 required: true,
@@ -388,7 +405,9 @@ const CapsuleForm = props => {
                             },
                         ]}
                     >
-                        <Input />
+                        <Select
+                            options={goodCategrayOptions}
+                        />
                     </Form.Item>
                 </Col>
             </Row>

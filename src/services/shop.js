@@ -62,4 +62,12 @@ export async function updateShopStyle(data) {
         data,
     });
 }
+
+export async function shopStyleSort(data) {
+    return request('/api/shopStyle/sort', {
+        method: 'post',
+        data,
+    });
+}
+
 // {/* <Icon type="copyright" /> */}

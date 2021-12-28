@@ -1,4 +1,5 @@
-import { getShopStyleList, updateShopStyle, addShopStyle, delShopStyle, getBranchList } from '@/services/shop';
+import { getShopStyleList, updateShopStyle, addShopStyle, delShopStyle, getBranchList,shopStyleSort } from '@/services/shop';
+import arrayMove from 'array-move';
 
 const Model = {
     namespace: 'shop',
@@ -52,6 +53,27 @@ const Model = {
             }
         },
 
+        *shopStyleSort({ payload }, { put, call,select }) {
+            
+            const list = yield select(state => state.shop.currentShopStyleList);
+            const { dragIndex, hoverIndex } = payload;
+
+            const newList = arrayMove(list.docs, dragIndex, hoverIndex);
+            const newSort = newList.map((l, index) => ({ _id: l._id, sort: index }));
+
+            
+            const res = yield call(shopStyleSort, {
+                newSort,
+            });
+     
+            if (newList) {
+                yield put({
+                    type: 'setCurrentShopStyleList',
+                    payload: {...list, docs: newList},
+                });
+            }
+            
+        },
         *deleteShopStyle({ payload }, { put, call }) {
             const res = yield call(delShopStyle, payload);
             console.log(res);

@@ -72,7 +72,7 @@ const ShopStyleForm = props => {
         initialValues = { status: '1' },
         onClose,
         colorList = [],
-        branchList = [],
+        goodsList = [],
         branchKindList = [],
         currentBranch,
     } = props;
@@ -85,7 +85,7 @@ const ShopStyleForm = props => {
     // const [sizeOptions, setSizeOptions] = useState([]);
     const [numInbag, setNumInbag] = useState(0);
     const [bagNums, setBagNums] = useState(0);
-    const [numInCase, setNumInCase] = useState(0);
+    const [good, setGood] = useState(null);
     const [branchOptions, setBranchOptions] = useState([]);
     const [branchKindOptions, setBranchKindOptions] = useState([]);
 
@@ -111,19 +111,16 @@ const ShopStyleForm = props => {
         setNumInbag(_.sum(dataSource.map(cs => cs.sizeWithQuantity ? _.sum(Object.values(cs.sizeWithQuantity)) : 0)));
     }, [dataSource]);
     useEffect(() => {
-        if(currentBranch) {
-            form.setFieldsValue({
-                branch : currentBranch._id,
-            });
-            dispatch({
-                type: 'global/fetchBranchKindList',
-                payload: {
-                    branch : currentBranch._id,
-                },
-            });
+        if(good) {
+            const item = goodsList.find(x => x._id===good)
+            if(item) {
+                setBranchKindOptions(
+                    item.category?.map(s => ({ label: `${s.name}/${s.enname}`, value: s._id })),
+                );
+            }
+            
         }
-
-    }, [currentBranch]);
+    }, [good]);
     useEffect(() => {
         if (editData) {
             const {
@@ -136,6 +133,8 @@ const ShopStyleForm = props => {
                 branch,
                 branchKind,
                 colorWithStyleImgs,
+                goodCategoryId,
+                goodId
             } = editData;
             dispatch({
                 type: 'global/fetchBranchKindList',
@@ -153,14 +152,17 @@ const ShopStyleForm = props => {
                 stock,
                 branch,
                 branchKind,
+                goodCategoryId,
+                goodId
             });
+            setGood(goodId)
             const tempData = colorWithStyleImgs.map((cs, index) => ({
                 id: (Math.random() * 1000000).toFixed(0),
                 color: cs.color,
                 sizeWithQuantity: cs.sizeWithQuantity,
                 imgs: {
-                    fileList: cs.imgs.map(img => ({
-                        uid: `cs-${index}`,
+                    fileList: cs.imgs.map((img, fi) => ({
+                        uid: `cs-${fi}`,
                         status: 'done',
                         url: filterImageUrl(img),
                         response: { data: { url: img } },
@@ -182,13 +184,8 @@ const ShopStyleForm = props => {
         });
     }, [bagNums, numInbag]);
     useEffect(() => {
-        setBranchOptions(branchList.map(s => ({ label: `${s.namecn}/${s.nameen}`, value: s._id })));
-    }, [branchList]);
-    useEffect(() => {
-        setBranchKindOptions(
-            branchKindList.map(s => ({ label: `${s.namecn}/${s.nameen}`, value: s._id })),
-        );
-    }, [branchKindList]);
+        setBranchOptions(goodsList.map(s => ({ label: `${s.name}/${s.aliasName}`, value: s._id })));
+    }, []);
     useEffect(() => {
         setColorOptions(
             Array.isArray(colorList)
@@ -249,7 +246,12 @@ const ShopStyleForm = props => {
                 return <ColorOptionLabel c={c} />;
             },
             renderFormItem: item => {
-                return <Select showSearch options={colorOptions} />;
+                return <Select showSearch options={colorOptions}  filterOption={(inputValue, option) => {
+                    // console.log(option)
+                    return option.label.props.c.code.includes(inputValue)
+                 
+
+                }}/>;
             },
             width: '25%',
         },
@@ -273,6 +275,7 @@ const ShopStyleForm = props => {
             },
             renderFormItem: (_, data, { getFieldsValue, ...props }) => {
                 const value = Object.values(getFieldsValue())[0];
+
                 const fileList = value && value.imgs ? value.imgs.fileList : [];
                 return (
                     <Upload
@@ -344,8 +347,8 @@ const ShopStyleForm = props => {
                     .map(f => f.response.data.url),
             }));
 
-            // console.log('colorWithStyleImgs', colorWithStyleImgs);
-            // return;
+            const item = branchKindOptions.find(x => x.value === values.goodCategoryId)  
+
             if (editData) {
                 await dispatch({
                     type: 'shop/updateShopStyle',
@@ -355,13 +358,14 @@ const ShopStyleForm = props => {
                         author: authorId,
                         _id: editData._id,
                         colorWithStyleImgs,
+                        goodCategory: item ? {name: item?.label.split('/')[0], enname: item?.label.split('/')[1]} : {}
                     },
                 });
 
             } else {
                 dispatch({
                     type: 'shop/addShopStyle',
-                    payload: { ...values, ...urls, author: authorId, colorWithStyleImgs },
+                    payload: { ...values, ...urls, author: authorId, colorWithStyleImgs,branch: currentBranch._id },
                 });
             }
             onClose()
@@ -421,90 +425,21 @@ const ShopStyleForm = props => {
             <Row>
                 <Col span="6" style={{ paddingRight: '10px' }}>
                     <Form.Item
-                        label={<span>品牌</span>}
-                        name="branch"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input brand!',
-                                whitespace: true,
-                            },
-                        ]}
-                        initValue={currentBranch ? currentBranch._id : ''}
+                        label={<span>分类</span>} 
+                        name="goodId"
                     >
                         <Select
                             options={branchOptions}
-                            onChange={() => {
-                                dispatch({
-                                    type: 'global/fetchBranchKindList',
-                                    payload: { branch: form.getFieldValue('branch') },
-                                });
-                                form.setFieldsValue({ branchKind: [] });
+                            onChange={(val) => {
+                                setGood(val)
                             }}
-                            dropdownRender={menu => (
-                                <div>
-                                    {menu}
-                                    <Divider style={{ margin: '4px 0' }} />
-                                    <div
-                                        style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}
-                                    >
-                                        <Input
-                                            style={{ flex: 'auto' }}
-                                            value={newBranchName}
-                                            onChange={e => {
-                                                setNewBranchName(e.target.value);
-                                            }}
-                                        />
-                                        <a
-                                            style={{
-                                                flex: 'none',
-                                                padding: '8px',
-                                                display: 'block',
-                                                cursor: 'pointer',
-                                            }}
-                                            onClick={handleAddBranchItem}
-                                        >
-                                            <PlusOutlined /> Add item
-                                        </a>
-                                    </div>
-                                </div>
-                            )}
                         />
                     </Form.Item>
                 </Col>
                 <Col span="10">
-                    <Form.Item label={<span>分类</span>} name="branchKind">
+                <Form.Item name="goodCategoryId">
                         <Select
                             options={branchKindOptions}
-                            mode="multiple"
-                            dropdownRender={menu => (
-                                <div>
-                                    {menu}
-                                    <Divider style={{ margin: '4px 0' }} />
-                                    <div
-                                        style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}
-                                    >
-                                        <Input
-                                            style={{ flex: 'auto' }}
-                                            value={newBranchKindName}
-                                            onChange={e => {
-                                                setNewBranchKindName(e.target.value);
-                                            }}
-                                        />
-                                        <a
-                                            style={{
-                                                flex: 'none',
-                                                padding: '8px',
-                                                display: 'block',
-                                                cursor: 'pointer',
-                                            }}
-                                            onClick={handleAddBranchKindItem}
-                                        >
-                                            <PlusOutlined /> Add item
-                                        </a>
-                                    </div>
-                                </div>
-                            )}
                         />
                     </Form.Item>
                 </Col>
@@ -599,7 +534,7 @@ const ShopStyleForm = props => {
                 }}
                 defaultData={dataSource}
                 onChange={(...args) => {
-                    console.log(args[0]);
+                   
                     setDataSource(args[0]);
                 }}
                 editable={{

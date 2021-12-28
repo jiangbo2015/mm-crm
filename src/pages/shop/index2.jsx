@@ -16,6 +16,9 @@ const Com = props => {
             props.dispatch({
                 type: 'global/fetchAllBranchList',
             });
+            props.dispatch({
+                type: 'goods/getList',
+            });
         }
     }, []);
 

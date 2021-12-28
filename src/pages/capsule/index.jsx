@@ -16,6 +16,9 @@ const Com = props => {
             props.dispatch({
                 type: 'capsule/getList',
             });
+            props.dispatch({
+                type: 'goods/getList',
+            });
         }
     }, []);
 

@@ -1,5 +1,4 @@
-import { routerRedux } from 'dva/router';
-import { stringify } from 'querystring';
+import arrayMove from 'array-move';
 import {
     getList as queryList,
     add,
@@ -9,6 +8,7 @@ import {
     updateCapsuleStyle,
     addCapsuleStyle,
     delCapsuleStyle,
+    sortCapsuleStyle,
 } from '@/services/capsule';
 import { message } from 'antd';
 import { getPageQuery } from '@/utils/utils';
@@ -63,7 +63,7 @@ const Model = {
         },
         *getCapsuleStyleList(_, { call, put, select }) {
             const currentCapsule = yield select(state => state.capsule.currentCapsule);
-            const res = yield call(getCapsuleStyleList, { capsule: currentCapsule._id });
+            const res = yield call(getCapsuleStyleList, { capsule: currentCapsule._id, limit: 1000 });
             // const res = yield call(getCapsuleStyleList);
             console.log(res);
             if (res.success) {
@@ -118,6 +118,27 @@ const Model = {
                     type: 'getCapsuleStyleList',
                 });
             }
+        },
+        *sortCapsuleStyle({ payload }, { put, call,select }) {
+            
+            const list = yield select(state => state.capsule.currentCapsuleStyleList);
+            const { dragIndex, hoverIndex } = payload;
+
+            const newList = arrayMove(list.docs, dragIndex, hoverIndex);
+            const newSort = newList.map((l, index) => ({ _id: l._id, sort: index }));
+
+            
+            const res = yield call(sortCapsuleStyle, {
+                newSort,
+            });
+     
+            if (newList) {
+                yield put({
+                    type: 'setCurrentCapsuleStyleList',
+                    payload: {...list, docs: newList},
+                });
+            }
+            
         },
     },
     reducers: {

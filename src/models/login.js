@@ -72,7 +72,7 @@ const Model = {
     },
     reducers: {
         changeLoginStatus(state, { payload }) {
-            setAuthority(payload.token);
+            setAuthority(payload.role === 0 ? 'admin' : 'user');
             return { ...state, status: payload.status, type: payload.type };
         },
     },

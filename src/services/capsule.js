@@ -62,4 +62,12 @@ export async function updateCapsuleStyle(data) {
         data,
     });
 }
+
+export async function sortCapsuleStyle(data) {
+    return request('/api/capsuleStyle/sort', {
+        method: 'post',
+        data,
+    });
+}
+// Capsule
 // {/* <Icon type="copyright" /> */}

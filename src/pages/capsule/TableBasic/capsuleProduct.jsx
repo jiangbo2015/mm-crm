@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Table, Divider, Modal, Popconfirm, Card, Button, Input } from 'antd';
+import { Divider, Modal, Popconfirm, Card, Button, Input } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../Form/capsuleProduct';
 import { filterImageUrl } from '@/utils/utils';
-
+import Table from '@/components/Table/SortTable';
 const Com = props => {
     const columns = [
         {
@@ -73,8 +73,18 @@ const Com = props => {
         //capsule/getCapsuleStyleList
         props.dispatch({
             type: 'capsule/getCapsuleStyleList',
+            payload: {
+                limit: 1000
+            }
         });
     }, []);
+
+    const handleSort = options => {
+        props.dispatch({
+            type: 'capsule/sortCapsuleStyle',
+            payload: options,
+        });
+    };
 
     return (
         <>
@@ -142,6 +152,7 @@ const Com = props => {
                         pageSize: props.currentCapsuleStyleList.limit,
                         onChange: props.onPageChange,
                     }}
+                    onMoveArray={handleSort} 
                 />
             </Card>
         </>

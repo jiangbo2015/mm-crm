@@ -1,12 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Table, Divider, Modal, Popconfirm, Card, Button } from 'antd';
+import { Divider, Modal, Popconfirm, Card, Button } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../Form';
 import { filterImageUrl } from '@/utils/utils';
-
+import Table from '@/components/Table/SortTable';
 const Com = props => {
     const columns = [
+        {
+            title: '示意图',
+            dataIndex: 'colorWithStyleImgs',
+            key: 'colorWithStyleImgs',
+            render: val => val && val.length > 0 ? <img src={`${filterImageUrl(val[0].imgs[0])}`} style={{width: '50px', height: 'auto'}}/> : null,
+        },
         {
             title: '编号',
             dataIndex: 'code',
@@ -28,22 +34,7 @@ const Com = props => {
             dataIndex: 'price',
             key: 'price',
         },
-        {
-            title: '库存',
-            dataIndex: 'stock',
-            key: 'stock',
-        },
-        {
-            title: '已售数量',
-            dataIndex: 'salesNumber',
-            key: 'salesNumber',
-        },
-        // {
-        //     title: '状态',
-        //     dataIndex: 'status',
-        //     key: 'status',
-        //     // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
-        // },
+
         {
             title: '创建日期',
             dataIndex: 'createdAt',
@@ -79,9 +70,19 @@ const Com = props => {
         if (props.dispatch) {
             props.dispatch({
                 type: 'shop/getShopStyleList',
+                payload: {
+                    limit: 1000,
+                }
             });
         }
     }, []);
+
+    const handleSort = options => {
+        props.dispatch({
+            type: 'shop/shopStyleSort',
+            payload: options,
+        });
+    };
 
     const handleEdit = record => {
         setVisible(true);
@@ -137,8 +138,7 @@ const Com = props => {
         props.dispatch({
             type: 'shop/getStyleList',
             payload: {
-                page,
-                limit: 10,
+                limit: 1000,
                 ...queries,
             },
         });
@@ -196,6 +196,7 @@ const Com = props => {
                 columns={columns}
                 loading={props.fetching}
                 dataSource={props.styleList.docs}
+                onMoveArray={handleSort} 
                 pagination={{
                     total: props.styleList.total,
                     current: parseInt(props.styleList.page, 10),
