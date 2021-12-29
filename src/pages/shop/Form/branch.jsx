@@ -97,6 +97,7 @@ const BranchForm = props => {
                         nameen: values.nameen,
                         status: values.status,
                         description: values.description,
+                        descriptionen: values.descriptionen,
                         _id: editData._id,
                         kind: newCategory.filter(c => c.namecn),
                     },
@@ -110,6 +111,7 @@ const BranchForm = props => {
                         nameen: values.nameen,
                         status: values.status,
                         description: values.description,
+                        descriptionen: values.descriptionen,
                         kind: newCategory.filter(c => c.namecn),
                     },
                 });
