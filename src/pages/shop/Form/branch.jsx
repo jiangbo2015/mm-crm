@@ -43,6 +43,7 @@ const BranchForm = props => {
                 nameen: editData.nameen,
                 status: `${editData.status}`,
                 description: editData.description,
+                descriptionen: editData.descriptionen,
             };
             editData?.children?.map(x => {
                 editValues[`cname-${x._id}`] = x.namecn;

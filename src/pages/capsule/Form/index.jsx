@@ -43,6 +43,7 @@ const CapsuleForm = props => {
                 nameen: editData.nameen,
                 status: `${editData.status}`,
                 description: editData.description,
+                descriptionen: editData.descriptionen,
             });
         }
     }, [editData]);
