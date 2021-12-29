@@ -88,7 +88,7 @@ const Com = props => {
             <Modal
                 title="编辑"
                 visible={visible}
-                width="500px"
+                width="1000px"
                 footer={null}
                 destroyOnClose={true}
                 onCancel={() => {

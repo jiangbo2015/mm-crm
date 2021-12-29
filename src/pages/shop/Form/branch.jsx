@@ -128,7 +128,6 @@ const BranchForm = props => {
             <Row>
                 <Col>
                     <Form.Item
-                    style={{ marginBottom: 0 }}
                     label={<span>中文名</span>}
                     name="namecn"
                     rules={[
@@ -144,7 +143,6 @@ const BranchForm = props => {
                 </Col>
                 <Col>
                     <Form.Item
-                    style={{ marginBottom: 0 }}
                     label={<span>英文名</span>}
                     name="nameen"
                     rules={[
@@ -158,12 +156,8 @@ const BranchForm = props => {
                     <Input />
                 </Form.Item>
                 </Col>
-            </Row>
-            
-            <Row>
                 <Col>
                     <Form.Item
-                            style={{ marginBottom: 0 }}
                             label={<span>状态</span>}
                             name="status"
                             rules={[
@@ -179,6 +173,10 @@ const BranchForm = props => {
                         </Select>
                     </Form.Item>
                 </Col>
+            </Row>
+            
+            <Row>
+
                 <Col>
                     <Form.Item
                         labelCol={{
@@ -186,7 +184,7 @@ const BranchForm = props => {
                                 span: 24,
                             },
                             sm: {
-                                span: 5,
+                                span: 10,
                             },
                         }}
                         label={<span>介绍</span>}
@@ -199,7 +197,31 @@ const BranchForm = props => {
                             },
                         ]}
                     >
-                        <Input.TextArea rows={5} />
+                        <Input.TextArea rows={3} />
+                    </Form.Item>
+
+                </Col>
+                <Col>
+                    <Form.Item
+                        labelCol={{
+                            xs: {
+                                span: 24,
+                            },
+                            sm: {
+                                span: 10,
+                            },
+                        }}
+                        label={<span>介绍(英文)</span>}
+                        name="descriptionen"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input description!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Input.TextArea rows={3} />
                     </Form.Item>
 
                 </Col>

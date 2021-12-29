@@ -138,53 +138,7 @@ const CapsuleForm = props => {
                     </Upload>
                     <p style={{ textAlign: 'center' }}>封面图</p>
                 </Col>
-                <Col span="8">
-                    <Form.Item
-                        style={{ marginBottom: 0 }}
-                        label={<span>中文名</span>}
-                        name="namecn"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input namecn!',
-                                whitespace: true,
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        style={{ marginBottom: 0 }}
-                        label={<span>英文名</span>}
-                        name="nameen"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input nameen!',
-                                whitespace: true,
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        style={{ marginBottom: 0 }}
-                        label={<span>状态</span>}
-                        name="status"
-                        rules={[
-                            {
-                                message: 'Please input status!',
-                                whitespace: true,
-                            },
-                        ]}
-                    >
-                        <Select style={{ width: 120 }}>
-                            <Option value="1">发布</Option>
-                            <Option value="0">未发布</Option>
-                        </Select>
-                    </Form.Item>
-                </Col>
-                <Col span="12">
+                <Col span="9">
                     <Form.Item
                         labelCol={{
                             xs: {
@@ -205,6 +159,78 @@ const CapsuleForm = props => {
                         ]}
                     >
                         <Input.TextArea rows={5} />
+                    </Form.Item>
+                </Col>
+                <Col span="11">
+                    <Form.Item
+                        labelCol={{
+                            xs: {
+                                span: 24,
+                            },
+                            sm: {
+                                span: 5,
+                            },
+                        }}
+                        label={<span>介绍(英文)</span>}
+                        name="descriptionen"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input description!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Input.TextArea rows={5} />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row>
+            <Col span="8">
+                    <Form.Item
+                        label={<span>中文名</span>}
+                        name="namecn"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input namecn!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    </Col>
+                    <Col span="8">
+                    <Form.Item
+                        label={<span>英文名</span>}
+                        name="nameen"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input nameen!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    </Col>
+                    <Col span="8">
+                    <Form.Item
+                        label={<span>状态</span>}
+                        name="status"
+                        rules={[
+                            {
+                                message: 'Please input status!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Select style={{ width: 120 }}>
+                            <Option value="1">发布</Option>
+                            <Option value="0">未发布</Option>
+                        </Select>
                     </Form.Item>
                 </Col>
             </Row>
