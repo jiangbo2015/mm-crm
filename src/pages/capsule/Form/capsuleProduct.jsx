@@ -70,10 +70,9 @@ const CapsuleForm = props => {
     // console.log('colorList-list', colorList);
     useEffect(() => {
         if (editData) {
-            const { code, size, price, weight, colorWithStyleImgs, goodCategory = {},goodCategoryId, goodId } = editData;
-            const { name, enname } = goodCategory;
-            console.log('price', price);
-            console.log('weight', weight);
+            const { code, size, price, weight, colorWithStyleImgs, goodCategoryId, goodId } = editData;
+            // console.log('price', price);
+            // console.log('weight', weight);
             form.setFieldsValue({
                 code,
                 size,
@@ -83,7 +82,7 @@ const CapsuleForm = props => {
                 goodId
             });
             setGood(goodId)
-            const tempData = colorWithStyleImgs.map((cs, index) => ({
+            const tempData = colorWithStyleImgs.map((cs) => ({
                 id: (Math.random() * 1000000).toFixed(0),
                 color: cs.color,
                 favorite: cs.favorite,
@@ -116,15 +115,7 @@ const CapsuleForm = props => {
                 : [],
         );
     }, [colorList]);
-    const handleChange = (info, index) => {
-        const { fileList } = info;
-        console.log(fileList);
-        const tempUrls = {
-            ...urls,
-        };
-        tempUrls[index] = fileList;
-        setUrls(tempUrls);
-    };
+
     const colorColumns = [
         {
             title: '颜色/花布',

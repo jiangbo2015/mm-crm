@@ -107,6 +107,7 @@ const ShopStyleForm = props => {
         });
 
     }, []);
+    
     useEffect(() => {
         setNumInbag(_.sum(dataSource.map(cs => cs.sizeWithQuantity ? _.sum(Object.values(cs.sizeWithQuantity)) : 0)));
     }, [dataSource]);
@@ -171,7 +172,7 @@ const ShopStyleForm = props => {
                 },
             }));
             setNumInbag(
-                _.sum(colorWithStyleImgs.map(cs => _.sum(Object.values(cs.sizeWithQuantity)))),
+                _.sum(colorWithStyleImgs.map(cs => cs => cs.sizeWithQuantity ? _.sum(Object.values(cs.sizeWithQuantity)):0)),
             );
             setBagNums(bagsNum);
             setDataSource(tempData);
@@ -418,7 +419,19 @@ const ShopStyleForm = props => {
                             },
                         ]}
                     >
-                        <SizeSelect onChange={val => setCurrentSize(val.split('/'))} />
+                        <SizeSelect onChange={val => {
+                            let nextSize = val.split('/')
+                            setCurrentSize(nextSize);
+                            setDataSource([...dataSource.map(cs => {
+                                cs.sizeWithQuantity = {}
+                                for(let i = 0; i<nextSize.length; i++){
+                                    cs.sizeWithQuantity[nextSize[i]] = 0;
+                                }
+                                
+                                return cs
+                            })])
+                            
+                            }} />
                     </Form.Item>
                 </Col>
             </Row>
