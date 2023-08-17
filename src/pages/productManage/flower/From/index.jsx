@@ -15,6 +15,8 @@ import {
 } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
+import { filter } from 'lodash'; 
+
 import { Avatar, UploadBtn, uploadProps } from '../UploadCom';
 import { colorSystemList } from '../../colors/From/index';
 
@@ -158,6 +160,7 @@ class RegistrationForm extends React.Component {
     render() {
         const { colorList = [], form } = this.props;
         const { getFieldDecorator } = form;
+        console.log('colorList', colorList)
 
         const formItemLayout = {
             labelCol: {

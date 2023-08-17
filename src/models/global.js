@@ -30,9 +30,7 @@ const GlobalModel = {
         branchList: [],
         branchKindList: [],
         capsuleList: [],
-        colorList: {
-            values: [{}],
-        },
+        colorList: [],
     },
     effects: {
         *fetchSizeList(_, { call, put, select }) {
