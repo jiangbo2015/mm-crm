@@ -46,7 +46,7 @@ const UserLayout = props => {
                     </div>
                     {children}
                 </div>
-                <DefaultFooter copyright="2021 MRMISS 1.0.1" links={[]} />
+                <DefaultFooter copyright="2021 MRMISS 1.0.2" links={[]} />
             </div>
         </>
     );

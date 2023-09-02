@@ -44,7 +44,7 @@ const menuDataRender = (menuList) =>
 
 const defaultFooterDom = (
   <DefaultFooter
-    copyright="2021 MRMISS 1.0.1" 
+    copyright="2021 MRMISS 1.0.2" 
     links={[
       {
         key: 'Ant Design Pro',
