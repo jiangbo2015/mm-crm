@@ -105,11 +105,46 @@ export default {
                             component: './welcome/index.jsx',
                         },
                         {
+                            path: '/creativeCapsule',
+                            name: '创意胶囊',
+                            icon: 'camera',
+                            component: './creativeCapsule',
+                        },
+                        {
+                            path: '/myFavorites',
+                            name: '我的收藏',
+                            icon: 'star',
+                            component: './myFavorites',
+                        },
+                        {
+                            path: '/notices',
+                            name: '通知发布',
+                            icon: 'bell',
+                            component: './notices',
+                        },
+                        {
+                            path: '/myDiy',
+                            name: '我的创建',
+                            icon: 'skin',
+                            component: './myDiy',
+                        },
+                        {
+                            path: '/diy',
+                            name: '创建DIY',
+                            icon: 'edit',
+                            component: './diy',
+                        },
+                        {
                             path: '/userManage',
                             name: '用户管理',
                             icon: 'user',
                             authority: ['admin'],
                             routes: [
+                                {
+                                    path: '/userManage/channel',
+                                    name: '通道管理',
+                                    component: './userManage/channel/index.jsx',
+                                },
                                 {
                                     path: '/userManage/productor',
                                     name: '产品经理',
@@ -124,7 +159,7 @@ export default {
                         },
                         {
                             path: '/productManage',
-                            name: '定制产品管理',
+                            name: '素材管理',
                             icon: 'sketch',
                             routes: [
                                 // {
@@ -156,7 +191,7 @@ export default {
                         },
                         {
                             path: '/capsule',
-                            name: '胶囊系列管理',
+                            name: '胶囊管理',
                             icon: 'copyright',
                             component: './capsule',
                         },
