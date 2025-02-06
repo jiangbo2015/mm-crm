@@ -94,7 +94,6 @@ export default {
                 {
                     path: '/',
                     component: '../layouts/BasicLayout',
-                    authority: ['admin', 'user'],
                     routes: [
                         {
                             path: '/',
@@ -109,51 +108,77 @@ export default {
                             name: '创意胶囊',
                             icon: 'camera',
                             component: './creativeCapsule',
+                            authority: ['admin', 'productor', 'designer', 'customer'],
                         },
                         {
                             path: '/myFavorites',
                             name: '我的收藏',
                             icon: 'star',
                             component: './myFavorites',
+                            authority: ['admin', 'productor', 'designer', 'customer'],
                         },
                         {
                             path: '/notices',
                             name: '通知发布',
                             icon: 'bell',
                             component: './notices',
+                            authority: ['admin', 'productor', 'designer', 'customer'],
                         },
                         {
                             path: '/myDiy',
                             name: '我的创建',
                             icon: 'skin',
                             component: './myDiy',
+                            authority: ['admin', 'productor', 'designer', 'customer'],
                         },
                         {
                             path: '/diy',
                             name: '创建DIY',
                             icon: 'edit',
                             component: './diy',
+                            authority: ['admin', 'productor', 'designer', 'customer'],
                         },
                         {
                             path: '/userManage',
                             name: '用户管理',
                             icon: 'user',
-                            authority: ['admin'],
+                            authority: ['admin', 'productor'],
                             routes: [
                                 {
                                     path: '/userManage/channel',
                                     name: '通道管理',
                                     component: './userManage/channel/index.jsx',
+                                    authority: ['admin', 'productor'],
+                                },
+                                {
+                                    // name: '通道详情',
+                                    path: '/userManage/channel/detail/:id',
+                                    
+                                    component: './userManage/channel/detail/index.jsx',
                                 },
                                 {
                                     path: '/userManage/productor',
                                     name: '产品经理',
                                     component: './userManage/productor/index.jsx',
+                                    authority: ['admin'],
+                                },
+                                {
+                                    path: '/userManage/customer',
+                                    name: '客户',
+                                    component: './userManage/customer',
+                                    authority: ['admin', 'productor'],
                                 },
                                 {
                                     path: '/userManage/designer',
                                     name: '设计人员',
                                     component: './userManage/designer',
+                                    authority: ['admin'],
+                                },
+                                {
+                                    path: '/userManage/graphicDesigner',
+                                    name: '美工',
+                                    component: './userManage/graphicDesigner',
+                                    authority: ['admin'],
                                 },
                             ],
                         },
@@ -161,6 +186,7 @@ export default {
                             path: '/productManage',
                             name: '素材管理',
                             icon: 'sketch',
+                            authority: ['admin', 'graphicDesigner'],
                             routes: [
                                 // {
                                 //     path: '/productManage/productInfo',
@@ -194,49 +220,6 @@ export default {
                             name: '胶囊管理',
                             icon: 'copyright',
                             component: './capsule',
-                        },
-                        // {
-                        //     path: '/shop',
-                        //     name: '网店管理',
-                        //     icon: 'shop',
-                        //     component: './shop',
-                        // },
-                        {
-                            path: '/shop2',
-                            name: '网店品牌管理',
-                            icon: 'shop',
-                            component: './shop/index2.jsx',
-                        },
-                        {
-                            path: '/orderManage',
-                            name: '订单管理',
-                            icon: 'dollar',
-                            authority: ['admin'],
-                            routes: [
-                                {
-                                    path: '/orderManage/order',
-                                    name: '订单列表',
-                                    component: './orderManage/order/index.jsx',
-                                },
-                                {
-                                    path: '/orderManage/status',
-                                    name: '订单进度管理',
-                                    component: './orderManage/status/Admin.jsx',
-                                },
-                            ],
-                        },
-                        {
-                            authority: ['admin'],
-                            path: '/systemSetup',
-                            name: '系统设置',
-                            icon: 'tool',
-                            component: './systemSetup',
-                        },
-                        {
-                            path: '/admin',
-                            name: 'admin',
-                            icon: 'crown',
-                            component: './Admin',
                             authority: ['admin'],
                         },
                         {
@@ -303,9 +286,9 @@ export default {
     proxy: {
         '/api/': {
             //192.168.8.107
-            target: 'https://crm.we-idesign.com/',
+            // target: 'https://crm.we-idesign.com/',
             // target: 'http://8.209.64.159:3001',
-            // target: 'http://localhost:3001',
+            target: 'http://localhost:3001',
             changeOrigin: true, //   pathRewrite: { '^/server': '' },
         },
         '/uploads/': {

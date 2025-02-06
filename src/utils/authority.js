@@ -1,5 +1,14 @@
 import { reloadAuthorized } from './Authorized'; // use localStorage to store the authority info, which might be sent from server in actual project.
 
+export const RoleToAuthority = {
+    0 : 'admin',
+    1 : 'productor',
+    2 : 'designer',
+    3 : 'customer',
+    4 : 'customer2', // 原二级客户，现已废弃
+    5 : 'graphicDesigner',
+}
+
 export function getAuthority(str) {
   const authorityString =
     typeof str === 'undefined' && localStorage ? localStorage.getItem('antd-pro-authority') : str; // authorityString could be admin, "admin", ["admin"]
@@ -31,3 +40,4 @@ export function setAuthority(authority) {
 
   reloadAuthorized();
 }
+

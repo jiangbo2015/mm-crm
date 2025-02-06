@@ -1,12 +1,13 @@
 import { queryCurrent, getList, add, del, update as updateUser, download } from '@/services/user';
 import { api } from '@/utils/apiconfig';
-import { setAuthority } from '@/utils/authority';
+import { setAuthority, RoleToAuthority } from '@/utils/authority';
 
 const KEY = {
     // 0: 'productorList',
     1: 'productorList',
     2: 'designerList',
     3: 'customerList',
+    5: 'graphicDesignerList'
 };
 
 const UserModel = {
@@ -83,7 +84,7 @@ const UserModel = {
     },
     reducers: {
         saveCurrentUser(state, action) {
-            setAuthority(action?.payload?.role === 0 ? 'admin' : 'user');
+            setAuthority(RoleToAuthority[action?.payload?.role]);
             return { ...state, currentUser: action.payload || {} };
         },
         setUsers(state, { payload }) {

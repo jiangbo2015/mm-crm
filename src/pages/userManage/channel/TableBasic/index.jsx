@@ -1,14 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Table, Divider, Tag, Modal, Popconfirm } from 'antd';
 import styles from './index.less';
+import { get } from 'lodash';
+import { Link } from 'umi';
 import { connect } from 'dva';
 import Form from '../Form';
-
-const currencys = {
-    0: '人民币',
-    1: '美元',
-    2: '欧元',
-};
 
 const Com = props => {
     const columns = [
@@ -18,22 +14,21 @@ const Com = props => {
             key: 'code',
         },
         {
-            title: '名字',
+            title: '通道名',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '货币',
-            dataIndex: 'currency',
-            key: 'currency',
-            render: (text, record) => currencys[record.currency],
+            title: '说明',
+            dataIndex: 'remark',
+            key: 'remark',
+            
         },
-
         {
             title: '操作',
-            dataIndex: 'action',
-            key: 'action',
-            render: (text, record) => (
+            dataIndex: '_id',
+            key: '_id',
+            render: (id, record) => (
                 <div>
                     <a onClick={e => handleEdit(record)}>编辑</a>
                     <Divider type="vertical" />
@@ -45,6 +40,8 @@ const Com = props => {
                     >
                         <a href="#">删除</a>
                     </Popconfirm>
+                    <Divider type="vertical" />
+                    <Link to={`/userManage/channel/detail/${id}`}>详情</Link>
                 </div>
             ),
         },
@@ -117,12 +114,12 @@ const Com = props => {
             >
                 <Form ref={v => (formRef.current = v)} />
             </Modal>
-            <Table columns={columns} dataSource={props.channelList.docs} />
+            <Table columns={columns} dataSource={get(props, "channelList", [])} />
         </>
     );
 };
 
-export default connect(({  loading }) => ({
-    channelList: channel.list,
+export default connect(({  loading, channel }) => ({
+    channelList: get(channel, "list"),
     fetching: loading.effects['channel/getList'],
 }))(Com);

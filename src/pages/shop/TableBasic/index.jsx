@@ -1,9 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {  useState, useRef } from 'react';
 import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
-import styles from './index.less';
 import { connect } from 'dva';
 import Form from '../Form';
-import { filterImageUrl } from '@/utils/utils';
 
 const Com = props => {
     const columns = [
@@ -38,12 +36,6 @@ const Com = props => {
             dataIndex: 'salesNumber',
             key: 'salesNumber',
         },
-        // {
-        //     title: '状态',
-        //     dataIndex: 'status',
-        //     key: 'status',
-        //     // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
-        // },
         {
             title: '创建日期',
             dataIndex: 'createdAt',

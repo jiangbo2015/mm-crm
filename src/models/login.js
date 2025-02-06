@@ -1,8 +1,8 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'querystring';
-import { message } from 'antd';
+import { get } from 'lodash';
 import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
-import { setAuthority } from '@/utils/authority';
+import { setAuthority, RoleToAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
 const Model = {
@@ -21,9 +21,8 @@ const Model = {
 
             if (response.success) {
                 console.log(response.data, 'response');
-                if (response.data && response.data.role !== 0 && response.data.role !== 2) {
-                    message.error('您没有权限登录');
-                    return;
+                if (response.data ) {
+                    // user/saveCurrentUser
                 }
                 localStorage.token = response.data.token;
 
@@ -72,7 +71,7 @@ const Model = {
     },
     reducers: {
         changeLoginStatus(state, { payload }) {
-            setAuthority(payload.role === 0 ? 'admin' : 'user');
+            setAuthority(get(RoleToAuthority, payload.role, ''));
             return { ...state, status: payload.status, type: payload.type };
         },
     },

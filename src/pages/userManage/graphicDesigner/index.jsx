@@ -1,41 +1,26 @@
-import { Card, Typography, Alert, Button, Modal } from 'antd';
+import React, { useState } from 'react';
+import { Card, Button, Modal } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TableBasic from './TableBasic';
 import Form from './Form';
 import { connect } from 'dva';
-import React, { useEffect, useRef, useState } from 'react';
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
-    const formRef = useRef();
-    useEffect(() => {
-        props.dispatch({
-            type: 'channel/getList',
-            payload: { limit: 100, page: 1 },
-        });
-        // props.dispatch({
-        //     type: 'goods/getList',
-        // });
-        // props.dispatch({
-        //     type: 'global/fetchCapsuleList',
-        // });
-    }, []);
+    const formRef = React.useRef();
 
     const handleSubmit = () => {
-        console.log(formRef);
         formRef.current.validateFields((err, values) => {
+            console.log(err, values);
             if (!err) {
-                console.log(values);
                 setVisible(false);
                 props.dispatch({
                     type: 'user/add',
                     payload: {
-                        role: 1,
+                        role: 5,
                         ...values,
                     },
                 });
-            } else {
-                console.log(err);
             }
         });
     };
@@ -47,7 +32,7 @@ const Com = props => {
     return (
         <PageHeaderWrapper>
             <Card
-                title="产品经理列表"
+                title="设计人员列表"
                 extra={
                     <Button type="primary" onClick={() => setVisible(true)}>
                         添加
@@ -75,4 +60,4 @@ const Com = props => {
     );
 };
 
-export default connect(state => state)(Com);
+export default connect(state => ({}))(Com);

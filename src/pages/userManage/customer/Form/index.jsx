@@ -2,21 +2,21 @@ import React from 'react';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Input, Row, Select, Col } from 'antd';
-// import wcc from 'world-countries-capitals';
+import { get,map } from 'lodash';
 import { connect } from 'dva';
 
 const { Option } = Select;
 // const allCountries = wcc.getAllCountries();
 // console.log(allCountries);
-@connect(state => ({
-    channelList: null,
+@connect(({ channel }) => ({
+    channelList: get(channel, "list"),
 }))
 class RegistrationForm extends React.Component {
     state = {
         productorName: this.props.channelId,
     };
     render() {
-        const { channelList = { docs: [], map: {} } } = this.props;
+        const { channelList } = this.props;
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -36,7 +36,7 @@ class RegistrationForm extends React.Component {
                 },
             },
         };
-        const tdSelector = getFieldDecorator('channels', {
+        const tdSelector = getFieldDecorator('channel', {
             rules: [
                 {
                     required: true,
@@ -52,7 +52,7 @@ class RegistrationForm extends React.Component {
                     });
                 }}
             >
-                {channelList.docs.map((item, index) => (
+                {map(channelList, (item, index) => (
                     <Option value={item._id}>{item.name}</Option>
                 ))}
             </Select>,
@@ -172,87 +172,13 @@ class RegistrationForm extends React.Component {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Row>
-                    <Col span="12">
-                        <Form.Item label="联系人">
-                            {getFieldDecorator('contact', {
-                                rules: [],
-                            })(<Input />)}
-                        </Form.Item>
-                    </Col>
-                    <Col span="12">
-                        <Form.Item label="联系电话">
-                            {getFieldDecorator('phone', {
-                                rules: [],
-                            })(<Input />)}
-                        </Form.Item>
-                    </Col>
-                </Row>
                 <Row></Row>
                 <Row>
                     <Col span="12">
                         <Form.Item label="通道">
                             {tdSelector}
-                            <div>
-                                产品经理：
-                                {channelList.map[this.state.productorName]
-                                    ? channelList.map[this.state.productorName]
-                                    : ''}
-                            </div>
                         </Form.Item>
                     </Col>
-                    <Col span="12">
-                        <Form.Item label="客户类型">
-                            {getFieldDecorator('customerType', {
-                                rules: [],
-                            })(<Input />)}
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col span="12">
-                        <Form.Item label="地址">
-                            {/* {allCountriesSelector} */}
-
-                            {getFieldDecorator('address', {
-                                rules: [],
-                            })(<Input placeholder="详细地址" />)}
-                            {getFieldDecorator('postcode', {
-                                rules: [],
-                            })(<Input placeholder="邮编" />)}
-                        </Form.Item>
-                    </Col>
-                    {/* Shipping address */}
-                    <Col span="12">
-                        <Form.Item label="备注">
-                            {getFieldDecorator('remark', {
-                                rules: [],
-                            })(<Input.TextArea />)}
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="12">
-                        <Form.Item label="税号">
-                            {getFieldDecorator('dutyparagraph', {
-                                rules: [],
-                            })(<Input />)}
-                        </Form.Item>
-                    </Col>
-                    <Col span="12">
-                        <Form.Item label="托运地址">
-                            {/* {allShippingCountriesSelector} */}
-
-                            {getFieldDecorator('shippingaddress', {
-                                rules: [],
-                            })(<Input placeholder="详细地址" />)}
-                            {getFieldDecorator('shippingpostcode', {
-                                rules: [],
-                            })(<Input placeholder="邮编" />)}
-                        </Form.Item>
-                    </Col>
-                    {/* Shipping address */}
                 </Row>
             </Form>
         );

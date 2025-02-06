@@ -1,19 +1,14 @@
 import React from 'react';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Input, Select } from 'antd';
+import { Input } from 'antd';
 
+class RegistrationForm extends React.Component {
+    state = {};
 
-class ChannelForm extends React.Component {
-    componentDidMount() {
-        // 在组件挂载后设置初始值
-        if (this.props.form && this.props.code) {
-            this.props.form.setFieldsValue({ code: this.props.code });
-        }
-    }
     render() {
         const { getFieldDecorator } = this.props.form;
-        
+        console.log(this.props);
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -35,18 +30,18 @@ class ChannelForm extends React.Component {
 
         return (
             <Form {...formItemLayout}>
-                <Form.Item label={<span>通道编号</span>}>
-                    {getFieldDecorator('code', {
+                <Form.Item label={<span>账号</span>}>
+                    {getFieldDecorator('account', {
                         rules: [
                             {
                                 required: true,
-                                message: 'Please input code!',
+                                message: 'Please input accent!',
                                 whitespace: true,
                             },
                         ],
-                    })(<Input disable/>)}
+                    })(<Input />)}
                 </Form.Item>
-                <Form.Item label={<span>通道名称</span>}>
+                <Form.Item label={<span>姓名</span>}>
                     {getFieldDecorator('name', {
                         rules: [
                             {
@@ -57,11 +52,12 @@ class ChannelForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label="备注">
-                    {getFieldDecorator('remark', {
+                <Form.Item label="密码">
+                    {getFieldDecorator('password', {
                         rules: [
                             {
-                                required: false
+                                required: true,
+                                message: 'Please input your password!',
                             },
                         ],
                     })(<Input />)}
@@ -73,4 +69,4 @@ class ChannelForm extends React.Component {
 
 export default Form.create({
     name: 'inputDesiner',
-})(ChannelForm);
+})(RegistrationForm);

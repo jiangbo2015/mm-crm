@@ -4,7 +4,7 @@ import { Link } from 'umi';
 import React from 'react';
 import { connect } from 'dva';
 // import SelectLang from '@/components/SelectLang';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo.jpg';
 import styles from './UserLayout.less';
 
 const UserLayout = props => {
@@ -46,7 +46,7 @@ const UserLayout = props => {
                     </div>
                     {children}
                 </div>
-                <DefaultFooter copyright="2021 MRMISS 1.0.2" links={[]} />
+                <DefaultFooter copyright="2025 We-idesign 3.0.0" links={[]} />
             </div>
         </>
     );

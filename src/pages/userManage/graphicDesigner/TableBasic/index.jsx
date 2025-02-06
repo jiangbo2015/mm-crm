@@ -6,34 +6,24 @@ import { connect } from 'dva';
 import Form from '../Form';
 
 const Com = props => {
-    // 客户名称、客户类型、国家、所属产品经理、通道
+    console.log(props);
     const columns = [
         {
-            title: '客户名称',
+            title: '账号',
+            dataIndex: 'account',
+            key: 'account',
+            render: text => <a>{text}</a>,
+        },
+        {
+            title: '名字',
             dataIndex: 'name',
             key: 'name',
         },
-        {
-            title: '所属产品经理',
-            dataIndex: 'owner',
-            key: 'owner',
-            render: (owner) => (
-                <div>
-                    {owner?.name}
-                </div>
-            ),
-        },
-        {
-            title: '所属通道',
-            dataIndex: 'channel',
-            render: (channel) => {
-                return <div>{channel?.name}</div>;
-            },
-        },
+
         {
             title: '操作',
-            dataIndex: 'action',
             key: 'action',
+            dataIndex: 'action',
             render: (text, record) => (
                 <div>
                     <a onClick={e => handleEdit(record)}>编辑</a>
@@ -54,6 +44,21 @@ const Com = props => {
     const [visible, setVisible] = useState(false);
     const [data, setData] = useState({});
 
+    const handleDelete = record => {
+        props.dispatch({
+            type: 'user/delete',
+            payload: {
+                _id: record._id,
+                role: 5,
+            },
+        });
+    };
+
+    const handleEdit = record => {
+        setVisible(true);
+        setData(record);
+    };
+
     const handleUpdate = () => {
         formRef.current.validateFields((err, values) => {
             if (!err) {
@@ -61,7 +66,7 @@ const Com = props => {
                 props.dispatch({
                     type: 'user/update',
                     payload: {
-                        role: data.role,
+                        role: 2,
                         _id: data._id,
                         ...values,
                     },
@@ -74,36 +79,23 @@ const Com = props => {
         if (visible) {
             setTimeout(() => {
                 console.log(formRef);
-                console.log(data);
                 formRef.current.setFieldsValue({
-                    ...data, //将所有字段都分配，会有warning
-                    channel: get(data, 'channel._id'),
+                    name: data.name,
+                    account: data.account,
+                    password: data.password,
                 });
-            }, 1300);
+            });
         }
     }, [visible]);
+
     useEffect(() => {
         props.dispatch({
             type: 'user/fetch',
             payload: {
-                role: 3,
+                role: 5,
             },
         });
     }, []);
-    const handleDelete = record => {
-        props.dispatch({
-            type: 'user/delete',
-            payload: {
-                _id: record._id,
-                role: 3,
-            },
-        });
-    };
-
-    const handleEdit = record => {
-        setData(record);
-        setVisible(true);
-    };
 
     const handleClear = () => {
         formRef.current.resetFields();
@@ -113,7 +105,6 @@ const Com = props => {
         <>
             <Modal
                 title="编辑"
-                width="800px"
                 visible={visible}
                 onOk={() => {
                     handleUpdate();
@@ -124,18 +115,14 @@ const Com = props => {
                     handleClear();
                 }}
             >
-                <Form
-                    ref={v => (formRef.current = v)}
-                    channelId={visible ? get(data, 'channels.0._id') : ''}
-                />
+                <Form ref={v => (formRef.current = v)} />
             </Modal>
-            <Table columns={columns} dataSource={get(props, "user.customerList", [])} />
+            <Table columns={columns} dataSource={get(props, "user.graphicDesignerList.docs", [])} />
         </>
     );
 };
 
-export default connect(({ user, loading, channel }) => ({
+export default connect(({ user, loading }) => ({
     user,
-    channels: get(channel, "list", []),
     fetching: loading.effects['user/fetch'],
 }))(Com);

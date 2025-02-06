@@ -4,6 +4,15 @@ html,
 body,
 #root {
     height: 100%;
+
+    .ant-pro-sider-logo {
+        padding: 0 16px;
+
+        img {
+            height: 60px;
+        }
+    }
+
 }
 
 .colorWeak {
@@ -33,12 +42,15 @@ ol {
     .ant-table {
         width: 100%;
         overflow-x: auto;
-        &-thead > tr,
-        &-tbody > tr {
-            > th,
-            > td {
+
+        &-thead>tr,
+        &-tbody>tr {
+
+            >th,
+            >td {
                 white-space: pre;
-                > span {
+
+                >span {
                     display: block;
                 }
             }
