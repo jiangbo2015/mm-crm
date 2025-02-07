@@ -53,6 +53,7 @@
     "slash2": "^2.0.0",
     "umi": "^3.3.1",
     "umi-request": "^1.2.7",
+    "waterfalljs-layout": "^0.1.0",
     "webpack-theme-color-replacer": "^1.2.15",
     "world-countries-capitals": "^3.0.2"
   },
