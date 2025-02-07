@@ -108,7 +108,7 @@ export default {
                             name: '创意胶囊',
                             icon: 'camera',
                             component: './creativeCapsule',
-                            // authority: ['admin', 'productor', 'designer', 'customer'],
+                            authority: ['admin', 'productor', 'designer', 'customer'],
                         },
                         {
                             path: '/myFavorites',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Button, Modal } from 'antd';
+import { Card, Button, Modal, Spin } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 
 import { connect } from 'dva';
@@ -60,16 +60,22 @@ const customStyleGrid = `#react-waterfall-grid-comps li>div {
   box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
   transition: all 0.3s
 }
+#react-waterfall-grid-comps {
+    padding: 0;
+    column-gap: 24px;
+}
 #react-waterfall-grid-comps li>div>img {
   width: 100%
 }`;
 
 const Com = props => {
     const [images, setImages] = useState(defimages);
+    const [isLoading, setIsLoading] = useState(false)
     const ulMaxHRef = useRef(0);
     const scrollContainerRef = useRef({})
 
     const handleSearchImage = async () => {
+        setIsLoading(true)
         function random(min, max) {
             return min + Math.floor(Math.random() * (max - min + 1));
         }
@@ -79,6 +85,7 @@ const Com = props => {
             arr.push(imgSrc);
         }
         setImages(prev => [...prev, ...arr]);
+        setIsLoading(false)
     };
 
     useEffect(() => {
@@ -100,7 +107,7 @@ const Com = props => {
     const debounceScroll = useDebounce(handleScroll, 300)
 
     return (
-        // <PageHeaderWrapper>
+        <Spin spinning={isLoading}>
             <Card style={{ marginBottom: '20px' }}>
                 <div
                     style={{
@@ -124,8 +131,7 @@ const Com = props => {
                             return (
                                 <li key={index} onClick={() => alert('图片地址为:' + item)}>
                                     <div>
-                                        {index + 1}
-                                        <img src={item} alt="" />
+                                        <img src={item} alt="" style={{minHeight: 100}} />
                                     </div>
                                 </li>
                             );
@@ -133,7 +139,7 @@ const Com = props => {
                     </Waterfall>
                 </div>
             </Card>
-        // </PageHeaderWrapper>
+        </Spin>
     );
 };
 
