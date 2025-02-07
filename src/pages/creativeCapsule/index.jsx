@@ -6,6 +6,28 @@ import { connect } from 'dva';
 
 import Waterfall from 'waterfalljs-layout/dist/react/index.esm';
 
+function useDebounce(callback, delay) {
+    const timeoutRef = useRef(null);
+  
+    useEffect(() => {
+      // 清理上一次的定时器
+      return () => {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+      };
+    }, []);
+  
+    return (...args) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        callback(...args);
+      }, delay);
+    };
+  }
+
 const defimages = [
     'https://picsum.photos/640/200/?random',
     'https://picsum.photos/360/640/?random',
@@ -45,6 +67,7 @@ const customStyleGrid = `#react-waterfall-grid-comps li>div {
 const Com = props => {
     const [images, setImages] = useState(defimages);
     const ulMaxHRef = useRef(0);
+    const scrollContainerRef = useRef({})
 
     const handleSearchImage = async () => {
         function random(min, max) {
@@ -59,8 +82,22 @@ const Com = props => {
     };
 
     useEffect(() => {
-        // document.body.style.overflow = 'hidden'
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto'
+        }
     }, []);
+
+    const handleScroll = e => {
+        const {scrollTop, clientHeight} = scrollContainerRef.current;
+       
+        if (scrollTop + clientHeight + 100 > ulMaxHRef.current) {
+            handleSearchImage()
+            console.log('滚动到底部执行加载逻辑，代替点击 loadmore 按钮');
+        }
+    }
+
+    const debounceScroll = useDebounce(handleScroll, 300)
 
     return (
         // <PageHeaderWrapper>
@@ -68,21 +105,10 @@ const Com = props => {
                 <div
                     style={{
                         height: 'calc(100vh - 150px)',
-                        // width: '520px',
-                        border: '1px solid',
-                        marginTop: '30px',
                         overflowY: 'scroll',
                     }}
-                    onScroll={e => {
-                        const scrollH = e.target.scrollTop;
-                        console.log(scrollH, ulMaxHRef.current)
-                        // 700 是一个自己把握的值即满足 scrollTop + height + 调节值 > ulMaxHRef.current
-                        // 因为不一定要滚动到在最底端才执行加载逻辑
-                        // 注意使用者应自己处理加载节流逻辑
-                        if (scrollH + 100 > ulMaxHRef.current) {
-                            console.log('滚动到底部执行加载逻辑，代替点击 loadmore 按钮');
-                        }
-                    }}
+                    ref={scrollContainerRef}
+                    onScroll={debounceScroll}
                 >
                     <Waterfall
                         mode="grid"
@@ -105,11 +131,6 @@ const Com = props => {
                             );
                         })}
                     </Waterfall>
-                    <div style={{ textAlign: 'center' }}>
-                        <button onClick={() => handleSearchImage()} style={{ margin: '30px auto' }}>
-                            LOAD MORE
-                        </button>
-                    </div>
                 </div>
             </Card>
         // </PageHeaderWrapper>
