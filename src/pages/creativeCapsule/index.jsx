@@ -17,6 +17,9 @@ const defimages = [
     'https://picsum.photos/520/360/?random',
     'https://picsum.photos/520/360/?random',
     'https://picsum.photos/720/640/?random',
+    'https://picsum.photos/420/640/?random',
+    'https://picsum.photos/520/640/?random',
+    'https://picsum.photos/620/640/?random',
 ];
 
 const customStyleGrid = `#react-waterfall-grid-comps li>div {
@@ -56,15 +59,15 @@ const Com = props => {
     };
 
     useEffect(() => {
-        //
+        // document.body.style.overflow = 'hidden'
     }, []);
 
     return (
-        <PageHeaderWrapper>
+        // <PageHeaderWrapper>
             <Card style={{ marginBottom: '20px' }}>
                 <div
                     style={{
-                        // height: '600px',
+                        height: 'calc(100vh - 150px)',
                         // width: '520px',
                         border: '1px solid',
                         marginTop: '30px',
@@ -72,10 +75,11 @@ const Com = props => {
                     }}
                     onScroll={e => {
                         const scrollH = e.target.scrollTop;
+                        console.log(scrollH, ulMaxHRef.current)
                         // 700 是一个自己把握的值即满足 scrollTop + height + 调节值 > ulMaxHRef.current
                         // 因为不一定要滚动到在最底端才执行加载逻辑
                         // 注意使用者应自己处理加载节流逻辑
-                        if (scrollH + 700 > ulMaxHRef.current) {
+                        if (scrollH + 100 > ulMaxHRef.current) {
                             console.log('滚动到底部执行加载逻辑，代替点击 loadmore 按钮');
                         }
                     }}
@@ -83,8 +87,8 @@ const Com = props => {
                     <Waterfall
                         mode="grid"
                         el="#react-waterfall-grid-comps"
-                        columnWidth={250}
-                        // columnCount={4}
+                        columnWidth={'auto'}
+                        columnCount={5}
                         columnGap={24}
                         rowGap={24}
                         customStyle={customStyleGrid}
@@ -108,7 +112,7 @@ const Com = props => {
                     </div>
                 </div>
             </Card>
-        </PageHeaderWrapper>
+        // </PageHeaderWrapper>
     );
 };
 
