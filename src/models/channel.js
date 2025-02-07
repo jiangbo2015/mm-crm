@@ -3,7 +3,8 @@ import {
     add as addChannel,
     update as udpateChannel,
     del as deleteChannel,
-    findById
+    findById,
+    updateCostomers
 } from '@/services/channel';
 
 const Model = {
@@ -53,7 +54,16 @@ const Model = {
                 });
             }
         },
-
+        *updateCostomers({ payload }, { put, call }) {
+            const res = yield call(updateCostomers, payload);
+            console.log(res);
+            if (res.success) {
+                yield put({
+                    type: 'findById',
+                    payload: {_id : payload?._id}
+                });
+            }
+        },
         *delete({ payload }, { put, call }) {
             const res = yield call(deleteChannel, payload);
             console.log(res);

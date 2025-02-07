@@ -39,8 +39,7 @@ class RegistrationForm extends React.Component {
         const tdSelector = getFieldDecorator('channel', {
             rules: [
                 {
-                    required: true,
-                    message: '请选择通道!',
+                    required: false
                 },
             ],
         })(

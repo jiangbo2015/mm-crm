@@ -34,3 +34,10 @@ export async function update(data) {
         data,
     });
 }
+
+export async function updateCostomers(data) {
+    return request('/api/channel/updateCostomers', {
+        method: 'post',
+        data,
+    });
+}
