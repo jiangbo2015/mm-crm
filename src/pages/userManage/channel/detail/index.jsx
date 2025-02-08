@@ -10,7 +10,9 @@ import {
 import { connect } from 'dva';
 import { useParams } from 'umi';
 
+import PlainColorsModal from '@/components/PlainColorsModal'
 import useFormModal from '@/hooks/useFormModal'
+import usePlainColorsModal from '@/hooks/usePlainColorsModal'
 import styles from './index.less';
 
 const tagRender = (props) => {
@@ -36,16 +38,25 @@ const tagRender = (props) => {
 
 const Com = ({dispatch, currentChannel = {}, currentUser, customerList}) => {
     const { costomers,flowerColors,plainColors,styles } = currentChannel
-    const [visible, setVisible] = useState(false);
+    const [visiblePlainColorsModal, setVisiblePlainColorsModal] = useState(false);
     const params = useParams()
+
     const [FormModal, showModal] = useFormModal({}, {
-        title: '分配客户',
+        title: '客户分配',
         onOk: (values) => {
             onFinishAssginCostomer(values)
         },
       }, {costomers: map(costomers, c => (c._id))});
     
-    
+    // const [PlainColorsModal, showPlainColorsModal] = usePlainColorsModal({
+    //     title: '素色分配',
+    //     onOk: (values) => {
+    //         onFinishAssginCostomer(values)
+    //     },
+    // })
+    const showPlainColorsModal = () => {
+        setVisiblePlainColorsModal(true)
+    }
     const onFinishAssginCostomer = (values) => {
         dispatch({
             type: 'channel/updateCostomers',
@@ -117,13 +128,18 @@ const Com = ({dispatch, currentChannel = {}, currentUser, customerList}) => {
             <Card
                 title="颜色"
                 extra={
-                    <Button type="primary" onClick={showModal}>
+                    <Button type="primary" onClick={showPlainColorsModal}>
                         分配
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}
             >
-
+                <PlainColorsModal 
+                    modalProps={{
+                        visible: visiblePlainColorsModal,
+                        onCancel: () => setVisiblePlainColorsModal(false)
+                    }} 
+                />
             </Card>
             <Card
                 title="花布"
