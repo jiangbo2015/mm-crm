@@ -61,9 +61,10 @@ class AvatarDropdown extends React.Component {
                     <Avatar
                         size="small"
                         className={styles.avatar}
-                        src={currentUser.avatar}
                         alt="avatar"
-                    />
+                    >
+                        {currentUser.account.slice(0, 1).toUpperCase()}
+                    </Avatar>
                     <span className={styles.name}>{currentUser.name}</span>
                 </span>
             </HeaderDropdown>
