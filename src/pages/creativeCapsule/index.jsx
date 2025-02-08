@@ -5,28 +5,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 
 import Waterfall from 'waterfalljs-layout/dist/react/index.esm';
-
-function useDebounce(callback, delay) {
-    const timeoutRef = useRef(null);
-  
-    useEffect(() => {
-      // 清理上一次的定时器
-      return () => {
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-      };
-    }, []);
-  
-    return (...args) => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        callback(...args);
-      }, delay);
-    };
-  }
+import { useDebounce } from './useDebounce';
 
 const defimages = [
     'https://picsum.photos/640/200/?random',
@@ -44,7 +23,8 @@ const defimages = [
     'https://picsum.photos/620/640/?random',
 ];
 
-const customStyleGrid = `#react-waterfall-grid-comps li>div {
+const customStyleGrid = `
+#react-waterfall-grid-comps li>div {
   border-radius: 8px;
   font-size: 20px;
   overflow: hidden;
@@ -74,7 +54,26 @@ const Com = props => {
     const ulMaxHRef = useRef(0);
     const scrollContainerRef = useRef({})
 
+    useEffect(() => {
+        props.dispatch({
+            type: 'creativeCapsule/getList',
+            payload: {
+                page: 1,
+                limit: 20
+            },
+        });
+    }, [])
+    
+
     const handleSearchImage = async () => {
+        // props.dispatch({
+        //     type: 'capsule/getList',
+        //     payload: {
+        //         page,
+        //         limit: 10,
+        //         ...queries,
+        //     },
+        // });
         setIsLoading(true)
         function random(min, max) {
             return min + Math.floor(Math.random() * (max - min + 1));

@@ -1,17 +1,32 @@
-import { routerRedux } from 'dva/router';
-import { stringify } from 'querystring';
-import { notification } from 'antd';
+
+import {
+    getList as queryList,
+} from '@/services/capsule';
 
 const Model = {
     namespace: 'creativeCapsule',
     state: {
-
+        list: {}
     },
     effects: {
-        
+        *getList({ payload }, { call, put }) {
+            const res = yield call(queryList, payload);
+            console.log(res);
+            if (res.success) {
+                yield put({
+                    type: 'setCapsuleList',
+                    payload: res.data,
+                });
+            }
+        },
     },
     reducers: {
-        
+        setCapsuleList(state, { payload }) {
+            return {
+                ...state,
+                list: payload,
+            };
+        },
     },
 };
 export default Model;
