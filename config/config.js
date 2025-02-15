@@ -213,6 +213,11 @@ export default {
                                     component: './productManage/flower/index.jsx',
                                 },
                                 {
+                                    path: '/productManage/texture',
+                                    name: '纹理管理',
+                                    component: './productManage/texture/index.jsx',
+                                },
+                                {
                                     path: '/productManage/goods',
                                     name: '商品分类',
                                     component: './productManage/goods',
