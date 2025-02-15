@@ -149,7 +149,7 @@ export default class NoticeIcon extends Component {
     return (
       <HeaderDropdown
         placement="bottomRight"
-        overlay={notificationBox}
+        overlay={this.props.children}
         overlayClassName={styles.popover}
         trigger={['click']}
         visible={visible}
