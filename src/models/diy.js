@@ -1,17 +1,56 @@
-import { routerRedux } from 'dva/router';
-import { stringify } from 'querystring';
-import { notification } from 'antd';
+import {
+    getCapsuleById,
+    add,
+    update,
+} from '@/services/diy';
 
 const Model = {
     namespace: 'diy',
-    state: {
-
+    state: { 
+        name: '',
+        capsuleItems: [],
+        plainColors: [], //可用素色列表
+        flowerColors: [], //可用花布列表
+        customPlainColors: [], // 自主上传素色列表
+        customFlowerColors: [], // 自主上传花布列表
     },
-    effects: {
-        
+    effects: { // getCapsuleById 
+        *getCapsuleById({ payload }, { call, put }) {
+            const res = yield call(getCapsuleById, payload);
+            console.log(res);
+            if (res.success) {
+                yield put({
+                    type: 'setCapsule',
+                    payload: res.data,
+                });
+            }
+        },
+        *createCapsule({ payload }, { put, call }) {
+            const res = yield call(add, payload);
+            console.log(res);
+        },
+        *updateCapsule({ payload }, { put, call }) {
+            const res = yield call(update, payload);
+            console.log(res);
+        },
+        *createCapsuleItem({ payload }, { put, call }) {
+            const res = yield call(add, payload);
+            console.log(res);
+        },
     },
-    reducers: {
-        
+    reducers: { 
+        setCapsuleName(state, { payload }) {
+            return {
+                ...state,
+                name: payload,
+            };
+        },
+        setCapsuleItems(state, { payload }) {
+            return {
+                ...state,
+                capsuleItems: payload,
+            };
+        },
     },
 };
 export default Model;

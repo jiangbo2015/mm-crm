@@ -85,7 +85,7 @@ const UserModel = {
     reducers: {
         saveCurrentUser(state, action) {
             setAuthority(RoleToAuthority[action?.payload?.role]);
-            return { ...state, currentUser: action.payload || {} };
+            return { ...state, currentUser: { ...state.currentUser, ...action.payload} || {} };
         },
         setUsers(state, { payload }) {
             console.log(payload);

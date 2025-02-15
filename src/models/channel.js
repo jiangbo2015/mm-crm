@@ -50,7 +50,8 @@ const Model = {
             console.log(res);
             if (res.success) {
                 yield put({
-                    type: 'getList',
+                    type: 'findById',
+                    payload: {_id : payload?._id}
                 });
             }
         },

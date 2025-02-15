@@ -1,0 +1,102 @@
+.grid-seletor-wrapper {
+    display: flex;
+    justify-content: space-around;
+}
+
+.styles-menu {
+    width: 200px;
+}
+
+.grid-seletor {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px;
+    width: 680px;
+}
+
+.grid-seletor-style-item {
+    display: flex;
+    justify-content: center;
+}
+
+.drawer-seleted-item-val {
+    position: relative;
+    margin: 10px 0 0 10px;
+
+    &:hover {
+        .selected-delete-icon {
+            position: absolute;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 20%);
+            color: #fff;
+        }
+    }
+}
+
+.selected-delete-icon {
+    display: none;
+}
+
+.selector-tools {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 30px 20px;
+    width: 100%;
+
+    :global {
+        .ant-input-group-addon {
+            display: none;
+        }
+    }
+}
+
+.category-menu {
+    width: 200px;
+}
+
+.selector-footer {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.relative {
+    position: relative;
+}
+
+.grid-seletor-item-selected-icon {
+    display: block;
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    font-size: 20px;
+    color: #000;
+}
+
+.grid-seletor-item-icon {
+    display: none;
+}
+
+.flex-selected-box {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}
+
+.selected-drawer {
+    padding: 0;
+
+    :global {
+        .ant-drawer-body {
+            padding: 0;
+        }
+    }
+
+
+}

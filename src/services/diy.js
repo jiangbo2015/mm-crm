@@ -44,36 +44,36 @@ export async function update(data) {
     });
 }
 
-export async function getCapsuleStyleList(data) {
-    return request('/api/capsuleStyle/getList', {
+export async function getCapsuleItemList(data) {
+    return request('/api/capsuleItem/getList', {
         method: 'get',
         params: data,
     });
 }
 
-export async function addCapsuleStyle(data) {
-    return request('/api/capsuleStyle/add', {
+export async function addCapsuleItem(data) {
+    return request('/api/capsuleItem/add', {
         method: 'post',
         data,
     });
 }
 
-export async function delCapsuleStyle(data) {
-    return request('/api/capsuleStyle/delete', {
+export async function delCapsuleItem(data) {
+    return request('/api/capsuleItem/delete', {
         method: 'post',
         data,
     });
 }
 
-export async function updateCapsuleStyle(data) {
-    return request('/api/capsuleStyle/update', {
+export async function updateCapsuleItem(data) {
+    return request('/api/capsuleItem/update', {
         method: 'post',
         data,
     });
 }
 
-export async function sortCapsuleStyle(data) {
-    return request('/api/capsuleStyle/sort', {
+export async function sortCapsuleItem(data) {
+    return request('/api/capsuleItem/sort', {
         method: 'post',
         data,
     });

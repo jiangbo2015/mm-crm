@@ -1,5 +1,8 @@
 const getNotices = (req, res) => {
-  res.json([
+  res.json({
+    message: "操作成功",
+    success: true,
+    data: [
     {
       id: '000000001',
       avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png',
@@ -95,7 +98,8 @@ const getNotices = (req, res) => {
       status: 'processing',
       type: 'event',
     },
-  ]);
+  ]
+});
 };
 
 export default {

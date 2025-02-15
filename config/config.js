@@ -87,10 +87,19 @@ export default {
                 },
             ],
         },
+
         {
             path: '/',
             component: '../layouts/SecurityLayout',
             routes: [
+                {
+                    path: '/diy',
+                    name: '创建DIY',
+                    icon: 'edit',
+                    component: './diy',
+                    authority: ['admin', 'productor', 'designer', 'customer'],
+                    layout: false
+                },
                 {
                     path: '/',
                     component: '../layouts/BasicLayout',

@@ -32,6 +32,7 @@ class AvatarDropdown extends React.Component {
                 name: '',
             },
             menu,
+            isHideName
         } = this.props;
         const menuHeaderDropdown = (
             <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
@@ -65,7 +66,7 @@ class AvatarDropdown extends React.Component {
                     >
                         {currentUser.account.slice(0, 1).toUpperCase()}
                     </Avatar>
-                    <span className={styles.name}>{currentUser.name}</span>
+                    {!isHideName && <span className={styles.name}>{currentUser.name}</span>}
                 </span>
             </HeaderDropdown>
         ) : (

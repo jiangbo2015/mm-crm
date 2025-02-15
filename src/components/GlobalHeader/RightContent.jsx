@@ -3,6 +3,8 @@ import { BellOutlined } from '@ant-design/icons'
 import React from 'react';
 import { connect } from 'dva';
 import Avatar from './AvatarDropdown';
+import NoticeIconView from './NoticeIconView';
+import NoticeIcon from '../NoticeIcon';
 // import HeaderSearch from '../HeaderSearch';
 // import SelectLang from '../SelectLang';
 import styles from './index.less';
@@ -39,14 +41,15 @@ const GlobalHeaderRight = props => {
           <Icon type="question-circle-o" />
         </a>
       </Tooltip> */}
-      <Dropdown overlay={<span>123</span>} trigger={['click']}>
+      <NoticeIconView/>
+      <Avatar />
+      {/* <Dropdown overlay={<span>123</span>} trigger={['click']}>
         <a onClick={e => e.preventDefault()}>
             <Badge dot>
                 <BellOutlined style={{fontSize: '20px'}} />
             </Badge>
         </a>
-      </Dropdown>
-      <Avatar />
+      </Dropdown> */}
       {/* <SelectLang className={styles.action} /> */}
     </div>
   );

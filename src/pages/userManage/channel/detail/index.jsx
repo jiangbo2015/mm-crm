@@ -10,9 +10,12 @@ import {
 import { connect } from 'dva';
 import { useParams } from 'umi';
 
-import PlainColorsModal from '@/components/PlainColorsModal'
+import ColorsModal from '@/components/ColorsModal'
+import StylesSelectorModal from '@/components/StylesSelectorModal'
+import { PlainColorItem, FlowerColorItem } from '@/components/ColorItem'
+import { StyleItem } from '@/components/StyleItem'
 import useFormModal from '@/hooks/useFormModal'
-import usePlainColorsModal from '@/hooks/usePlainColorsModal'
+// import usePlainColorsModal from '@/hooks/usePlainColorsModal'
 import styles from './index.less';
 
 const tagRender = (props) => {
@@ -36,9 +39,11 @@ const tagRender = (props) => {
     );
   };
 
-const Com = ({dispatch, currentChannel = {}, currentUser, customerList}) => {
-    const { costomers,flowerColors,plainColors,styles } = currentChannel
+const Com = ({dispatch, currentChannel = {}, updateChannelLoading, customerList}) => {
+    const { costomers, populatedPlainColors = [], populatedStyles = [], populatedFlowerColors = [] } = currentChannel
     const [visiblePlainColorsModal, setVisiblePlainColorsModal] = useState(false);
+    const [visibleFlowerColorsModal, setVisibleFlowerColorsModal] = useState(false);
+    const [visibleStylesSelectorModal, setVisibleStylesSelectorModal] = useState(false);
     const params = useParams()
 
     const [FormModal, showModal] = useFormModal({}, {
@@ -47,25 +52,7 @@ const Com = ({dispatch, currentChannel = {}, currentUser, customerList}) => {
             onFinishAssginCostomer(values)
         },
       }, {costomers: map(costomers, c => (c._id))});
-    
-    // const [PlainColorsModal, showPlainColorsModal] = usePlainColorsModal({
-    //     title: '素色分配',
-    //     onOk: (values) => {
-    //         onFinishAssginCostomer(values)
-    //     },
-    // })
-    const showPlainColorsModal = () => {
-        setVisiblePlainColorsModal(true)
-    }
-    const onFinishAssginCostomer = (values) => {
-        dispatch({
-            type: 'channel/updateCostomers',
-            payload: { _id: params.id, ...values }
-        })
-        console.log('Received values of form: ', values);
-    };
-
-    useEffect(() => {
+      useEffect(() => {
         dispatch({
             type: 'user/fetch',
             payload: {
@@ -80,6 +67,61 @@ const Com = ({dispatch, currentChannel = {}, currentUser, customerList}) => {
             payload: {_id: params.id}
         })
     }, [params.id])
+
+    const showPlainColorsModal = () => {
+        setVisiblePlainColorsModal(true)
+    }
+    const showFlowerColorsModal = () => {
+        setVisibleFlowerColorsModal(true)
+    }
+    const showStylesSelectorModal = () => {
+        setVisibleStylesSelectorModal(true)
+    }
+
+
+    const onFinishAssginCostomer = (values) => {
+        dispatch({
+            type: 'channel/updateCostomers',
+            payload: { _id: params.id, ...values }
+        })
+        console.log('Received values of form: ', values);
+    };
+
+    const handleUpdatePlainColors = async (selectedPlainColors) => {
+        await dispatch({
+            type: 'channel/update',
+            payload: {
+                _id: params.id,
+                plainColors: map(selectedPlainColors, c => c._id)
+            },
+        });
+        
+        setVisiblePlainColorsModal(false)
+    };
+
+    const handleUpdateFlowerColors = async (selectedFlowerColors) => {
+        await dispatch({
+            type: 'channel/update',
+            payload: {
+                _id: params.id,
+                flowerColors: map(selectedFlowerColors, c => c._id)
+            },
+        });
+        
+        setVisibleFlowerColorsModal(false)
+    };
+
+    const handleUpdateStyles = async (selectedStyles) => {
+        await dispatch({
+            type: 'channel/update',
+            payload: {
+                _id: params.id,
+                styles: map(selectedStyles, c => c._id)
+            },
+        });
+
+        setVisibleStylesSelectorModal(false)
+    };
 
     return (
         <PageHeaderWrapper >
@@ -117,13 +159,28 @@ const Com = ({dispatch, currentChannel = {}, currentUser, customerList}) => {
             <Card
                 title="款式"
                 extra={
-                    <Button type="primary" onClick={showModal}>
+                    <Button type="primary" onClick={showStylesSelectorModal}>
                         分配
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}
             >
+                <div className={styles['flex-box']}>
+                    {map(populatedStyles, item => (<StyleItem
+                        item={item}
+                        size={60}
+                    />))}
+                </div>
 
+                <StylesSelectorModal
+                    modalProps={{
+                        visible: visibleStylesSelectorModal,
+                        onCancel: () => setVisibleStylesSelectorModal(false),
+                        confirmLoading: updateChannelLoading
+                    }}
+                    onStylesSelectorModalOk={handleUpdateStyles}
+                    initSelectedStyles={populatedStyles}
+                />
             </Card>
             <Card
                 title="颜色"
@@ -134,31 +191,52 @@ const Com = ({dispatch, currentChannel = {}, currentUser, customerList}) => {
                 }
                 style={{ marginBottom: '20px' }}
             >
-                <PlainColorsModal 
+                <div className={styles['flex-box']}>
+                    {map(populatedPlainColors, pc => (<PlainColorItem item={pc} size={40} />))}
+                </div>
+                
+                <ColorsModal 
+                    colorType={0}
                     modalProps={{
                         visible: visiblePlainColorsModal,
-                        onCancel: () => setVisiblePlainColorsModal(false)
-                    }} 
+                        onCancel: () => setVisiblePlainColorsModal(false),
+                        confirmLoading: updateChannelLoading
+                    }}
+                    onColorsModalOk={handleUpdatePlainColors}
+                    initSelectedColors={populatedPlainColors}
                 />
             </Card>
             <Card
                 title="花布"
                 extra={
-                    <Button type="primary" onClick={showModal}>
+                    <Button type="primary" onClick={showFlowerColorsModal}>
                         分配
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}
             >
-
+                <div className={styles['flex-box']}>
+                    {map(populatedFlowerColors, pc => (<FlowerColorItem item={pc} size={40} />))}
+                </div>
+                <ColorsModal 
+                    colorType={1}
+                    modalProps={{
+                        visible: visibleFlowerColorsModal,
+                        onCancel: () => setVisibleFlowerColorsModal(false),
+                        confirmLoading: updateChannelLoading
+                    }}
+                    onColorsModalOk={handleUpdateFlowerColors}
+                    initSelectedColors={populatedFlowerColors}
+                />
             </Card>
         </PageHeaderWrapper>
     );
 };
 
-export default connect(({ channel, user }) => ({
+export default connect(({ channel, user, loading }) => ({
     currentUser: get(user, 'currentUser'),
     customerList: get(user, "customerList", []),
     channelList: get(channel, "list"),
-    currentChannel: get(channel, "currentChannel", {})
+    currentChannel: get(channel, "currentChannel", {}),
+    updateChannelLoading: loading.effects['channel/update']
 }))(Com);

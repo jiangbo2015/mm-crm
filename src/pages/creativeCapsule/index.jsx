@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Modal, Spin } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-
+import { filterImageUrl } from '@/utils/utils';
 import { connect } from 'dva';
 
 import Waterfall from 'waterfalljs-layout/dist/react/index.esm';
@@ -53,6 +53,7 @@ const Com = props => {
     const [isLoading, setIsLoading] = useState(false)
     const ulMaxHRef = useRef(0);
     const scrollContainerRef = useRef({})
+    const {docs, pages, page} = props.list
 
     useEffect(() => {
         props.dispatch({
@@ -66,25 +67,28 @@ const Com = props => {
     
 
     const handleSearchImage = async () => {
-        // props.dispatch({
-        //     type: 'capsule/getList',
-        //     payload: {
-        //         page,
-        //         limit: 10,
-        //         ...queries,
-        //     },
-        // });
-        setIsLoading(true)
-        function random(min, max) {
-            return min + Math.floor(Math.random() * (max - min + 1));
+        if(Number(page) < pages && !isLoading) {
+            setIsLoading(true)
+            await props.dispatch({
+                type: 'creativeCapsule/getList',
+                payload: {
+                    page: Number(page) + 1,
+                    limit: 20,
+                },
+            });
+            setIsLoading(false)
         }
-        const arr = [];
-        for (let i = 0; i < 9; i++) {
-            const imgSrc = `${defimages[i]}=${random(1, 10000)}`;
-            arr.push(imgSrc);
-        }
-        setImages(prev => [...prev, ...arr]);
-        setIsLoading(false)
+        
+        // function random(min, max) {
+        //     return min + Math.floor(Math.random() * (max - min + 1));
+        // }
+        // const arr = [];
+        // for (let i = 0; i < 9; i++) {
+        //     const imgSrc = `${defimages[i]}=${random(1, 10000)}`;
+        //     arr.push(imgSrc);
+        // }
+        // setImages(prev => [...prev, ...arr]);
+        
     };
 
     useEffect(() => {
@@ -96,7 +100,7 @@ const Com = props => {
 
     const handleScroll = e => {
         const {scrollTop, clientHeight} = scrollContainerRef.current;
-       
+       console.log('scroll')
         if (scrollTop + clientHeight + 100 > ulMaxHRef.current) {
             handleSearchImage()
             console.log('滚动到底部执行加载逻辑，代替点击 loadmore 按钮');
@@ -126,11 +130,11 @@ const Com = props => {
                         customStyle={customStyleGrid}
                         onChangeUlMaxH={h => (ulMaxHRef.current = h)}
                     >
-                        {images.map((item, index) => {
+                        {(docs || []).map((item, index) => {
                             return (
-                                <li key={index} onClick={() => alert('图片地址为:' + item)}>
+                                <li key={index}>
                                     <div>
-                                        <img src={item} alt="" style={{minHeight: 100}} />
+                                        <img src={filterImageUrl(item.imgUrl)} alt="" style={{minHeight: 100}} />
                                     </div>
                                 </li>
                             );

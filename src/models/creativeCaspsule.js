@@ -24,7 +24,11 @@ const Model = {
         setCapsuleList(state, { payload }) {
             return {
                 ...state,
-                list: payload,
+                list: {
+                    ...state.list,
+                    ...payload,
+                    docs: (state.list.docs || []).concat(payload.docs)
+                },
             };
         },
     },

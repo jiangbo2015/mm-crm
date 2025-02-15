@@ -9,6 +9,7 @@ import {
 import { connect } from 'dva';
 import { get, map, toInteger, includes , filter, findIndex } from 'lodash';
 
+import { ColorItem } from '@/components/ColorItem'
 import { useDispatch, useSelector } from '@/hooks/useDvaTools';
 
 import styles from './index.less'
@@ -16,44 +17,51 @@ import styles from './index.less'
 const { Search } = Input;
 const { CheckableTag } = Tag;
 const size = 50
+const ColorTypeToPlaceholder = {
+    0: "颜色",
+    1: "花布"
+}
 
-const PlainColorsModal = ({modalProps = {} }) => {
-    console.log("modalProps.visible:", modalProps.visible)
+const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, colorType}) => {
   const dispatch = useDispatch()
 
-  const {docs: sourceList, total, limit, page} = useSelector(state => get(state, 'style.colorList', {}))
-
-//   const [selectedList, setSelectedList] = useState([]);
+  const {docs: sourceList, total, limit, page} = useSelector(state => get(state, colorType === 0 ? 'style.colorList' : 'style.colorListFlower' , {}))
   const [selectedItemList, setSelectedItemList] = useState([]);
 
+  const selectedList = map(selectedItemList, ({_id}) => _id)
+  const SelectedDrawerOpen = modalProps?.visible && selectedList.length > 0;
+
   useEffect(() => {
-    handleFetch({ limit: 30, page: 1, type: 0 })
+    setSelectedItemList(initSelectedColors)
+  }, [initSelectedColors])
+  
+
+  useEffect(() => {
+    handleFetch({ limit: 30, page: 1})
   }, [])
 
   
   const handleFetch = (params) => {
     dispatch({
         type: 'style/getColorList',
-        payload: params,
+        payload: {...params, type: colorType},
     });
   }
   
   const onChange = (page, pageSize) => {
-    console.log("page", page)
-    console.log("pageSize", pageSize)
-    handleFetch({ limit: pageSize, page, type: 0 })
-
+    handleFetch({ limit: pageSize, page})
   }
 
   const onSearch = (input) => {
-    handleFetch({ limit, page, type: 0, code: input })
+    handleFetch({ limit, page, code: input })
   }
 
   const handleOk = () => {
-
+    onColorsModalOk(selectedItemList)
   };
 
-  const handleSelect = (item) => {
+  const handleSelect = (item = {}) => {
+    console.log("handleSelect", item)
     const { _id: id } = item;
     setSelectedItemList((prevSelectedItemList) => {
       if (findIndex(prevSelectedItemList, (item) => item._id === id) >= 0) {
@@ -81,40 +89,45 @@ const PlainColorsModal = ({modalProps = {} }) => {
         return filterItmes;
     });
   };
-  const selectedList = map(selectedItemList, ({_id}) => _id)
 
-  const SelectedDrawerOpen = modalProps?.visible && selectedList.length > 0;
-  console.log("SelectedDrawerOpen", SelectedDrawerOpen)
   return (
     <>    <Modal
       {...modalProps}
       closable={false}
-      centered={true}
+      top={112}
         //   visible={visible}
-        //   onOk={handleOk}
+        onOk={handleOk}
         //   onCancel={hideModal}
     >
         <div className={styles['selector-tools']}>
-            <Search prefix={<SearchOutlined />}  bordered={false} addonAfter={null} placeholder="颜色" allowClear onSearch={onSearch} style={{ width: 200 }} />
-            {/* <Input size="large" /> */}
+            <Search 
+                prefix={<SearchOutlined />}  
+                bordered={false} 
+                addonAfter={null} 
+                placeholder={ColorTypeToPlaceholder[colorType]} 
+                allowClear 
+                onSearch={onSearch} 
+                style={{ width: 200 }} 
+            />
             <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>全选</CheckableTag>
         </div>      
 
         <div className={styles['grid-seletor']}>
             {map(sourceList, (item) => {
-                const {value, code, _id} = item
+                const { _id } = item
                 return (
-                <div className={styles['grid-seletor-item']}>
-                    <Tooltip title={code}>
-                        <div
+                    <div key={_id} className={styles['grid-seletor-item']}>
+                        <ColorItem
+                            
+                            className={styles['relative']}
+                            item={item}
                             onClick={() => handleSelect(item)}
-                            className={styles['grid-seletor-item-val']}
-                            style={{ backgroundColor: value , width: size, height: size}}
+                            size={size}
                         >
                             <CheckOutlined className={includes(selectedList, _id) ? styles['grid-seletor-item-selected-icon'] : styles['grid-seletor-item-icon']} />
-                        </div>
-                    </Tooltip>
-                </div>)}
+                        </ColorItem>
+                    </div>
+                )}
             )}
         </div>
         <div className={styles['selector-footer']}>
@@ -131,22 +144,22 @@ const PlainColorsModal = ({modalProps = {} }) => {
             height={100} placement="top" mask={false} closable={false} open>
             <div className={styles['flex-selected-box']}>
                 {map(selectedItemList, (item) => {
-                    const {value, code, _id} = item
                     return (
-                    <div className={styles['grid-seletor-item']}>
-                        <Tooltip title={code}>
-                            <div
+                    <div key={`s-${item._id}`} className={styles['grid-seletor-item']}>
+                            <ColorItem
+                                
+                                item={item}
                                 onClick={() => handleSelect(item)}
-                                className={styles['grid-seletor-item-val']}
-                                style={{ backgroundColor: value , width: 30, height: 30, marginLeft: 10, marginTop: 10}}
+                                
+                                className={styles['drawer-seleted-item-val']}
+                                size={30}
                             >
                                 <div className={styles['selected-delete-icon']}>
                                     <DeleteOutlined /> 
                                 </div>
                                 
-                                {/* <CheckOutlined className={includes(selectedList, _id) ? styles['grid-seletor-item-selected-icon'] : styles['grid-seletor-item-icon']} /> */}
-                            </div>
-                        </Tooltip>
+                
+                        </ColorItem>
                         
                     </div>)}
                 )}
@@ -159,6 +172,5 @@ const PlainColorsModal = ({modalProps = {} }) => {
 };
 
 export default connect(({  loading, style }) => ({
-    colorList: get(style, "colorList"),
     fetching: loading.effects['color/getList'],
-}))(PlainColorsModal);
+}))(ColorsModal);
