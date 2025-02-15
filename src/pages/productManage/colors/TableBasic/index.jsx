@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import React, { useEffect, useRef, useState } from 'react';
 import Form from '../From';
 import styles from './index.less';
+import RecordModal from '@/components/RecordModal';
 
 const Com = props => {
     const columns = [
@@ -54,6 +55,7 @@ const Com = props => {
                     >
                         <a>删除</a>
                     </Popconfirm>
+                    <a onClick={() => props.dispatch({type: 'record/getList', payload: {modelId: record._id}})}>修改记录</a>
                 </div>
             ),
         },
@@ -170,11 +172,13 @@ const Com = props => {
                     pageSizeOptions: [10, 20, 50, 100, 500],
                 }}
             />
+            {props.record.visible && <RecordModal {...props.record} onCancel={() => props.dispatch({type: 'record/toggleModal', payload: false})} />}
         </>
     );
 };
 
-export default connect(({ style, loading }) => ({
+export default connect(({ style, loading, record }) => ({
     colorList: style.colorList,
     fetching: loading.effects['style/getColorList'],
+    record
 }))(Com);
