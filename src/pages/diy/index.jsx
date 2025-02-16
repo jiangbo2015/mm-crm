@@ -6,6 +6,8 @@ import { get } from 'lodash';
 import Icon, { LeftOutlined } from '@ant-design/icons';
 import AvatarDropdown from '@/components/GlobalHeader/AvatarDropdown';
 import PlainColorsAside from './components/PlainColorsAside'
+import FlowerColorsAside from './components/FlowerColorsAside'
+import CapsuleItemsDisplayer from './components/CapsuleItemsDisplayer'
 import styles from './index.less'
 
 const Com = props => {
@@ -43,6 +45,8 @@ const Com = props => {
             </div>
             <div className={styles['diy-page-content']}>
                 <PlainColorsAside/>
+                <CapsuleItemsDisplayer />
+                <FlowerColorsAside />
             </div>
         </div>
 

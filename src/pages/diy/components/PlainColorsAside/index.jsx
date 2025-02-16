@@ -1,10 +1,12 @@
 import { Tabs } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'dva';
 import { map } from 'lodash';
 
-import { ColorItem } from '@/components/ColorItem'
-import ColorList from './components/ColorList'
+import ColorsModal from '@/components/ColorsModal'
+import ColorList from '../ColorList'
+import styles from './index.less'
+
 
 const onChange = (key) => {
   console.log(key);
@@ -12,29 +14,55 @@ const onChange = (key) => {
 
 
 
-const PlainColorsAside = ({ plainColors }) => {
+const PlainColorsAside = ({ plainColors, customPlainColors,dispatch }) => {
+    const [visiblePlainColorsModal, setVisiblePlainColorsModal] = useState(false);
+    const handleUpdatePlainColors  = async (selectedPlainColors) => {
+        console.log(selectedPlainColors)
+            await dispatch({
+                type: 'diy/setPlainColors',
+                payload: selectedPlainColors,
+            });
+            
+            setVisiblePlainColorsModal(false)
+        };
+    
     const PlainColorsItems = [ 
         { 
             label: "颜色选择",
             key: 1,
-            children: <ColorList />,
+            children: <ColorList colors={plainColors} onAdd={() => {setVisiblePlainColorsModal(true)}}/>,
         },
         { 
             label: "自主上传",
             key: 2,
-            children: <div>{map(plainColors, item => <ColorItem item={item} size={30} />)}</div>,
+            children: <ColorList hideSearch colors={customPlainColors}/>,
         },
     ]
     return (
-        <Tabs
+        <>
+            <ColorsModal 
+                colorType={0}
+                modalProps={{
+                    visible: visiblePlainColorsModal,
+                    onCancel: () => setVisiblePlainColorsModal(false),
+                    // confirmLoading: updateChannelLoading
+                }}
+                onColorsModalOk={handleUpdatePlainColors}
+                initSelectedColors={plainColors}
+            />
+           <Tabs
             onChange={onChange}
             type="card"
             items={PlainColorsItems}
-        />)
+            className={styles['color-list-tabs-box']}
+        /> 
+        </>
+        )
 };
 
 // export default PlainColorsAside;
 
 export default connect(({ diy }) => ({
-    plainColors: diy.plainColors
+    plainColors: diy.plainColors,
+    customPlainColors: diy.customPlainColors,
 }))(PlainColorsAside);

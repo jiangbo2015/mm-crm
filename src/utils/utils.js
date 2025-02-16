@@ -84,3 +84,10 @@ export const filterImageUrl = url => {
         return `${imgUrl}${url}`;
     }
 };
+
+export const uploadProps = {
+    name: 'file',
+    // listType: 'picture-card',
+    showUploadList: false,
+    action: `/api/common/uploadkit`,
+};

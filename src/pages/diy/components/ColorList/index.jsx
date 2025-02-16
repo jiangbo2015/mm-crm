@@ -23,7 +23,7 @@ const onChange = (key) => {
 
 
 
-const ColorList = ({ colors, colorType = 0 }) => {
+const ColorList = ({ colors, colorType = 0, onAdd, hideSearch }) => {
 
     const [searchText, setSearchText] = useState('')
 
@@ -36,16 +36,16 @@ const ColorList = ({ colors, colorType = 0 }) => {
 
     return (<div className={styles['color-list-wrapper']}>
         <div className={styles['color-list-header']}>
-            <Search 
+            {!hideSearch && <Search 
                 prefix={<SearchOutlined />}  
                 bordered={false} 
                 addonAfter={null} 
                 placeholder={ColorTypeToPlaceholder[colorType]} 
                 allowClear 
                 onSearch={onSearch} 
-                style={{ width: 200 }} 
-            />
-            <PlusOutlined />
+                style={{ flex: 1 }} 
+            />}
+            <PlusOutlined className={styles['add-icon-btn']} onClick={onAdd}/>
         </div>
         <div className={styles['color-list-body']}>
         {map(filteredColors, item => <ColorItem item={item} size={30} />)}

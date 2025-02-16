@@ -10,7 +10,7 @@ import { connect } from 'dva';
 import { get, map, toInteger, includes , filter, findIndex, find } from 'lodash';
 
 import { StyleItem } from '@/components/StyleItem'
-import { useDispatch, useSelector } from '@/hooks/useDvaTools';
+// import { useDispatch, useSelector } from '@/hooks/useDvaTools';
 
 import styles from './index.less'
 
@@ -22,21 +22,29 @@ const size = 120
 //     1: "花布"
 // }
 
-const StylesSelectorModal = ({modalProps = {},onStylesSelectorModalOk, initSelectedStyles = []}) => {
-  const dispatch = useDispatch()
-
-  const {docs: sourceList, total, limit, page} = useSelector(state => get(state, 'style.list'))
-  const goodsList = useSelector(state => get(state, 'goods.list'))
+const StylesSelectorModal = ({ 
+    dispatch, 
+    styleList = {},
+    goodsList, 
+    modalProps = {},
+    onStylesSelectorModalOk, 
+    initSelectedStyles,
+    mode = 'multiple' // 'multiple','single'
+}) => {
+  const {docs: sourceList, total, limit, page} = styleList
   const [searchInput, setSearchInput] = useState('');
   const [currentGood, setCurrentGood] = useState(null);
   const [currentGoodCategory, setCurrentGoodCategory] = useState(null);
   const [selectedItemList, setSelectedItemList] = useState([]);
 
   const selectedList = map(selectedItemList, ({_id}) => _id)
-  const SelectedDrawerOpen = modalProps?.visible && selectedList.length > 0;
+  const SelectedDrawerOpen = modalProps?.visible && selectedList.length > 0 && mode === 'multiple';
 
   useEffect(() => {
-    setSelectedItemList(initSelectedStyles)
+    if(initSelectedStyles) {
+        setSelectedItemList(initSelectedStyles)
+    }
+    
   }, [initSelectedStyles])
 
   useEffect(() => {
@@ -84,6 +92,10 @@ const StylesSelectorModal = ({modalProps = {},onStylesSelectorModalOk, initSelec
   };
 
   const handleSelect = (item = {}) => {
+    if(mode === 'single') {
+        handleSelectSingle(item);
+        return
+    }
     const { _id: id } = item;
 
     setSelectedItemList((prevSelectedItemList) => {
@@ -95,6 +107,10 @@ const StylesSelectorModal = ({modalProps = {},onStylesSelectorModalOk, initSelec
         return [...prevSelectedItemList, item];
       }
     });
+  };
+
+  const handleSelectSingle = (item = {}) => {
+    setSelectedItemList([item]);
   };
 
   const isCheckedAll = filter(sourceList, (item) => findIndex(selectedItemList, (sourceItem) => sourceItem._id === item._id) >= 0)?.length === sourceList?.length
@@ -147,7 +163,7 @@ const StylesSelectorModal = ({modalProps = {},onStylesSelectorModalOk, initSelec
                 optionType="button"
                 buttonStyle="solid"
             />
-            <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>全选</CheckableTag>
+            {mode === 'multiple' ? <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>全选</CheckableTag>: <div></div>}
         </div>
         <div className={styles['grid-seletor-wrapper']}>
             <Menu className={styles['category-menu']} 
@@ -194,7 +210,7 @@ const StylesSelectorModal = ({modalProps = {},onStylesSelectorModalOk, initSelec
                     <div className={styles['grid-seletor-style-item']} key={`s-${item._id}`}>
                             <StyleItem
                                 item={item}
-                                onClick={() => handleSelect(item)}
+                                onClick={() => { handleSelect(item)}}
                                 className={styles['drawer-seleted-item-val']}
                                 size={60}
                             >
@@ -211,6 +227,8 @@ const StylesSelectorModal = ({modalProps = {},onStylesSelectorModalOk, initSelec
   );
 };
 
-export default connect(({  loading, style }) => ({
-    fetching: loading.effects['color/getList'],
+export default connect(({  loading, style, goods }) => ({
+    fetching: loading.effects['style/getList'],
+    styleList : style.list,
+    goodsList : goods.list
 }))(StylesSelectorModal);
