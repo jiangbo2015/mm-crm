@@ -107,7 +107,7 @@ const Com = props => {
             type: 'style/deleteColor',
             payload: {
                 _id: record._id,
-                type: 1,
+                type: 2,
             },
         });
     };

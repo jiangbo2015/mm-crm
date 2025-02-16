@@ -32,8 +32,14 @@ export async function queryCurrent() {
     return request('/api/user/getCurrentUser');
 }
 
-export async function queryNotices() {
-    return request('/api/notices');
+export async function queryNotices({id}) {
+    return request(`/api/v2/users/${id}/messages`);
+}
+
+export async function readMessage(id) {
+    return request(`/api/v2//messages/${id}/read`, {
+        method: 'patch',
+    });
 }
 
 export async function download() {

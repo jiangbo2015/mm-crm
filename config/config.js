@@ -213,6 +213,11 @@ export default {
                                     component: './productManage/flower/index.jsx',
                                 },
                                 {
+                                    path: '/productManage/texture',
+                                    name: '纹理管理',
+                                    component: './productManage/texture/index.jsx',
+                                },
+                                {
                                     path: '/productManage/goods',
                                     name: '商品分类',
                                     component: './productManage/goods',
@@ -252,7 +257,7 @@ export default {
     define: {
         // 'process.env.APIURL': 'http://localhost:3001',
         // 'process.env.APIURL': 'http://8.209.64.159:3001',
-        // 'process.env.APIURL': 'http://192.168.124.25:3000',
+        // 'process.env.APIURL': 'http://192.168.71.117:3001',
         // 'process.env.APIURL': 'https://we-idesign.com',
         
         ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION:
@@ -296,8 +301,8 @@ export default {
         '/api/': {
             //192.168.8.107
             // target: 'https://crm.we-idesign.com/',
-            // target: 'http://8.209.64.159:3001',
-            target: 'http://localhost:3001',
+            target: 'http://192.168.71.117:3001',
+            // target: 'http://localhost:3001',
             changeOrigin: true, //   pathRewrite: { '^/server': '' },
         },
         '/uploads/': {

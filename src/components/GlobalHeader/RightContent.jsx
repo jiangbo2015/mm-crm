@@ -41,7 +41,9 @@ const GlobalHeaderRight = props => {
           <Icon type="question-circle-o" />
         </a>
       </Tooltip> */}
-      <NoticeIconView/>
+      {
+        props.user?.id && <NoticeIconView/>
+      }
       <Avatar />
       {/* <Dropdown overlay={<span>123</span>} trigger={['click']}>
         <a onClick={e => e.preventDefault()}>
@@ -55,7 +57,8 @@ const GlobalHeaderRight = props => {
   );
 };
 
-export default connect(({ settings }) => ({
+export default connect(({ settings, user }) => ({
   theme: settings.navTheme,
   layout: settings.layout,
+  user: user.currentUser
 }))(GlobalHeaderRight);
