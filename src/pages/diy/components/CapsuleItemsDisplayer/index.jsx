@@ -6,66 +6,73 @@ import { connect } from 'dva'
 import {
     FileImageOutlined,
     VideoCameraAddOutlined,
-    PlusOutlined
+    PlusOutlined,
+    ZoomInOutlined,
+    EditOutlined,
+    DeleteOutlined
 } from '@ant-design/icons';
 
 import { filterImageUrl, uploadProps } from '@/utils/utils';
+import { ColorItem } from '@/components/ColorItem'
 import StylesSelectorModal from '@/components/StylesSelectorModal'
+import {DesignStyleEditor} from './components/DesignStyleEditor'
+import useDiy from '../../hooks/useDiy'
 import styles from './index.less'
 
-const AddCard = ({ addCapsuleItem }) => {
-    const [uploading, setUploading] = useState(false)
-    const [visibleStylesSelectorModal, setVisibleStylesSelectorModal] = useState(false);
-    const handleAddCapsuleItemStyles = (selectedStyles) => {
-        console.log('selectedStyles:', selectedStyles)
-        addCapsuleItem({
-            type: 'style',
-            style: get(selectedStyles, 0)
-        })
-    }
-    const handleAddImg = info => {
-        if (info.file.status === 'uploading') {
-            setUploading(true);
-            return;
-        }
-        if (info.file.status === 'done') {
-            console.log('info.file.response.data.url:', get(info, 'file.response.data.url'))
-            addCapsuleItem({
-                type: 'img',
-                fileUrl: get(info, 'file.response.data.url')
-            })
-            setUploading(false);
-        }
-    };
-    const handleAddVideo = info => {
-        if (info.file.status === 'uploading') {
-            setUploading(true);
-            return;
-        }
-        if (info.file.status === 'done') {
-            console.log('info.file.response.data.url:', get(info, 'file.response.data.url'))
-            addCapsuleItem({
-                type: 'video',
-                fileUrl: get(info, 'file.response.data.url')
-            })
-            setUploading(false);
-        }
-    };
-    const beforeUpload = file => {
-        const limit = file.size / 1024 < 200;
-        if (!limit) {
-            message.error('Image must smaller than 200K!');
-        }
-        return limit;
-    };
+export const ItemBottomTools = ({item = {}, index}) => {
+    const { type } = item
+    const { 
+        beforeUpload, 
+        handleUpdateImg,
+        handleUpdateVideo,
+        handleUpdateCapsuleItem
+    } = useDiy()
+    return (
+        <div
+            className={classnames(styles['item-tools-box'])}
+        >
+            {type === 'style' ? 
+                <EditOutlined onClick={() => {
+                    handleUpdateCapsuleItem(item, index)
+                }} />  : 
+                <Upload
+                    {...uploadProps}
+                    beforeUpload={beforeUpload}
+                    onChange={(info) => {
+                        if(type === 'edit') {
+                            handleUpdateImg(info, index)
+                        } else {
+                            handleUpdateVideo(info, index)
+                        }
+                    }}
+                >
+                    <EditOutlined />
+                </Upload>}
+            <ZoomInOutlined/>
+            <DeleteOutlined/>
+        </div>
+    )
+}
+
+const AddCard = () => {
+    const { 
+        uploading,
+        visibleStylesSelectorModal,
+        hideVisibleStylesSelectorModal,
+        openVisibleStylesSelectorModal,
+        beforeUpload, 
+        handleAddCapsuleItemStyles,
+        handleAddImg,
+        handleAddVideo 
+    } = useDiy()
+
     return (
         <>
             <div className={styles['capsule-item-wrapper']}>
                 <Spin spinning={uploading}>
-                <div className={styles['aspect-ratio-box']}>
-                    
+                <div className={styles['aspect-ratio-box']}> 
                         <div className={classnames(styles['capsule-item'], styles['add-card'],)}>
-                            <PlusOutlined onClick={() => {setVisibleStylesSelectorModal(true)}}/>
+                            <PlusOutlined onClick={openVisibleStylesSelectorModal}/>
                             <Upload
                                 {...uploadProps}
                                 beforeUpload={beforeUpload}
@@ -89,7 +96,7 @@ const AddCard = ({ addCapsuleItem }) => {
                 mode='single'
                 modalProps={{
                     visible: visibleStylesSelectorModal,
-                    onCancel: () => setVisibleStylesSelectorModal(false),
+                    onCancel: hideVisibleStylesSelectorModal,
                     // confirmLoading: updateChannelLoading
                 }}
                 onStylesSelectorModalOk={handleAddCapsuleItemStyles}
@@ -100,51 +107,84 @@ const AddCard = ({ addCapsuleItem }) => {
     )
 }
 
-const CapsuleItemStyles = () => {
+
+const CapsuleItemStyles = ({ item = {}, index }) => {
+    
+    const {style, finishedStyleColorsList } = item
+    const finishedStyleColorsLength = get(finishedStyleColorsList, 'length', 0) 
+    const [showIndex, setShowIndex] = useState(0)
+    const [showFrontOrBack, setShowFrontOrBack] = useState('front')
+    const showFinishedStyle = get(finishedStyleColorsList, showIndex)
     return (
         <div className={styles['capsule-item-wrapper']}>
             <div className={styles['aspect-ratio-box']}>
-                <div className={styles['capsule-item']}>
-
+                <div className={classnames(styles['capsule-item'], styles['style-card'])}>
+                    {finishedStyleColorsLength === 0 && <img className={styles['style-img']} src={filterImageUrl(style?.imgUrl)}/>}
+                    {/* {map(finishedStyleColorsList, f => )} */}
+                    {showFinishedStyle && 
+                        <img 
+                            className={styles['style-img']} 
+                            src={filterImageUrl(showFrontOrBack === 'front' ? showFinishedStyle?.imgUrlFront : showFinishedStyle?.imgUrlBack)}
+                            onMouseEnter={() => setShowFrontOrBack('back')}
+                            onMouseLeave={() => setShowFrontOrBack('front')}
+                        />
+                    }
                 </div>
+            </div>
+            <ItemBottomTools item={item} index={index}/>
+            <div className="thumbnail-list">
+                {map(finishedStyleColorsList, ({colors}, index) => 
+                (
+                    <div
+                        key={index}
+                        className="thumbnail-item"
+                        onMouseEnter={() => setShowIndex(index)} // 鼠标悬停时更新大图
+                    >
+                        <ColorItem item={get(colors, 0, {})} size={10}/>
+                    </div>
+                ))}
             </div>
         </div>
     )
 }
 
-const CapsuleItemFile = ({ type, fileUrl}) => {
+const CapsuleItemFile = ({ item,index }) => {
+    const { type, fileUrl } = item
     return (
         <div className={styles['capsule-item-wrapper']}>
             <div className={styles['aspect-ratio-box']}>
                 <div className={styles['capsule-item']}>
-                    {type === 'img' && <img src={filterImageUrl(fileUrl)}/>}
-                    {type === 'video' && <video src={filterImageUrl(fileUrl)}/>}
+                    {type === 'img' && <img className={styles['upload-picture']} src={filterImageUrl(fileUrl)}/>}
+                    {type === 'video' && <video className={styles['upload-picture']} src={filterImageUrl(fileUrl)}/>}
                 </div>
             </div>
+            <ItemBottomTools item={item} index={index}/>
         </div>
     )
 }
 
-const CapsuleItem = ({type, ...props}) => {
-    return type === 'style' ? <CapsuleItemStyles {...props}/> : <CapsuleItemFile type={type} {...props} />
+const CapsuleItem = (props) => {
+    const {item, index} = props
+    const type = get(props, 'item.type')
+
+    return type === 'style' ? <CapsuleItemStyles item={item} index={index} /> : <CapsuleItemFile item={item} index={index} />
 }
 
 
-const CapsuleItemsDisplayer = ({ capsuleItems, dispatch }) => {
-    const addCapsuleItem = item => {
-        dispatch({
-            type: 'diy/addCapsuleItem',
-            payload: item,
-        });
-    };
-    return (<div className={styles['capsule-items-displayer']}>
-        {map(capsuleItems, (item, i) => <CapsuleItem key={`capsule-item${i}`} {...item}/>)}
-        <AddCard addCapsuleItem={addCapsuleItem}/>
-    </div>)
+const CapsuleItemsDisplayer = ({ capsuleItems, currentEditCapsuleItemIndex }) => {
+    const currentEditCapsuleItem = get(capsuleItems, currentEditCapsuleItemIndex)
+    return (
+        <div className={styles['capsule-items-displayer']}>
+            {map(capsuleItems, (item, i) => <CapsuleItem key={`capsule-item${i}`} index={i} item={item} />)}
+            <AddCard />
+            {currentEditCapsuleItem && <DesignStyleEditor />}
+        </div>
+    );
 }
 
 export default connect(({ diy }) => ({
     capsuleItems: diy.capsuleItems,
+    currentEditCapsuleItemIndex: diy.currentEditCapsuleItemIndex
 }))(CapsuleItemsDisplayer);
 
 // export default CapsuleItemsDisplayer

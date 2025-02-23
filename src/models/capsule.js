@@ -23,7 +23,7 @@ const Model = {
     effects: {
         *getList({ payload }, { call, put }) {
             const res = yield call(queryList, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'setCapsuleList',
@@ -44,7 +44,7 @@ const Model = {
 
         *update({ payload }, { put, call }) {
             const res = yield call(update, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getList',
@@ -54,7 +54,7 @@ const Model = {
 
         *delete({ payload }, { put, call }) {
             const res = yield call(del, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getList',
@@ -65,7 +65,7 @@ const Model = {
             const currentCapsule = yield select(state => state.capsule.currentCapsule);
             const res = yield call(getCapsuleStyleList, { capsule: currentCapsule._id, limit: 1000 });
             // const res = yield call(getCapsuleStyleList);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'setCurrentCapsuleStyleList',
@@ -97,7 +97,7 @@ const Model = {
             // const currentCapsule = yield select(state => state.capsule.currentCapsule);
             // const res = yield call(updateCapsuleStyle, { capsule: currentCapsule._id, ...payload });
             const res = yield call(updateCapsuleStyle, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getCapsuleStyleList',
@@ -112,7 +112,7 @@ const Model = {
 
         *deleteCapsuleStyle({ payload }, { put, call }) {
             const res = yield call(delCapsuleStyle, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getCapsuleStyleList',

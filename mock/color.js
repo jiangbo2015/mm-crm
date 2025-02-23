@@ -7,7 +7,7 @@ export default {
         {
             type: 'style',
             style: {
-                "weight": 86,
+                "weight": 58,
                 "goodsId": [
                     "5f72f6b7f27e22384cd2c413"
                 ],
@@ -17,26 +17,175 @@ export default {
                 "tags": [
                     "CENTER"
                 ],
-                "isDel": 1,
-                "_id": "672c36bd17aeaf249de2de8a",
-                "styleNo": "DO-240909",
+                "isDel": 0,
+                "_id": "672c34a517aeaf249de2de89",
+                "styleNo": "DO-240908",
                 "styleName": "女式上衣",
                 "price": 0,
                 "size": "XS/S/M/L/XL/2XL/3XL/4XL/5XL",
-                "styleSize": 29,
-                "styleBackSize": 28.8,
-                "vposition": "flex-start",
+                "styleSize": 29.5,
+                "styleBackSize": 23.6,
+                "vposition": "center",
                 "currency": 1,
-                "imgUrl": "mrmiss/1730950816825_Vd_aXGn40.png",
-                "svgUrl": "uploads/2024-11-07/1730950832939.svg",
-                "svgUrlBack": "uploads/2024-11-07/1730950835042.svg",
-                "shadowUrl": "mrmiss/1730950837605_Y5wvF8CJZ.png",
-                "shadowUrlBack": "mrmiss/1730950839614_p2tMofoO7.png",
-                "attrs": [],
+                "imgUrl": "mrmiss/1730950278110_U5ywlLO-YS.png",
+                "svgUrl": "uploads/2024-11-07/1730950279228.svg",
+                "svgUrlBack": "uploads/2024-11-07/1730950281372.svg",
+                "shadowUrl": "mrmiss/1730950284104_9rGTe3FpmY.png",
+                "shadowUrlBack": "mrmiss/1730950286144_3kehKDxEq.png",
+                "attrs": [
+                    {
+                        "_id": "6780b7c117aeaf249de2e287",
+                        "colorId": "673d9e2617aeaf249de2de91",
+                        "scale": 1,
+                        "x": 0,
+                        "y": 0
+                    }
+                ],
                 "channels": [],
-                "createdAt": "2024-11-07T03:40:45.753Z",
-                "updatedAt": "2024-11-07T03:43:37.961Z"
-            }
+                "createdAt": "2024-11-07T03:31:49.583Z",
+                "updatedAt": "2025-02-15T13:32:05.167Z"
+            },
+            finishedStyleColorsList: [
+                {
+                    "colors": [
+                        {
+                            "isDel": 0,
+                            "goodsId": [
+                                "5f72f6b7f27e22384cd2c413"
+                            ],
+                            "categoryId": [],
+                            "colorSystem": 0,
+                            "relatedColors": [],
+                            "_id": "678477e317aeaf249de2e28a",
+                            "type": 1,
+                            "value": "mrmiss/1736734683328_bR9t3KkD7.png",
+                            "code": "LI-250113-3",
+                            "width": 297,
+                            "height": 297,
+                            "sizeOrigin": 15,
+                            "size": 15,
+                            "createdAt": "2025-01-13T02:18:11.770Z",
+                            "updatedAt": "2025-01-13T02:18:11.770Z"
+                        },
+                        {
+                            "isDel": 0,
+                            "goodsId": [
+                                "5f72f6b7f27e22384cd2c413"
+                            ],
+                            "categoryId": [],
+                            "colorSystem": 0,
+                            "relatedColors": [],
+                            "_id": "678477e317aeaf249de2e28a",
+                            "type": 1,
+                            "value": "mrmiss/1736734683328_bR9t3KkD7.png",
+                            "code": "LI-250113-3",
+                            "width": 297,
+                            "height": 297,
+                            "sizeOrigin": 15,
+                            "size": 15,
+                            "createdAt": "2025-01-13T02:18:11.770Z",
+                            "updatedAt": "2025-01-13T02:18:11.770Z"
+                        },
+                        {
+                            "isDel": 0,
+                            "goodsId": [
+                                "5f72f6b7f27e22384cd2c413"
+                            ],
+                            "categoryId": [],
+                            "colorSystem": 0,
+                            "relatedColors": [],
+                            "_id": "678477e317aeaf249de2e28a",
+                            "type": 1,
+                            "value": "mrmiss/1736734683328_bR9t3KkD7.png",
+                            "code": "LI-250113-3",
+                            "width": 297,
+                            "height": 297,
+                            "sizeOrigin": 15,
+                            "size": 15,
+                            "createdAt": "2025-01-13T02:18:11.770Z",
+                            "updatedAt": "2025-01-13T02:18:11.770Z"
+                        }
+                    ],
+                    "texture": {
+                        "isDel": 0,
+                        "goodsId": [],
+                        "categoryId": [],
+                        "colorSystem": 0,
+                        "relatedColors": [],
+                        "_id": "67b89b3cc87c5aa0acf27510",
+                        "type": 2,
+                        "value": "mrmiss/1740151574748_W_2OBf13T.png",
+                        "code": "特种布2",
+                        "width": 300,
+                        "height": 269,
+                        "sizeOrigin": 27,
+                        "size": 27,
+                        "flowerCode": "特种布2",
+                        "createdAt": "2025-02-21T15:26:52.696Z",
+                        "updatedAt": "2025-02-21T15:26:52.696Z"
+                    },
+                    "imgUrlFront": "mrmiss/1740302222325_oHrCZ074p",
+                    "imgUrlBack": "mrmiss/1740302222429_N3iDYW4f3"
+                },
+                {
+                    "colors": [
+                        {
+                            "isDel": 0,
+                            "goodsId": [
+                                "5f72f6b7f27e22384cd2c413"
+                            ],
+                            "categoryId": [],
+                            "colorSystem": 0,
+                            "relatedColors": [],
+                            "_id": "663c9aa1c3467f528ed5b970",
+                            "type": 0,
+                            "value": "#83af67",
+                            "code": "MIX24COLOR04",
+                            "namecn": "4",
+                            "nameen": "4",
+                            "createdAt": "2024-05-09T09:42:57.783Z",
+                            "updatedAt": "2024-05-09T09:42:57.783Z"
+                        },
+                        {
+                            "isDel": 0,
+                            "goodsId": [
+                                "5f72f6b7f27e22384cd2c413"
+                            ],
+                            "categoryId": [],
+                            "colorSystem": 0,
+                            "relatedColors": [],
+                            "_id": "663c9aa1c3467f528ed5b970",
+                            "type": 0,
+                            "value": "#83af67",
+                            "code": "MIX24COLOR04",
+                            "namecn": "4",
+                            "nameen": "4",
+                            "createdAt": "2024-05-09T09:42:57.783Z",
+                            "updatedAt": "2024-05-09T09:42:57.783Z"
+                        },
+                        {
+                            "isDel": 0,
+                            "goodsId": [
+                                "5f72f6b7f27e22384cd2c413"
+                            ],
+                            "categoryId": [],
+                            "colorSystem": 0,
+                            "relatedColors": [],
+                            "_id": "663c9aa1c3467f528ed5b970",
+                            "type": 0,
+                            "value": "#83af67",
+                            "code": "MIX24COLOR04",
+                            "namecn": "4",
+                            "nameen": "4",
+                            "createdAt": "2024-05-09T09:42:57.783Z",
+                            "updatedAt": "2024-05-09T09:42:57.783Z"
+                        }
+                    ],
+                    "texture": null,
+                    "imgUrlFront": "mrmiss/1740304678531_jNImpJqa0",
+                    "imgUrlBack": "mrmiss/1740304678945_zu2wykJViI"
+                }
+            ]
         },
         {
             type: 'img',
@@ -322,6 +471,43 @@ export default {
             "size": 15,
             "createdAt": "2025-01-16T03:12:13.053Z",
             "updatedAt": "2025-01-16T03:12:13.053Z"
+        }
+    ],
+    textures: [
+        {
+            "isDel": 0,
+            "goodsId": [],
+            "categoryId": [],
+            "colorSystem": 0,
+            "relatedColors": [],
+            "_id": "67b89b3cc87c5aa0acf27510",
+            "type": 2,
+            "value": "mrmiss/1740151574748_W_2OBf13T.png",
+            "code": "特种布2",
+            "width": 300,
+            "height": 269,
+            "sizeOrigin": 27,
+            "size": 27,
+            "flowerCode": "特种布2",
+            "createdAt": "2025-02-21T15:26:52.696Z",
+            "updatedAt": "2025-02-21T15:26:52.696Z"
+        },
+        {
+            "isDel": 0,
+            "goodsId": [],
+            "categoryId": [],
+            "colorSystem": 0,
+            "relatedColors": [],
+            "_id": "67b1fe2dfcf19766c430abfc",
+            "type": 2,
+            "value": "mrmiss/1739718075333_zthJIlsvs.png",
+            "code": "特种布1",
+            "width": 436,
+            "height": 390,
+            "sizeOrigin": 24,
+            "size": 24,
+            "createdAt": "2025-02-16T15:03:09.870Z",
+            "updatedAt": "2025-02-21T15:27:09.606Z"
         }
     ]
 }

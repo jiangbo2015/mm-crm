@@ -12,13 +12,18 @@ const Model = {
         capsuleItems: colorMockData?.capsuleItems,
         plainColors: colorMockData?.plainColors, //可用素色列表
         flowerColors: colorMockData?.flowerColors, //可用花布列表
+        textures: colorMockData?.textures, //可用面料
         customPlainColors: [], // 自主上传素色列表
         customFlowerColors: [], // 自主上传花布列表
+        CapsuleItemStyleCurrentFinishedIndexMap: {},
+        currentEditCapsuleItemIndex: -1,
+        currentEditCapsuleItemFinishedIndex: -1,
+        currentEditCapsuleStyleRegion: -1
     },
     effects: { // getCapsuleById 
         *getCapsuleById({ payload }, { call, put }) {
             const res = yield call(getCapsuleById, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'setCapsule',
@@ -28,15 +33,15 @@ const Model = {
         },
         *createCapsule({ payload }, { put, call }) {
             const res = yield call(add, payload);
-            console.log(res);
+             
         },
         *updateCapsule({ payload }, { put, call }) {
             const res = yield call(update, payload);
-            console.log(res);
+             
         },
         *createCapsuleItem({ payload }, { put, call }) {
             const res = yield call(add, payload);
-            console.log(res);
+             
         },
     },
     reducers: { 
@@ -70,6 +75,25 @@ const Model = {
                 capsuleItems: [...state.capsuleItems, payload],
             };
         },
+        setCurrentEditCapsuleItem(state, { payload }) {
+            return {
+                ...state,
+                currentEditCapsuleItem: payload,
+            };
+        },
+        setCurrentEditCapsuleItemIndex(state, { payload }) {
+            return {
+                ...state,
+                currentEditCapsuleItemIndex: payload,
+            };
+        },
+        setCurrentEditCapsuleStyleRegion(state, { payload }) {
+            return {
+                ...state,
+                currentEditCapsuleStyleRegion: payload,
+            };
+            
+        }
     },
 };
 export default Model;

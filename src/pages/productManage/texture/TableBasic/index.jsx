@@ -17,7 +17,7 @@ const Com = props => {
                 <div
                     className={styles.color}
                     style={{
-                        background: obj.type === 1 ? `url(${filterImageUrl(val)}?tr=w-50)` : val,
+                        background: `url(${filterImageUrl(val)}?tr=w-50)`,
                     }}
                 />
             ),

@@ -11,7 +11,7 @@ const Model = {
     effects: {
         *getList({ payload }, { call, put }) {
             const res = yield call(queryList, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'setCapsuleList',

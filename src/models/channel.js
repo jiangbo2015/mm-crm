@@ -15,7 +15,7 @@ const Model = {
     effects: {
         *getList({ payload }, { call, put }) {
             const res = yield call(queryList, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'setChannelList',
@@ -26,7 +26,7 @@ const Model = {
 
         *findById({ payload }, { call, put }) {
             const res = yield call(findById, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'setCurrentChannel',
@@ -37,7 +37,7 @@ const Model = {
 
         *add({ payload }, { put, call }) {
             const res = yield call(addChannel, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getList',
@@ -47,7 +47,7 @@ const Model = {
 
         *update({ payload }, { put, call }) {
             const res = yield call(udpateChannel, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'findById',
@@ -57,7 +57,7 @@ const Model = {
         },
         *updateCostomers({ payload }, { put, call }) {
             const res = yield call(updateCostomers, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'findById',
@@ -67,7 +67,7 @@ const Model = {
         },
         *delete({ payload }, { put, call }) {
             const res = yield call(deleteChannel, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getList',

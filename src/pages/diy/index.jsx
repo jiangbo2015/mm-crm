@@ -4,6 +4,9 @@ import { history } from 'umi';
 import { connect } from 'dva';
 import { get } from 'lodash';
 import Icon, { LeftOutlined } from '@ant-design/icons';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import AvatarDropdown from '@/components/GlobalHeader/AvatarDropdown';
 import PlainColorsAside from './components/PlainColorsAside'
 import FlowerColorsAside from './components/FlowerColorsAside'
@@ -12,10 +15,6 @@ import styles from './index.less'
 
 const Com = props => {
     const { _id, name, state, dispatch } = props;
-
-    useEffect(() => {
-        // 
-    }, []);
 
     const handleChangeName = (e) => {
         dispatch({

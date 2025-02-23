@@ -309,8 +309,8 @@ export default {
             //192.168.8.107
             // target: 'http://192.168.124.25:3000',
             // target: 'http://8.209.64.159:3001',
-            target: 'http://localhost:3001',
-            // target: 'https://crm.we-idesign.com/',
+            // target: 'http://localhost:3001',
+            target: 'https://crm.we-idesign.com',
             changeOrigin: true,
         },
         '/uploadskit/': {
