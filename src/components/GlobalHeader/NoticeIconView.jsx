@@ -132,6 +132,9 @@ class GlobalHeaderRight extends Component {
                     </div>
                 ))
             }
+            {
+                !notices?.length && 'no message'
+            }
         </div>
       </NoticeIcon>
     );

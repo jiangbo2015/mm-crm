@@ -34,7 +34,11 @@ const Com = props => {
             dataIndex: 'nameen',
             key: 'nameen',
         },
-
+        {
+            title: '创建日期',
+            dataIndex: 'createAt',
+            key: 'createAt',
+        },
         {
             title: '操作',
             dataIndex: 'action',
@@ -55,6 +59,7 @@ const Com = props => {
                     >
                         <a>删除</a>
                     </Popconfirm>
+                    <Divider type="vertical" />
                     <a onClick={() => props.dispatch({type: 'record/getList', payload: {modelId: record._id}})}>修改记录</a>
                 </div>
             ),
