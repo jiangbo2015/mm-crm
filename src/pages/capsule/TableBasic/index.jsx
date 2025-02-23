@@ -6,40 +6,41 @@ import Form from '../Form';
 import CapsuleProduct from './capsuleProduct';
 import { filterImageUrl } from '@/utils/utils';
 
+const PENDING_MAP = {
+    draft: '默认状态',
+    pending: '申请发布中',
+    published: '已完成'
+}
+
 const Com = props => {
     const columns = [
+        // {
+        //     title: '封面图',
+        //     dataIndex: 'covermap',
+        //     key: 'covermap',
+        //     render: url =>
+        //         url ? (
+        //             <img
+        //                 style={{
+        //                     maxWidth: '100px',
+        //                     maxHeight: '100px',
+        //                 }}
+        //                 src={filterImageUrl(url)}
+        //             />
+        //         ) : (
+        //             '未设置'
+        //         ),
+        // },
         {
-            title: '封面图',
-            dataIndex: 'covermap',
-            key: 'covermap',
-            render: url =>
-                url ? (
-                    <img
-                        style={{
-                            maxWidth: '100px',
-                            maxHeight: '100px',
-                        }}
-                        src={filterImageUrl(url)}
-                    />
-                ) : (
-                    '未设置'
-                ),
-        },
-        {
-            title: '中文名',
-            dataIndex: 'namecn',
-            key: 'namecn',
-        },
-        {
-            title: '英文名',
-            dataIndex: 'nameen',
-            key: 'nameen',
+            title: '名称',
+            dataIndex: 'name',
+            key: 'name',
         },
         {
             title: '状态',
             dataIndex: 'status',
             key: 'status',
-            render: val => (val ? '已发布' : '未发布'),
+            render: d => PENDING_MAP[d]
         },
         {
             title: '创建日期',
@@ -53,19 +54,20 @@ const Com = props => {
             key: 'action',
             render: (text, record) => (
                 <div>
-                    {/* <a onClick={e => handleEdit(record)}>编辑</a>*/}
-                    <a onClick={() => handleManageStyle(record)}>款式管理</a>
+                    <a onClick={() => {}}>查看</a>
                     <Divider type="vertical" />
-                    <a onClick={() => handleEdit(record)}>编辑</a>
-                    <Divider type="vertical" />
-                    <Popconfirm
-                        title="确认要删除吗"
-                        onConfirm={() => handleDelete(record)}
-                        okText="是"
-                        cancelText="否"
-                    >
-                        <a>删除</a>
-                    </Popconfirm>
+                    {
+                        record.status === 'pending' && (
+                            <Popconfirm
+                                title="确认要通过吗"
+                                onConfirm={() => handleApprove(record)}
+                                okText="是"
+                                cancelText="否"
+                            >
+                                <a>通过</a>
+                            </Popconfirm>
+                        )
+                    }
                 </div>
             ),
         },
@@ -96,6 +98,15 @@ const Com = props => {
             payload: {
                 _id: record._id,
                 type: 0,
+            },
+        });
+    };
+    const handleApprove = record => {
+        props.dispatch({
+            type: 'capsule/update',
+            payload: {
+                _id: record._id,
+                status: 'published',
             },
         });
     };
