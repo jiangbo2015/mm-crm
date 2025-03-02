@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Modal } from 'antd'
+import { Modal, Upload, Avatar } from 'antd'
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -9,6 +9,7 @@ import styles from './index.less';
 
 const ImageCropper = ({ onUpload, modalProps }) => {
     const [src, setSrc] = useState(null);
+    const [uploadedImgUrl, setUploadedImgUrl] = useState('');
     const [cropperOpen , setCropperOpen] = useState(false);
     const [crop, setCrop] = useState({  });
     const [croppedImage, setCroppedImage] = useState(null);
@@ -88,7 +89,7 @@ const ImageCropper = ({ onUpload, modalProps }) => {
                 data: postData,
                 method: 'post',
             });
-            onUpload(response.data.url);
+            uploadedImgUrl(response.data.url);
         } catch (err) {
             setError('上传失败: ' + (err.message || '服务器错误'));
         } finally {
@@ -122,7 +123,9 @@ const ImageCropper = ({ onUpload, modalProps }) => {
                 ref={fileInputRef}
                 key={cropperOpen ? 'reset' : 'initial'}
             />
-
+            <Upload>
+                <Avatar src={uploadedImgUrl}/>
+            </Upload>
             {/* {src && (
                 <div className={styles.cropWrapper}>
                 <ReactCrop
