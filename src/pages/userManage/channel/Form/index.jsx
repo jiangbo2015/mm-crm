@@ -2,14 +2,18 @@ import React from 'react';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Input, Select } from 'antd';
-const { Option } = Select;
 
-class RegistrationForm extends React.Component {
-    state = {};
 
+class ChannelForm extends React.Component {
+    componentDidMount() {
+        // 在组件挂载后设置初始值
+        if (this.props.form && this.props.code) {
+            this.props.form.setFieldsValue({ code: this.props.code });
+        }
+    }
     render() {
         const { getFieldDecorator } = this.props.form;
-        console.log(this.props);
+        
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -40,7 +44,7 @@ class RegistrationForm extends React.Component {
                                 whitespace: true,
                             },
                         ],
-                    })(<Input />)}
+                    })(<Input disable/>)}
                 </Form.Item>
                 <Form.Item label={<span>通道名称</span>}>
                     {getFieldDecorator('name', {
@@ -53,21 +57,14 @@ class RegistrationForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label="货币">
-                    {getFieldDecorator('currency', {
+                <Form.Item label="备注">
+                    {getFieldDecorator('remark', {
                         rules: [
                             {
-                                required: true,
-                                message: '请选择货币',
+                                required: false
                             },
                         ],
-                    })(
-                        <Select placeholder="请选择">
-                            <Option value={0}>人民币</Option>
-                            <Option value={1}>美元</Option>
-                            <Option value={2}>欧元</Option>
-                        </Select>,
-                    )}
+                    })(<Input />)}
                 </Form.Item>
             </Form>
         );
@@ -76,4 +73,4 @@ class RegistrationForm extends React.Component {
 
 export default Form.create({
     name: 'inputDesiner',
-})(RegistrationForm);
+})(ChannelForm);

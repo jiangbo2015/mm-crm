@@ -13,15 +13,12 @@ const Com = props => {
             type: 'channel/getList',
             payload: { limit: 100, page: 1 },
         });
-        props.dispatch({
-            type: 'goods/getList',
-        });
-        props.dispatch({
-            type: 'global/fetchBranchList',
-        });
-        props.dispatch({
-            type: 'global/fetchCapsuleList',
-        });
+        // props.dispatch({
+        //     type: 'goods/getList',
+        // });
+        // props.dispatch({
+        //     type: 'global/fetchCapsuleList',
+        // });
     }, []);
 
     const handleSubmit = () => {

@@ -1,7 +1,10 @@
-import { Tooltip } from 'antd';
+import { Tooltip, Dropdown, Badge } from 'antd';
+import { BellOutlined } from '@ant-design/icons'
 import React from 'react';
 import { connect } from 'dva';
 import Avatar from './AvatarDropdown';
+import NoticeIconView from './NoticeIconView';
+import NoticeIcon from '../NoticeIcon';
 // import HeaderSearch from '../HeaderSearch';
 // import SelectLang from '../SelectLang';
 import styles from './index.less';
@@ -38,13 +41,24 @@ const GlobalHeaderRight = props => {
           <Icon type="question-circle-o" />
         </a>
       </Tooltip> */}
+      {
+        props.user?.id && <NoticeIconView/>
+      }
       <Avatar />
+      {/* <Dropdown overlay={<span>123</span>} trigger={['click']}>
+        <a onClick={e => e.preventDefault()}>
+            <Badge dot>
+                <BellOutlined style={{fontSize: '20px'}} />
+            </Badge>
+        </a>
+      </Dropdown> */}
       {/* <SelectLang className={styles.action} /> */}
     </div>
   );
 };
 
-export default connect(({ settings }) => ({
+export default connect(({ settings, user }) => ({
   theme: settings.navTheme,
   layout: settings.layout,
+  user: user.currentUser
 }))(GlobalHeaderRight);

@@ -19,7 +19,7 @@ const Model = {
     effects: {
         *getList({ payload }, { call, put }) {
             const res = yield call(queryList, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'setGoodsList',
@@ -62,7 +62,7 @@ const Model = {
         },
         *add({ payload }, { call, put }) {
             const res = yield call(addGoods, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getList',
@@ -72,7 +72,7 @@ const Model = {
 
         *delete({ payload }, { call, put }) {
             const res = yield call(del, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getList',
@@ -82,7 +82,7 @@ const Model = {
 
         *update({ payload }, { call, put }) {
             const res = yield call(updateGoods, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getList',

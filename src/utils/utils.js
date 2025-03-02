@@ -74,7 +74,7 @@ export const filterImageUrl = url => {
     // 本地数据
     if (arrs.length >= 3) {
         if (url.indexOf('.svg') >= 0) {
-            console.log('url', `${svgUrl}${url}`);
+            // console.log('url', `${svgUrl}${url}`);
             return `${svgUrl}${url}`;
         } else {
             return `${imgUrl}mrmiss//${arrs[2]}`;
@@ -83,4 +83,11 @@ export const filterImageUrl = url => {
         // console.log(`${imgUrl}${url}`);
         return `${imgUrl}${url}`;
     }
+};
+
+export const uploadProps = {
+    name: 'file',
+    // listType: 'picture-card',
+    showUploadList: false,
+    action: `/api/common/uploadkit`,
 };

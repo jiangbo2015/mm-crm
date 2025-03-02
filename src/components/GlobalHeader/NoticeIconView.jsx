@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Tag, message } from 'antd';
 import { connect } from 'dva';
 import groupBy from 'lodash/groupBy';
+import { filterImageUrl } from '@/utils/utils';
 import moment from 'moment';
 import NoticeIcon from '../NoticeIcon';
 import styles from './index.less';
@@ -18,14 +19,15 @@ class GlobalHeaderRight extends Component {
   }
 
   changeReadState = clickedItem => {
-    const { id } = clickedItem;
+    const { _id } = clickedItem;
     const { dispatch } = this.props;
 
     if (dispatch) {
       dispatch({
         type: 'global/changeNoticeReadState',
-        payload: id,
+        payload: _id,
       });
+      window.open(`/#/capsules/${_id}`)
     }
   };
 
@@ -100,48 +102,40 @@ class GlobalHeaderRight extends Component {
   };
 
   render() {
-    const { currentUser, fetchingNotices, onNoticeVisibleChange } = this.props;
+    const { currentUser, fetchingNotices, onNoticeVisibleChange, notices } = this.props;
     const noticeData = this.getNoticeData();
     const unreadMsg = this.getUnreadData(noticeData);
     return (
       <NoticeIcon
         className={styles.action}
-        count={currentUser && currentUser.unreadCount}
-        onItemClick={item => {
-          this.changeReadState(item);
-        }}
-        loading={fetchingNotices}
-        clearText="清空"
-        viewMoreText="查看更多"
-        onClear={this.handleNoticeClear}
-        onPopupVisibleChange={onNoticeVisibleChange}
-        onViewMore={() => message.info('Click on view more')}
-        clearClose
+        count={notices?.length || 0}
+        // onItemClick={item => {
+        //   this.changeReadState(item);
+        // }}
+        // loading={fetchingNotices}
+        // clearText="清空"
+        // viewMoreText="查看更多"
+        // onClear={() => console.log('clear')}
+        // onPopupVisibleChange={(v) => v && }
+        // onViewMore={() => message.info('Click on view more')}
+        // clearClose
       >
-        <NoticeIcon.Tab
-          tabKey="notification"
-          count={unreadMsg.notification}
-          list={noticeData.notification}
-          title="通知"
-          emptyText="你已查看所有通知"
-          showViewMore
-        />
-        <NoticeIcon.Tab
-          tabKey="message"
-          count={unreadMsg.message}
-          list={noticeData.message}
-          title="消息"
-          emptyText="您已读完所有消息"
-          showViewMore
-        />
-        <NoticeIcon.Tab
-          tabKey="event"
-          title="待办"
-          emptyText="你已完成所有待办"
-          count={unreadMsg.event}
-          list={noticeData.event}
-          showViewMore
-        />
+        <div style={{maxHeight: '500px', overflow: 'auto', padding: '10px', borderRadius: '6px'}}>
+            {
+                notices.map(item => (
+                    <div 
+                        style={{display: 'flex', gap: '10px', marginBottom: '10px', cursor: "pointer"}}
+                        onClick={() => this.changeReadState(item)}
+                    >
+                        <img src={filterImageUrl(item.coverImage)} alt="" width={100} style={{flex: 'none'}} />
+                        <div>{item.content}</div>
+                    </div>
+                ))
+            }
+            {
+                !notices?.length && 'no message'
+            }
+        </div>
       </NoticeIcon>
     );
   }

@@ -24,7 +24,7 @@ const Model = {
                 queryListFun = queryShopList;
             }
             const res = yield call(queryListFun, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'setOrderList',
@@ -41,14 +41,14 @@ const Model = {
                 queryListFun = shopOrderDownload;
             }
             const res = yield call(orderDownload, payload);
-            console.log(res);
+             
             if (res && res.data && res.data.url) {
                 window.open(`https://crm.we-idesign.com/${res.data.url}`);
             }
         },
         *del({ payload }, { call, put }) {
             const res = yield call(del, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getList',

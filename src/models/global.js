@@ -1,4 +1,4 @@
-import { queryNotices } from '@/services/user';
+import { queryNotices, readMessage } from '@/services/user';
 import { notification } from 'antd';
 import { getSizeList, getStyleSizeList, addStyleSize, add, del, update } from '@/services/size';
 import {
@@ -113,7 +113,8 @@ const GlobalModel = {
         },
 
         *fetchNotices(_, { call, put, select }) {
-            const data = yield call(queryNotices);
+            const user = yield select(state => state.user.currentUser)
+            const { data } = yield call(queryNotices, {id: user.id});
             yield put({
                 type: 'saveNotices',
                 payload: data,
@@ -121,6 +122,7 @@ const GlobalModel = {
             const unreadCount = yield select(
                 state => state.global.notices.filter(item => !item.read).length,
             );
+            console.log("unreadCount", unreadCount)
             yield put({
                 type: 'user/changeNotifyCount',
                 payload: {
@@ -148,29 +150,30 @@ const GlobalModel = {
             });
         },
 
-        *changeNoticeReadState({ payload }, { put, select }) {
+        *changeNoticeReadState({ payload }, {call, put, select }) {
             const notices = yield select(state =>
-                state.global.notices.map(item => {
-                    const notice = { ...item };
+                state.global.notices.filter(item => {
+                    // const notice = { ...item };
 
-                    if (notice.id === payload) {
-                        notice.read = true;
-                    }
+                    // if (notice._id === payload) {
+                    //     notice.read = true;
+                    // }
 
-                    return notice;
+                    return item._id !== payload;
                 }),
             );
             yield put({
                 type: 'saveNotices',
                 payload: notices,
             });
-            yield put({
-                type: 'user/changeNotifyCount',
-                payload: {
-                    totalCount: notices.length,
-                    unreadCount: notices.filter(item => !item.read).length,
-                },
-            });
+            const res = yield call(readMessage, payload);
+            // yield put({
+            //     type: 'user/changeNotifyCount',
+            //     payload: {
+            //         totalCount: notices.length,
+            //         unreadCount: notices.filter(item => !item.read).length,
+            //     },
+            // });
         },
 
         *fetchBranchList(_, { call, put, select }) {

@@ -19,7 +19,7 @@ const Model = {
     effects: {
         *get({ payload }, { call, put }) {
             const res = yield call(querySystem, payload);
-            console.log(res);
+             
             if (res.success && res.data) {
                 yield put({
                     type: 'setInfo',
@@ -29,7 +29,7 @@ const Model = {
         },
         *addHelpFile({ payload }, { put, call }) {
             const res = yield call(addHelpFile, payload);
-            // console.log(res);
+            //  
             if (res.success) {
                 notification.success({
                     message: '添加成功',
@@ -41,7 +41,7 @@ const Model = {
         },
         *deleteHelpfile({ payload }, { put, call }) {
             const res = yield call(deleteHelpfile, payload);
-            // console.log(res);
+            //  
             if (res.success) {
                 notification.success({
                     message: '删除成功',
@@ -53,7 +53,7 @@ const Model = {
         },
         *update({ payload }, { put, call }) {
             const res = yield call(updateSystem, payload);
-            // console.log(res);
+            //  
             if (res.success) {
                 notification.success({
                     message: '修改成功',

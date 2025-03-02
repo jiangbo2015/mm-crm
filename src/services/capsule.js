@@ -1,5 +1,14 @@
 import request from '@/utils/request';
 
+
+
+export async function getCapsuleById(data) {
+    return request('/api/capsule/findById', {
+        method: 'get',
+        params: data,
+    });
+}
+
 export async function getAllCapsule(data) {
     return request('/api/capsule/getVisibleList', {
         method: 'get',
@@ -69,5 +78,4 @@ export async function sortCapsuleStyle(data) {
         data,
     });
 }
-// Capsule
-// {/* <Icon type="copyright" /> */}
+

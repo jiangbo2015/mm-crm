@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Table, Divider, Tag, Modal, Popconfirm } from 'antd';
 import styles from './index.less';
+import { get } from 'lodash';
 import { connect } from 'dva';
 import Form from '../Form';
 
@@ -13,33 +14,20 @@ const Com = props => {
             key: 'name',
         },
         {
-            title: '客户类型',
-            dataIndex: 'customerType',
-            key: 'customerType',
-        },
-        {
-            title: '国家',
-            dataIndex: 'countries',
-            key: 'countries',
-        },
-        {
             title: '所属产品经理',
-            dataIndex: 'map',
-            key: 'map',
-            render: (text, record) => (
-                <p>
-                    {Array.isArray(record.channels) && record.channels.length > 0
-                        ? props.channels.map[record.channels[0]._id]
-                        : ''}
-                </p>
+            dataIndex: 'owner',
+            key: 'owner',
+            render: (owner) => (
+                <div>
+                    {owner?.name}
+                </div>
             ),
         },
         {
             title: '所属通道',
-            dataIndex: 'role',
-            render: (text, record) => {
-                const channelsName = record.channels.map(c => c.name);
-                return <div>{channelsName.toString()}</div>;
+            dataIndex: 'channel',
+            render: (channel) => {
+                return <div>{channel?.name}</div>;
             },
         },
         {
@@ -73,10 +61,9 @@ const Com = props => {
                 props.dispatch({
                     type: 'user/update',
                     payload: {
-                        role: 3,
+                        role: data.role,
                         _id: data._id,
                         ...values,
-                        channels: [values.channels],
                     },
                 });
             }
@@ -90,7 +77,7 @@ const Com = props => {
                 console.log(data);
                 formRef.current.setFieldsValue({
                     ...data, //将所有字段都分配，会有warning
-                    channels: data.channels[0]._id,
+                    channel: get(data, 'channel._id'),
                 });
             }, 1300);
         }
@@ -139,16 +126,16 @@ const Com = props => {
             >
                 <Form
                     ref={v => (formRef.current = v)}
-                    channelId={visible ? data.channels[0]._id : ''}
+                    channelId={visible ? get(data, 'channels.0._id') : ''}
                 />
             </Modal>
-            <Table columns={columns} dataSource={props.user.customerList.docs} />
+            <Table columns={columns} dataSource={get(props, "user.customerList", [])} />
         </>
     );
 };
 
 export default connect(({ user, loading, channel }) => ({
     user,
-    channels: channel.list,
+    channels: get(channel, "list", []),
     fetching: loading.effects['user/fetch'],
 }))(Com);

@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import React, { useRef, useState } from 'react';
 import Form from '../From';
 import styles from './index.less';
+import RecordModal from '@/components/RecordModal';
 
 const Com = props => {
     const columns = [
@@ -16,7 +17,7 @@ const Com = props => {
                 <div
                     className={styles.color}
                     style={{
-                        background: obj.type === 1 ? `url(${filterImageUrl(val)}?tr=w-50)` : val,
+                        background: `url(${filterImageUrl(val)}?tr=w-50)`,
                     }}
                 />
             ),
@@ -32,7 +33,11 @@ const Com = props => {
             dataIndex: 'value',
             key: 'value',
         },
-
+        {
+            title: '创建日期',
+            dataIndex: 'createAt',
+            key: 'createAt',
+        },
         {
             title: '操作',
             dataIndex: 'action',
@@ -54,6 +59,8 @@ const Com = props => {
                     >
                         <a href="#">删除</a>
                     </Popconfirm>
+                     <Divider type="vertical" />
+                    <a onClick={() => props.dispatch({type: 'record/getList', payload: {modelId: record._id}})}>修改记录</a>
                 </div>
             ),
         },
@@ -175,12 +182,14 @@ const Com = props => {
                     pageSizeOptions: [10, 20, 50, 100, 500],
                 }}
             />
+            {props.record.visible && <RecordModal {...props.record} onCancel={() => props.dispatch({type: 'record/toggleModal', payload: false})} />}
         </>
     );
 };
 
-export default connect(({ style, loading }) => ({
+export default connect(({ style, loading, record }) => ({
     colorList: style.colorListFlower,
     fetching: loading.effects['style/getColorList'],
     submitFetching: loading.effects['style/update'],
+    record,
 }))(Com);

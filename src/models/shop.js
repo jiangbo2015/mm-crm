@@ -16,7 +16,7 @@ const Model = {
                 params.branch = currentBranch._id;
             }
             const res = yield call(getShopStyleList, params);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'setCurrentShopStyleList',
@@ -45,7 +45,7 @@ const Model = {
 
         *updateShopStyle({ payload }, { put, call }) {
             const res = yield call(updateShopStyle, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getShopStyleList',
@@ -76,7 +76,7 @@ const Model = {
         },
         *deleteShopStyle({ payload }, { put, call }) {
             const res = yield call(delShopStyle, payload);
-            console.log(res);
+             
             if (res.success) {
                 yield put({
                     type: 'getShopStyleList',
