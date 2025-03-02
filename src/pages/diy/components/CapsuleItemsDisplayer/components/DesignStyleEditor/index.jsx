@@ -37,7 +37,8 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
         plainColors,
         flowerColors,
         textures,
-        uploadStyleImage
+        uploadStyleImage,
+        handleCompleteCapsuleItemFinished
     } = useDiyEditor()
     const style = get(currentEditCapsuleItem, 'style', {})
     const finishedStyleColors = get(currentEditCapsuleItem, `finishedStyleColorsList.${currentEditCapsuleItemFinishedIndex}`)
@@ -75,7 +76,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
     }
 
     const handleCancel = () => {
-        handleUpdateCapsuleItem(undefined, -1)
+        handleUpdateCapsuleItem(-1, -1)
     }
 
     const handleOk = async () => {
@@ -100,13 +101,15 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
         const imgUrlFront = get(resultFront, 'url')
         const imgUrlBack = get(resultBack, 'url')
 
-        console.log({
+        const finishedObj = {
             colors,
             texture,
             imgUrlFront,
             imgUrlBack
-        })
-        // handleUpdateCapsuleItem(undefined, -1)
+        }
+
+        handleCompleteCapsuleItemFinished(finishedObj)
+
     }
     return (
         <Modal
@@ -157,7 +160,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                 </div>
                 <div className={styles['design-style']} style={{ alignItems: style?.vposition }}>
                     <StyleAndColors
-                        width={`${(280 * style.styleSize) / 27}px`}
+                        width={`${(280 * style.styleBackSize) / 27}px`}
                         styleId={`${style._id}-back`}
                         svgId={`${style._id}-back`}
                         colors={colors}

@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
-import { get } from 'lodash';
+import { get, map } from 'lodash';
 import { useDispatch, useSelector } from '@/hooks/useDvaTools'
 
 const useDiy = () => {
   const dispatch = useDispatch()
   const capsuleItems = useSelector(state => state?.diy?.capsuleItems)
+  const plainColors = useSelector(state => state?.diy?.plainColors)
+  const flowerColors = useSelector(state => state?.diy?.flowerColors)
+  const _id = useSelector(state => state?.diy?._id)
+  const name = useSelector(state => state?.diy?.name)
   const currentEditCapsuleItem = useSelector(state => state?.diy?.currentEditCapsuleItem)
   const [uploading, setUploading] = useState(false)
   const [visibleStylesSelectorModal, setVisibleStylesSelectorModal] = useState(false);
@@ -15,13 +19,42 @@ const useDiy = () => {
             payload: item,
         });
     };
-    const updateCapsuleItemByIndex = (newItem, index) => {
-        const newCapsuleItems = [...capsuleItems]
-        newCapsuleItems[index] = newItem
-        dispatch({
-            type: 'diy/setCapsuleItems',
-            payload: newCapsuleItems,
-        });
+    const handleSave = (inputName) => {
+        const data = {
+            name: inputName ?? name,
+            capsuleItems: map(capsuleItems, ci => {
+                if(ci?.type === 'style') {
+                    return {
+                        ...ci,
+                        style: ci?.style?._id,
+                        finishedStyleColorsList: map(ci?.finishedStyleColorsList, sc => ({
+                            colors: map(sc?.colors, c => c?._id),
+                            textrue: sc?.textrue?._id,
+                            imgUrlFront: sc?.imgUrlFront,
+                            imgUrlBack: sc?.imgUrlBack,
+                        }))
+                    }
+                }
+                return ci
+            }),
+            plainColors: map(plainColors, pc => pc._id),
+            flowerColors: map(flowerColors, fc => fc._id),
+        }
+        console.log("data->", data)
+        if(_id) {
+            // update
+            data._id = _id
+            dispatch({
+                type: 'diy/updateCapsule',
+                payload: data,
+            });
+        } else {
+            // create
+            dispatch({
+                type: 'diy/createCapsule',
+                payload: data,
+            });
+        }
     };
     const hideVisibleStylesSelectorModal = () => {
         setVisibleStylesSelectorModal(false)
@@ -66,11 +99,16 @@ const useDiy = () => {
         }
     };
 
-    const handleUpdateCapsuleItem = (item, index) => {
-        console.log('handleUpdateCapsuleItem:', index)
+    const handleUpdateCapsuleItem = (index, finishedIndex) => {
         dispatch({
             type: 'diy/setCurrentEditCapsuleItemIndex',
             payload: index
+        })
+
+        // currentEditCapsuleItemFinishedIndex
+        dispatch({
+            type: 'diy/setCurrentEditCapsuleItemFinishedIndex',
+            payload: finishedIndex
         })
     }
     const handleUpdateImg = (info, index) => {
@@ -123,6 +161,7 @@ const useDiy = () => {
     handleUpdateImg,
     handleUpdateVideo,
     handleUpdateCapsuleItem,
+    handleSave,
     currentEditCapsuleItem
  };
 };

@@ -76,3 +76,29 @@
         }
     }
 }
+
+.thumbnail-list {
+    display: flex;
+    justify-content: center;
+    margin-top: 4px;
+
+    .thumbnail-item {
+        margin-right: 2px;
+        padding: 1px;
+        border-radius: 50%;
+        border: rgba(0, 0, 0, 0) solid 1px;
+    }
+
+    .thumbnail-item-selected {
+        margin-right: 2px;
+        padding: 1px;
+        border: #000 solid 1px;
+        border-radius: 50%;
+    }
+
+    :global {
+        .anticon-plus {
+            cursor: pointer;
+        }
+    }
+}

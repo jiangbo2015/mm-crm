@@ -5,6 +5,7 @@ import { map } from 'lodash';
 
 import ColorsModal from '@/components/ColorsModal'
 import ColorList from '../ColorList'
+import ImageCropperModal from '../ImageCropperModal'
 import styles from './index.less'
 
 
@@ -16,6 +17,7 @@ const onChange = (key) => {
 
 const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
     const [visibleFlowerColorsModal, setVisibleFlowerColorsModal] = useState(false);
+    const [visibleImageCropperModal, setVisibleImageCropperModal] = useState(false);
     const handleUpdateFlowerColors  = async (selectedFlowerColors) => {
         console.log(selectedFlowerColors)
             await dispatch({
@@ -35,7 +37,7 @@ const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
         { 
             label: "自主上传",
             key: 2,
-            children: <ColorList hideSearch colorType={1} colors={customFlowerColors}/>,
+            children: <ColorList hideSearch colorType={1} colors={customFlowerColors} onAdd={() => {setVisibleImageCropperModal(true)}}/>,
         },
     ]
     return (
@@ -50,12 +52,19 @@ const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
                 onColorsModalOk={handleUpdateFlowerColors}
                 initSelectedColors={flowerColors}
             />
-           <Tabs
-            onChange={onChange}
-            type="card"
-            items={FlowerColorsItems}
-            className={styles['color-list-tabs-box']}
-        /> 
+            <ImageCropperModal
+                modalProps={{
+                    visible: visibleImageCropperModal,
+                    onCancel: () => setVisibleImageCropperModal(false),
+                    // confirmLoading: updateChannelLoading
+                }}
+            />
+            <Tabs
+                onChange={onChange}
+                type="card"
+                items={FlowerColorsItems}
+                className={styles['color-list-tabs-box']}
+            /> 
         </>
         )
 };

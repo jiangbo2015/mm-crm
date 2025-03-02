@@ -5,6 +5,7 @@ import { map } from 'lodash';
 
 import ColorsModal from '@/components/ColorsModal'
 import ColorList from '../ColorList'
+import EyeDropperModal from '../EyeDropperModal'
 import styles from './index.less'
 
 
@@ -16,6 +17,7 @@ const onChange = (key) => {
 
 const PlainColorsAside = ({ plainColors, customPlainColors,dispatch }) => {
     const [visiblePlainColorsModal, setVisiblePlainColorsModal] = useState(false);
+    const [visibleEyeDropper, setVisibleEyeDropper] = useState(false);
     const handleUpdatePlainColors  = async (selectedPlainColors) => {
         console.log(selectedPlainColors)
             await dispatch({
@@ -35,11 +37,16 @@ const PlainColorsAside = ({ plainColors, customPlainColors,dispatch }) => {
         { 
             label: "自主上传",
             key: 2,
-            children: <ColorList hideSearch colors={customPlainColors}/>,
+            children: <ColorList hideSearch colors={customPlainColors} onAdd={() => {setVisibleEyeDropper(true)}}/>,
         },
     ]
     return (
         <>
+            <EyeDropperModal modalProps={{
+                visible: visibleEyeDropper,
+                onCancel: () => setVisibleEyeDropper(false),
+                // confirmLoading: updateChannelLoading
+            }}/>
             <ColorsModal 
                 colorType={0}
                 modalProps={{

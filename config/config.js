@@ -101,6 +101,14 @@ export default {
                     layout: false
                 },
                 {
+                    path: '/diy/:id',
+                    name: '创建DIY',
+                    icon: 'edit',
+                    component: './diy',
+                    authority: ['admin', 'productor', 'designer', 'customer'],
+                    layout: false
+                },
+                {
                     path: '/',
                     component: '../layouts/BasicLayout',
                     routes: [

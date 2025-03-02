@@ -9,13 +9,12 @@ const Model = {
     namespace: 'diy',
     state: { 
         name: '',
-        capsuleItems: colorMockData?.capsuleItems,
-        plainColors: colorMockData?.plainColors, //可用素色列表
-        flowerColors: colorMockData?.flowerColors, //可用花布列表
-        textures: colorMockData?.textures, //可用面料
+        capsuleItems: [], // colorMockData?.capsuleItems,
+        plainColors:  [], // colorMockData?.plainColors, //可用素色列表
+        flowerColors:  [], // colorMockData?.flowerColors, //可用花布列表
+        textures: [], //colorMockData?.textures, //可用面料
         customPlainColors: [], // 自主上传素色列表
         customFlowerColors: [], // 自主上传花布列表
-        CapsuleItemStyleCurrentFinishedIndexMap: {},
         currentEditCapsuleItemIndex: -1,
         currentEditCapsuleItemFinishedIndex: -1,
         currentEditCapsuleStyleRegion: -1
@@ -23,7 +22,6 @@ const Model = {
     effects: { // getCapsuleById 
         *getCapsuleById({ payload }, { call, put }) {
             const res = yield call(getCapsuleById, payload);
-             
             if (res.success) {
                 yield put({
                     type: 'setCapsule',
@@ -41,10 +39,15 @@ const Model = {
         },
         *createCapsuleItem({ payload }, { put, call }) {
             const res = yield call(add, payload);
-             
         },
     },
     reducers: { 
+        setCapsule(state, { payload }) {
+            return {
+                ...state,
+                ...payload,
+            };
+        },
         setCapsuleName(state, { payload }) {
             return {
                 ...state,
@@ -85,6 +88,12 @@ const Model = {
             return {
                 ...state,
                 currentEditCapsuleItemIndex: payload,
+            };
+        },
+        setCurrentEditCapsuleItemFinishedIndex(state, { payload }) {
+            return {
+                ...state,
+                currentEditCapsuleItemFinishedIndex: payload,
             };
         },
         setCurrentEditCapsuleStyleRegion(state, { payload }) {

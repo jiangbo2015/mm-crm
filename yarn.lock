@@ -4859,6 +4859,11 @@ cloneable-readable@^1.0.0:
     process-nextick-args "^2.0.0"
     readable-stream "^2.3.5"
 
+clsx@^1.0.4:
+  version "1.2.1"
+  resolved "https://registry.npmmirror.com/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
+  integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.npmmirror.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -5138,6 +5143,11 @@ core-js@^2.4.0, core-js@^2.5.3, core-js@^2.6.5:
   version "2.6.12"
   resolved "https://registry.npmmirror.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
+
+core-js@^3.1.4:
+  version "3.41.0"
+  resolved "https://registry.npmmirror.com/core-js/-/core-js-3.41.0.tgz#57714dafb8c751a6095d028a7428f1fb5834a776"
+  integrity sha512-SJ4/EHwS36QMJd6h/Rg+GyR4A5xE0FSI3eZ+iBVpfqf1x0eTSg1smWLHrA+2jQThZSh97fmSgFSU8B61nxosxA==
 
 core-js@^3.16.2:
   version "3.40.0"
@@ -13968,6 +13978,15 @@ react-html-parser@^2.0.2:
   integrity sha512-XeerLwCVjTs3njZcgCOeDUqLgNIt/t+6Jgi5/qPsO/krUWl76kWKXMeVs2LhY2gwM6X378DkhLjur0zUQdpz0g==
   dependencies:
     htmlparser2 "^3.9.0"
+
+react-image-crop@8.2.0:
+  version "8.2.0"
+  resolved "https://registry.npmmirror.com/react-image-crop/-/react-image-crop-8.2.0.tgz#c46958d5bd0d8d4ca7bfe308b7174a353c212fa5"
+  integrity sha512-iAQMw3gT9XIda8FKtsOK5PNWpQFN+IYbVtuqtJPS906jrhSmca1jfFH0IYLBDRyLQSgTUanf2A5qrDnbkmxPEg==
+  dependencies:
+    clsx "^1.0.4"
+    core-js "^3.1.4"
+    prop-types "^15.7.2"
 
 react-intl@3.12.1:
   version "3.12.1"

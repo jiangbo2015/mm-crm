@@ -11,27 +11,27 @@ export const ColorItem = ({item = {}, ...props}) => {
 
 }
 
-export const PlainColorItem = ({item = {}, size, onClick, children, className}) => {
+export const PlainColorItem = ({item = {}, size, onClick, children, className, borderWidth}) => {
     const {code, value} = item
     return (<Tooltip title={code}>
             <div
                 onClick={onClick}
                 className={classnames(styles['item-val'], className)}
-                style={{ backgroundColor: value , width: size, height: size}}
+                style={{ backgroundColor: value , width: size, height: size, borderWidth}}
             >
                 {children}
             </div>
         </Tooltip>)
 }
 
-export const FlowerColorItem = ({item = {}, size, onClick, children, className}) => {
+export const FlowerColorItem = ({item = {}, size, onClick, children, className, borderWidth}) => {
     const {code, value} = item
     return (
         <Tooltip title={code}>
             <div
                 onClick={onClick}
                 className={classnames(styles['item-val'], styles['item-val-img'], className)}
-                style={{ backgroundImage: `url(${filterImageUrl(value)}?tr=w-50)` , width: size, height: size}}
+                style={{ backgroundImage: `url(${filterImageUrl(value)}?tr=w-50)` , width: size, height: size, borderWidth}}
             >
                 {children}
             </div>

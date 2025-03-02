@@ -1,0 +1,44 @@
+.picker-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.picker-button {
+    border: solid 1px #ddd;
+    padding: 20px;
+    /* padding: 0.8rem 1.5rem; */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 21, 41, .08);
+}
+
+.picker-button:hover {
+    background: #ddd;
+}
+
+.color-preview {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.color-block {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+}
+
+.color-value {
+    font-family: monospace;
+    font-size: 1.1rem;
+}
+
+.error {
+    color: #dc3545;
+    font-weight: bold;
+}

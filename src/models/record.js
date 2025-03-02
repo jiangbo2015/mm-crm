@@ -7,7 +7,7 @@ const Model = {
     namespace: 'record',
     state: {
         visible: false,
-        list: {},
+        list: [],
     },
     effects: {
         *getList({ payload }, { call, put }) {

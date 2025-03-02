@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Modal, Input } from 'antd';
-import { history } from 'umi';
+import { history, useParams } from 'umi';
+// import { useParams } from 'umi';
 import { connect } from 'dva';
 import { get } from 'lodash';
 import Icon, { LeftOutlined } from '@ant-design/icons';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+import useDiy from './hooks/useDiy'
 import AvatarDropdown from '@/components/GlobalHeader/AvatarDropdown';
 import PlainColorsAside from './components/PlainColorsAside'
 import FlowerColorsAside from './components/FlowerColorsAside'
@@ -14,7 +16,21 @@ import CapsuleItemsDisplayer from './components/CapsuleItemsDisplayer'
 import styles from './index.less'
 
 const Com = props => {
+    const params = useParams()
+    const { handleSave } = useDiy()
     const { _id, name, state, dispatch } = props;
+
+    useEffect(() => {
+      // "67bdd6b21f963b389f6b85b4"
+    }, [])
+        useEffect(() => {
+            if(params.id) {
+                dispatch({
+                    type: 'diy/getCapsuleById',
+                    payload: {_id: params.id}
+                })
+            }
+        }, [params.id])
 
     const handleChangeName = (e) => {
         dispatch({
@@ -37,7 +53,7 @@ const Com = props => {
                 <div>页面排列</div> 
                 <div className={styles['header-right']}>
                     <div className={styles['diy-actions']}>
-                        <Button type="primary">保存</Button>
+                        <Button type="primary" onClick={() => {handleSave()}}>保存</Button>
                     </div>
                     <AvatarDropdown isHideName/>
                 </div>   

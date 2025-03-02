@@ -31,6 +31,12 @@ const Model = {
                 },
             };
         },
+        clearCapsuleList(state) {
+            return {
+                ...state,
+                list: {},
+            };
+        },
     },
 };
 export default Model;

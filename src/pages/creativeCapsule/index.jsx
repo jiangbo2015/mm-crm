@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Modal, Spin } from 'antd';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { get } from 'lodash';
 import { filterImageUrl } from '@/utils/utils';
 import { connect } from 'dva';
 
@@ -25,19 +25,18 @@ const defimages = [
 
 const customStyleGrid = `
 #react-waterfall-grid-comps li>div {
-  border-radius: 8px;
+  border-radius: 18px;
   font-size: 20px;
   overflow: hidden;
   color: rgba(0, 0, 0, 0.6);
   margin-bottom: 20px;
-  padding: 6px;
+  padding: 0px;
   background: rgb(255, 255, 255);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.5s
 }
 #react-waterfall-grid-comps li>div:hover {
   transform: translateY(-6px);
-  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s
 }
 #react-waterfall-grid-comps {
@@ -63,6 +62,11 @@ const Com = props => {
                 limit: 20
             },
         });
+        return () => {
+            props.dispatch({
+                type: 'creativeCapsule/clearCapsuleList'
+            });
+        }
     }, [])
     
 
@@ -111,7 +115,7 @@ const Com = props => {
 
     return (
         <Spin spinning={isLoading}>
-            <Card style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '20px' }}>
                 <div
                     style={{
                         height: 'calc(100vh - 150px)',
@@ -134,14 +138,14 @@ const Com = props => {
                             return (
                                 <li key={index}>
                                     <div>
-                                        <img src={filterImageUrl(item.imgUrl)} alt="" style={{minHeight: 100}} />
+                                        <img src={filterImageUrl(item.imgUrl || get(item, 'capsuleItems.0.fileUrl'))} alt="" style={{minHeight: 100}} />
                                     </div>
                                 </li>
                             );
                         })}
                     </Waterfall>
                 </div>
-            </Card>
+            </div>
         </Spin>
     );
 };

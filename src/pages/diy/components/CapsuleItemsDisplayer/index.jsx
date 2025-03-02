@@ -15,11 +15,11 @@ import {
 import { filterImageUrl, uploadProps } from '@/utils/utils';
 import { ColorItem } from '@/components/ColorItem'
 import StylesSelectorModal from '@/components/StylesSelectorModal'
-import {DesignStyleEditor} from './components/DesignStyleEditor'
+import { DesignStyleEditor } from './components/DesignStyleEditor'
 import useDiy from '../../hooks/useDiy'
 import styles from './index.less'
 
-export const ItemBottomTools = ({item = {}, index}) => {
+export const ItemBottomTools = ({item = {}, index, showFinishedStyleIndex = -1}) => {
     const { type } = item
     const { 
         beforeUpload, 
@@ -33,7 +33,7 @@ export const ItemBottomTools = ({item = {}, index}) => {
         >
             {type === 'style' ? 
                 <EditOutlined onClick={() => {
-                    handleUpdateCapsuleItem(item, index)
+                    handleUpdateCapsuleItem(index, showFinishedStyleIndex)
                 }} />  : 
                 <Upload
                     {...uploadProps}
@@ -107,9 +107,10 @@ const AddCard = () => {
     )
 }
 
-
 const CapsuleItemStyles = ({ item = {}, index }) => {
-    
+    const { 
+        handleUpdateCapsuleItem
+    } = useDiy()
     const {style, finishedStyleColorsList } = item
     const finishedStyleColorsLength = get(finishedStyleColorsList, 'length', 0) 
     const [showIndex, setShowIndex] = useState(0)
@@ -131,19 +132,21 @@ const CapsuleItemStyles = ({ item = {}, index }) => {
                     }
                 </div>
             </div>
-            <ItemBottomTools item={item} index={index}/>
-            <div className="thumbnail-list">
-                {map(finishedStyleColorsList, ({colors}, index) => 
-                (
+            <ItemBottomTools item={item} index={index} showFinishedStyleIndex={showIndex}/>
+            {finishedStyleColorsLength > 0 && <div className={styles["thumbnail-list"]}>
+                {map(finishedStyleColorsList, ({colors}, index) => (
                     <div
                         key={index}
-                        className="thumbnail-item"
+                        className={showIndex===index ? styles['thumbnail-item-selected'] : styles["thumbnail-item"] } 
                         onMouseEnter={() => setShowIndex(index)} // 鼠标悬停时更新大图
                     >
-                        <ColorItem item={get(colors, 0, {})} size={10}/>
+                        <ColorItem item={get(colors, 0, {})} size={12} borderWidth={0}/>
                     </div>
                 ))}
-            </div>
+                <PlusOutlined onClick={() => {
+                    handleUpdateCapsuleItem(index, -1)
+                }}/>
+            </div>}
         </div>
     )
 }
@@ -169,7 +172,6 @@ const CapsuleItem = (props) => {
 
     return type === 'style' ? <CapsuleItemStyles item={item} index={index} /> : <CapsuleItemFile item={item} index={index} />
 }
-
 
 const CapsuleItemsDisplayer = ({ capsuleItems, currentEditCapsuleItemIndex }) => {
     const currentEditCapsuleItem = get(capsuleItems, currentEditCapsuleItemIndex)

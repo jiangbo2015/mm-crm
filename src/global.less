@@ -13,6 +13,38 @@ body,
         }
     }
 
+    .ant-pro-sider-light {
+        background-color: #efefef !important;
+    }
+
+    .ant-pro-global-header {
+        box-shadow: none;
+    }
+
+    .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+        background-color: rgba(0, 0, 0, 0);
+        text-decoration: underline double 1px #000;
+        text-underline-offset: 6px;
+    }
+
+    .ant-menu-item-selected::after {
+        display: none;
+    }
+
+    .ant-pro-sider.ant-layout-sider-light .ant-menu-item-selected a,
+    .ant-pro-sider.ant-layout-sider-light .ant-menu-item a:hover {
+        color: #000;
+    }
+
+    .seleted {
+        text-decoration: underline double 1px #000;
+        text-underline-offset: 6px;
+    }
+
+    .ant-menu-item:active,
+    .ant-menu-submenu-title:active {
+        background: none;
+    }
 }
 
 .colorWeak {
@@ -21,6 +53,7 @@ body,
 
 .ant-layout {
     min-height: 100vh;
+    background-color: #fff;
 }
 
 canvas {

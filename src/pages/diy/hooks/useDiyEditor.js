@@ -26,16 +26,21 @@ const useDiy = () => {
             payload: item,
         });
     };
-    const handleUpdateCapsuleItem = (item, index) => {
-        console.log('handleUpdateCapsuleItem:', index)
+
+    const handleUpdateCapsuleItem = (index, finishedIndex) => {
         dispatch({
             type: 'diy/setCurrentEditCapsuleItemIndex',
             payload: index
         })
+
+        // currentEditCapsuleItemFinishedIndex
+        dispatch({
+            type: 'diy/setCurrentEditCapsuleItemFinishedIndex',
+            payload: finishedIndex
+        })
     }
 
     const handleUpdateCurrentEditCapsuleStyleRegion = (index) => {
-        console.log('setCurrentEditCapsuleStyleRegion:', index)
         dispatch({
             type: 'diy/setCurrentEditCapsuleStyleRegion',
             payload: index
@@ -44,10 +49,7 @@ const useDiy = () => {
     }
 
     const uploadStyleImage = async (svgString, imgUrl) => {
-        console.log('uploadStyleImage');
         const { file } = await svg2pngFile(svgString, imgUrl);
-        console.log('file');
-        // /api/common/uploadkit
 
         var postData = new FormData();
         postData.append('file', file);
@@ -55,15 +57,30 @@ const useDiy = () => {
             data: postData,
             method: 'post',
         });
-        console.log('res', res);
         return { url: res.data.url };
     };
+
+    const handleCompleteCapsuleItemFinished = (finishedObj) => {
+        console.log("finishedObj", finishedObj)
+        console.log("currentEditCapsuleItemFinishedIndex", currentEditCapsuleItemFinishedIndex)
+        if(currentEditCapsuleItemFinishedIndex > 0) {
+            currentEditCapsuleItem.finishedStyleColorsList[currentEditCapsuleItemFinishedIndex] = finishedObj
+        } else {
+            currentEditCapsuleItem.finishedStyleColorsList.push(finishedObj)
+        }
+        console.log("capsuleItems", capsuleItems)
+        dispatch({
+            type: 'diy/setCapsuleItems',
+            payload: [...capsuleItems],
+        });
+    }
 
 
   return {
     addCapsuleItem,
     handleUpdateCapsuleItem,
     handleUpdateCurrentEditCapsuleStyleRegion,
+    handleCompleteCapsuleItemFinished,
     uploadStyleImage,
     currentEditCapsuleItem,
     currentEditCapsuleItemFinishedIndex,

@@ -9,6 +9,7 @@ import {
     addCapsuleStyle,
     delCapsuleStyle,
     sortCapsuleStyle,
+    getCapsuleById
 } from '@/services/capsule';
 import { message } from 'antd';
 import { getPageQuery } from '@/utils/utils';
@@ -21,6 +22,9 @@ const Model = {
         currentCapsuleStyleList: [],
     },
     effects: {
+        *getCapsuleById({ payload }, { call, put }) {
+            
+        },
         *getList({ payload }, { call, put }) {
             const res = yield call(queryList, payload);
              
