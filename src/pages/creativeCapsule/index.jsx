@@ -138,7 +138,9 @@ const Com = props => {
                             return (
                                 <li key={index}>
                                     <div>
-                                        <img src={filterImageUrl(item.imgUrl || get(item, 'capsuleItems.0.fileUrl'))} alt="" style={{minHeight: 100}} />
+                                        <img src={filterImageUrl(item.imgUrl || 
+                                            get(item, 'capsuleItems.0.fileUrl') || 
+                                            get(item, 'capsuleItems.0.finishedStyleColorsList.0.imgUrlFront'))} alt="" style={{minHeight: 100}} />
                                     </div>
                                 </li>
                             );

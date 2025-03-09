@@ -1,25 +1,62 @@
 import { useState, useEffect } from 'react';
-import { get, map } from 'lodash';
+import { get, map, filter, includes } from 'lodash';
 import { useDispatch, useSelector } from '@/hooks/useDvaTools'
 
-const useDiy = () => {
-  const dispatch = useDispatch()
-  const capsuleItems = useSelector(state => state?.diy?.capsuleItems)
-  const plainColors = useSelector(state => state?.diy?.plainColors)
-  const flowerColors = useSelector(state => state?.diy?.flowerColors)
-  const _id = useSelector(state => state?.diy?._id)
-  const name = useSelector(state => state?.diy?.name)
-  const currentEditCapsuleItem = useSelector(state => state?.diy?.currentEditCapsuleItem)
-  const [uploading, setUploading] = useState(false)
-  const [visibleStylesSelectorModal, setVisibleStylesSelectorModal] = useState(false);
+function filterCapsuleItemsById(capsuleItems, id) {
+    // 过滤 capsuleItems，返回符合条件的 capsuleItems
+    const filteredCapsuleItems = filter(capsuleItems, item => {
+        if (item.type === "style" && item.style) {
+            // 检查 goodsId 或 categoryId 是否包含传入的 id
+            const hasGoodsId = includes(item.style.goodsId, id);
+            const hasCategoryId = includes(item.style.categoryId, id);
+            return hasGoodsId || hasCategoryId;
+        }
+        return false;
+    });
 
+    return filteredCapsuleItems;
+}
+
+const useDiy = () => {
+    const dispatch = useDispatch()
+    const capsuleItems = useSelector(state => state?.diy?.capsuleItems)
+    const plainColors = useSelector(state => state?.diy?.plainColors)
+    const flowerColors = useSelector(state => state?.diy?.flowerColors)
+    const mode = useSelector(state => state?.diy?.mode)
+    
+    const selectedGoodId = useSelector(state => state?.diy?.selectedGoodId)
+    const selectedGoodCategryId = useSelector(state => state?.diy?.selectedGoodCategryId)
+    const _id = useSelector(state => state?.diy?._id)
+    const name = useSelector(state => state?.diy?.name)
+    const currentEditCapsuleItemIndex = useSelector(state => state?.diy?.currentEditCapsuleItemIndex) 
+    const currentEnlargeCapsuleItemIndex = useSelector(state => state?.diy?.currentEnlargeCapsuleItemIndex) 
+    const currentEnlargeCapsuleItemFinishedIndex = useSelector(state => state?.diy?.currentEnlargeCapsuleItemFinishedIndex) 
+    const currentEditCapsuleItem = useSelector(state => state?.diy?.currentEditCapsuleItem)
+    const [uploading, setUploading] = useState(false)
+    const [visibleStylesSelectorModal, setVisibleStylesSelectorModal] = useState(false);
+  
+    const goods = useSelector(state => get(state, 'goods.list', []))
+
+    const isEditor = mode === 'editor'
+    const filterCapsuleItems = filterCapsuleItemsById(capsuleItems, selectedGoodCategryId ?? selectedGoodId)
+    useEffect(() => {
+        dispatch({
+            type: 'goods/getList',
+        });
+    }, [])
+    const createCustomColor = async item => {
+        return dispatch({
+            type: 'diy/createCustomColor',
+            payload: item,
+        });
+    };
     const addCapsuleItem = item => {
         dispatch({
             type: 'diy/addCapsuleItem',
             payload: item,
         });
     };
-    const handleSave = (inputName) => {
+    const handleSave = async (inputName) => {
         const data = {
             name: inputName ?? name,
             capsuleItems: map(capsuleItems, ci => {
@@ -44,13 +81,13 @@ const useDiy = () => {
         if(_id) {
             // update
             data._id = _id
-            dispatch({
+            await dispatch({
                 type: 'diy/updateCapsule',
                 payload: data,
             });
         } else {
             // create
-            dispatch({
+            await dispatch({
                 type: 'diy/createCapsule',
                 payload: data,
             });
@@ -98,7 +135,15 @@ const useDiy = () => {
             setUploading(false);
         }
     };
+    const handleDeleteCapsuleItem = (index) => {
+        // console.log('selectedStyles:', selectedStyles)
+        capsuleItems.splice(index, 1)
+        dispatch({
+            type: 'diy/setCapsuleItems',
+            payload: [...capsuleItems],
+        });
 
+    }
     const handleUpdateCapsuleItem = (index, finishedIndex) => {
         dispatch({
             type: 'diy/setCurrentEditCapsuleItemIndex',
@@ -111,6 +156,19 @@ const useDiy = () => {
             payload: finishedIndex
         })
     }
+
+    const handleEnlargeCapsuleItem = (index, finishedIndex) => {
+        dispatch({
+            type: 'diy/setCurrentEnlargeCapsuleItemIndex',
+            payload: index
+        })
+
+        dispatch({
+            type: 'diy/setCurrentEnlargeCapsuleItemFinishedIndex',
+            payload: finishedIndex
+        })
+    }
+
     const handleUpdateImg = (info, index) => {
         if (info.file.status === 'uploading') {
             setUploading(true);
@@ -148,22 +206,67 @@ const useDiy = () => {
         return limit;
     };
 
-  return {
-    uploading,
-    visibleStylesSelectorModal,
-    addCapsuleItem,
-    beforeUpload,
-    handleAddCapsuleItemStyles,
-    handleAddImg,
-    handleAddVideo,
-    hideVisibleStylesSelectorModal,
-    openVisibleStylesSelectorModal,
-    handleUpdateImg,
-    handleUpdateVideo,
-    handleUpdateCapsuleItem,
-    handleSave,
-    currentEditCapsuleItem
- };
+    const handleSelectGoodId = (id) => {
+        dispatch({
+            type: 'diy/setSelectedGoodId',
+            payload: id,
+        });
+    }
+
+    const handleSelectGoodCategryId = (id) => {
+        dispatch({
+            type: 'diy/setSelectedGoodCategryId',
+            payload: id,
+        });
+    }
+
+    const handleEdit = () => {
+        dispatch({
+            type: 'diy/setMode',
+            payload: 'editor'
+        })
+    };
+
+    const handleView = () => {
+        dispatch({
+            type: 'diy/setMode',
+            payload: 'detail'
+        })
+    };
+
+    return {
+        name,
+        uploading,
+        visibleStylesSelectorModal,
+        addCapsuleItem,
+        beforeUpload,
+        handleAddCapsuleItemStyles,
+        handleAddImg,
+        handleAddVideo,
+        hideVisibleStylesSelectorModal,
+        openVisibleStylesSelectorModal,
+        handleUpdateImg,
+        handleUpdateVideo,
+        handleUpdateCapsuleItem,
+        handleSave,
+        currentEditCapsuleItem,
+        createCustomColor,
+        handleEnlargeCapsuleItem,
+        handleDeleteCapsuleItem,
+        isEditor,
+        handleEdit,
+        handleView,
+        handleSelectGoodId,
+        handleSelectGoodCategryId,
+        goods,
+        selectedGoodId,
+        selectedGoodCategryId,
+        originCapsuleItems: capsuleItems,
+        capsuleItems: !isEditor && selectedGoodId ? filterCapsuleItems : capsuleItems,
+        currentEditCapsuleItemIndex, 
+        currentEnlargeCapsuleItemIndex,
+        currentEnlargeCapsuleItemFinishedIndex
+    };
 };
 
 export default useDiy;

@@ -79,3 +79,11 @@ export async function sortCapsuleItem(data) {
     });
 }
 
+export async function applyForPublication(data) {
+    return request('/api/capsule/applyForPublication', {
+        method: 'post',
+        data,
+    });
+}
+
+

@@ -1,5 +1,5 @@
 import { Tabs } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { connect } from 'dva';
 import { map } from 'lodash';
 
@@ -15,7 +15,7 @@ const onChange = (key) => {
 
 
 
-const PlainColorsAside = ({ plainColors, customPlainColors,dispatch }) => {
+const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
     const [visiblePlainColorsModal, setVisiblePlainColorsModal] = useState(false);
     const [visibleEyeDropper, setVisibleEyeDropper] = useState(false);
     const handleUpdatePlainColors  = async (selectedPlainColors) => {
@@ -27,6 +27,7 @@ const PlainColorsAside = ({ plainColors, customPlainColors,dispatch }) => {
             
             setVisiblePlainColorsModal(false)
         };
+    
     
     const PlainColorsItems = [ 
         { 
@@ -69,7 +70,7 @@ const PlainColorsAside = ({ plainColors, customPlainColors,dispatch }) => {
 
 // export default PlainColorsAside;
 
-export default connect(({ diy }) => ({
+export default connect(({ diy, user }) => ({
     plainColors: diy.plainColors,
     customPlainColors: diy.customPlainColors,
 }))(PlainColorsAside);

@@ -8,30 +8,53 @@ import Icon, { LeftOutlined } from '@ant-design/icons';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+import useArrangement from '@/hooks/useArrangement'
 import useDiy from './hooks/useDiy'
 import AvatarDropdown from '@/components/GlobalHeader/AvatarDropdown';
 import PlainColorsAside from './components/PlainColorsAside'
 import FlowerColorsAside from './components/FlowerColorsAside'
 import CapsuleItemsDisplayer from './components/CapsuleItemsDisplayer'
+import DiyActions from './components/DiyActions'
+import GoodCategoryMenu from './components/GoodCategoryMenu'
 import styles from './index.less'
 
 const Com = props => {
     const params = useParams()
-    const { handleSave } = useDiy()
-    const { _id, name, state, dispatch } = props;
+    const { isEditor, handleEdit } = useDiy()
+    const { arrangement, ArrangmentDropdown } = useArrangement('页面排列')
+    const { _id, name, currentUser, dispatch } = props;
 
     useEffect(() => {
       // "67bdd6b21f963b389f6b85b4"
     }, [])
-        useEffect(() => {
-            if(params.id) {
-                dispatch({
-                    type: 'diy/getCapsuleById',
-                    payload: {_id: params.id}
-                })
-            }
-        }, [params.id])
-
+    useEffect(() => {
+        if(params.id) {
+            dispatch({
+                type: 'diy/getCapsuleById',
+                payload: {_id: params.id}
+            })
+        } else {
+            handleEdit()
+        }
+    }, [params.id])
+    useEffect(() => {
+        dispatch({
+            type: 'diy/getColorList',
+            payload: {
+                type: 0,
+                isCustom: 1,
+                creator: currentUser?._id
+            },
+        });
+        dispatch({
+            type: 'diy/getColorList',
+            payload: {
+                type: 1,
+                isCustom: 1,
+                creator: currentUser?._id
+            },
+        });
+    }, [currentUser?._id])
     const handleChangeName = (e) => {
         dispatch({
             type: 'diy/setCapsuleName',
@@ -50,18 +73,19 @@ const Com = props => {
                         <Input onChange={handleChangeName} size='large' placeholder="DIY胶囊名称" bordered={false} value={name}/>
                     </div>
                 </div>
-                <div>页面排列</div> 
+                <div>{ArrangmentDropdown}</div> 
                 <div className={styles['header-right']}>
                     <div className={styles['diy-actions']}>
-                        <Button type="primary" onClick={() => {handleSave()}}>保存</Button>
+                        <DiyActions />
                     </div>
                     <AvatarDropdown isHideName/>
                 </div>   
             </div>
             <div className={styles['diy-page-content']}>
-                <PlainColorsAside/>
-                <CapsuleItemsDisplayer />
-                <FlowerColorsAside />
+                {!isEditor && <GoodCategoryMenu/>}
+                {isEditor && <PlainColorsAside/>}
+                <CapsuleItemsDisplayer arrangement={arrangement}/>
+                {isEditor && <FlowerColorsAside />}
             </div>
         </div>
 
@@ -69,5 +93,6 @@ const Com = props => {
 };
 
 export default connect(state => ({
-    ...state.diy
+    ...state.diy,
+    currentUser: state?.user?.currentUser
 }))(Com);

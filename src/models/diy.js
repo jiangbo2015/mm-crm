@@ -2,12 +2,18 @@ import {
     getCapsuleById,
     add,
     update,
+    applyForPublication
 } from '@/services/diy';
+import {
+    colorAdd,
+    colorList
+} from '@/services/style';
 import colorMockData from '../../mock/color'
 
 const Model = {
     namespace: 'diy',
     state: { 
+        mode: 'detail', // detail、editor
         name: '',
         capsuleItems: [], // colorMockData?.capsuleItems,
         plainColors:  [], // colorMockData?.plainColors, //可用素色列表
@@ -17,7 +23,9 @@ const Model = {
         customFlowerColors: [], // 自主上传花布列表
         currentEditCapsuleItemIndex: -1,
         currentEditCapsuleItemFinishedIndex: -1,
-        currentEditCapsuleStyleRegion: -1
+        currentEditCapsuleStyleRegion: -1,
+        selectedGoodId: undefined,
+        selectedGoodCategryId: undefined,
     },
     effects: { // getCapsuleById 
         *getCapsuleById({ payload }, { call, put }) {
@@ -40,6 +48,35 @@ const Model = {
         *createCapsuleItem({ payload }, { put, call }) {
             const res = yield call(add, payload);
         },
+        *createCustomColor({ payload }, { put, call }) {
+            const res = yield call(colorAdd, payload);
+            if(res.success) {
+                yield put({
+                    type: 'getColorList',
+                    payload: {
+                        page: 1,
+                        limit: 10,
+                        type: payload.type,
+                        isCustom: 1,
+                    },
+                });
+            }
+            return res
+        },
+        *getColorList({ payload }, { call, put }) {
+            const res = yield call(colorList, payload);
+                
+            if (res.success && res.data) {
+                yield put({
+                    type: payload.type === 0 ? 'setCustomPlainColors' : 'setCustomFlowerColors',
+                    payload: res.data?.docs,
+                });
+            }
+        },
+        *applyForPublication({ payload }, { put, call }) {
+            const res = yield call(applyForPublication, payload);
+             return res
+        },
     },
     reducers: { 
         setCapsule(state, { payload }) {
@@ -54,6 +91,12 @@ const Model = {
                 name: payload,
             };
         },
+        setMode(state, { payload }) {
+            return {
+                ...state,
+                mode: payload,
+            };
+        },
         setPlainColors(state, { payload }) {
             return {
                 ...state,
@@ -64,6 +107,18 @@ const Model = {
             return {
                 ...state,
                 flowerColors: payload,
+            };
+        },
+        setCustomPlainColors(state, { payload }) {
+            return {
+                ...state,
+                customPlainColors: payload,
+            };
+        },
+        setCustomFlowerColors(state, { payload }) {
+            return {
+                ...state,
+                customFlowerColors: payload,
             };
         },
         setCapsuleItems(state, { payload }) {
@@ -102,7 +157,32 @@ const Model = {
                 currentEditCapsuleStyleRegion: payload,
             };
             
-        }
+        },
+        setCurrentEnlargeCapsuleItemIndex(state, { payload }) {
+            return {
+                ...state,
+                currentEnlargeCapsuleItemIndex: payload,
+            };
+        },
+        setCurrentEnlargeCapsuleItemFinishedIndex(state, { payload }) {
+            return {
+                ...state,
+                currentEnlargeCapsuleItemFinishedIndex: payload,
+            };
+        },
+        setSelectedGoodId(state, { payload }) {
+            return {
+                ...state,
+                selectedGoodId: payload,
+            };
+        },
+        setSelectedGoodCategryId(state, { payload }) {
+            return {
+                ...state,
+                selectedGoodCategryId: payload,
+            };
+        },
+
     },
 };
 export default Model;

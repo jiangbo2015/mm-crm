@@ -36,7 +36,7 @@ const ColorList = ({ colors, colorType = 0, onAdd, hideSearch }) => {
 
     return (<div className={styles['color-list-wrapper']}>
         <div className={styles['color-list-header']}>
-            {!hideSearch && <Search 
+            {hideSearch ? <div></div> : <Search 
                 prefix={<SearchOutlined />}  
                 bordered={false} 
                 addonAfter={null} 
@@ -48,7 +48,7 @@ const ColorList = ({ colors, colorType = 0, onAdd, hideSearch }) => {
             <PlusOutlined className={styles['add-icon-btn']} onClick={onAdd}/>
         </div>
         <div className={styles['color-list-body']}>
-        {map(filteredColors, item => <ColorItem item={item} size={30} />)}
+        {map(filteredColors, item => <ColorItem key={item._id} item={item} size={30} />)}
         </div>
         
     </div>)

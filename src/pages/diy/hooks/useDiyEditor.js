@@ -8,7 +8,9 @@ const useDiy = () => {
   const dispatch = useDispatch()
 //   plainColors
   const plainColors = useSelector(state => state?.diy?.plainColors)
+  const customPlainColors = useSelector(state => state?.diy?.customPlainColors)
   const flowerColors = useSelector(state => state?.diy?.flowerColors)
+  const customFlowerColors = useSelector(state => state?.diy?.customFlowerColors)
   const textures = useSelector(state => state?.diy?.textures)
   const capsuleItems = useSelector(state => state?.diy?.capsuleItems)
   const currentEditCapsuleItemIndex = useSelector(state => state?.diy?.currentEditCapsuleItemIndex)
@@ -61,14 +63,11 @@ const useDiy = () => {
     };
 
     const handleCompleteCapsuleItemFinished = (finishedObj) => {
-        console.log("finishedObj", finishedObj)
-        console.log("currentEditCapsuleItemFinishedIndex", currentEditCapsuleItemFinishedIndex)
         if(currentEditCapsuleItemFinishedIndex > 0) {
             currentEditCapsuleItem.finishedStyleColorsList[currentEditCapsuleItemFinishedIndex] = finishedObj
         } else {
-            currentEditCapsuleItem.finishedStyleColorsList.push(finishedObj)
+            currentEditCapsuleItem.finishedStyleColorsList = [finishedObj]
         }
-        console.log("capsuleItems", capsuleItems)
         dispatch({
             type: 'diy/setCapsuleItems',
             payload: [...capsuleItems],
@@ -87,7 +86,9 @@ const useDiy = () => {
     currentEditCapsuleStyleRegion,
     plainColors,
     flowerColors,
-    textures
+    textures,
+    customPlainColors,
+    customFlowerColors
  };
 };
 

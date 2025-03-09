@@ -69,7 +69,6 @@ request.use(async (ctx, next) => {
     await next();
 
     const { res } = ctx;
-    console.log("res",res)
     const { success = false, message } = res; // 假设返回结果为 : { success: false, errorCode: 'B001' }
     if (!success) {
         notification.error({

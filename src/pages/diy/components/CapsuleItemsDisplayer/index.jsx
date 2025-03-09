@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Tooltip, Upload, Spin } from 'antd'
-import { get, map } from 'lodash'
+import { get, map, filter, includes } from 'lodash'
 import classnames from 'classnames'
 import { connect } from 'dva'
 import {
@@ -16,6 +16,7 @@ import { filterImageUrl, uploadProps } from '@/utils/utils';
 import { ColorItem } from '@/components/ColorItem'
 import StylesSelectorModal from '@/components/StylesSelectorModal'
 import { DesignStyleEditor } from './components/DesignStyleEditor'
+import { EnlargeModal } from './components/EnlargeModal'
 import useDiy from '../../hooks/useDiy'
 import styles from './index.less'
 
@@ -25,10 +26,14 @@ export const ItemBottomTools = ({item = {}, index, showFinishedStyleIndex = -1})
         beforeUpload, 
         handleUpdateImg,
         handleUpdateVideo,
-        handleUpdateCapsuleItem
+        handleUpdateCapsuleItem,
+        handleEnlargeCapsuleItem,
+        handleDeleteCapsuleItem,
+        isEditor
     } = useDiy()
+    
     return (
-        <div
+        isEditor && <div
             className={classnames(styles['item-tools-box'])}
         >
             {type === 'style' ? 
@@ -48,8 +53,10 @@ export const ItemBottomTools = ({item = {}, index, showFinishedStyleIndex = -1})
                 >
                     <EditOutlined />
                 </Upload>}
-            <ZoomInOutlined/>
-            <DeleteOutlined/>
+            <ZoomInOutlined onClick={() => {
+                    handleEnlargeCapsuleItem(index, showFinishedStyleIndex)
+                }}/>
+            <DeleteOutlined onClick={() => { handleDeleteCapsuleItem(index)} }/>
         </div>
     )
 }
@@ -109,7 +116,9 @@ const AddCard = () => {
 
 const CapsuleItemStyles = ({ item = {}, index }) => {
     const { 
-        handleUpdateCapsuleItem
+        handleUpdateCapsuleItem,
+        handleEnlargeCapsuleItem,
+        isEditor
     } = useDiy()
     const {style, finishedStyleColorsList } = item
     const finishedStyleColorsLength = get(finishedStyleColorsList, 'length', 0) 
@@ -118,7 +127,7 @@ const CapsuleItemStyles = ({ item = {}, index }) => {
     const showFinishedStyle = get(finishedStyleColorsList, showIndex)
     return (
         <div className={styles['capsule-item-wrapper']}>
-            <div className={styles['aspect-ratio-box']}>
+            <div className={styles['aspect-ratio-box']} onClick={() => handleEnlargeCapsuleItem(index, showIndex)}>
                 <div className={classnames(styles['capsule-item'], styles['style-card'])}>
                     {finishedStyleColorsLength === 0 && <img className={styles['style-img']} src={filterImageUrl(style?.imgUrl)}/>}
                     {/* {map(finishedStyleColorsList, f => )} */}
@@ -143,9 +152,10 @@ const CapsuleItemStyles = ({ item = {}, index }) => {
                         <ColorItem item={get(colors, 0, {})} size={12} borderWidth={0}/>
                     </div>
                 ))}
-                <PlusOutlined onClick={() => {
+                {isEditor && <PlusOutlined onClick={() => {
                     handleUpdateCapsuleItem(index, -1)
-                }}/>
+                }}/>}
+                
             </div>}
         </div>
     )
@@ -153,9 +163,12 @@ const CapsuleItemStyles = ({ item = {}, index }) => {
 
 const CapsuleItemFile = ({ item,index }) => {
     const { type, fileUrl } = item
+    const { 
+        handleEnlargeCapsuleItem,    
+    } = useDiy()
     return (
         <div className={styles['capsule-item-wrapper']}>
-            <div className={styles['aspect-ratio-box']}>
+            <div className={styles['aspect-ratio-box']} onClick={() => handleEnlargeCapsuleItem(index, -1)}>
                 <div className={styles['capsule-item']}>
                     {type === 'img' && <img className={styles['upload-picture']} src={filterImageUrl(fileUrl)}/>}
                     {type === 'video' && <video className={styles['upload-picture']} src={filterImageUrl(fileUrl)}/>}
@@ -173,20 +186,25 @@ const CapsuleItem = (props) => {
     return type === 'style' ? <CapsuleItemStyles item={item} index={index} /> : <CapsuleItemFile item={item} index={index} />
 }
 
-const CapsuleItemsDisplayer = ({ capsuleItems, currentEditCapsuleItemIndex }) => {
+const CapsuleItemsDisplayer = ({arrangement = '5'}) => {
+    const { 
+        isEditor,
+        capsuleItems, currentEditCapsuleItemIndex, 
+        currentEnlargeCapsuleItemIndex, currentEnlargeCapsuleItemFinishedIndex
+    } = useDiy()
     const currentEditCapsuleItem = get(capsuleItems, currentEditCapsuleItemIndex)
+    const currentEnlargeCapsuleItem = get(capsuleItems, currentEnlargeCapsuleItemIndex)
+
     return (
-        <div className={styles['capsule-items-displayer']}>
+        <div className={classnames(styles['capsule-items-displayer'], styles[`grid-${arrangement}`])}>
             {map(capsuleItems, (item, i) => <CapsuleItem key={`capsule-item${i}`} index={i} item={item} />)}
-            <AddCard />
+            {isEditor && <AddCard />}
             {currentEditCapsuleItem && <DesignStyleEditor />}
+            {currentEnlargeCapsuleItem && <EnlargeModal capsuleItem={currentEnlargeCapsuleItem} finishedIndex={currentEnlargeCapsuleItemFinishedIndex} />}
         </div>
     );
 }
 
-export default connect(({ diy }) => ({
-    capsuleItems: diy.capsuleItems,
-    currentEditCapsuleItemIndex: diy.currentEditCapsuleItemIndex
-}))(CapsuleItemsDisplayer);
+export default CapsuleItemsDisplayer
 
 // export default CapsuleItemsDisplayer

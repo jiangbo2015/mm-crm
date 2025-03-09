@@ -1,13 +1,40 @@
-import React, { useState, useRef } from 'react';
-import { Modal, Upload, Avatar } from 'antd'
+import React, { useState, useRef, useEffect } from 'react';
+import { Modal, Upload, Form, Input, InputNumber, Row, Col, message } from 'antd'
 import ReactCrop from 'react-image-crop';
+import { get } from 'lodash'
 import 'react-image-crop/dist/ReactCrop.css';
 
 import request from '@/utils/request';
-
+import { Avatar, UploadBtn } from '@/pages/productManage/colors/UploadCom.js'
+import useDiy from '../../hooks/useDiy'
 import styles from './index.less';
 
+export const uploadProps = {
+    name: 'file',
+    listType: 'picture-card',
+    showUploadList: false,
+    action: `/api/common/uploadkit`,
+};
+const formItemLayout = {
+    labelCol: {
+        xs: {
+            span: 24,
+        },
+        sm: {
+            span: 18,
+        },
+    },
+    wrapperCol: {
+        xs: {
+            span: 24,
+        },
+        sm: {
+            span: 24,
+        },
+    },
+};
 const ImageCropper = ({ onUpload, modalProps }) => {
+    const { createCustomColor } = useDiy()
     const [src, setSrc] = useState(null);
     const [uploadedImgUrl, setUploadedImgUrl] = useState('');
     const [cropperOpen , setCropperOpen] = useState(false);
@@ -16,26 +43,25 @@ const ImageCropper = ({ onUpload, modalProps }) => {
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState('');
     const imageRef = useRef(null);
-    const fileInputRef = useRef(null);
-    console.log("crop", crop)
-  
-    // 处理文件选择
-    const handleFileChange = (e) => {
-      if (e.target.files && e.target.files[0]) {
+
+    const [form] = Form.useForm()
+    
+    const beforeUpload = (file) => {
         const reader = new FileReader();
-        reader.onload = () => {
-            setSrc(reader.result);
-            setCropperOpen(true)
+        reader.onload = (e) => {
+          setSrc(e.target.result);
+          setCropperOpen(true);
         };
-        reader.readAsDataURL(e.target.files[0]);
-      }
-    };
+        reader.readAsDataURL(file);
+        return false; // 阻止默认上传行为
+      };
   
+      useEffect(() => {
+        handleCropComplete()
+      }, [crop])
     // 获取裁剪后的图片
     const getCroppedImage = () => {
-      if (!imageRef.current || !crop.width || !crop.height) return;
-      console.log(crop)
-  
+      if (!imageRef.current || !crop.width || !crop.height) return;  
       const canvas = document.createElement('canvas');
       const scaleX = imageRef.current.naturalWidth / imageRef.current.width;
       const scaleY = imageRef.current.naturalHeight / imageRef.current.height;
@@ -58,7 +84,11 @@ const ImageCropper = ({ onUpload, modalProps }) => {
   
       return new Promise((resolve) => {
         canvas.toBlob((blob) => {
-          resolve(blob);
+            resolve({
+                blob, 
+                width: canvas.width,
+                height: canvas.height
+            });
         }, 'image/jpeg');
       });
     };
@@ -66,8 +96,8 @@ const ImageCropper = ({ onUpload, modalProps }) => {
     // 处理裁剪完成
     const handleCropComplete = async () => {
       try {
-        const blob = await getCroppedImage();
-        setCroppedImage(blob);
+        const croppedImageData = await getCroppedImage();
+        setCroppedImage(croppedImageData);
       } catch (err) {
         setError('图片裁剪失败');
       }
@@ -80,7 +110,7 @@ const ImageCropper = ({ onUpload, modalProps }) => {
         return;
       }
         var postData = new FormData();
-        postData.append('file', croppedImage);
+        postData.append('file', croppedImage?.blob);
 
         try {
             setIsUploading(true);
@@ -89,7 +119,9 @@ const ImageCropper = ({ onUpload, modalProps }) => {
                 data: postData,
                 method: 'post',
             });
-            uploadedImgUrl(response.data.url);
+
+            setUploadedImgUrl(response.data.url);
+            setCropperOpen(false)
         } catch (err) {
             setError('上传失败: ' + (err.message || '服务器错误'));
         } finally {
@@ -100,69 +132,74 @@ const ImageCropper = ({ onUpload, modalProps }) => {
     const handleCloseCropperModal = () => {
         setCropperOpen(false);
         setSrc(null);
-        // 重置文件输入
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
       };
+    
+      const handleOk = async () => {
+        const vals = form.getFieldsValue()
+        const names = get(vals, 'name', '').split('/')
+        console.log('handleOk', {
+            isCustom: 1,
+            size: get(vals, 'size'),
+            namecn: get(names, 0),
+            nameen: get(names, 1, get(names, 0)),
+            value: uploadedImgUrl,
+            type: 1,
+            width: croppedImage?.width,
+            height: croppedImage?.height,
+        })
+        const res = await createCustomColor({
+            isCustom: 1,
+            size: get(vals, 'size'),
+            namecn: get(names, 0),
+            nameen: get(names, 1, get(names, 0)),
+            value: uploadedImgUrl,
+            type: 1,
+            width: croppedImage?.width,
+            height: croppedImage?.height,
+        })
+        if(get(res, 'success')) {
+            modalProps.onCancel()
+        } else {
+            message.error(get(res, 'message'))
+        }
+
+      }
   return (
     <>
         <Modal
         {...modalProps}
         closable={false}
         top={112}
+        width={300}
         //   visible={visible}
-        // onOk={handleOk}
+        onOk={handleOk}
     >
-        <div className={styles.container}>
-            <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className={styles.fileInput}
-                ref={fileInputRef}
-                key={cropperOpen ? 'reset' : 'initial'}
-            />
-            <Upload>
-                <Avatar src={uploadedImgUrl}/>
-            </Upload>
-            {/* {src && (
-                <div className={styles.cropWrapper}>
-                <ReactCrop
-                    src={src}
-                    crop={crop}
-                    onChange={(newCrop) => setCrop(newCrop)}
-                    onImageLoaded={(img) => {
-                        imageRef.current = img;
-                    }}
-                    onComplete={handleCropComplete}
-                />
-                </div>
-            )} */}
-            {/* 
-            {croppedImage && (
-                <div className={styles.previewSection}>
-                <h4>裁剪预览:</h4>
-                <img 
-                    src={URL.createObjectURL(croppedImage)} 
-                    alt="裁剪预览"
-                    className={styles.previewImage}
-                />
-                </div>
-            )} */}
-
-            {/* {croppedImage && (
-                <button
-                onClick={handleUpload}
-                disabled={isUploading}
-                className={styles.uploadButton}
-                >
-                {isUploading ? '上传中...' : '确认上传'}
-                </button>
-            )}
-
-            {error && <div className={styles.error}>{error}</div>} */}
-        </div>
+            <Form form={form} {...formItemLayout} name="inputDesiner" layout="vertical">
+                <Row>
+                    <Col span="12">
+                        <Upload 
+                            {...uploadProps}
+                            className="avatar-uploader"
+                            beforeUpload={beforeUpload}
+                        >
+                            {!!uploadedImgUrl ? <Avatar src={uploadedImgUrl}/> : <UploadBtn type="plus"/>}
+                        </Upload>
+                    </Col>
+                    <Col span="1"></Col>
+                    <Col span="11">
+                        <Form.Item required name="size"  label={<span>印花图案单循环宽度（cm）</span>}>
+                            <InputNumber min={1} step={1} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row style={{marginTop: '30px'}}>
+                    <Col span="24">
+                        <Form.Item required name="name" label={<span>印花名称（自定义）</span>}>
+                            <Input style={{ width: '200px' }} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+            </Form>
         </Modal>
         <Modal
             open={cropperOpen}
@@ -196,7 +233,7 @@ const ImageCropper = ({ onUpload, modalProps }) => {
                             }, 0)
                             
                         }}
-                        onComplete={handleCropComplete}
+                        // onComplete={handleCropComplete}
                     />
                 </div>
             )}

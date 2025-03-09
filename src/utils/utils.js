@@ -2,6 +2,10 @@ import { parse } from 'querystring';
 import pathRegexp from 'path-to-regexp';
 import lodash from 'lodash';
 import { imgUrl, svgUrl } from '@/utils/apiconfig';
+
+import moment from 'moment'
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
@@ -91,3 +95,67 @@ export const uploadProps = {
     showUploadList: false,
     action: `/api/common/uploadkit`,
 };
+
+export const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * 下载文件并添加到 ZIP
+ * @param {string} url - 文件的完整 URL
+ * @param {string} filename - 文件名
+ * @param {JSZip} zip - JSZip 实例
+ */
+async function addFileToZip(url, filename, zip) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+        }
+        const blob = await response.blob();
+        zip.file(filename, blob);
+        console.log(`Added to ZIP: ${filename}`);
+    } catch (error) {
+        console.error(`Error downloading ${url}:`, error);
+    }
+}
+
+/**
+ * 下载数组中的所有图片和视频，并打包成 ZIP
+ * @param {Array} data - 包含资源的数组
+ */
+async function downloadResourcesAsZip(data, name) {
+    const baseUrl = 'https://ik.imagekit.io/';
+    const zip = new JSZip();
+
+    // 遍历数据，下载文件并添加到 ZIP
+    for (const item of data) {
+        // 下载 fileUrl
+        if (item.fileUrl) {
+            const fileUrl = `${baseUrl}${item.fileUrl}`;
+            const filename = item.fileUrl.split('/').pop(); // 提取文件名
+            await addFileToZip(fileUrl, filename, zip);
+        }
+
+        // 下载 finishedStyleColorsList 中的 imgUrlFront 和 imgUrlBack
+        if (item.finishedStyleColorsList && Array.isArray(item.finishedStyleColorsList)) {
+            for (const colorItem of item.finishedStyleColorsList) {
+                if (colorItem.imgUrlFront) {
+                    const imgUrlFront = `${baseUrl}${colorItem.imgUrlFront}`;
+                    const filename = colorItem.imgUrlFront.split('/').pop();
+                    await addFileToZip(imgUrlFront, `${filename}.png`, zip);
+                }
+                if (colorItem.imgUrlBack) {
+                    const imgUrlBack = `${baseUrl}${colorItem.imgUrlBack}`;
+                    const filename = colorItem.imgUrlBack.split('/').pop();
+                    await addFileToZip(imgUrlBack, `${filename}.png`, zip);
+                }
+            }
+        }
+    }
+
+    // 生成 ZIP 文件并触发下载
+    const content = await zip.generateAsync({ type: 'blob' });
+    saveAs(content, `${name ?? ''}${moment().format('YYYY-MM-DD hh:mm:ss')}-resources.zip`);
+    console.log('ZIP file downloaded');
+}
+
+export { downloadResourcesAsZip }

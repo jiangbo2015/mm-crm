@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Modal } from 'antd'
-import { isFunction } from 'lodash'
+import { Modal, message } from 'antd'
+import { isFunction, get } from 'lodash'
 import Icon, { HomeOutlined } from '@ant-design/icons';
+import useDiy from '../../hooks/useDiy'
 
 const DropperSvg  = () => ( <svg class="btn__icon" role="img" alt="eye dropper" height="60px" width="60px" xmlns="http://www.w3.org/2000/svg"
 version="1.1" viewBox="0 0 50 50" x="0px" y="0px">
@@ -13,6 +14,7 @@ version="1.1" viewBox="0 0 50 50" x="0px" y="0px">
 import styles from './index.less'
 
 const EyeDropperPicker = ({modalProps = {}}) => {
+    const { createCustomColor } = useDiy()
     const { onOk } = modalProps;
   const [selectedColor, setSelectedColor] = useState('');
   const [error, setError] = useState('');
@@ -38,9 +40,19 @@ const EyeDropperPicker = ({modalProps = {}}) => {
     }
   };
 
-  const handleOk = () => {
+  const handleOk = async () => {
     if(isFunction(onOk)) {
         onOk(selectedColor)
+    }
+    const res = await createCustomColor({
+        isCustom: 1,
+        value: selectedColor,
+        type: 0,
+    })
+    if(get(res, 'success')) {
+        modalProps.onCancel()
+    } else {
+        message.error(get(res, 'message'))
     }
   }
 
