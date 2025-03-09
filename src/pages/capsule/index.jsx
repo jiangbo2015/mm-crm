@@ -3,7 +3,8 @@ import { Card, Typography, Alert, Button, Modal, Row, Col, Input } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TableBasic from './TableBasic';
 import Form from './Form/index';
-import { connect } from 'umi';
+import { connect, useIntl } from 'umi';
+import { intl } from '@/utils/utils'
 
 const { Search } = Input;
 
@@ -79,7 +80,7 @@ const Com = props => {
                 </Col>
             </Row>
             <Card
-                title="胶囊列表"
+                title={intl('page.capsule.tableTitle')}
                 extra={
                     <Button type="primary" onClick={() => setVisible(true)}>
                         添加

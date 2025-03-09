@@ -48,4 +48,7 @@ export default {
   'menu.editor.flow': 'Flow Editor',
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
+  //2025
+  'menu.creativeCapsule': 'creative capsule',
+  'menu.capsule': 'capsule manage'
 };
