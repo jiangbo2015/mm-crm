@@ -6,7 +6,7 @@ import Avatar from './AvatarDropdown';
 import NoticeIconView from './NoticeIconView';
 import NoticeIcon from '../NoticeIcon';
 // import HeaderSearch from '../HeaderSearch';
-// import SelectLang from '../SelectLang';
+import SelectLang from '../SelectLang';
 import styles from './index.less';
 
 const GlobalHeaderRight = props => {
@@ -52,7 +52,7 @@ const GlobalHeaderRight = props => {
             </Badge>
         </a>
       </Dropdown> */}
-      {/* <SelectLang className={styles.action} /> */}
+      <SelectLang className={styles.action} />
     </div>
   );
 };

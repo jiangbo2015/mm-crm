@@ -10,7 +10,7 @@ import ProLayout, {
   DefaultFooter,
 } from '@ant-design/pro-layout';
 import React, { useEffect, useMemo, useRef } from 'react';
-import { Link, useIntl, connect, Dispatch, history } from 'umi';
+import { Link, useIntl, connect, Dispatch, history, getLocale } from 'umi';
 import { GithubOutlined } from '@ant-design/icons';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
@@ -53,6 +53,7 @@ const BasicLayout = (props) => {
   } = props;
 
   const menuDataRef = useRef([]);
+  const locale = getLocale()
 
   useEffect(() => {
     if (dispatch) {
@@ -82,12 +83,12 @@ const BasicLayout = (props) => {
     [location.pathname],
   );
 
-//   const { formatMessage } = useIntl();
+  const { formatMessage } = useIntl();
 
   return (
     <ProLayout
       logo={logo}
-    //   formatMessage={formatMessage}
+      formatMessage={formatMessage}
       {...props}
       {...settings}
       onCollapse={handleMenuCollapse}
@@ -98,13 +99,16 @@ const BasicLayout = (props) => {
         }
         return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
-      breadcrumbRender={(routers = []) => [
-        {
-          path: '/',
-          breadcrumbName: '首页',
-        },
-        ...routers,
-      ]}
+      breadcrumbRender={(routers = []) => {
+        console.log(routers, 'routers')
+        return [
+            {
+              path: '/',
+              breadcrumbName: locale === 'zh-CN' ? '首页' : 'HOME',
+            },
+            ...routers,
+          ]
+      }}
       itemRender={(route, params, routes, paths) => {
         const first = routes.indexOf(route) === 0;
         return first ? (

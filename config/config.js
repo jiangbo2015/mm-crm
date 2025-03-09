@@ -66,6 +66,9 @@ export default {
     plugins,
     dva: {},
     antd: {},
+    locale: {
+        baseNavigator: true,
+    },
     hash: true,
     history: {
         type: 'hash',
@@ -123,6 +126,7 @@ export default {
                         {
                             path: '/creativeCapsule',
                             name: '创意胶囊',
+                            locale: 'menu.creativeCapsule',
                             icon: 'camera',
                             component: './creativeCapsule',
                             authority: ['admin', 'productor', 'designer', 'customer'],
@@ -240,6 +244,7 @@ export default {
                         {
                             path: '/capsule',
                             name: '胶囊管理',
+                            locale: 'menu.capsule',
                             icon: 'copyright',
                             component: './capsule',
                             authority: ['admin'],
