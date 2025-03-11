@@ -71,6 +71,7 @@ const starIconStyle = {
 }
 
 const Com = props => {
+    const [key, setKey] = useState(0)
     const [images, setImages] = useState(defimages);
     const [isLoading, setIsLoading] = useState(false)
     const [searchText, setSearchText] = useState('')
@@ -90,6 +91,8 @@ const Com = props => {
         props.dispatch({
             type: 'creativeCapsule/getList',
             payload,
+        }).then(() => {
+            setKey(Date.now())
         });
         props.dispatch({
             type: 'creativeCapsule/getFavorites',
@@ -177,7 +180,6 @@ const Com = props => {
                     placeholder="input search text"
                     allowClear
                     onSearch={v => {
-                        ulMaxHRef.current = 0;
                         setSearchText(v)
                     }} 
                     size='large'
@@ -189,6 +191,7 @@ const Com = props => {
                     }}  
                 />
                 <div
+                    key={key}
                     style={{
                         height: 'calc(100vh - 150px)',
                         overflowY: 'scroll',
