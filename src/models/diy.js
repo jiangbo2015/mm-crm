@@ -39,11 +39,11 @@ const Model = {
         },
         *createCapsule({ payload }, { put, call }) {
             const res = yield call(add, payload);
-             
+            return res 
         },
         *updateCapsule({ payload }, { put, call }) {
             const res = yield call(update, payload);
-             
+            return res
         },
         *createCapsuleItem({ payload }, { put, call }) {
             const res = yield call(add, payload);

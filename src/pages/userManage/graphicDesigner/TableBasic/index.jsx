@@ -117,7 +117,7 @@ const Com = props => {
             >
                 <Form ref={v => (formRef.current = v)} />
             </Modal>
-            <Table columns={columns} dataSource={get(props, "user.graphicDesignerList.docs", [])} />
+            <Table columns={columns} dataSource={get(props, "user.graphicDesignerList", [])} />
         </>
     );
 };

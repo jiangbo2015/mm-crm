@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Modal } from 'antd';
+import { Card, Button, Modal, Radio } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 
 import Form from './Form';
@@ -8,6 +8,7 @@ import { connect } from 'dva';
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
+    const [allData, setAllData] = useState(false);
     const formRef = React.useRef();
     useEffect(() => {
         props.dispatch({
@@ -25,7 +26,10 @@ const Com = props => {
                     payload: {
                         role: 3,
                         ...values,
-                        channels: [values.channels], //要以数组的形式发送
+                        fetchParams: {
+                            role: 3,
+                            owner: allData ? undefined : props.user.currentUser._id
+                        }
                     },
                 });
             }
@@ -43,27 +47,36 @@ const Com = props => {
         formRef.current.resetFields();
     };
 
+    const IsAdmin = props.user.currentUser.authority === 'admin'
+
     return (
         <PageHeaderWrapper>
             <Card
-                title="客户列表"
+                title={
+                    IsAdmin ? (
+                        <Radio.Group size='large' value={allData} onChange={e => setAllData(e.target.value)}>
+                            <Radio.Button value={false}>我的客户</Radio.Button>
+                            <Radio.Button value={true}>所有客户</Radio.Button>
+                        </Radio.Group>
+                    ) : "我的客户"
+                }
                 extra={
                     <div>
-                        <Button type="primary" onClick={() => setVisible(true)}>
+                        {allData ? null : <Button type="primary" onClick={() => setVisible(true)}>
                             添加
-                        </Button>
-                        <Button
+                        </Button>}
+                        {/* <Button
                             style={{ marginLeft: '20px' }}
                             type="primary"
                             onClick={() => download()}
                         >
                             导出
-                        </Button>
+                        </Button> */}
                     </div>
                 }
                 style={{ marginBottom: '20px' }}
             >
-                <TableBasic />
+                <TableBasic isAllData={allData} />
             </Card>
             <Modal
                 title="添加"
@@ -84,4 +97,4 @@ const Com = props => {
     );
 };
 
-export default connect(state => ({}))(Com);
+export default connect(({ user }) => ({user}))(Com);

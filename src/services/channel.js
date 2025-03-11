@@ -7,6 +7,13 @@ export async function getList(data) {
     });
 }
 
+export async function getAllList(data) {
+    return request('/api/channel/getList', {
+        method: 'get',
+        params: data,
+    });
+}
+
 export async function findById(data) {
     return request('/api/channel/findById', {
         method: 'get',

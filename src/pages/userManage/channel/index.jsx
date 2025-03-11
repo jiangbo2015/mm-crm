@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { get, filter } from 'lodash';
-import { Card, Button, Modal } from 'antd';
+import { Card, Button, Modal, Radio } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 
 import Form from './Form';
@@ -34,6 +34,7 @@ function createCode(pre, currentList) {
 // channelList: get(channel, "list"),
 const Com = ({dispatch, channelList, currentUser}) => {
     const [visible, setVisible] = useState(false);
+    const [allData, setAllData] = useState(false);
     const newChannelCode = createCode(currentUser?.name, channelList)
     const formRef = React.useRef();
 
@@ -54,18 +55,27 @@ const Com = ({dispatch, channelList, currentUser}) => {
         formRef.current.resetFields();
     };
 
+    const IsAdmin = currentUser.authority === 'admin'
+
     return (
         <PageHeaderWrapper>
             <Card
-                title="通道列表"
+                title={
+                    IsAdmin ? (
+                        <Radio.Group size='large' value={allData} onChange={e => setAllData(e.target.value)}>
+                            <Radio.Button value={false}>我的通道</Radio.Button>
+                            <Radio.Button value={true}>所有通道</Radio.Button>
+                        </Radio.Group>
+                    ) : "我的通道"
+                }
                 extra={
-                    <Button type="primary" onClick={() => setVisible(true)}>
+                    allData ? null : <Button type="primary" onClick={() => setVisible(true)}>
                         添加
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}
             >
-                <TableBasic />
+                <TableBasic isAllData={allData} />
             </Card>
             <Modal
                 title="添加"

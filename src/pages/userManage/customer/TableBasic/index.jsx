@@ -31,25 +31,31 @@ const Com = props => {
             },
         },
         {
-            title: '操作',
-            dataIndex: 'action',
-            key: 'action',
-            render: (text, record) => (
-                <div>
-                    <a onClick={e => handleEdit(record)}>编辑</a>
-                    <Divider type="vertical" />
-                    <Popconfirm
-                        title="确认要删除吗"
-                        onConfirm={() => handleDelete(record)}
-                        okText="是"
-                        cancelText="否"
-                    >
-                        <a href="#">删除</a>
-                    </Popconfirm>
-                </div>
-            ),
+            title: '所属通道',
+            dataIndex: 'email',
+            render: (email) => {
+                return <div>{email}</div>;
+            },
         },
-    ];
+    ].concat(props.isAllData ? [] : [{
+        title: '操作',
+        dataIndex: 'action',
+        key: 'action',
+        render: (text, record) => (
+            <div>
+                <a onClick={e => handleEdit(record)}>编辑</a>
+                <Divider type="vertical" />
+                <Popconfirm
+                    title="确认要删除吗"
+                    onConfirm={() => handleDelete(record)}
+                    okText="是"
+                    cancelText="否"
+                >
+                    <a href="#">删除</a>
+                </Popconfirm>
+            </div>
+        ),
+    }])
     const formRef = useRef();
     const [visible, setVisible] = useState(false);
     const [data, setData] = useState({});
@@ -83,13 +89,18 @@ const Com = props => {
         }
     }, [visible]);
     useEffect(() => {
-        props.dispatch({
-            type: 'user/fetch',
-            payload: {
-                role: 3,
-            },
-        });
-    }, []);
+        console.log('user/fetch', props.isAllData)
+        console.log('user/fetch', props?.user?.currentUser?._id)
+        if(props?.user?.currentUser?._id) {
+            props.dispatch({
+                type: 'user/fetch',
+                payload: {
+                    role: 3,
+                    owner: props.isAllData ? undefined : props?.user?.currentUser?._id
+                },
+            });
+        }
+    }, [props.isAllData, props?.user?.currentUser?._id]);
     const handleDelete = record => {
         props.dispatch({
             type: 'user/delete',

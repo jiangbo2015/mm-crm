@@ -1,11 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Button, Modal, Spin } from 'antd';
+import { Input, Button, Modal, Spin } from 'antd';
 import { get } from 'lodash';
 import { filterImageUrl } from '@/utils/utils';
 import { connect } from 'dva';
-
+import { history } from 'umi';
+import {
+    StarFilled,
+    StarOutlined,
+  } from '@ant-design/icons';
 import Waterfall from 'waterfalljs-layout/dist/react/index.esm';
-import { useDebounce } from './useDebounce';
+import { useDebounce } from '@/hooks/useDebounce';
+
+const { Search } = Input;
 
 const defimages = [
     'https://picsum.photos/640/200/?random',
@@ -32,7 +38,7 @@ const customStyleGrid = `
   margin-bottom: 20px;
   padding: 0px;
   background: rgb(255, 255, 255);
-  transition: all 0.5s
+  transition: all 0.5s;
 }
 #react-waterfall-grid-comps li>div:hover {
   transform: translateY(-6px);
@@ -44,41 +50,71 @@ const customStyleGrid = `
     column-gap: 24px;
 }
 #react-waterfall-grid-comps li>div>img {
-  width: 100%
-}`;
+  width: 100%;
+  cursor: pointer;
+}
+#react-waterfall-grid-comps li>div>span {
+  display: none;
+}
+#react-waterfall-grid-comps li>div:hover>span {
+  display: block;
+}
+`;
+
+const starIconStyle = { 
+    position: 'absolute', 
+    right: '12px', 
+    top: '18px', 
+    fontSize: '26px',
+    color: '#f7d102',
+    cursor: 'pointer'
+}
 
 const Com = props => {
     const [images, setImages] = useState(defimages);
     const [isLoading, setIsLoading] = useState(false)
+    const [searchText, setSearchText] = useState('')
     const ulMaxHRef = useRef(0);
     const scrollContainerRef = useRef({})
+    const { capsuleFavoritesMap } = props
     const {docs, pages, page} = props.list
 
     useEffect(() => {
+        const payload = {
+            page: 1,
+            limit: 20
+        }
+        if (searchText) {
+            payload.name = searchText
+        }
         props.dispatch({
             type: 'creativeCapsule/getList',
-            payload: {
-                page: 1,
-                limit: 20
-            },
+            payload,
+        });
+        props.dispatch({
+            type: 'creativeCapsule/getFavorites',
         });
         return () => {
             props.dispatch({
                 type: 'creativeCapsule/clearCapsuleList'
             });
         }
-    }, [])
+    }, [searchText])
     
 
     const handleSearchImage = async () => {
         if(Number(page) < pages && !isLoading) {
             setIsLoading(true)
+            const payload = {
+                page: Number(page) + 1,
+                limit: 20
+            }
+            if (searchText) {
+                payload.name = searchText
+            }
             await props.dispatch({
                 type: 'creativeCapsule/getList',
-                payload: {
-                    page: Number(page) + 1,
-                    limit: 20,
-                },
+                payload,
             });
             setIsLoading(false)
         }
@@ -113,9 +149,45 @@ const Com = props => {
 
     const debounceScroll = useDebounce(handleScroll, 300)
 
+    const handleAddFavorite = (id) => {
+        props.dispatch({
+            type: 'creativeCapsule/addFavorite',
+            payload: {
+                capsule: id
+            }
+        })
+    } 
+
+    const handleDelFavorite = (id) => {
+        props.dispatch({
+            type: 'creativeCapsule/delFavorite',
+            payload: id
+        })
+    } 
+
+    const handleGoDIY = (id) => {
+        history.push(`/diy/${id}`)
+    }
+
+
     return (
         <Spin spinning={isLoading}>
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '20px', position: 'relative' }}>
+                <Search 
+                    placeholder="input search text"
+                    allowClear
+                    onSearch={v => {
+                        ulMaxHRef.current = 0;
+                        setSearchText(v)
+                    }} 
+                    size='large'
+                    style={{ 
+                        width: 360,
+                        position: 'absolute',
+                        top: '-56px',
+                        zIndex: 999
+                    }}  
+                />
                 <div
                     style={{
                         height: 'calc(100vh - 150px)',
@@ -136,9 +208,15 @@ const Com = props => {
                     >
                         {(docs || []).map((item, index) => {
                             return (
-                                <li key={index}>
-                                    <div>
-                                        <img src={filterImageUrl(item.imgUrl || 
+                                <li key={index + '' + searchText}>
+                                    <div style={{position: 'relative'}}>
+                                        {!!capsuleFavoritesMap[item?._id] ? 
+                                            <StarFilled onClick={() => { handleDelFavorite(capsuleFavoritesMap[item?._id]?._id)}} style={starIconStyle} /> : 
+                                            <StarOutlined onClick={() => { handleAddFavorite(item?._id)}} style={starIconStyle} />
+                                        }
+                                        <img 
+                                            onClick={() => handleGoDIY(item?._id)}
+                                            src={filterImageUrl(item.imgUrl || 
                                             get(item, 'capsuleItems.0.fileUrl') || 
                                             get(item, 'capsuleItems.0.finishedStyleColorsList.0.imgUrlFront'))} alt="" style={{minHeight: 100}} />
                                     </div>

@@ -13,7 +13,7 @@ const DiyActions = () => {
     const author = useSelector(state => state?.diy?.author)
     const _id = useSelector(state => state?.diy?._id)
     const [modal, contextHolder] = Modal.useModal();
-    const IsAuthor = author?._id === currentUser?._id
+    const IsAuthor = !author || author?._id === currentUser?._id
 
     const handleDownload = async () => {
         const downloadingModal = modal.info({

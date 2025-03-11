@@ -17,6 +17,7 @@ const UserModel = {
         productorList: [],
         designerList: [],
         customerList: [],
+        graphicDesignerList: [],
     },
     effects: {
         *fetch({ payload }, { call, put }) {
@@ -39,13 +40,12 @@ const UserModel = {
         },
 
         *add({ payload }, { call, put }) {
-            const { success } = yield call(add, payload);
+            const { fetchParams, ...data } = payload
+            const { success } = yield call(add, data);
             if (success) {
                 yield put({
                     type: 'fetch',
-                    payload: {
-                        role: payload.role,
-                    },
+                    payload: fetchParams ?? {role: payload.role},
                 });
             }
         },
@@ -85,7 +85,7 @@ const UserModel = {
     reducers: {
         saveCurrentUser(state, action) {
             setAuthority(RoleToAuthority[action?.payload?.role]);
-            return { ...state, currentUser: { ...state.currentUser, ...action.payload} || {} };
+            return { ...state, currentUser: { ...state.currentUser, ...action.payload, authority: RoleToAuthority[action?.payload?.role]} || {} };
         },
         setUsers(state, { payload }) {
             console.log(payload);

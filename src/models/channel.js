@@ -1,5 +1,6 @@
 import {
     getList as queryList,
+    getAllList,
     add as addChannel,
     update as udpateChannel,
     del as deleteChannel,
@@ -11,6 +12,7 @@ const Model = {
     namespace: 'channel',
     state: {
         list: [],
+        allList: []
     },
     effects: {
         *getList({ payload }, { call, put }) {
@@ -23,7 +25,16 @@ const Model = {
                 });
             }
         },
-
+        *getAllList({ payload }, { call, put }) {
+            const res = yield call(getAllList, payload);
+             
+            if (res.success) {
+                yield put({
+                    type: 'setAllChannelList',
+                    payload: res.data,
+                });
+            }
+        },
         *findById({ payload }, { call, put }) {
             const res = yield call(findById, payload);
              
@@ -86,6 +97,12 @@ const Model = {
             return {
                 ...state,
                 currentChannel: payload,
+            };
+        },
+        setAllChannelList(state, { payload }) {
+            return {
+                ...state,
+                allList: payload,
             };
         },
     },

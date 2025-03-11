@@ -23,6 +23,13 @@ export async function getList(data) {
     });
 }
 
+export async function getMyFavoriteList(data) {
+    return request('/api/capsule/getMyFavoriteList', {
+        method: 'get',
+        params: data,
+    });
+}
+
 export async function add(data) {
     return request('/api/capsule/add', {
         method: 'post',

@@ -30,17 +30,20 @@ const Com = props => {
             key: '_id',
             render: (id, record) => (
                 <div>
-                    <a onClick={e => handleEdit(record)}>编辑</a>
-                    <Divider type="vertical" />
-                    <Popconfirm
-                        title="确认要删除吗"
-                        onConfirm={() => handleDelete(record)}
-                        okText="是"
-                        cancelText="否"
-                    >
-                        <a href="#">删除</a>
-                    </Popconfirm>
-                    <Divider type="vertical" />
+                    {props?.isAllData? null: <> 
+                        <a onClick={e => handleEdit(record)}>编辑</a>
+                            <Divider type="vertical" />
+                            <Popconfirm
+                                title="确认要删除吗"
+                                onConfirm={() => handleDelete(record)}
+                                okText="是"
+                                cancelText="否"
+                            >
+                                <a href="#">删除</a>
+                            </Popconfirm>
+                            <Divider type="vertical" />
+                        </>
+                    }
                     <Link to={`/userManage/channel/detail/${id}`}>详情</Link>
                 </div>
             ),
@@ -77,9 +80,9 @@ const Com = props => {
     }, [visible]);
     useEffect(() => {
         props.dispatch({
-            type: 'channel/getList',
+            type: props?.isAllData? 'channel/getAllList' : 'channel/getList',
         });
-    }, []);
+    }, [props?.isAllData]);
     const handleDelete = record => {
         props.dispatch({
             type: 'channel/delete',
@@ -114,12 +117,13 @@ const Com = props => {
             >
                 <Form ref={v => (formRef.current = v)} />
             </Modal>
-            <Table columns={columns} dataSource={get(props, "channelList", [])} />
+            <Table columns={columns} dataSource={props?.isAllData ? get(props, "allChannelList", []) : get(props, "channelList", [])} />
         </>
     );
 };
 
 export default connect(({  loading, channel }) => ({
     channelList: get(channel, "list"),
+    allChannelList: get(channel, "allList"),
     fetching: loading.effects['channel/getList'],
 }))(Com);

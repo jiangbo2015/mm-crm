@@ -117,11 +117,7 @@ export default {
                     routes: [
                         {
                             path: '/',
-                            redirect: '/welcome',
-                        },
-                        {
-                            path: '/welcome',
-                            component: './welcome/index.jsx',
+                            redirect: '/creativeCapsule',
                         },
                         {
                             path: '/creativeCapsule',
@@ -178,16 +174,16 @@ export default {
                                     component: './userManage/channel/detail/index.jsx',
                                 },
                                 {
-                                    path: '/userManage/productor',
-                                    name: '产品经理',
-                                    component: './userManage/productor/index.jsx',
-                                    authority: ['admin'],
-                                },
-                                {
                                     path: '/userManage/customer',
                                     name: '客户',
                                     component: './userManage/customer',
                                     authority: ['admin', 'productor'],
+                                },
+                                {
+                                    path: '/userManage/productor',
+                                    name: '产品经理',
+                                    component: './userManage/productor/index.jsx',
+                                    authority: ['admin'],
                                 },
                                 {
                                     path: '/userManage/designer',

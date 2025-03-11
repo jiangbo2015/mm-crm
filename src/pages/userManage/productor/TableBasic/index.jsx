@@ -107,6 +107,7 @@ const Com = props => {
         formRef.current.resetFields();
     };
 
+    console.log("productorList", props.user.productorList)
     return (
         <>
             <Modal
@@ -123,7 +124,7 @@ const Com = props => {
             >
                 <Form ref={v => (formRef.current = v)} editId={data._id} />
             </Modal>
-            <Table columns={columns} dataSource={props.user.productorList.docs} />
+            <Table columns={columns} dataSource={props.user.productorList} />
         </>
     );
 };
