@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input, Button, Modal, Spin } from 'antd';
-import { get } from 'lodash';
+import { get, debounce } from 'lodash';
 import { filterImageUrl } from '@/utils/utils';
 import { connect } from 'dva';
 import { history } from 'umi';
@@ -171,6 +171,21 @@ const Com = props => {
     const handleGoDIY = (id) => {
         history.push(`/diy/${id}`)
     }
+
+     // 防抖函数
+  const handleResize = debounce(() => {
+    setKey(Date.now())
+  }, 200); 
+
+    useEffect(() => {
+        // 添加 resize 事件监听器
+        window.addEventListener('resize', handleResize);
+    
+        // 清除事件监听器
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, [handleResize]); // 依赖项中添加 handleResize
 
 
     return (

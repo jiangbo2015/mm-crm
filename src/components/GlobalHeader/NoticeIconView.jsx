@@ -124,11 +124,12 @@ class GlobalHeaderRight extends Component {
             {
                 notices.map(item => (
                     <div 
-                        style={{display: 'flex', gap: '10px', marginBottom: '10px', cursor: "pointer"}}
+                        className={styles['notice-item']}
+                        // style={{display: 'flex', gap: '10px', marginBottom: '10px', cursor: "pointer"}}
                         onClick={() => this.changeReadState(item)}
                     >
                         <img src={filterImageUrl(item.coverImage)} alt="" width={100} style={{flex: 'none'}} />
-                        <div>{item.content}</div>
+                        <b>{item.content}</b>
                     </div>
                 ))
             }

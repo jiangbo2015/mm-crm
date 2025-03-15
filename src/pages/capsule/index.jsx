@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Typography, Alert, Button, Modal, Row, Col, Input } from 'antd';
+import { Card, Typography, Alert, Radio, Modal, Row, Col, Input } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TableBasic from './TableBasic';
 import Form from './Form/index';
@@ -12,26 +12,49 @@ const Com = props => {
     const formRef = useRef();
     const [visible, setVisible] = useState(false);
     const [styleNo, setStyleNo] = useState(false);
+    const [capsuleStatus, setCapsuleStatus] = useState('pending');
     useEffect(() => {
         if (props.dispatch) {
+            const payload = {
+                status: capsuleStatus,
+                limit: 10,
+            }
+            if(styleNo) {
+                payload.name = styleNo
+            }
             props.dispatch({
                 type: 'capsule/getList',
-            });
-            props.dispatch({
-                type: 'goods/getList',
+                payload
             });
         }
     }, []);
 
     const handleSearch = value => {
         setStyleNo(value);
+        const payload = {
+            limit: 10,
+            status: capsuleStatus,
+        }
+        if(value) {
+            payload.name = value
+        }
         props.dispatch({
             type: 'capsule/getList',
-            payload: {
-                namecn: value,
-                nameen: value,
-                limit: 10,
-            },
+            payload,
+        });
+    };
+    const handleChangeStatus = value => {
+        setCapsuleStatus(value);
+        const payload = {
+            status: value,
+            limit: 10,
+        }
+        if(styleNo) {
+            payload.name = styleNo
+        }
+        props.dispatch({
+            type: 'capsule/getList',
+            payload,
         });
     };
     const handleClear = () => {
@@ -56,14 +79,14 @@ const Com = props => {
     const handlePageChange = page => {
         let queries = {};
         if (styleNo) {
-            queries.namecn = styleNo;
-            queries.nameen = styleNo;
+            queries.name = styleNo;
         }
         props.dispatch({
             type: 'capsule/getList',
             payload: {
                 page,
                 limit: 10,
+                status: capsuleStatus,
                 ...queries,
             },
         });
@@ -73,18 +96,25 @@ const Com = props => {
             <Row style={{ marginBottom: '10px' }}>
                 <Col span="8">
                     <Search
-                        placeholder="请输入款式编号"
+                        placeholder="请输入胶囊名称"
                         onSearch={value => handleSearch(value)}
                         enterButton
                     />
                 </Col>
             </Row>
             <Card
-                title={intl('page.capsule.tableTitle')}
-                extra={
-                    <Button type="primary" onClick={() => setVisible(true)}>
-                        添加
-                    </Button>
+                title={
+                    <>{intl('page.capsule.tableTitle')}
+                    <Radio.Group 
+                        style={{marginLeft: '10px'}} 
+                        value={capsuleStatus} 
+                        onChange={e => handleChangeStatus(e.target.value)}
+                    >
+                        <Radio.Button value="pending">待审核</Radio.Button>
+                        <Radio.Button value="published">已发布</Radio.Button>
+                        <Radio.Button value="draft">默认状态</Radio.Button>
+                    </Radio.Group>
+                    </>
                 }
             >
                 <TableBasic

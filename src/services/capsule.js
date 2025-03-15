@@ -23,6 +23,14 @@ export async function getList(data) {
     });
 }
 
+export async function getAdminList(data) {
+    return request('/api/capsule/getAdminList', {
+        method: 'get',
+        params: data,
+    });
+}
+
+
 export async function getMyFavoriteList(data) {
     return request('/api/capsule/getMyFavoriteList', {
         method: 'get',

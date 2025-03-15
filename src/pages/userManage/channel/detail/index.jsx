@@ -157,6 +157,37 @@ const Com = ({dispatch, currentChannel = {}, updateChannelLoading, customerList}
                 </FormModal>
             </Card>
             <Card
+                title="胶囊"
+                extra={
+                    <Button type="primary" onClick={showModal}>
+                        分配
+                    </Button>
+                }
+                style={{ marginBottom: '20px' }}
+            >
+                {map(costomers, c => (<Tag
+                    color="geekblue"
+                    style={{ fontSize: '14px', lineHeight: '30px', marginRight: 8 }} 
+                    className={styles.tag} 
+                    icon={<UserOutlined />}
+                >
+                    {c?.name}
+                </Tag>))}
+                <FormModal>
+                    <Form.Item
+                        name="costomers"
+                    >
+                        <Select
+                            mode="multiple"
+                            showArrow
+                            tagRender={tagRender}
+                            style={{ width: '100%', lineHeight: '38px' }}
+                            options={map(customerList, c => ({label: c?.name, value: c?._id}))}
+                        />
+                    </Form.Item>
+                </FormModal>
+            </Card>
+            <Card
                 title="款式"
                 extra={
                     <Button type="primary" onClick={showStylesSelectorModal}>

@@ -7,6 +7,7 @@ import Preview from '../Preview';
 // import { imgUrl } from '@/utils/apiconfig';
 import { filterImageUrl } from '@/utils/utils';
 import { getGoodsParamsToValue } from '@/utils/utils';
+import RecordModal from '@/components/RecordModal';
 
 const Com = props => {
     const columns = [
@@ -52,6 +53,8 @@ const Com = props => {
                     >
                         <a href="#">删除</a>
                     </Popconfirm>
+                    <Divider type="vertical" />
+                    <a onClick={() => props.dispatch({type: 'record/getList', payload: {modelId: record._id}})}>修改记录</a>
                 </div>
             ),
         },
@@ -200,11 +203,12 @@ const Com = props => {
                     },
                 }}
             />
+            {props.record.visible && <RecordModal {...props.record} onCancel={() => props.dispatch({type: 'record/toggleModal', payload: false})} />}
         </>
     );
 };
 
-export default connect(({ style, goods, loading }) => ({
+export default connect(({ style, goods, loading,record }) => ({
     styleList: style.list,
     imgUrl: style.imgUrl || '',
     svgUrl: style.svgUrl || '',
@@ -215,4 +219,5 @@ export default connect(({ style, goods, loading }) => ({
     fetching: loading.effects['style/get'],
     goodsList: goods.list,
     currentCategorys: style.currentCategorys,
+    record
 }))(Com);

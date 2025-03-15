@@ -134,13 +134,13 @@ export default {
                             component: './myFavorites',
                             authority: ['admin', 'productor', 'designer', 'customer'],
                         },
-                        {
-                            path: '/notices',
-                            name: '通知发布',
-                            icon: 'bell',
-                            component: './notices',
-                            authority: ['admin', 'productor', 'designer', 'customer'],
-                        },
+                        // {
+                        //     path: '/notices',
+                        //     name: '通知发布',
+                        //     icon: 'bell',
+                        //     component: './notices',
+                        //     authority: ['admin', 'productor', 'designer', 'customer'],
+                        // },
                         {
                             path: '/myDiy',
                             name: '我的创建',

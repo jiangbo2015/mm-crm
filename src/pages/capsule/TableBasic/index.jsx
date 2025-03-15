@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
+import { history } from 'umi';
 import Form from '../Form';
 import CapsuleProduct from './capsuleProduct';
 import { filterImageUrl } from '@/utils/utils';
@@ -9,7 +10,7 @@ import { filterImageUrl } from '@/utils/utils';
 const PENDING_MAP = {
     draft: '默认状态',
     pending: '申请发布中',
-    published: '已完成'
+    published: '已发布'
 }
 
 const Com = props => {
@@ -54,7 +55,9 @@ const Com = props => {
             key: 'action',
             render: (text, record) => (
                 <div>
-                    <a onClick={() => {}}>查看</a>
+                    <a onClick={() => {
+                        history.push(`/diy/${record?._id}`)
+                    }}>查看</a>
                     <Divider type="vertical" />
                     {
                         record.status === 'pending' && (

@@ -9,7 +9,11 @@ import {
     colorList
 } from '@/services/style';
 import colorMockData from '../../mock/color'
-
+const ColorTypeToreducerKey = {
+    0: 'setCustomPlainColors',
+    1: 'setCustomFlowerColors',
+    2: 'setTextures'
+}
 const Model = {
     namespace: 'diy',
     state: { 
@@ -67,8 +71,9 @@ const Model = {
             const res = yield call(colorList, payload);
                 
             if (res.success && res.data) {
+
                 yield put({
-                    type: payload.type === 0 ? 'setCustomPlainColors' : 'setCustomFlowerColors',
+                    type: ColorTypeToreducerKey[payload.type],
                     payload: res.data?.docs,
                 });
             }
@@ -78,7 +83,7 @@ const Model = {
              return res
         },
     },
-    reducers: { 
+    reducers: {
         setCapsule(state, { payload }) {
             return {
                 ...state,
@@ -101,6 +106,12 @@ const Model = {
             return {
                 ...state,
                 plainColors: payload,
+            };
+        },
+        setTextures(state, { payload }) {
+            return {
+                ...state,
+                textures: payload,
             };
         },
         setFlowerColors(state, { payload }) {
@@ -182,7 +193,6 @@ const Model = {
                 selectedGoodCategryId: payload,
             };
         },
-
     },
 };
 export default Model;

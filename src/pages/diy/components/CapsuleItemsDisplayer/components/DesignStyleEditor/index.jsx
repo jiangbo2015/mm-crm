@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Spin,Tag, Input, Drawer, Divider } from 'antd';
+import { Modal, Button, Spin,Tag, Input, Radio, Divider } from 'antd';
 import Slider from "react-slick";
-import { get, map } from 'lodash'
+import { get, map, split } from 'lodash'
 import classnames from 'classnames'
 import {
     ZoomInOutlined,
@@ -79,16 +79,17 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
 
     useEffect(() => {
         // 定义事件处理函数
-        const handleClick = () => {
-            handleUpdateCurrentEditCapsuleStyleRegion(-1)
-        };
+        // const handleClick = () => {
+        //     handleUpdateCurrentEditCapsuleStyleRegion(-1)
+        // };
 
-        // 添加事件监听器
-        window.addEventListener('click', handleClick);
+        // // 添加事件监听器
+        // window.addEventListener('click', handleClick);
 
         // 清理函数：在组件卸载时移除事件监听器
         return () => {
-            window.removeEventListener('click', handleClick);
+            handleUpdateCurrentEditCapsuleStyleRegion(-1)
+            // window.removeEventListener('click', handleClick);
         };
     }, []); // 空依赖数组表示只在组件挂载和卸载时执行
 
@@ -105,10 +106,12 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
     }
 
     const handleCancel = () => {
+        handleUpdateCurrentEditCapsuleStyleRegion(-1)
         handleUpdateCapsuleItem(-1, -1)
     }
 
     const handleOk = async () => {
+        handleUpdateCurrentEditCapsuleStyleRegion(-1)
         setCreateImgLoading(true);
         // 等待选择svg高亮被取消
         await wait(1000);
@@ -154,10 +157,15 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
             <Spin spinning={createImgloading} tip="数据处理中，请稍等片刻...">
                 <div className={styles['design-style-modal-header']}>
                     <div className={styles['textures-selector']}>
-                        面料选择<DoubleRightOutlined />
-                        <div>{map(textures, t => (<Button onClick={()=> {
-                            setTexture(t)
-                        }} type='text'>{t?.code}</Button>))}</div>
+                        面料选择<DoubleRightOutlined style={{marginRight: '12px'}}/>
+                        <Radio.Group value={texture?._id} size='small' >
+                            {map(textures, t => (
+                                <Radio.Button value={t?._id} onClick={()=> {
+                                        setTexture(t)
+                                    }} type='text'>{t?.code}
+                                </Radio.Button>)
+                            )}
+                        </Radio.Group>
                     </div>
                     <div className={styles['action-buttons']}>
                         <Button onClick={handleCancel}>取消</Button>
@@ -244,7 +252,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                                         handleUpdateCurrentEditCapsuleStyleRegion(g?.index)
                                     }}
                                 >
-                                    {g.index}
+                                    {get(split(g.id, '_x2F_'), 0)}
                                 </div>
                         )}
                     </div>

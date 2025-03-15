@@ -54,6 +54,12 @@ const Com = props => {
                 creator: currentUser?._id
             },
         });
+        dispatch({
+            type: 'diy/getColorList',
+            payload: {
+                type: 2
+            },
+        });
     }, [currentUser?._id])
     const handleChangeName = (e) => {
         dispatch({

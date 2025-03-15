@@ -1,6 +1,6 @@
 import arrayMove from 'array-move';
 import {
-    getList as queryList,
+    getAdminList as queryList,
     add,
     update,
     del,
