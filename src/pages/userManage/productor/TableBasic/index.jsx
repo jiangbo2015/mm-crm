@@ -72,7 +72,7 @@ const Com = props => {
                     remark: data.remark,
                     address: data.address,
                     currency: data.currency,
-                    channels: data.channels.map(x => x._id),
+                    channels: data.channels?.map(x => x._id),
                     goods: data.goods,
                     branchs: data.branchs,
                     capsules: data.capsules,
