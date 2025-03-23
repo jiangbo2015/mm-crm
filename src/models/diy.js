@@ -191,6 +191,7 @@ const Model = {
             };
         },
         setCurrentEditCapsuleItemFinishedIndex(state, { payload }) {
+            // console.log('setCurrentEditCapsuleItemFinishedIndex-->', payload)
             return {
                 ...state,
                 currentEditCapsuleItemFinishedIndex: payload,

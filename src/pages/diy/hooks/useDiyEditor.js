@@ -63,7 +63,10 @@ const useDiy = () => {
     };
 
     const handleCompleteCapsuleItemFinished = (finishedObj) => {
-        if(currentEditCapsuleItemFinishedIndex > 0) {
+        // console.log('currentEditCapsuleItemFinishedIndex', currentEditCapsuleItemFinishedIndex)
+        if(currentEditCapsuleItemFinishedIndex < 0) {
+            currentEditCapsuleItem.finishedStyleColorsList.push(finishedObj)
+        } else if(currentEditCapsuleItemFinishedIndex > 0) {
             currentEditCapsuleItem.finishedStyleColorsList[currentEditCapsuleItemFinishedIndex] = finishedObj
         } else {
             currentEditCapsuleItem.finishedStyleColorsList = [finishedObj]
