@@ -150,7 +150,7 @@ const StylesSelectorModal = ({
         //   visible={visible}
         onOk={handleOk}
         //   onCancel={hideModal}
-        style={{top: 24}}
+        style={{top: mode === 'multiple' ? 110:24 }}
     >
         <div className={styles['selector-tools']}>
             <Search 
