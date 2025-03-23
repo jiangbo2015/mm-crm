@@ -250,7 +250,7 @@ class RegistrationForm extends React.Component {
                                     <Input style={{ width: '160px' }} />,
                                 )}
                             </Form.Item> */}
-                            <Form.Item label={<span>原始画布单循环宽度(cm)</span>}>
+                            {/* <Form.Item label={<span>原始画布单循环宽度(cm)</span>}>
                                 {getFieldDecorator('sizeOrigin', {
                                     rules: [
                                         {
@@ -259,9 +259,16 @@ class RegistrationForm extends React.Component {
                                         },
                                     ],
                                 })(<InputNumber min={1} step={1} />)}
-                            </Form.Item>
+                            </Form.Item> */}
                             <Form.Item label={<span>实际画布单循环宽度(cm)</span>}>
-                                {getFieldDecorator('size', {})(<InputNumber min={1} step={1} />)}
+                                {getFieldDecorator('size', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input size!',
+                                        },
+                                    ],
+                                })(<InputNumber min={1} step={1} />)}
                             </Form.Item>
                         </Col>
                     </Row>
