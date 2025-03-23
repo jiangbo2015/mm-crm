@@ -36,7 +36,7 @@ const SelectLang = props => {
   );
   return (
     <HeaderDropdown overlay={langMenu} placement="bottomRight">
-      <span className={classNames(styles.dropDown, className)}>
+      <span className={className}>
         <GlobalOutlined title="语言" />
       </span>
     </HeaderDropdown>

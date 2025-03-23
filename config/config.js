@@ -130,6 +130,7 @@ export default {
                         {
                             path: '/myFavorites',
                             name: '我的收藏',
+                            locale: 'menu.myFavorites',
                             icon: 'star',
                             component: './myFavorites',
                             authority: ['admin', 'productor', 'designer', 'customer'],
@@ -145,12 +146,14 @@ export default {
                             path: '/myDiy',
                             name: '我的创建',
                             icon: 'skin',
+                            locale: 'menu.myCreation',
                             component: './myDiy',
                             authority: ['admin', 'productor', 'designer', 'customer'],
                         },
                         {
                             path: '/diy',
                             name: '创建DIY',
+                            locale: 'menu.diy',
                             icon: 'edit',
                             component: './diy',
                             authority: ['admin', 'productor', 'designer', 'customer'],
@@ -310,8 +313,8 @@ export default {
         '/api/': {
             //192.168.8.107
             // target: 'https://crm.we-idesign.com/',
-            target: 'http://192.168.71.117:3001',
-            // target: 'http://localhost:3001',
+            // target: 'http://192.168.71.117:3001',
+            target: 'http://localhost:3001',
             changeOrigin: true, //   pathRewrite: { '^/server': '' },
         },
         '/uploads/': {

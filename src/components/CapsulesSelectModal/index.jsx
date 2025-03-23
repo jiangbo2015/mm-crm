@@ -6,10 +6,11 @@ import {
     CheckOutlined
 } from '@ant-design/icons';
 // <AppstoreOutlined />
+import { filterImageUrl } from '@/utils/utils'
 import { connect } from 'dva';
 import { get, map, toInteger, includes , filter, findIndex } from 'lodash';
 
-import { ColorItem } from '@/components/ColorItem'
+import { CapsuleItem } from '@/components/CapsuleItem'
 import { useDispatch, useSelector } from '@/hooks/useDvaTools';
 
 import styles from './index.less'
@@ -17,34 +18,42 @@ import styles from './index.less'
 const { Search } = Input;
 const { CheckableTag } = Tag;
 const size = 50
-const ColorTypeToPlaceholder = {
-    0: "颜色",
-    1: "花布"
-}
 
-const CapsulesSelectModal = ({modalProps = {},onCapsulesSelectModalOk, initSelectedColors, colorType}) => {
+// const CapsuleItem = ({item, checked, onClick }) => (
+//     <div className={styles['relative']} onClick={onClick}>
+//         <img src={filterImageUrl(item.imgUrl || 
+//                     get(item, 'capsuleItems.0.fileUrl') || 
+//                     get(item, 'capsuleItems.0.finishedStyleColorsList.0.imgUrlFront'))
+//                 } 
+//             alt="" style={{minHeight: 100}}
+//         />
+//         <CheckOutlined className={checked ? styles['grid-seletor-item-selected-icon'] : styles['grid-seletor-item-icon']} />
+//     </div>
+// )
+
+const CapsulesSelectModal = ({modalProps = {},onCapsulesSelectModalOk, initSelectedCapsules = []}) => {
   const dispatch = useDispatch()
 
-  const {docs: sourceList, total, limit, page} = useSelector(state => get(state, colorType === 0 ? 'style.colorList' : 'style.colorListFlower' , {}))
+  const {docs: sourceList, total, limit, page} = useSelector(state => get(state, 'capsule.publishedList' , {}))
   const [selectedItemList, setSelectedItemList] = useState([]);
 
   const selectedList = map(selectedItemList, ({_id}) => _id)
   const SelectedDrawerOpen = modalProps?.visible && selectedList.length > 0;
 
   useEffect(() => {
-    setSelectedItemList(initSelectedColors)
-  }, [initSelectedColors])
+    setSelectedItemList(initSelectedCapsules)
+  }, [initSelectedCapsules])
   
 
   useEffect(() => {
-    handleFetch({ limit: 30, page: 1})
+    handleFetch({ limit: 5, page: 1})
   }, [])
 
   
   const handleFetch = (params) => {
     dispatch({
-        type: 'style/getColorList',
-        payload: {...params, type: colorType},
+        type: 'capsule/getPublishedList',
+        payload: params,
     });
   }
   
@@ -91,86 +100,82 @@ const CapsulesSelectModal = ({modalProps = {},onCapsulesSelectModalOk, initSelec
   };
 
   return (
-    <>    <Modal
-      {...modalProps}
-      closable={false}
-      top={112}
-        //   visible={visible}
-        onOk={handleOk}
-        //   onCancel={hideModal}
-    >
-        <div className={styles['selector-tools']}>
-            <Search 
-                prefix={<SearchOutlined />}  
-                bordered={false} 
-                addonAfter={null} 
-                placeholder={ColorTypeToPlaceholder[colorType]} 
-                allowClear 
-                onSearch={onSearch} 
-                style={{ width: 200 }} 
-            />
-            <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>全选</CheckableTag>
-        </div>      
+    <>    
+        <Modal
+        {...modalProps}
+        closable={false}
+        width={1000}
+        style={{ top: 130 }}
+            //   visible={visible}
+            onOk={handleOk}
+            //   onCancel={hideModal}
+        >
+            <div className={styles['selector-tools']}>
+                <Search 
+                    prefix={<SearchOutlined />}  
+                    bordered={false} 
+                    addonAfter={null} 
+                    placeholder="胶囊"
+                    allowClear 
+                    onSearch={onSearch} 
+                    style={{ width: 200 }} 
+                />
+                <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>全选</CheckableTag>
+            </div>      
 
-        <div className={styles['grid-seletor']}>
-            {map(sourceList, (item) => {
-                const { _id } = item
-                return (
-                    <div key={_id} className={styles['grid-seletor-item']}>
-                        <ColorItem
-                            
-                            className={styles['relative']}
-                            item={item}
-                            onClick={() => handleSelect(item)}
-                            size={size}
-                        >
-                            <CheckOutlined className={includes(selectedList, _id) ? styles['grid-seletor-item-selected-icon'] : styles['grid-seletor-item-icon']} />
-                        </ColorItem>
-                    </div>
-                )}
-            )}
-        </div>
-        <div className={styles['selector-footer']}>
-            <Pagination
-                onChange={onChange}
-                showSizeChanger={false}
-                size="small" total={total} pageSize={limit} current={toInteger(page)}
-            />
-        </div>
-    </Modal>
-    {SelectedDrawerOpen && <Drawer 
-            className={styles['selected-drawer']}
-            contentWrapperStyle={{padding: 0 }}
-            height={100} placement="top" mask={false} closable={false} open>
-            <div className={styles['flex-selected-box']}>
-                {map(selectedItemList, (item) => {
+            <div className={styles['grid-seletor-capsule']}>
+                {map(sourceList, (item) => {
+                    const { _id } = item
                     return (
-                    <div key={`s-${item._id}`} className={styles['grid-seletor-item']}>
-                            <ColorItem
-                                
+                        <div key={_id} className={styles['grid-seletor-item']}>
+                            <CapsuleItem
                                 item={item}
                                 onClick={() => handleSelect(item)}
-                                
-                                className={styles['drawer-seleted-item-val']}
-                                size={30}
                             >
-                                <div className={styles['selected-delete-icon']}>
-                                    <DeleteOutlined /> 
-                                </div>
-                                
-                
-                        </ColorItem>
-                        
-                    </div>)}
+                                <CheckOutlined className={includes(selectedList, _id) ? styles['grid-seletor-item-selected-icon'] : styles['grid-seletor-item-icon']} />
+                            </CapsuleItem>
+                        </div>
+                    )}
                 )}
             </div>
+            <div className={styles['selector-footer']}>
+                <Pagination
+                    onChange={onChange}
+                    showSizeChanger={false}
+                    size="small" total={total} pageSize={limit} current={toInteger(page)}
+                />
+            </div>
+        </Modal>
+        {SelectedDrawerOpen && <Drawer 
+                className={styles['selected-drawer']}
+                contentWrapperStyle={{padding: 0 }}
+                height={120} placement="top" mask={false} closable={false} open>
+                <div className={styles['flex-selected-box']}>
+                    {map(selectedItemList, (item) => {
+                        return (
+                        <div key={`s-${item._id}`} className={styles['grid-seletor-item']}>
+                            <CapsuleItem
+                                item={item}
+                                onClick={() => handleSelect(item)}
+                                width="58px"
+                                className={styles['drawer-seleted-item']}
+                                valClassName={styles['drawer-seleted-item-val']}
+                            >
+                                    <div className={styles['selected-delete-icon']}>
+                                        <DeleteOutlined /> 
+                                    </div>
+                            </CapsuleItem>
+                            
+                        </div>)}
+                    )}
+                </div>
 
-        </Drawer>}
+            </Drawer>}
     </>
 
   );
 };
 
 export default connect(({  loading, style }) => ({
-    fetching: loading.effects['color/getList'],
+    fetching: loading.effects['capsule/getPublishedList'],
 }))(CapsulesSelectModal);

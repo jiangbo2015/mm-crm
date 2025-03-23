@@ -1,0 +1,50 @@
+.capsule-item {
+    position: relative;
+    width: max-content;
+    border-radius: 8px;
+    overflow: hidden;
+
+    :global {
+        .ant-radio-wrapper {
+            margin-right: 0;
+        }
+    }
+
+    .item-val {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        background-color: #f0f2f5;
+    }
+
+    .item-val-img {
+        width: 85%;
+        height: 85%;
+        object-fit: contain;
+    }
+}
+
+.aspect-ratio-box {
+    width: 100%;
+    /* 宽度随父元素伸缩 */
+    padding-top: 125%;
+    /* 高 = 宽 * 5/4 = 125% */
+    position: relative;
+
+    .capsule-item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 12px;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}

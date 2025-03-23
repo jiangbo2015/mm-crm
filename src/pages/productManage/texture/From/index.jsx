@@ -208,7 +208,7 @@ class RegistrationForm extends React.Component {
                                 )}
                             </Upload>
                             <p style={{ textAlign: 'left' }}>纹理图</p>
-                            <Form.Item label="相关素色">
+                            {/* <Form.Item label="相关素色">
                                 {getFieldDecorator(
                                     'relatedColors',
                                     {},
@@ -229,7 +229,7 @@ class RegistrationForm extends React.Component {
                                             }))}
                                     />,
                                 )}
-                            </Form.Item>
+                            </Form.Item> */}
                         </Col>
                         <Col span="1"></Col>
                         <Col span="10">
@@ -245,11 +245,11 @@ class RegistrationForm extends React.Component {
                                     ],
                                 })(<Input style={{ width: '160px' }} />)}
                             </Form.Item>
-                            <Form.Item label={<span>印花编号</span>}>
+                            {/* <Form.Item label={<span>印花编号</span>}>
                                 {getFieldDecorator('flowerCode')(
                                     <Input style={{ width: '160px' }} />,
                                 )}
-                            </Form.Item>
+                            </Form.Item> */}
                             <Form.Item label={<span>原始画布单循环宽度(cm)</span>}>
                                 {getFieldDecorator('sizeOrigin', {
                                     rules: [
@@ -266,12 +266,12 @@ class RegistrationForm extends React.Component {
                         </Col>
                     </Row>
                 )}
-                <Row>
+                {/* <Row>
                     <Col span="24">
                         <Form.Item label="可用商品">{checkboxSelector}</Form.Item>
                     </Col>
-                </Row>
-                <Row>
+                </Row> */}
+                {/* <Row>
                     <Col span="8">
                         <Form.Item label="色系">
                             {getFieldDecorator(
@@ -280,7 +280,7 @@ class RegistrationForm extends React.Component {
                             )(<Select options={colorSystemList} />)}
                         </Form.Item>
                     </Col>
-                </Row>
+                </Row> */}
                 <Row>
                     <Col span="2"></Col>
                     <Col span="8">

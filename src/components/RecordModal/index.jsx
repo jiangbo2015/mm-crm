@@ -1,7 +1,8 @@
 import { Modal, Table } from 'antd';
+import { get } from 'lodash';
 import moment from 'moment';
 
-const FieldToTextMap = {
+const style = {
     'name': '名称',
     'namecn': '中文名',
     'nameen': '英文名',
@@ -23,8 +24,36 @@ const FieldToTextMap = {
     'goodsId': '商品分类I',
 }
 
+const color = {
+    'code': '编号',
+    'name': '名称',
+    'namecn': '中文名',
+    'nameen': '英文名',
+    'value': '颜色值',
+    'colorSystem': '色系',
+    'categoryId': '商品分类II',
+    'goodsId': '商品分类I',
+}
 
-export default ({list, onCancel}) => {
+const flower = {
+    'code': '开发编号',
+    'flowerCode': '印花编号',
+    'size': '单循环宽度',
+    'name': '名称',
+    'namecn': '中文名',
+    'nameen': '英文名',
+    'value': '画布图',
+    'colorSystem': '色系',
+    'categoryId': '商品分类II',
+    'goodsId': '商品分类I',
+}
+const FieldToTextMap = {
+    style,
+    color,
+    flower
+}
+
+export default ({list, onCancel, modelName = 'style'}) => {
     console.log(list, 'list')
     const columns = [{
         title: '修改人',
@@ -35,11 +64,12 @@ export default ({list, onCancel}) => {
         title: '修改时间',
         dataIndex: 'updatedAt',
         key: 'updatedAt',
+        render: (updatedAt) => moment(updatedAt).format('YYYY-MM-DD hh:mm:ss')
     },{
         title: '修改内容',
         dataIndex: 'changes',
         key: 'changes',
-        render: (d) => d.map(x => <div>{`${FieldToTextMap[x.field] ?? x.field}: ${x.oldValue} -> ${x.newValue}`}</div>)
+        render: (d) => d.map(x => <div>{`${get(FieldToTextMap,`${modelName}.${x.field}`) ?? x.field}: ${x.oldValue} -> ${x.newValue}`}</div>)
     }]
     return (
         <Modal title="修改记录" visible={true} width="800px" footer={false} onCancel={onCancel}>

@@ -1,6 +1,7 @@
 
 import {
     getList as queryList,
+    getPublicList,
 } from '@/services/capsule';
 
 import {
@@ -21,6 +22,16 @@ const Model = {
     effects: {
         *getList({ payload }, { call, put }) {
             const res = yield call(queryList, payload);
+             
+            if (res.success) {
+                yield put({
+                    type: 'setCapsuleList',
+                    payload: res.data,
+                });
+            }
+        },
+        *getPublicList({ payload }, { call, put }) {
+            const res = yield call(getPublicList, payload);
              
             if (res.success) {
                 yield put({

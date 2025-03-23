@@ -74,7 +74,9 @@ const EyeDropperPicker = ({modalProps = {}}) => {
     >
         <div className={styles["picker-container"]}>
 
-        
+        <div style={{marginTop: '10px', color: '#7b7b7b'}}>
+            单击下面的滴管按钮，然后在屏幕上的任意位置选择一种颜色！
+        </div>
         <div 
             className={styles["picker-button"]}
             onClick={handleOpenPicker}

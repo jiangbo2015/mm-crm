@@ -51,4 +51,7 @@ export default {
   // 2025
   'menu.creativeCapsule': '创意胶囊',
   'menu.capsule': '胶囊管理',
+  'menu.myFavorites': '我的收藏',
+  'menu.myCreation': '我的创建',
+  'menu.diy': '创建DIY'
 };

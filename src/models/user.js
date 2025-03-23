@@ -81,6 +81,18 @@ const UserModel = {
                 payload: response.data,
             });
         },
+        *updateEmail({ payload }, { call, put }) {
+            const { success } = yield call(updateUser, payload);
+            if (success) {
+                yield put({
+                    type: 'fetchCurrent',
+                });
+                yield put({
+                    type: 'setEmailModalOpen',
+                    payload: false
+                });
+            }
+        },
     },
     reducers: {
         saveCurrentUser(state, action) {
@@ -91,7 +103,9 @@ const UserModel = {
             console.log(payload);
             return { ...state, [KEY[payload.role]]: payload.data };
         },
-
+        setEmailModalOpen(state, { payload }) {
+            return { ...state, emailModalOpen: payload };
+        },
         changeNotifyCount(
             state = {
                 currentUser: {},

@@ -89,7 +89,7 @@ const AddCard = () => {
                             </Upload>
                             <Upload
                                 {...uploadProps}
-                                beforeUpload={beforeUpload}
+                                // beforeUpload={beforeUpload}
                                 onChange={handleAddVideo}
                             >
                                 <VideoCameraAddOutlined />

@@ -9,7 +9,8 @@ import {
     addCapsuleStyle,
     delCapsuleStyle,
     sortCapsuleStyle,
-    getCapsuleById
+    getCapsuleById,
+    getPublicList
 } from '@/services/capsule';
 
 import { message } from 'antd';
@@ -19,6 +20,7 @@ const Model = {
     namespace: 'capsule',
     state: {
         list: [],
+        publishedList: [],
         currentCapsule: {},
         currentCapsuleStyleList: [],
     },
@@ -28,6 +30,26 @@ const Model = {
         },
         *getList({ payload }, { call, put }) {
             const res = yield call(queryList, payload);
+             
+            if (res.success) {
+                yield put({
+                    type: 'setCapsuleList',
+                    payload: res.data,
+                });
+            }
+        },
+        *getPublishedList({ payload }, { call, put }) {
+            const res = yield call(queryList, {...payload, status: 'published'});
+             
+            if (res.success) {
+                yield put({
+                    type: 'setPublishedCapsuleList',
+                    payload: res.data,
+                });
+            }
+        },
+        *getPublicList({ payload }, { call, put }) {
+            const res = yield call(getPublicList, payload);
              
             if (res.success) {
                 yield put({
@@ -53,6 +75,9 @@ const Model = {
             if (res.success) {
                 yield put({
                     type: 'getList',
+                    payload: {
+                        status: payload?.status
+                    }
                 });
             }
         },
@@ -151,6 +176,12 @@ const Model = {
             return {
                 ...state,
                 list: payload,
+            };
+        },
+        setPublishedCapsuleList(state, { payload }) {
+            return {
+                ...state,
+                publishedList: payload,
             };
         },
         setCurrentCapsule(state, { payload }) {

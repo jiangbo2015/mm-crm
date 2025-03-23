@@ -48,3 +48,11 @@ export async function updateCostomers(data) {
         data,
     });
 }
+
+export async function updateCapsules(data) {
+    return request('/api/channel/updateCapsules', {
+        method: 'post',
+        data,
+    });
+}
+

@@ -12,8 +12,11 @@ import { useParams } from 'umi';
 
 import ColorsModal from '@/components/ColorsModal'
 import StylesSelectorModal from '@/components/StylesSelectorModal'
+import CapsulesSelectModal from '@/components/CapsulesSelectModal'
+
 import { PlainColorItem, FlowerColorItem } from '@/components/ColorItem'
 import { StyleItem } from '@/components/StyleItem'
+import { CapsuleItem } from '@/components/CapsuleItem'
 import useFormModal from '@/hooks/useFormModal'
 // import usePlainColorsModal from '@/hooks/usePlainColorsModal'
 import styles from './index.less';
@@ -39,11 +42,18 @@ const tagRender = (props) => {
     );
   };
 
-const Com = ({dispatch, currentChannel = {}, updateChannelLoading, customerList}) => {
-    const { costomers, populatedPlainColors = [], populatedStyles = [], populatedFlowerColors = [] } = currentChannel
+const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading, customerList}) => {
+    const { costomers, 
+        populatedPlainColors = [], 
+        populatedStyles = [], 
+        populatedFlowerColors = [],
+        populatedCapsules = []
+     } = currentChannel
     const [visiblePlainColorsModal, setVisiblePlainColorsModal] = useState(false);
     const [visibleFlowerColorsModal, setVisibleFlowerColorsModal] = useState(false);
     const [visibleStylesSelectorModal, setVisibleStylesSelectorModal] = useState(false);
+    const [visibleCapsulesSelectModal, setVisibleCapsulesSelectModal] = useState(false);
+    
     const params = useParams()
 
     const [FormModal, showModal] = useFormModal({}, {
@@ -57,6 +67,7 @@ const Com = ({dispatch, currentChannel = {}, updateChannelLoading, customerList}
             type: 'user/fetch',
             payload: {
                 role: 3,
+                owner: currentUser._id
             },
         });
     }, [])
@@ -76,6 +87,10 @@ const Com = ({dispatch, currentChannel = {}, updateChannelLoading, customerList}
     }
     const showStylesSelectorModal = () => {
         setVisibleStylesSelectorModal(true)
+    }
+
+    const showCapsulesSelectModal = () => {
+        setVisibleCapsulesSelectModal(true)
     }
 
 
@@ -123,6 +138,19 @@ const Com = ({dispatch, currentChannel = {}, updateChannelLoading, customerList}
         setVisibleStylesSelectorModal(false)
     };
 
+    const handleUpdateCapsules = async (selectedCapsules) => {
+        await dispatch({
+            type: 'channel/updateCapsules',
+            payload: {
+                _id: params.id,
+                capsules: map(selectedCapsules, c => c._id)
+            },
+        });
+
+        setVisibleCapsulesSelectModal(false)
+    };
+
+    console.log("populatedCapsules", populatedCapsules)
     return (
         <PageHeaderWrapper >
             <Card
@@ -159,33 +187,25 @@ const Com = ({dispatch, currentChannel = {}, updateChannelLoading, customerList}
             <Card
                 title="胶囊"
                 extra={
-                    <Button type="primary" onClick={showModal}>
+                    <Button type="primary" onClick={showCapsulesSelectModal}>
                         分配
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}
             >
-                {map(costomers, c => (<Tag
-                    color="geekblue"
-                    style={{ fontSize: '14px', lineHeight: '30px', marginRight: 8 }} 
-                    className={styles.tag} 
-                    icon={<UserOutlined />}
-                >
-                    {c?.name}
-                </Tag>))}
-                <FormModal>
-                    <Form.Item
-                        name="costomers"
-                    >
-                        <Select
-                            mode="multiple"
-                            showArrow
-                            tagRender={tagRender}
-                            style={{ width: '100%', lineHeight: '38px' }}
-                            options={map(customerList, c => ({label: c?.name, value: c?._id}))}
-                        />
-                    </Form.Item>
-                </FormModal>
+                <div className={styles['grid-box']}>
+                    {map(populatedCapsules, c => (<CapsuleItem item={c} />))}
+                </div>
+                
+                <CapsulesSelectModal
+                    modalProps={{
+                        visible: visibleCapsulesSelectModal,
+                        onCancel: () => setVisibleCapsulesSelectModal(false),
+                        confirmLoading: updateChannelLoading
+                    }}
+                    onCapsulesSelectModalOk={handleUpdateCapsules}
+                    initSelectedCapsules={populatedCapsules}
+                />
             </Card>
             <Card
                 title="款式"

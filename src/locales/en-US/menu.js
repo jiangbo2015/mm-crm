@@ -49,6 +49,9 @@ export default {
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
   //2025
-  'menu.creativeCapsule': 'creative capsule',
-  'menu.capsule': 'capsule manage'
+  'menu.creativeCapsule': 'Creative capsule',
+  'menu.capsule': 'Capsule manage',
+  'menu.myFavorites': 'Favorites',
+  'menu.myCreation': 'My creation',
+  'menu.diy': 'Go create'
 };

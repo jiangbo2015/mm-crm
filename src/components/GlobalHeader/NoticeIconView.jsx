@@ -19,7 +19,7 @@ class GlobalHeaderRight extends Component {
   }
 
   changeReadState = clickedItem => {
-    const { _id } = clickedItem;
+    const { _id, objectModelId } = clickedItem;
     const { dispatch } = this.props;
 
     if (dispatch) {
@@ -27,7 +27,7 @@ class GlobalHeaderRight extends Component {
         type: 'global/changeNoticeReadState',
         payload: _id,
       });
-      window.open(`/#/capsules/${_id}`)
+      window.open(`/#/diy/${objectModelId}`)
     }
   };
 

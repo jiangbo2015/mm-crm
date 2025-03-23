@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { message } from 'antd'
 import { get, map, filter, includes } from 'lodash';
 import { useDispatch, useSelector } from '@/hooks/useDvaTools'
 
@@ -28,6 +29,7 @@ const useDiy = () => {
     const selectedGoodCategryId = useSelector(state => state?.diy?.selectedGoodCategryId)
     const _id = useSelector(state => state?.diy?._id)
     const name = useSelector(state => state?.diy?.name)
+    const status = useSelector(state => state?.diy?.status)
     const currentEditCapsuleItemIndex = useSelector(state => state?.diy?.currentEditCapsuleItemIndex) 
     const currentEnlargeCapsuleItemIndex = useSelector(state => state?.diy?.currentEnlargeCapsuleItemIndex) 
     const currentEnlargeCapsuleItemFinishedIndex = useSelector(state => state?.diy?.currentEnlargeCapsuleItemFinishedIndex) 
@@ -200,6 +202,7 @@ const useDiy = () => {
 
     const beforeUpload = file => {
         const limit = file.size / 1024 < 200;
+        console.log('file.size', file.size)
         if (!limit) {
             message.error('Image must smaller than 200K!');
         }
@@ -232,10 +235,21 @@ const useDiy = () => {
             type: 'diy/setMode',
             payload: 'detail'
         })
+        // history.push(`/diy/${_id}`)
     };
+
+    const handleChangeName = (name) => {
+        console.log('handleChangeName', name)
+        dispatch({
+            type: 'diy/setCapsuleName',
+            payload: name
+        })
+    }
+
 
     return {
         name,
+        status,
         uploading,
         visibleStylesSelectorModal,
         addCapsuleItem,
@@ -258,6 +272,7 @@ const useDiy = () => {
         handleView,
         handleSelectGoodId,
         handleSelectGoodCategryId,
+        handleChangeName,
         goods,
         selectedGoodId,
         selectedGoodCategryId,

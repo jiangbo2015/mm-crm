@@ -1,5 +1,5 @@
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import { LogoutOutlined, SettingOutlined, UserOutlined,MailOutlined } from '@ant-design/icons';
+import { Avatar, Menu, Spin, Modal, Form, Input } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
@@ -7,6 +7,19 @@ import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
 class AvatarDropdown extends React.Component {
+    state = {
+        email: this.props.currentUser.email // 初始化时直接使用 props 的值
+    }
+
+    componentDidUpdate(prevProps) {
+        // 当 props.currentUser.email 发生变化时，更新 state.email
+        if (prevProps.currentUser?.email !== this.props.currentUser?.email) {
+            this.setState({
+                email: this.props.currentUser.email
+            });
+        }
+    }
+
     onMenuClick = event => {
         const { key } = event;
 
@@ -22,14 +35,58 @@ class AvatarDropdown extends React.Component {
             return;
         }
 
-        history.push(`/account/${key}`);
+        if (key === 'email') {
+            const { dispatch } = this.props;
+
+            if (dispatch) {
+                dispatch({
+                    type: 'user/setEmailModalOpen',
+                    payload: true
+                });
+            }
+
+            return;
+        }
+
+        // history.push(`/account/${key}`);
     };
 
+    onCloseEmailModalOpen = () => {
+        const { dispatch } = this.props;
+
+        if (dispatch) {
+            dispatch({
+                type: 'user/setEmailModalOpen',
+                payload: false
+            });
+        }
+
+        return;    
+    }
+
+    onUpdateEmail = () => {
+        const { dispatch } = this.props;
+
+        console.log("this.state.email", this.state.email)
+        if (dispatch) {
+            dispatch({
+                type: 'user/updateEmail',
+                payload: {
+                    _id: this.props.currentUser?._id,
+                    email: this.state.email
+                }
+            });
+        }
+
+        return;    
+    }
     render() {
         const {
+            emailModalOpen,
             currentUser = {
                 avatar: '',
                 name: '',
+                email: ''
             },
             menu,
             isHideName
@@ -49,7 +106,10 @@ class AvatarDropdown extends React.Component {
                     </Menu.Item>
                 )}
                 {menu && <Menu.Divider />}
-
+                <Menu.Item key="email">
+                    <MailOutlined />
+                    邮箱设置
+                </Menu.Item>
                 <Menu.Item key="logout">
                     <LogoutOutlined />
                     退出登录
@@ -57,7 +117,8 @@ class AvatarDropdown extends React.Component {
             </Menu>
         );
         return currentUser && currentUser.name ? (
-            <HeaderDropdown overlay={menuHeaderDropdown}>
+            <>
+                        <HeaderDropdown overlay={menuHeaderDropdown}>
                 <span className={`${styles.action} ${styles.account}`}>
                     <Avatar
                         size="small"
@@ -67,8 +128,22 @@ class AvatarDropdown extends React.Component {
                         {currentUser.account.slice(0, 1).toUpperCase()}
                     </Avatar>
                     {!isHideName && <span className={styles.name}>{currentUser.name}</span>}
+                    
                 </span>
             </HeaderDropdown>
+            {emailModalOpen && <Modal open={true} 
+                title="邮箱设置" 
+                onCancel={this.onCloseEmailModalOpen}
+                onOk={this.onUpdateEmail}
+            >
+                <Input 
+                    value={this.state.email} 
+                    onChange={(e) => {
+                    this.setState({email: e.target.value})
+                }}/>
+            </Modal>}
+            </>
+
         ) : (
             <Spin
                 size="small"
@@ -83,4 +158,5 @@ class AvatarDropdown extends React.Component {
 
 export default connect(({ user }) => ({
     currentUser: user.currentUser,
+    emailModalOpen: user.emailModalOpen,
 }))(AvatarDropdown);

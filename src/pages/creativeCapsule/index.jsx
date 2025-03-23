@@ -89,7 +89,7 @@ const Com = props => {
             payload.name = searchText
         }
         props.dispatch({
-            type: 'creativeCapsule/getList',
+            type: 'creativeCapsule/getPublicList',
             payload,
         }).then(() => {
             setKey(Date.now())
@@ -116,7 +116,7 @@ const Com = props => {
                 payload.name = searchText
             }
             await props.dispatch({
-                type: 'creativeCapsule/getList',
+                type: 'creativeCapsule/getPublicList',
                 payload,
             });
             setIsLoading(false)
@@ -192,7 +192,7 @@ const Com = props => {
         <Spin spinning={isLoading}>
             <div style={{ marginBottom: '20px', position: 'relative' }}>
                 <Search 
-                    placeholder="input search text"
+                    placeholder="搜索"
                     allowClear
                     onSearch={v => {
                         setSearchText(v)

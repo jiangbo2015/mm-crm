@@ -177,7 +177,7 @@ const Com = props => {
                     pageSizeOptions: [10, 20, 50, 100, 500],
                 }}
             />
-            {props.record.visible && <RecordModal {...props.record} onCancel={() => props.dispatch({type: 'record/toggleModal', payload: false})} />}
+            {props.record.visible && <RecordModal {...props.record} modelName="color" onCancel={() => props.dispatch({type: 'record/toggleModal', payload: false})} />}
         </>
     );
 };

@@ -5,7 +5,8 @@ import {
     update as udpateChannel,
     del as deleteChannel,
     findById,
-    updateCostomers
+    updateCostomers,
+    updateCapsules
 } from '@/services/channel';
 
 const Model = {
@@ -68,6 +69,16 @@ const Model = {
         },
         *updateCostomers({ payload }, { put, call }) {
             const res = yield call(updateCostomers, payload);
+             
+            if (res.success) {
+                yield put({
+                    type: 'findById',
+                    payload: {_id : payload?._id}
+                });
+            }
+        },
+        *updateCapsules({ payload }, { put, call }) {
+            const res = yield call(updateCapsules, payload);
              
             if (res.success) {
                 yield put({

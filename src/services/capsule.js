@@ -38,6 +38,15 @@ export async function getMyFavoriteList(data) {
     });
 }
 
+export async function getPublicList(data) {
+    return request('/api/capsule/getPublicList', {
+        method: 'get',
+        params: data,
+    });
+}
+
+
+
 export async function add(data) {
     return request('/api/capsule/add', {
         method: 'post',

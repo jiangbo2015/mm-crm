@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Spin,Tag, Input, Radio, Divider } from 'antd';
+import { getLocale } from 'umi';
 import Slider from "react-slick";
-import { get, map, split } from 'lodash'
+import { get, map, split, fill } from 'lodash'
 import classnames from 'classnames'
 import {
     ZoomInOutlined,
@@ -55,6 +56,8 @@ const settings = {
   };
 
 export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
+    const selectLang = getLocale()
+    const isZhCN = selectLang === 'zh-CN'
     const { 
         currentEditCapsuleItem, 
         currentEditCapsuleItemFinishedIndex, 
@@ -101,8 +104,15 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
     }, [finishedStyleColors])
 
     const handleFillColor = (color) => {
-        colors[currentEditCapsuleStyleRegion] = color;
-        setColors([...colors])
+        if(currentEditCapsuleStyleRegion === -1) {// 全选
+            setColors(fill(Array(styleSvgGroups.length), color))
+        } else { 
+            colors[currentEditCapsuleStyleRegion] = color;
+            setColors([...colors])
+            
+        }
+        
+        
     }
 
     const handleCancel = () => {
@@ -155,6 +165,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
             className={styles['design-style-modal']}
         >
             <Spin spinning={createImgloading} tip="数据处理中，请稍等片刻...">
+                <div className={styles['style-code']}>{style?.styleNo}</div>
                 <div className={styles['design-style-modal-header']}>
                     <div className={styles['textures-selector']}>
                         面料选择<DoubleRightOutlined style={{marginRight: '12px'}}/>
@@ -219,7 +230,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                 <div className={styles['style-diy-selector-wrapper']}>
                     <div className={styles['colors-slider-selector']}>
                         <div className={styles['colors-slider']} >
-                            <Slider {...settings}>
+                            <Slider {...settings} infinite={plainColors.length + customPlainColors.length > 5}>
                                 {map(plainColors, color => 
                                     <ColorItem 
                                         key={`s-${color?._id}`}
@@ -244,6 +255,14 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                         </div>
                     </div>
                     <div className={styles['style-group-selector']}>
+                        <div 
+                            className={classnames(styles['svg-group-btn'], currentEditCapsuleStyleRegion === -1 ? styles['svg-group-btn-active'] : '')} 
+                            onClick={() => {
+                                handleUpdateCurrentEditCapsuleStyleRegion(-1)
+                            }}
+                        >
+                            {isZhCN ? '全部' : 'ALL'}
+                        </div>
                         {map(styleSvgGroups, 
                             g => <div 
                                     className={classnames(styles['svg-group-btn'], currentEditCapsuleStyleRegion === g?.index ? styles['svg-group-btn-active'] : '')} 
@@ -252,13 +271,13 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                                         handleUpdateCurrentEditCapsuleStyleRegion(g?.index)
                                     }}
                                 >
-                                    {get(split(g.id, '_x2F_'), 0)}
+                                    {get(split(g.id, '_x2F_'), isZhCN ? 0 : 1)}
                                 </div>
                         )}
                     </div>
                     <div className={styles['colors-slider-selector']}>
                         <div className={styles['colors-slider']} >
-                            <Slider {...settings}>
+                            <Slider {...settings} infinite={flowerColors.length + customFlowerColors.length > 5}>
                                 {map(flowerColors, color => 
                                     <ColorItem 
                                         onClick={() => {

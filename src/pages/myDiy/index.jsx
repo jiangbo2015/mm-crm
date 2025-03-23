@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input, Button, Modal, Spin } from 'antd';
-import { get } from 'lodash';
+import { get, debounce } from 'lodash';
 import { filterImageUrl } from '@/utils/utils';
 import { connect } from 'dva';
+import { history } from 'umi'
 import {
     StarFilled,
     StarOutlined,
@@ -70,6 +71,7 @@ const starIconStyle = {
 }
 
 const Com = props => {
+    const [key, setKey] = useState(0)
     const [images, setImages] = useState(defimages);
     const [isLoading, setIsLoading] = useState(false)
     const [searchText, setSearchText] = useState('')
@@ -79,6 +81,9 @@ const Com = props => {
     const {docs, pages, page} = props.list
 
     useEffect(() => {
+        if(!currentUser?._id) {
+            return
+        }
         const payload = {
             page: 1,
             limit: 20,
@@ -90,6 +95,8 @@ const Com = props => {
         props.dispatch({
             type: 'creativeCapsule/getList',
             payload,
+        }).then(() => {
+            setKey(Date.now())
         });
         props.dispatch({
             type: 'creativeCapsule/getFavorites',
@@ -99,7 +106,7 @@ const Com = props => {
                 type: 'creativeCapsule/clearCapsuleList'
             });
         }
-    }, [searchText])
+    }, [searchText, currentUser?._id])
     
 
     const handleSearchImage = async () => {
@@ -165,13 +172,28 @@ const Com = props => {
             payload: id
         })
     } 
+  const handleResize = debounce(() => {
+    setKey(Date.now())
+  }, 200); 
 
+    useEffect(() => {
+        // 添加 resize 事件监听器
+        window.addEventListener('resize', handleResize);
+    
+        // 清除事件监听器
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, [handleResize]); // 依赖项中添加 handleResize
 
+      const handleGoDIY = (id) => {
+        history.push(`/diy/${id}`)
+    }
     return (
         <Spin spinning={isLoading}>
             <div style={{ marginBottom: '20px', position: 'relative' }}>
                 <Search 
-                    placeholder="input search text"
+                    placeholder="搜索"
                     allowClear
                     onSearch={setSearchText} 
                     size='large'
@@ -183,6 +205,7 @@ const Com = props => {
                     }}  
                 />
                 <div
+                    key={key}
                     style={{
                         height: 'calc(100vh - 150px)',
                         overflowY: 'scroll',
@@ -208,7 +231,9 @@ const Com = props => {
                                             <StarFilled onClick={() => { handleDelFavorite(capsuleFavoritesMap[item?._id]?._id)}} style={starIconStyle} /> : 
                                             <StarOutlined onClick={() => { handleAddFavorite(item?._id)}} style={starIconStyle} />
                                         }
-                                        <img src={filterImageUrl(item.imgUrl || 
+                                        <img 
+                                            onClick={() => handleGoDIY(item?._id)}
+                                            src={filterImageUrl(item.imgUrl || 
                                             get(item, 'capsuleItems.0.fileUrl') || 
                                             get(item, 'capsuleItems.0.finishedStyleColorsList.0.imgUrlFront'))} alt="" style={{minHeight: 100}} />
                                     </div>

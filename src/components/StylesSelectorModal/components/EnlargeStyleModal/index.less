@@ -14,28 +14,34 @@
             width: 100%;
         }
     }
-
-    position: relative;
-
-    .style-code {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-    }
 }
 
 .design-style-wrapper {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: 50% 50%;
-    width: 800px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 30px;
+    width: 900px;
     margin: auto;
+    padding: 80px 0;
 }
 
 .design-style {
     display: flex;
     justify-content: center;
-    width: 350px;
+    width: 100%;
+    padding: 16px;
+    background-color: #f0f2f5;
+}
+
+.design-style-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    line-height: 32px;
 }
 
 .design-style-modal-header {
@@ -45,6 +51,8 @@
     width: 100%;
     padding: 0 0 20px 12px;
 }
+
+
 
 .textures-selector {
     display: flex;

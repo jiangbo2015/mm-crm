@@ -199,6 +199,9 @@ const ImageCropper = ({ onUpload, modalProps }) => {
                         </Form.Item>
                     </Col>
                 </Row>
+                <Row style={{marginTop: '10px', color: '#7b7b7b'}}>
+                    *自主上传的印花图案不能超过200KB
+                </Row>
             </Form>
         </Modal>
         <Modal

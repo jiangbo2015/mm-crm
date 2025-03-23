@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Modal, Input } from 'antd';
+import { Tag, Button, Modal, Input } from 'antd';
 import { history, useParams } from 'umi';
 // import { useParams } from 'umi';
 import { connect } from 'dva';
@@ -18,15 +18,17 @@ import DiyActions from './components/DiyActions'
 import GoodCategoryMenu from './components/GoodCategoryMenu'
 import styles from './index.less'
 
+
 const Com = props => {
     const params = useParams()
-    const { isEditor, handleEdit } = useDiy()
-    const { arrangement, ArrangmentDropdown } = useArrangement('页面排列')
-    const { _id, name, currentUser, dispatch } = props;
+    const { isEditor, handleEdit, handleChangeName } = useDiy()
+    const { arrangement, ArrangmentDropdown } = useArrangement('页面排列', 20)
+    const { _id, name, status, currentUser, dispatch } = props;
+    console.log("_id", _id)
+    console.log("status", status)
 
-    useEffect(() => {
-      // "67bdd6b21f963b389f6b85b4"
-    }, [])
+    
+    
     useEffect(() => {
         if(params.id) {
             dispatch({
@@ -35,6 +37,11 @@ const Com = props => {
             })
         } else {
             handleEdit()
+        }
+        return () => {
+            dispatch({
+                type: 'diy/clearCapsule'
+            })
         }
     }, [params.id])
     useEffect(() => {
@@ -61,11 +68,8 @@ const Com = props => {
             },
         });
     }, [currentUser?._id])
-    const handleChangeName = (e) => {
-        dispatch({
-            type: 'diy/setCapsuleName',
-            payload: get(e, 'target.value')
-        })
+    const onChangeName = (e) => {
+        handleChangeName(get(e, 'target.value'))
     }
 
     return (
@@ -76,7 +80,7 @@ const Com = props => {
                         <LeftOutlined />
                     </div> 
                     <div>
-                        <Input onChange={handleChangeName} size='large' placeholder="DIY胶囊名称" bordered={false} value={name}/>
+                        <Input onChange={onChangeName} size='large' placeholder="DIY胶囊名称" bordered={false} value={name}/>
                     </div>
                 </div>
                 <div>{ArrangmentDropdown}</div> 
@@ -85,7 +89,7 @@ const Com = props => {
                         <DiyActions />
                     </div>
                     <AvatarDropdown isHideName/>
-                </div>   
+                </div>
             </div>
             <div className={styles['diy-page-content']}>
                 {!isEditor && <GoodCategoryMenu/>}

@@ -10,7 +10,7 @@ import { connect } from 'dva';
 import { get, map, toInteger, includes , filter, findIndex, find } from 'lodash';
 
 import { StyleItem } from '@/components/StyleItem'
-// import { useDispatch, useSelector } from '@/hooks/useDvaTools';
+import { EnlargeStyleModal } from './components/EnlargeStyleModal';
 
 import styles from './index.less'
 
@@ -33,6 +33,7 @@ const StylesSelectorModal = ({
 }) => {
   const {docs: sourceList, total, limit, page} = styleList
   const [searchInput, setSearchInput] = useState('');
+  const [enlargeStyle, setEnlargeStyle] = useState(null);
   const [currentGood, setCurrentGood] = useState(null);
   const [currentGoodCategory, setCurrentGoodCategory] = useState(null);
   const [selectedItemList, setSelectedItemList] = useState([]);
@@ -109,6 +110,10 @@ const StylesSelectorModal = ({
     });
   };
 
+  const handleEnlargeStyle = (style) => {
+    setEnlargeStyle(style)
+  }
+
   const handleSelectSingle = (item = {}) => {
     setSelectedItemList([item]);
   };
@@ -145,6 +150,7 @@ const StylesSelectorModal = ({
         //   visible={visible}
         onOk={handleOk}
         //   onCancel={hideModal}
+        style={{top: 24}}
     >
         <div className={styles['selector-tools']}>
             <Search 
@@ -182,7 +188,8 @@ const StylesSelectorModal = ({
                             <StyleItem
                                 className={styles['relative']}
                                 item={item}
-                                onClick={() => handleSelect(item)}
+                                onClick={() => handleEnlargeStyle(item)}
+                                onSelect={() => handleSelect(item)}
                                 size={size}
                                 showCheckedIcon
                                 checked={includes(selectedList, _id)}
@@ -222,6 +229,7 @@ const StylesSelectorModal = ({
                 )}
             </div>
         </Drawer>}
+    {!!enlargeStyle && <EnlargeStyleModal modalProps={{onCancel: () => {setEnlargeStyle(null)}}} style={enlargeStyle}/>}
     </>
 
   );

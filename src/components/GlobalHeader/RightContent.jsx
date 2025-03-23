@@ -41,6 +41,7 @@ const GlobalHeaderRight = props => {
           <Icon type="question-circle-o" />
         </a>
       </Tooltip> */}
+      <SelectLang className={styles.action} />
       {
         props.user?.id && <NoticeIconView/>
       }
@@ -52,7 +53,7 @@ const GlobalHeaderRight = props => {
             </Badge>
         </a>
       </Dropdown> */}
-      <SelectLang className={styles.action} />
+      
     </div>
   );
 };

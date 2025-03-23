@@ -14,23 +14,29 @@ const ColorTypeToreducerKey = {
     1: 'setCustomFlowerColors',
     2: 'setTextures'
 }
+
+const initState = {
+    _id: undefined,
+    author: undefined,
+    name: '',
+    status: 'draft',
+    mode: 'detail',
+    capsuleItems: [], // colorMockData?.capsuleItems,
+    plainColors:  [], // colorMockData?.plainColors, //可用素色列表
+    flowerColors:  [], // colorMockData?.flowerColors, //可用花布列表
+    textures: [], //colorMockData?.textures, //可用面料
+    customPlainColors: [], // 自主上传素色列表
+    customFlowerColors: [], // 自主上传花布列表
+    currentEditCapsuleItemIndex: -1,
+    currentEditCapsuleItemFinishedIndex: -1,
+    currentEditCapsuleStyleRegion: -1,
+    selectedGoodId: undefined,
+    selectedGoodCategryId: undefined,
+
+}
 const Model = {
     namespace: 'diy',
-    state: { 
-        mode: 'detail', // detail、editor
-        name: '',
-        capsuleItems: [], // colorMockData?.capsuleItems,
-        plainColors:  [], // colorMockData?.plainColors, //可用素色列表
-        flowerColors:  [], // colorMockData?.flowerColors, //可用花布列表
-        textures: [], //colorMockData?.textures, //可用面料
-        customPlainColors: [], // 自主上传素色列表
-        customFlowerColors: [], // 自主上传花布列表
-        currentEditCapsuleItemIndex: -1,
-        currentEditCapsuleItemFinishedIndex: -1,
-        currentEditCapsuleStyleRegion: -1,
-        selectedGoodId: undefined,
-        selectedGoodCategryId: undefined,
-    },
+    state: initState,
     effects: { // getCapsuleById 
         *getCapsuleById({ payload }, { call, put }) {
             const res = yield call(getCapsuleById, payload);
@@ -43,6 +49,12 @@ const Model = {
         },
         *createCapsule({ payload }, { put, call }) {
             const res = yield call(add, payload);
+            if (res.success) {
+                yield put({
+                    type: 'setCapsule',
+                    payload: {_id: res.data?._id,}
+                });
+            }
             return res 
         },
         *updateCapsule({ payload }, { put, call }) {
@@ -80,10 +92,32 @@ const Model = {
         },
         *applyForPublication({ payload }, { put, call }) {
             const res = yield call(applyForPublication, payload);
+            if (res.success) {
+                yield put({
+                    type: 'setCapsule',
+                    payload: {status: res.data?.status}
+                });
+            }
+             return res
+        },
+        *approve({ payload }, { put, call }) {
+            const res = yield call(update, payload);
+            if (res.success) {
+                yield put({
+                    type: 'setCapsule',
+                    payload: {status: res.data?.status}
+                });
+            }
              return res
         },
     },
     reducers: {
+        clearCapsule(state) {
+            return {
+                ...state,
+                ...initState,
+            };
+        },
         setCapsule(state, { payload }) {
             return {
                 ...state,
