@@ -17,7 +17,7 @@ const { Option } = Select;
 class RegistrationForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { capsuleList, branchList, goodsList } = this.props;
+        // const { capsuleList, branchList, goodsList } = this.props;
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -37,32 +37,19 @@ class RegistrationForm extends React.Component {
             },
         };
 
-        const goodsOptions = goodsList.map(g => ({
-            label: g.name,
-            value: g._id,
-        }));
-        const branchOptions = branchList.map(g => ({
-            label: g.namecn,
-            value: g._id,
-        }));
-        const capsuleOptions = capsuleList.map(g => ({
-            label: g.namecn,
-            value: g._id,
-        }));
-        const productorSelector = getFieldDecorator('currency', {
-            rules: [
-                {
-                    required: true,
-                    message: '请选择货币',
-                },
-            ],
-        })(
-            <Select placeholder="请选择">
-                <Option value={0}>人民币</Option>
-                <Option value={1}>美元</Option>
-                <Option value={2}>欧元</Option>
-            </Select>,
-        );
+        // const goodsOptions = goodsList?.map(g => ({
+        //     label: g.name,
+        //     value: g._id,
+        // }));
+        // const branchOptions = branchList?.map(g => ({
+        //     label: g.namecn,
+        //     value: g._id,
+        // }));
+        // const capsuleOptions = capsuleList?.map(g => ({
+        //     label: g.namecn,
+        //     value: g._id,
+        // }));
+
 
         return (
             <Form {...formItemLayout}>
@@ -113,7 +100,7 @@ class RegistrationForm extends React.Component {
                     })(<Input />)}
                 </Form.Item>
 
-                <Form.Item label="可见商品">
+                {/* <Form.Item label="可见商品">
                     {getFieldDecorator('goods', {
                         rules: [],
                     })(<CheckboxGroup options={goodsOptions} />)}
@@ -127,8 +114,8 @@ class RegistrationForm extends React.Component {
                     {getFieldDecorator('capsules', {
                         rules: [],
                     })(<CheckboxGroup options={capsuleOptions} />)}
-                </Form.Item>
-                <Form.Item label="货币">{productorSelector}</Form.Item>
+                </Form.Item> */}
+                {/* <Form.Item label="货币">{productorSelector}</Form.Item> */}
 
                 <Form.Item label="备注">
                     {getFieldDecorator('remark', {
