@@ -203,7 +203,7 @@ const Com = props => {
                     },
                 }}
             />
-            {props.record.visible && <RecordModal {...props.record} modelName="flower" onCancel={() => props.dispatch({type: 'record/toggleModal', payload: false})} />}
+            {props.record.visible && <RecordModal {...props.record} modelName="style" onCancel={() => props.dispatch({type: 'record/toggleModal', payload: false})} />}
         </>
     );
 };
