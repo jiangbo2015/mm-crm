@@ -1,7 +1,7 @@
 import { parse } from 'querystring';
 import pathRegexp from 'path-to-regexp';
 import lodash from 'lodash';
-import { imgUrl, svgUrl } from '@/utils/apiconfig';
+import { imgUrl, svgUrl, preSvgUrl } from '@/utils/apiconfig';
 
 import moment from 'moment'
 import JSZip from 'jszip';
@@ -79,8 +79,12 @@ export const filterImageUrl = url => {
     // 本地数据
     if (arrs.length >= 3) {
         if (url.indexOf('.svg') >= 0) {
+            if (arrs[1] > '2025-03-22') {
+                return `${svgUrl}${url}`;
+            }
+            return `${preSvgUrl}${url}`;
             // console.log('url', `${svgUrl}${url}`);
-            return `${svgUrl}${url}`;
+            
         } else {
             return `${imgUrl}mrmiss//${arrs[2]}`;
         }
