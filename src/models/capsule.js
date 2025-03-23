@@ -76,7 +76,7 @@ const Model = {
                 yield put({
                     type: 'getList',
                     payload: {
-                        status: payload?.status
+                        status: 'pending'
                     }
                 });
             }
