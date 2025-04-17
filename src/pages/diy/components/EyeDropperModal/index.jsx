@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Modal, message } from 'antd'
+import { useState, useEffect } from 'react';
+import { Modal, message, Input, Button } from 'antd'
 import { isFunction, get } from 'lodash'
 import Icon, { HomeOutlined } from '@ant-design/icons';
 import useDiy from '../../hooks/useDiy'
@@ -13,12 +13,18 @@ version="1.1" viewBox="0 0 50 50" x="0px" y="0px">
 
 import styles from './index.less'
 
-const EyeDropperPicker = ({modalProps = {}}) => {
-    const { createCustomColor } = useDiy()
+const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
+    const { createCustomColor, delCustomColor, updateCustomColor } = useDiy()
     const { onOk } = modalProps;
   const [selectedColor, setSelectedColor] = useState('');
   const [error, setError] = useState('');
+  const [colorName, setColorName] = useState('');
 
+  useEffect(() => {
+    setSelectedColor(editData?.value)
+    setColorName(editData?.namecn)
+  }, [editData])
+  
   // 检测浏览器支持性
   const isSupported = 'EyeDropper' in window;
 
@@ -41,14 +47,40 @@ const EyeDropperPicker = ({modalProps = {}}) => {
   };
 
   const handleOk = async () => {
+    if (!colorName) {
+        message.error("请输入颜色名！")
+        return
+    }
     if(isFunction(onOk)) {
         onOk(selectedColor)
     }
-    const res = await createCustomColor({
+    if (editData) {
+        
+    }
+    const res = editData ? await updateCustomColor({
+        _id: editData?._id,
         isCustom: 1,
         value: selectedColor,
         type: 0,
+        namecn: colorName,
+        nameen: colorName,
+    }) : await createCustomColor({
+        isCustom: 1,
+        value: selectedColor,
+        type: 0,
+        namecn: colorName,
+        nameen: colorName,
     })
+    if(get(res, 'success')) {
+        modalProps.onCancel()
+    } else {
+        message.error(get(res, 'message'))
+    }
+  }
+
+  const handleDel = async () => {
+    const res = await delCustomColor(editData)
+    console.log(res)
     if(get(res, 'success')) {
         modalProps.onCancel()
     } else {
@@ -71,6 +103,17 @@ const EyeDropperPicker = ({modalProps = {}}) => {
         top={112}
         //   visible={visible}
         onOk={handleOk}
+        footer={[
+            <Button danger onClick={handleDel}>
+                删除
+            </Button>,
+            <Button key="back" onClick={modalProps?.onCancel}>
+                取消
+            </Button>,
+            <Button key="submit" type="primary" onClick={handleOk}>
+                确定
+            </Button>
+        ]}
     >
         <div className={styles["picker-container"]}>
 
@@ -84,7 +127,11 @@ const EyeDropperPicker = ({modalProps = {}}) => {
         >
             <Icon component={DropperSvg}/>
         </div>
-
+        {selectedColor && <div>
+                <Input placeholder="请输入颜色名" value={colorName} onChange={(e) => {
+                    setColorName(e?.target?.value)
+                }}/>
+            </div>}
         {selectedColor && (
             <div className={styles["color-preview"]}>
             <div 

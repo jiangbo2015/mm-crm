@@ -47,10 +47,12 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
         populatedPlainColors = [], 
         populatedStyles = [], 
         populatedFlowerColors = [],
+        populatedTextures = [],
         populatedCapsules = []
      } = currentChannel
     const [visiblePlainColorsModal, setVisiblePlainColorsModal] = useState(false);
     const [visibleFlowerColorsModal, setVisibleFlowerColorsModal] = useState(false);
+    const [visibleTexturesModal, setVisibleTexturesModal] = useState(false);
     const [visibleStylesSelectorModal, setVisibleStylesSelectorModal] = useState(false);
     const [visibleCapsulesSelectModal, setVisibleCapsulesSelectModal] = useState(false);
     
@@ -84,6 +86,9 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
     }
     const showFlowerColorsModal = () => {
         setVisibleFlowerColorsModal(true)
+    }
+    const showTexturesModal = () => {
+        setVisibleTexturesModal(true)
     }
     const showStylesSelectorModal = () => {
         setVisibleStylesSelectorModal(true)
@@ -126,6 +131,17 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
         setVisibleFlowerColorsModal(false)
     };
 
+    const handleUpdateTextures = async (selectedTextures) => {
+        await dispatch({
+            type: 'channel/update',
+            payload: {
+                _id: params.id,
+                textures: map(selectedTextures, c => c._id)
+            },
+        });
+        
+        setVisibleTexturesModal(false)
+    };
     const handleUpdateStyles = async (selectedStyles) => {
         await dispatch({
             type: 'channel/update',
@@ -278,6 +294,29 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
                     }}
                     onColorsModalOk={handleUpdateFlowerColors}
                     initSelectedColors={populatedFlowerColors}
+                />
+            </Card>
+            <Card
+                title="纹理"
+                extra={
+                    <Button type="primary" onClick={showTexturesModal}>
+                        分配
+                    </Button>
+                }
+                style={{ marginBottom: '20px' }}
+            >
+                <div className={styles['flex-box']}>
+                    {map(populatedTextures, pc => (<FlowerColorItem item={pc} size={40} />))}
+                </div>
+                <ColorsModal 
+                    colorType={2}
+                    modalProps={{
+                        visible: visibleTexturesModal,
+                        onCancel: () => setVisibleTexturesModal(false),
+                        confirmLoading: updateChannelLoading
+                    }}
+                    onColorsModalOk={handleUpdateTextures}
+                    initSelectedColors={populatedTextures}
                 />
             </Card>
         </PageHeaderWrapper>

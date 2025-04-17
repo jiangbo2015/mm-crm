@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Modal, Upload, Form, Input, InputNumber, Row, Col, message } from 'antd'
+import { Button, Modal, Upload, Form, Input, InputNumber, Row, Col, message } from 'antd'
 import ReactCrop from 'react-image-crop';
 import { get } from 'lodash'
 import 'react-image-crop/dist/ReactCrop.css';
@@ -33,8 +33,8 @@ const formItemLayout = {
         },
     },
 };
-const ImageCropper = ({ onUpload, modalProps }) => {
-    const { createCustomColor } = useDiy()
+const ImageCropper = ({ onUpload, modalProps, editData }) => {
+    const { createCustomColor, delCustomColor, updateCustomColor } = useDiy()
     const [src, setSrc] = useState(null);
     const [uploadedImgUrl, setUploadedImgUrl] = useState('');
     const [cropperOpen , setCropperOpen] = useState(false);
@@ -45,7 +45,15 @@ const ImageCropper = ({ onUpload, modalProps }) => {
     const imageRef = useRef(null);
 
     const [form] = Form.useForm()
-    
+    useEffect(() => {
+        if(editData) {
+            form.setFieldsValue({...editData, name: get(editData, 'namecn', '')})
+        } else {
+            form.resetFields()
+        }
+        
+        setUploadedImgUrl(editData?.value)
+      }, [editData])
     const beforeUpload = (file) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -134,35 +142,42 @@ const ImageCropper = ({ onUpload, modalProps }) => {
         setSrc(null);
       };
     
-      const handleOk = async () => {
+    const handleOk = async () => {
         const vals = form.getFieldsValue()
-        const names = get(vals, 'name', '').split('/')
-        console.log('handleOk', {
+        const name = get(vals, 'name', '')
+        
+        const formData = {
             isCustom: 1,
             size: get(vals, 'size'),
-            namecn: get(names, 0),
-            nameen: get(names, 1, get(names, 0)),
+            // namecn: get(names, 0),
+            // nameen: get(names, 1, get(names, 0)),
+            namecn: name,
+            nameen: name,
             value: uploadedImgUrl,
             type: 1,
             width: croppedImage?.width,
             height: croppedImage?.height,
-        })
-        const res = await createCustomColor({
-            isCustom: 1,
-            size: get(vals, 'size'),
-            namecn: get(names, 0),
-            nameen: get(names, 1, get(names, 0)),
-            value: uploadedImgUrl,
-            type: 1,
-            width: croppedImage?.width,
-            height: croppedImage?.height,
-        })
+        }
+        console.log('handleOk', formData)
+        const res = editData ? await updateCustomColor({
+            _id: editData?._id,
+            ...formData
+        }) : await createCustomColor(formData)
         if(get(res, 'success')) {
             modalProps.onCancel()
         } else {
             message.error(get(res, 'message'))
         }
 
+      }
+    const handleDel = async () => {
+        const res = await delCustomColor(editData)
+        console.log(res)
+        if(get(res, 'success')) {
+            modalProps.onCancel()
+        } else {
+            message.error(get(res, 'message'))
+        }
       }
   return (
     <>
@@ -173,6 +188,17 @@ const ImageCropper = ({ onUpload, modalProps }) => {
         width={300}
         //   visible={visible}
         onOk={handleOk}
+        footer={[
+            <Button danger onClick={handleDel}>
+                删除
+            </Button>,
+            <Button key="back" onClick={modalProps?.onCancel}>
+                取消
+            </Button>,
+            <Button key="submit" type="primary" onClick={handleOk}>
+                确定
+            </Button>
+        ]}
     >
             <Form form={form} {...formItemLayout} name="inputDesiner" layout="vertical">
                 <Row>

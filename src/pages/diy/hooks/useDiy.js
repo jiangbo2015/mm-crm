@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { message } from 'antd'
 import { get, map, filter, includes } from 'lodash';
 import { useDispatch, useSelector } from '@/hooks/useDvaTools'
+import { history } from 'umi';
 
 function filterCapsuleItemsById(capsuleItems, id) {
     // 过滤 capsuleItems，返回符合条件的 capsuleItems
@@ -52,6 +53,21 @@ const useDiy = () => {
             payload: item,
         });
     };
+    const updateCustomColor = async item => {
+        return dispatch({
+            type: 'diy/updateCustomColor',
+            payload: item,
+        });
+    };
+    const delCustomColor = async item => {
+        return dispatch({
+            type: 'diy/delCustomColor',
+            payload: {
+                _id: item._id,
+                type: item.type,
+            },
+        });
+    }
     const addCapsuleItem = item => {
         dispatch({
             type: 'diy/addCapsuleItem',
@@ -94,6 +110,33 @@ const useDiy = () => {
                 payload: data,
             });
         }
+    };
+    const handleSaveAs = async (inputName) => {
+        const data = {
+            name: inputName ?? name,
+            capsuleItems: map(capsuleItems, ci => {
+                if(ci?.type === 'style') {
+                    return {
+                        ...ci,
+                        style: ci?.style?._id,
+                        finishedStyleColorsList: map(ci?.finishedStyleColorsList, sc => ({
+                            colors: map(sc?.colors, c => c?._id),
+                            textrue: sc?.textrue?._id,
+                            imgUrlFront: sc?.imgUrlFront,
+                            imgUrlBack: sc?.imgUrlBack,
+                        }))
+                    }
+                }
+                return ci
+            }),
+            plainColors: map(plainColors, pc => pc._id),
+            flowerColors: map(flowerColors, fc => fc._id),
+        }
+        console.log("data->", data)
+        return await dispatch({
+            type: 'diy/createCapsule',
+            payload: data,
+        });
     };
     const hideVisibleStylesSelectorModal = () => {
         setVisibleStylesSelectorModal(false)
@@ -237,7 +280,14 @@ const useDiy = () => {
         })
         // history.push(`/diy/${_id}`)
     };
-
+    const handleGoEditOther = (other) => {
+        history.push(`/diy/${other}`)
+        dispatch({
+            type: 'diy/setMode',
+            payload: 'editor'
+        })
+        
+    };
     const handleChangeName = (name) => {
         console.log('handleChangeName', name)
         dispatch({
@@ -265,6 +315,7 @@ const useDiy = () => {
         handleSave,
         currentEditCapsuleItem,
         createCustomColor,
+
         handleEnlargeCapsuleItem,
         handleDeleteCapsuleItem,
         isEditor,
@@ -273,6 +324,10 @@ const useDiy = () => {
         handleSelectGoodId,
         handleSelectGoodCategryId,
         handleChangeName,
+        handleSaveAs,
+        handleGoEditOther,
+        delCustomColor,
+        updateCustomColor,
         goods,
         selectedGoodId,
         selectedGoodCategryId,

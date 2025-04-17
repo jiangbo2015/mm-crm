@@ -1,6 +1,6 @@
 import React,{ useEffect } from 'react';
 import { forEach, map,filter,isEmpty, cloneDeep } from 'lodash'
-// import { useIntl } from 'umi'
+import { getLocale } from 'umi'
 import { useSelector, useDispatch } from '@/hooks/useDvaTools'
 import useDiy from '../../hooks/useDiy'
 import styles from './index.less'
@@ -46,7 +46,7 @@ export default () => {
     } = useDiy()
     const filteredGoods = filterGoods(originCapsuleItems, goods);
     // const {locale,formatMessage } = useIntl()
-    const locale = 1;
+    const locale = getLocale();
     return (
         <div className={styles['good-category-menu']}>
                 {map(filteredGoods, (item, i) => (

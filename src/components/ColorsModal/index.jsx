@@ -10,6 +10,7 @@ import { connect } from 'dva';
 import { get, map, toInteger, includes , filter, findIndex } from 'lodash';
 
 import { ColorItem } from '@/components/ColorItem'
+import SortSelect from '@/components/SortSelect'
 import { useDispatch, useSelector } from '@/hooks/useDvaTools';
 
 import styles from './index.less'
@@ -25,8 +26,9 @@ const ColorTypeToPlaceholder = {
 const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, colorType}) => {
   const dispatch = useDispatch()
 
-  const {docs: sourceList, total, limit, page} = useSelector(state => get(state, colorType === 0 ? 'style.colorList' : 'style.colorListFlower' , {}))
+  const {docs: sourceList, total, limit, page, code} = useSelector(state => get(state, colorType === 0 ? 'style.colorList' : 'style.colorListFlower' , {}))
   const [selectedItemList, setSelectedItemList] = useState([]);
+  const [sort, setSort] = useState('time');
 
   const selectedList = map(selectedItemList, ({_id}) => _id)
   const SelectedDrawerOpen = modalProps?.visible && selectedList.length > 0;
@@ -38,13 +40,13 @@ const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, color
 
   useEffect(() => {
     handleFetch({ limit: 30, page: 1})
-  }, [])
+  }, [sort])
 
   
   const handleFetch = (params) => {
     dispatch({
         type: 'style/getColorList',
-        payload: {...params, type: colorType},
+        payload: {code, ...params, type: colorType, sort},
     });
   }
   
@@ -91,12 +93,13 @@ const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, color
   };
 
   return (
-    <>    <Modal
-      {...modalProps}
-      closable={false}
-      top={112}
+    <>    
+    <Modal
+        {...modalProps}
+        closable={false}
         //   visible={visible}
         onOk={handleOk}
+        style={{top: 52 }}
         //   onCancel={hideModal}
     >
         <div className={styles['selector-tools']}>
@@ -109,7 +112,21 @@ const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, color
                 onSearch={onSearch} 
                 style={{ width: 200 }} 
             />
-            <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>全选</CheckableTag>
+            <div style={{display: 'flex'}}>
+                <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>全选</CheckableTag>
+                <SortSelect
+                    onSelect={val => {
+                        if (val != sort) {
+                            setSort(val);
+                        }
+                    }}
+                    value={sort}
+                    options={[
+                        { label: 'Time', value: 'time' },
+                        { label: 'Color', value: 'color' },
+                    ]}
+                />
+            </div>
         </div>      
 
         <div className={styles['grid-seletor']}>
@@ -141,7 +158,11 @@ const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, color
     {SelectedDrawerOpen && <Drawer 
             className={styles['selected-drawer']}
             contentWrapperStyle={{padding: 0 }}
-            height={100} placement="top" mask={false} closable={false} open>
+            height={50} 
+            placement="top" 
+            mask={false} 
+            closable={false} 
+            open>
             <div className={styles['flex-selected-box']}>
                 {map(selectedItemList, (item) => {
                     return (

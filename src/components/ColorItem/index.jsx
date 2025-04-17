@@ -1,4 +1,5 @@
 import React from 'react'
+import { getLocale } from 'umi'
 import { Tooltip } from 'antd'
 import classnames from 'classnames'
 
@@ -12,8 +13,9 @@ export const ColorItem = ({item = {}, ...props}) => {
 }
 
 export const PlainColorItem = ({item = {}, size, onClick, children, className, borderWidth}) => {
-    const {code, value} = item
-    return (<Tooltip title={code}>
+    const { value, namecn, nameen } = item
+    const locale = getLocale();
+    return (<Tooltip title={locale === 'en-US'? nameen : namecn}>
             <div
                 onClick={onClick}
                 className={classnames(styles['item-val'], className)}
@@ -25,9 +27,11 @@ export const PlainColorItem = ({item = {}, size, onClick, children, className, b
 }
 
 export const FlowerColorItem = ({item = {}, size, onClick, children, className, borderWidth}) => {
-    const {code, value} = item
+    const {code, value, namecn, nameen} = item
+    const locale = getLocale();
+    const name = locale === 'en-US'? nameen : namecn
     return (
-        <Tooltip title={code}>
+        <Tooltip title={name ?? code}>
             <div
                 onClick={onClick}
                 className={classnames(styles['item-val'], styles['item-val-img'], className)}

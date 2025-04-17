@@ -3,8 +3,11 @@ import React, { useState } from 'react';
 import { get } from 'lodash'
 import { useDispatch, useSelector } from '@/hooks/useDvaTools'
 import { downloadResourcesAsZip,wait } from '@/utils/utils'
+
 import {
     SendOutlined,
+    DeliveredProcedureOutlined,
+    UserOutlined
 } from '@ant-design/icons';
 
 import useDiy from '../../hooks/useDiy'
@@ -17,7 +20,16 @@ const StatusToMapText = {
 
 const DiyActions = () => {
 
-    const { handleSave, isEditor, handleView, originCapsuleItems, name, status, handleChangeName } = useDiy()
+    const { 
+        handleSave, 
+        handleSaveAs, 
+        isEditor, 
+        handleView, 
+        originCapsuleItems, 
+        name, status, 
+        handleChangeName,
+        handleGoEditOther
+     } = useDiy()
     const dispatch = useDispatch()
     const currentUser = useSelector(state => state?.user?.currentUser)
     const author = useSelector(state => state?.diy?.author)
@@ -26,7 +38,7 @@ const DiyActions = () => {
     const IsAdmin = 0 === currentUser?.role
     const IsAuthor = !author || author?._id === currentUser?._id
     const IsPending = status === 'pending'
-    const IsCanEdit = status === 'draft'
+    const IsCanEdit = status !== 'published'
     const IsCanPublish = status === 'draft'
     const [inputNameOpen, setInputNameOpen] = useState(false)
 
@@ -67,6 +79,20 @@ const DiyActions = () => {
         });
         modal.info({
             title: '发布成功',
+        })
+    };
+    const handleSaveToMy = async () => {
+        handleSaveAs(`${name}-copy`, true).then((res) => {
+            // console.log('res-->', res?.data?._id)
+            modal.confirm({
+                title: '复制成功',
+                content: '已复制到“我的创建”，去编辑',
+                cancelText: '取消',
+                okText: '去编辑',
+                onOk: () => {
+                    handleGoEditOther(res?.data?._id)
+                }
+            });
         })
     };
     const handleEdit = () => {
@@ -111,11 +137,14 @@ const DiyActions = () => {
 
   return (
     <>
+      {!! author && <div><Tag icon={<UserOutlined />} color="purple">{author?.name}</Tag></div>}
       {!!StatusToMapText[status] && 
        <div><Tag color="processing">{StatusToMapText[status]}</Tag></div>}
+       
       {IsPending && IsAdmin && <Button type="primary" icon={<SendOutlined />} onClick={handleApprove}>
         通过发布
       </Button>}
+      {!IsAuthor && !isEditor && <Button type="primary" icon={<DeliveredProcedureOutlined />} onClick={handleSaveToMy}>复制到“我的”</Button>}
       {!isEditor && <Button type="primary" onClick={handleDownload}>
         下载
       </Button>}

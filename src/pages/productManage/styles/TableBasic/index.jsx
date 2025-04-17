@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Table, Divider, Tag, Modal, Popconfirm } from 'antd';
 import styles from './index.less';
+import { get } from 'lodash';
 import { connect } from 'dva';
+import moment from 'moment'
 import Form from '../Form';
 import Preview from '../Preview';
 // import { imgUrl } from '@/utils/apiconfig';
@@ -34,7 +36,18 @@ const Com = props => {
             dataIndex: 'styleName',
             key: 'styleName',
         },
-
+        {
+            title: '创建人',
+            dataIndex: 'creator',
+            key: 'creator',
+            render: (creator) => get(creator, 'name', '-')
+        },
+        {
+            title: '创建日期',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            render: (createdAt) => moment(createdAt).format('YYYY-MM-DD hh:mm:ss')
+        },
         {
             title: '操作',
             dataIndex: 'action',

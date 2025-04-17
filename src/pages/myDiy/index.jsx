@@ -10,7 +10,7 @@ import {
   } from '@ant-design/icons';
 import Waterfall from 'waterfalljs-layout/dist/react/index.esm';
 import { useDebounce } from '@/hooks/useDebounce';
-
+import styles from './index.less'
 const { Search } = Input;
 
 const defimages = [
@@ -197,6 +197,7 @@ const Com = props => {
                     allowClear
                     onSearch={setSearchText} 
                     size='large'
+                    className={styles['search-input']}
                     style={{ 
                         width: 360,
                         position: 'absolute',

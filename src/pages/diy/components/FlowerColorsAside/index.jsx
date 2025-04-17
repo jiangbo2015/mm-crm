@@ -18,6 +18,7 @@ const onChange = (key) => {
 const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
     const [visibleFlowerColorsModal, setVisibleFlowerColorsModal] = useState(false);
     const [visibleImageCropperModal, setVisibleImageCropperModal] = useState(false);
+    const [imageCropperEditData, setImageCropperEditData] = useState(null)
     const handleUpdateFlowerColors  = async (selectedFlowerColors) => {
         console.log(selectedFlowerColors)
             await dispatch({
@@ -27,7 +28,10 @@ const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
             
             setVisibleFlowerColorsModal(false)
         };
-    
+    const handleEditImageCropper = (item) => {
+        setVisibleImageCropperModal(true)
+            setImageCropperEditData(item)
+        }
     const FlowerColorsItems = [ 
         { 
             label: "印花选择",
@@ -37,7 +41,7 @@ const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
         { 
             label: "自主上传",
             key: 2,
-            children: <ColorList hideSearch colorType={1} colors={customFlowerColors} onAdd={() => {setVisibleImageCropperModal(true)}}/>,
+            children: <ColorList hideSearch colorType={1} colors={customFlowerColors} onAdd={() => {setVisibleImageCropperModal(true)}} onClickItem={handleEditImageCropper}/>,
         },
     ]
     return (
@@ -55,9 +59,13 @@ const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
             <ImageCropperModal
                 modalProps={{
                     visible: visibleImageCropperModal,
-                    onCancel: () => setVisibleImageCropperModal(false),
+                    onCancel: () => {
+                        setVisibleImageCropperModal(false)
+                        setImageCropperEditData(null)
+                    },
                     // confirmLoading: updateChannelLoading
                 }}
+                editData={imageCropperEditData}
             />
             <Tabs
                 onChange={onChange}

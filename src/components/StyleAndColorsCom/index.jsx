@@ -2,8 +2,25 @@ import React, { useEffect, useMemo } from 'react';
 import { ReactSVG } from 'react-svg';
 import { isFunction } from "lodash"
 import { filterImageUrl } from '@/utils/utils';
+
 import getDataUrl from 'get-dataurl'
 
+function setLocalStorage(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {
+      if (e.name === 'QuotaExceededError') {
+        // 如果存储满了，先清除一部分旧数据
+        console.warn("存储已满，尝试清理...");
+        localStorage.clear(); // 或按需删除部分数据
+        localStorage.setItem(key, value); // 重试
+      } else {
+        console.error("存储失败：", e);
+      }
+    }
+  }
+
+  
 const SvgMaskGroupId = 'we-idesign-svg-mask-group'
 const MaskTextureId = 'we-idesign-mask-texture'
 export default React.memo(props => {
@@ -180,7 +197,7 @@ export default React.memo(props => {
                                     svgDefs.appendChild(svgPattern);
                             } else {
                                 getDataUrl(filterImageUrl(color.value), dataUrl => {
-                                    localStorage.setItem(color.value, `${dataUrl}`)
+                                    setLocalStorage(color.value, `${dataUrl}`)
                                     svgPatternImage.href.baseVal = `${dataUrl}`;
                                     svgPattern.appendChild(svgPatternImage);
                                     svgDefs.appendChild(svgPattern);
@@ -223,7 +240,7 @@ export default React.memo(props => {
                                     svgDefs.appendChild(svgPattern);
                             } else {
                                 getDataUrl(filterImageUrl(texture.value), dataUrl => {
-                                    localStorage.setItem(texture.value, `${dataUrl}`)
+                                    setLocalStorage(texture.value, `${dataUrl}`)
                                     svgPatternImage.href.baseVal = `${dataUrl}`;
                                     svgPattern.appendChild(svgPatternImage);
                                     svgDefs.appendChild(svgPattern);

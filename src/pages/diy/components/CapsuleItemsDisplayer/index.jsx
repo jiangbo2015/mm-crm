@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Tooltip, Upload, Spin } from 'antd'
+import { Button, Upload, Spin, Modal } from 'antd'
 import { get, map, filter, includes } from 'lodash'
 import classnames from 'classnames'
 import { connect } from 'dva'
@@ -9,10 +9,11 @@ import {
     PlusOutlined,
     ZoomInOutlined,
     EditOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    DownloadOutlined
 } from '@ant-design/icons';
 
-import { filterImageUrl, uploadProps } from '@/utils/utils';
+import { filterImageUrl, uploadProps,downloadResourcesAsZip,wait } from '@/utils/utils';
 import { ColorItem } from '@/components/ColorItem'
 import StylesSelectorModal from '@/components/StylesSelectorModal'
 import { DesignStyleEditor } from './components/DesignStyleEditor'
@@ -114,7 +115,7 @@ const AddCard = () => {
     )
 }
 
-const CapsuleItemStyles = ({ item = {}, index }) => {
+const CapsuleItemStyles = ({ item = {}, index, handleDownload }) => {
     const { 
         handleUpdateCapsuleItem,
         handleEnlargeCapsuleItem,
@@ -128,6 +129,13 @@ const CapsuleItemStyles = ({ item = {}, index }) => {
     return (
         <div className={styles['capsule-item-wrapper']}>
             <div className={styles['aspect-ratio-box']} onClick={() => handleEnlargeCapsuleItem(index, showIndex)}>
+                <Button 
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        handleDownload()
+                    }}
+                    size='small'
+                    className={styles['download-icon']} shape="circle" icon={<DownloadOutlined />} />
                 <div className={classnames(styles['capsule-item'], styles['style-card'])}>
                     {finishedStyleColorsLength === 0 && <img className={styles['style-img']} src={filterImageUrl(style?.imgUrl)}/>}
                     {/* {map(finishedStyleColorsList, f => )} */}
@@ -161,7 +169,7 @@ const CapsuleItemStyles = ({ item = {}, index }) => {
     )
 }
 
-const CapsuleItemFile = ({ item,index }) => {
+const CapsuleItemFile = ({ item,index,handleDownload }) => {
     const { type, fileUrl } = item
     const { 
         handleEnlargeCapsuleItem,    
@@ -169,6 +177,13 @@ const CapsuleItemFile = ({ item,index }) => {
     return (
         <div className={styles['capsule-item-wrapper']}>
             <div className={styles['aspect-ratio-box']} onClick={() => handleEnlargeCapsuleItem(index, -1)}>
+                <Button 
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        handleDownload()
+                    }}
+                    size='small'
+                    className={styles['download-icon']} shape="circle" icon={<DownloadOutlined />} />
                 <div className={styles['capsule-item']}>
                     {type === 'img' && <img className={styles['upload-picture']} src={filterImageUrl(fileUrl)}/>}
                     {type === 'video' && <video className={styles['upload-picture']} src={filterImageUrl(fileUrl)}/>}
@@ -183,7 +198,24 @@ const CapsuleItem = (props) => {
     const {item, index} = props
     const type = get(props, 'item.type')
 
-    return type === 'style' ? <CapsuleItemStyles item={item} index={index} /> : <CapsuleItemFile item={item} index={index} />
+    const handleDownload = async () => {
+        const downloadingModal = Modal.info({
+            title: '下载中，请稍等片刻...',
+            closable: false,
+            okButtonProps: {
+                loading: true
+            }
+        });
+       await downloadResourcesAsZip([item], item?._id)
+       downloadingModal.update({
+            title: '下载完成',
+            closable: false
+       })
+       await wait(2000)
+       downloadingModal.destroy()
+    };
+
+    return type === 'style' ? <CapsuleItemStyles item={item} index={index} handleDownload={handleDownload} /> : <CapsuleItemFile item={item} index={index} handleDownload={handleDownload} />
 }
 
 const CapsuleItemsDisplayer = ({arrangement = '5'}) => {

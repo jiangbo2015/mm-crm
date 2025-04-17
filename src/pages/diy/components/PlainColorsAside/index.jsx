@@ -18,6 +18,7 @@ const onChange = (key) => {
 const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
     const [visiblePlainColorsModal, setVisiblePlainColorsModal] = useState(false);
     const [visibleEyeDropper, setVisibleEyeDropper] = useState(false);
+    const [eyeDropperEditData, setEyeDropperEditData] = useState(null);
     const handleUpdatePlainColors  = async (selectedPlainColors) => {
         console.log(selectedPlainColors)
             await dispatch({
@@ -27,6 +28,11 @@ const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
             
             setVisiblePlainColorsModal(false)
         };
+    
+    const handleEditEyeDropper = (item) => {
+        setVisibleEyeDropper(true)
+        setEyeDropperEditData(item)
+    }
     
     
     const PlainColorsItems = [ 
@@ -38,16 +44,27 @@ const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
         { 
             label: "自主上传",
             key: 2,
-            children: <ColorList hideSearch colors={customPlainColors} onAdd={() => {setVisibleEyeDropper(true)}}/>,
+            children: <ColorList 
+                hideSearch 
+                colors={customPlainColors} 
+                onAdd={() => {setVisibleEyeDropper(true)}}
+                onClickItem={handleEditEyeDropper}
+            />,
         },
     ]
     return (
         <>
-            <EyeDropperModal modalProps={{
-                visible: visibleEyeDropper,
-                onCancel: () => setVisibleEyeDropper(false),
-                // confirmLoading: updateChannelLoading
-            }}/>
+            <EyeDropperModal 
+                modalProps={{
+                    visible: visibleEyeDropper,
+                    onCancel: () => {
+                        setVisibleEyeDropper(false)
+                        setEyeDropperEditData(null)
+                    },
+                    // confirmLoading: updateChannelLoading
+                }}
+                editData={eyeDropperEditData}
+            />
             <ColorsModal 
                 colorType={0}
                 modalProps={{

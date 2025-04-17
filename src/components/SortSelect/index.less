@@ -1,0 +1,92 @@
+.mrmissSelect {
+    width: auto;
+    height: 22px !important;
+    border: none;
+    font-size: 12px;
+
+    :global {
+        .ant-select-selector {
+            height: 22px !important;
+            min-width: 60px;
+            background-color: #161616 !important;
+            color: #7b7b7b !important;
+            border-radius: 8px !important;
+            border: none !important;
+
+            .ant-select-selection-item {
+                line-height: 22px !important;
+            }
+
+            cursor: pointer !important;
+        }
+
+        .ant-select-arrow {
+            opacity: 0;
+        }
+
+        .ant-select-selection-search-input:focus {
+            outline: none !important;
+        }
+
+        .ant-select-selector .ant-select-selection-item {
+            text-align: center;
+            padding-right: 0px;
+        }
+
+        .ant-select-single .ant-select-selector::after,
+        .ant-select-single .ant-select-selector .ant-select-selection-item::after,
+        .ant-select-single .ant-select-selector .ant-select-selection-placeholder::after {
+            height: 0;
+        }
+    }
+
+}
+
+.mrmissSelectWhite {
+    width: auto;
+    height: 22px !important;
+    border: none;
+    font-size: 12px;
+
+    .ant-select-selector {
+        height: 22px !important;
+        min-width: 60px;
+        background-color: #ffffff !important;
+        color: #7b7b7b !important;
+        border-radius: 8px !important;
+        border: none !important;
+        cursor: pointer !important;
+
+        .ant-select-selection-item {
+            line-height: 22px !important;
+        }
+    }
+
+    .ant-select-arrow {
+        opacity: 0;
+    }
+
+    .ant-select-selection-search-input:focus {
+        outline: none !important;
+    }
+
+    .ant-select-selector .ant-select-selection-item {
+        text-align: center;
+        padding-right: 0px;
+    }
+
+    .ant-select-single .ant-select-selector::after,
+    .ant-select-single .ant-select-selector .ant-select-selection-item::after,
+    .ant-select-single .ant-select-selector .ant-select-selection-placeholder::after {
+        height: 0;
+    }
+}
+
+.arrow-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1px;
+    margin-left: 4px;
+    height: 24px;
+}

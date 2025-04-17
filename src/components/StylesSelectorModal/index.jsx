@@ -188,10 +188,10 @@ const StylesSelectorModal = ({
                             <StyleItem
                                 className={styles['relative']}
                                 item={item}
-                                onClick={() => handleEnlargeStyle(item)}
-                                onSelect={() => handleSelect(item)}
+                                onEnlarge={() => handleEnlargeStyle(item)}
+                                onClick={() => handleSelect(item)}
                                 size={size}
-                                showCheckedIcon
+                                showEnlargeIcon
                                 checked={includes(selectedList, _id)}
                             />
                         </div>
