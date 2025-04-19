@@ -63,7 +63,7 @@ const useDiy = () => {
     };
 
     const handleCompleteCapsuleItemFinished = (finishedObj) => {
-        // console.log('currentEditCapsuleItemFinishedIndex', currentEditCapsuleItemFinishedIndex)
+        console.log('currentEditCapsuleItemFinishedIndex', currentEditCapsuleItemFinishedIndex)
         if(currentEditCapsuleItemFinishedIndex < 0) {
             currentEditCapsuleItem.finishedStyleColorsList.push(finishedObj)
         } else if(currentEditCapsuleItemFinishedIndex > 0) {
@@ -71,6 +71,7 @@ const useDiy = () => {
         } else {
             currentEditCapsuleItem.finishedStyleColorsList = [finishedObj]
         }
+        console.log('capsuleItems:', capsuleItems)
         dispatch({
             type: 'diy/setCapsuleItems',
             payload: [...capsuleItems],

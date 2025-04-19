@@ -237,6 +237,19 @@ const Com = props => {
                                             src={filterImageUrl(item.imgUrl || 
                                             get(item, 'capsuleItems.0.fileUrl') || 
                                             get(item, 'capsuleItems.0.finishedStyleColorsList.0.imgUrlFront'))} alt="" style={{minHeight: 100}} />
+                                        <p style={{ 
+                                            fontSize: 14, 
+                                            fontWeight: 'bold',
+                                            color: '#000', 
+                                            background: 'rgba(255,255,255,0.5)',
+                                            position: 'absolute',
+                                            bottom: -14,
+                                            left: 0,
+                                            right: 0,
+                                            padding: '6px 8px'
+                                        }}>
+                                            {item?.name}
+                                        </p>
                                     </div>
                                 </li>
                             );

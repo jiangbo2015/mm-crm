@@ -4,7 +4,7 @@ import { Link } from 'umi';
 import React from 'react';
 import { connect } from 'dva';
 // import SelectLang from '@/components/SelectLang';
-import logo from '../assets/logo.jpg';
+import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
 
 const UserLayout = props => {

@@ -180,6 +180,13 @@ const useDiy = () => {
             setUploading(false);
         }
     };
+    const setCapsuleItems = (newCapsuleItems) => {
+        dispatch({
+            type: 'diy/setCapsuleItems',
+            payload: newCapsuleItems,
+        });
+
+    }
     const handleDeleteCapsuleItem = (index) => {
         // console.log('selectedStyles:', selectedStyles)
         capsuleItems.splice(index, 1)
@@ -302,6 +309,7 @@ const useDiy = () => {
         status,
         uploading,
         visibleStylesSelectorModal,
+        setCapsuleItems,
         addCapsuleItem,
         beforeUpload,
         handleAddCapsuleItemStyles,

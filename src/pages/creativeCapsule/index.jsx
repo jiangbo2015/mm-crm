@@ -248,7 +248,7 @@ const Com = props => {
                                             bottom: -14,
                                             left: 0,
                                             right: 0,
-                                            padding: '0 8px'
+                                            padding: '6px 8px'
                                         }}>
                                             {item?.name}
                                         </p>

@@ -85,7 +85,7 @@ const StylesSelectorModal = ({
   }
 
   const onSearch = (input) => {
-    searchInput(input)
+    setSearchInput(input)
   }
 
   const handleOk = () => {

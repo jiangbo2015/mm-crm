@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Tag, Button, Modal, Input } from 'antd';
 import { history, useParams } from 'umi';
-// import { useParams } from 'umi';
 import { connect } from 'dva';
 import { get } from 'lodash';
 import Icon, { LeftOutlined } from '@ant-design/icons';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+import logoSvg from '@/assets/logo.svg'
 import useArrangement from '@/hooks/useArrangement'
 import useDiy from './hooks/useDiy'
 import AvatarDropdown from '@/components/GlobalHeader/AvatarDropdown';
@@ -22,7 +22,7 @@ import styles from './index.less'
 const Com = props => {
     const params = useParams()
     const { isEditor, handleEdit, handleChangeName } = useDiy()
-    const { arrangement, ArrangmentDropdown } = useArrangement('页面排列', 20)
+    const { arrangement, ArrangmentDropdown } = useArrangement('', 20)
     const { _id, name, status, currentUser, dispatch } = props;
     console.log("_id", _id)
     console.log("status", status)
@@ -79,11 +79,15 @@ const Com = props => {
                     <div className={styles['back-button']} onClick={() => {history.goBack()}}>
                         <LeftOutlined />
                     </div> 
+                    <img src={logoSvg} height={60}/>
+                </div>
+                <div className={styles['header-center']}>
+                    {ArrangmentDropdown}
                     <div>
                         <Input onChange={onChangeName} size='large' placeholder="DIY胶囊名称" bordered={false} value={name}/>
                     </div>
-                </div>
-                <div>{ArrangmentDropdown}</div> 
+                    
+                </div> 
                 <div className={styles['header-right']}>
                     <div className={styles['diy-actions']}>
                         <DiyActions />

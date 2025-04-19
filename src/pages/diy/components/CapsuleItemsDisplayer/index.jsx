@@ -18,6 +18,8 @@ import { ColorItem } from '@/components/ColorItem'
 import StylesSelectorModal from '@/components/StylesSelectorModal'
 import { DesignStyleEditor } from './components/DesignStyleEditor'
 import { EnlargeModal } from './components/EnlargeModal'
+import {DropItem, DragDrop} from './components/DragDrop'
+
 import useDiy from '../../hooks/useDiy'
 import styles from './index.less'
 
@@ -217,22 +219,83 @@ const CapsuleItem = (props) => {
 
     return type === 'style' ? <CapsuleItemStyles item={item} index={index} handleDownload={handleDownload} /> : <CapsuleItemFile item={item} index={index} handleDownload={handleDownload} />
 }
+const CapsuleDropContainer = () => {
+  const [items, setItems] = useState([
+    { id: 1, text: '项目 1' },
+    { id: 2, text: '项目 2' },
+    { id: 3, text: '项目 3' },
+    { id: 4, text: '项目 4' },
+    { id: 5, text: '项目 5' },
+    { id: 6, text: '项目 6' },
+  ]);
+
+  const moveItem = (dragIndex, hoverIndex) => {
+    const dragItem = items[dragIndex];
+    const newItems = [...items];
+    newItems.splice(dragIndex, 1);
+    newItems.splice(hoverIndex, 0, dragItem);
+    setItems(newItems.map((item, index) => ({ ...item, index }))); // 更新索引
+  };
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '16px',
+        padding: '16px',
+      }}
+    >
+      {items.map((item, index) => (
+        <DragItem
+          key={item.id}
+          id={item.id}
+          text={item.text}
+          index={index}
+          moveItem={moveItem}
+        />
+      ))}
+    </div>
+  );
+}
 
 const CapsuleItemsDisplayer = ({arrangement = '5'}) => {
     const { 
         isEditor,
         capsuleItems, currentEditCapsuleItemIndex, 
-        currentEnlargeCapsuleItemIndex, currentEnlargeCapsuleItemFinishedIndex
+        currentEnlargeCapsuleItemIndex, currentEnlargeCapsuleItemFinishedIndex,
+        setCapsuleItems
     } = useDiy()
     const currentEditCapsuleItem = get(capsuleItems, currentEditCapsuleItemIndex)
     const currentEnlargeCapsuleItem = get(capsuleItems, currentEnlargeCapsuleItemIndex)
 
+    const moveItem = (dragIndex, hoverIndex) => {
+        const dragItem = capsuleItems[dragIndex];
+        const newItems = [...capsuleItems];
+        newItems.splice(dragIndex, 1);
+        newItems.splice(hoverIndex, 0, dragItem);
+        // setItems(newItems.map((item, index) => ({ ...item, index }))); // 更新索引
+
+        setCapsuleItems(newItems);
+      };
     return (
         <div className={classnames(styles['capsule-items-displayer'], styles[`grid-${arrangement}`])}>
-            {map(capsuleItems, (item, i) => <CapsuleItem key={`capsule-item${i}`} index={i} item={item} />)}
+           {isEditor &&  <DragDrop>
+                {map(capsuleItems, (item, i) =>
+                        <DropItem  key={`capsule-item${i}-${item?._id}`}
+                            id={item?._id}
+                            index={i}
+                            moveItem={moveItem}
+                        >
+                          <CapsuleItem index={i} item={item} />
+                        </DropItem>
+                )}
+            </DragDrop>}
+            {!isEditor && map(capsuleItems, (item, i) => <CapsuleItem index={i} item={item} />)}
             {isEditor && <AddCard />}
             {currentEditCapsuleItem && <DesignStyleEditor />}
             {currentEnlargeCapsuleItem && <EnlargeModal capsuleItem={currentEnlargeCapsuleItem} finishedIndex={currentEnlargeCapsuleItemFinishedIndex} />}
+            
         </div>
     );
 }

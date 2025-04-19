@@ -4,8 +4,8 @@ import { getLocale } from 'umi';
 import Slider from "react-slick";
 import { get, map, split, fill } from 'lodash'
 import classnames from 'classnames'
+import { ReactSVG } from 'react-svg';
 import {
-    ZoomInOutlined,
     ArrowLeftOutlined,
     ArrowRightOutlined,
     DoubleRightOutlined
@@ -16,6 +16,9 @@ import { filterImageUrl } from '@/utils/utils';
 
 import StyleAndColors from '@/components/StyleAndColorsCom'
 import { ColorItem } from '@/components/ColorItem'
+
+import fabricSvg from '@/assets/fabric.svg'
+import RandomSpeedProgress from '../RandomSpeedProgress'
 import useDiyEditor from '../../../../hooks/useDiyEditor'
 
 import styles from './index.less'
@@ -82,29 +85,29 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
 
     useEffect(() => {
         // 定义事件处理函数
-        // const handleClick = () => {
-        //     handleUpdateCurrentEditCapsuleStyleRegion(-1)
-        // };
+        const handleClick = () => {
+            handleUpdateCurrentEditCapsuleStyleRegion(-1)
+        };
 
-        // // 添加事件监听器
-        // window.addEventListener('click', handleClick);
+        // 添加事件监听器
+        document.addEventListener('click', handleClick);
 
         // 清理函数：在组件卸载时移除事件监听器
         return () => {
             handleUpdateCurrentEditCapsuleStyleRegion(-1)
-            // window.removeEventListener('click', handleClick);
+            document.removeEventListener('click', handleClick);
         };
     }, []); // 空依赖数组表示只在组件挂载和卸载时执行
 
     useEffect(() => {
       if(finishedStyleColors) {
-        setColors(finishedStyleColors?.colors)
-        setTexture(finishedStyleColors?.texture)
+        setColors([...get(finishedStyleColors,'colors', [])])
+        setTexture({...get(finishedStyleColors, 'texture', {})})
       }
     }, [finishedStyleColors])
 
     const handleFillColor = (color) => {
-        if(currentEditCapsuleStyleRegion === -1) {// 全选
+        if(currentEditCapsuleStyleRegion === -2) {// 全选
             setColors(fill(Array(styleSvgGroups.length), color))
         } else { 
             colors[currentEditCapsuleStyleRegion] = color;
@@ -164,22 +167,36 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
             footer={null}
             className={styles['design-style-modal']}
         >
-            <Spin spinning={createImgloading} tip="数据处理中，请稍等片刻...">
+            <Spin spinning={createImgloading} indicator={null} delay={1000} tip={<RandomSpeedProgress loading={createImgloading} />}>
                 <div className={styles['style-code']}>{style?.styleNo}</div>
                 <div className={styles['design-style-modal-header']}>
                     <div className={styles['textures-selector']}>
-                        面料选择<DoubleRightOutlined style={{marginRight: '12px'}}/>
-                        <Radio.Group value={texture?._id} size='small' >
+                        <ReactSVG
+                            src={fabricSvg}
+                            style={{
+                                width: '26px',
+                                height: '26px',
+                            }}
+                        />
+                        面料选择<DoubleRightOutlined style={{margin: '0 12px'}}/>
+                        <div style={{display: 'flex'}} value={texture?._id} size='small' >
                             {map(textures, t => (
-                                <Radio.Button value={t?._id} onClick={()=> {
+                                <div 
+                                    style={{
+                                        padding: '0 8px',
+                                        fontWeight: t?._id === texture?._id ? 'bold':'normal',
+                                        cursor:  'pointer'                                    }}
+                                    onClick={()=> {
                                         setTexture(t)
-                                    }} type='text'>{t?.code}
-                                </Radio.Button>)
+                                    }} 
+                                    type='text'>
+                                    {t?.code}
+                                </div>)
                             )}
-                        </Radio.Group>
+                        </div>
                     </div>
                     <div className={styles['action-buttons']}>
-                        <Button onClick={handleCancel}>取消</Button>
+                        <Button onClick={handleCancel} style={{marginRight: '8px'}}>取消</Button>
                         <Button onClick={handleOk} type='primary'>完成</Button>
                     </div>
                 </div>
@@ -234,7 +251,9 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                                 {map(plainColors, color => 
                                     <ColorItem 
                                         key={`s-${color?._id}`}
-                                        onClick={() => {
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            e.nativeEvent.stopImmediatePropagation();
                                             handleFillColor(color)
                                         }} 
                                         item={color} size={24} 
@@ -244,7 +263,9 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                                 {map(customPlainColors, color => 
                                     <ColorItem 
                                         key={`s-${color?._id}`}
-                                        onClick={() => {
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            e.nativeEvent.stopImmediatePropagation();
                                             handleFillColor(color)
                                         }} 
                                         item={color} size={24} 
@@ -256,9 +277,11 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                     </div>
                     <div className={styles['style-group-selector']}>
                         <div 
-                            className={classnames(styles['svg-group-btn'], currentEditCapsuleStyleRegion === -1 ? styles['svg-group-btn-active'] : '')} 
-                            onClick={() => {
-                                handleUpdateCurrentEditCapsuleStyleRegion(-1)
+                            className={classnames(styles['svg-group-btn'], currentEditCapsuleStyleRegion === -2 ? styles['svg-group-btn-active'] : '')} 
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                e.nativeEvent.stopImmediatePropagation();
+                                handleUpdateCurrentEditCapsuleStyleRegion(-2)
                             }}
                         >
                             {isZhCN ? '全部' : 'ALL'}
@@ -267,7 +290,9 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                             g => <div 
                                     className={classnames(styles['svg-group-btn'], currentEditCapsuleStyleRegion === g?.index ? styles['svg-group-btn-active'] : '')} 
                                     key={`${g?.index}-group-btn`} 
-                                    onClick={() => {
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        e.nativeEvent.stopImmediatePropagation();
                                         handleUpdateCurrentEditCapsuleStyleRegion(g?.index)
                                     }}
                                 >
@@ -280,7 +305,9 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                             <Slider {...settings} infinite={flowerColors.length + customFlowerColors.length > 5}>
                                 {map(flowerColors, color => 
                                     <ColorItem 
-                                        onClick={() => {
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            e.nativeEvent.stopImmediatePropagation();
                                             handleFillColor(color)
                                         }} item={color} size={24}
                                     />
@@ -289,7 +316,9 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                                 {map(customFlowerColors, color => 
                                     <ColorItem 
                                         key={`s-${color?._id}`}
-                                        onClick={() => {
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            e.nativeEvent.stopImmediatePropagation();
                                             handleFillColor(color)
                                         }} 
                                         item={color} size={24} 
