@@ -84,7 +84,8 @@ const Com = props => {
                 <div className={styles['header-center']}>
                     {ArrangmentDropdown}
                     <div>
-                        <Input onChange={onChangeName} size='large' placeholder="DIY胶囊名称" bordered={false} value={name}/>
+                        {isEditor &&<Input onChange={onChangeName} size='large' placeholder="DIY胶囊名称" bordered={false} value={name}/>}
+                        {!isEditor && <div style={{ paddingLeft: '11px', fontSize: 16}}>{name}</div>}
                     </div>
                     
                 </div> 

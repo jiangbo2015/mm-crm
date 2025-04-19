@@ -246,7 +246,10 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                 </div>
                 <div className={styles['style-diy-selector-wrapper']}>
                     <div className={styles['colors-slider-selector']}>
-                        <div className={styles['colors-slider']} >
+                        <div className={styles['colors-slider']} 
+                            onClick={(e) => {
+                                            e.stopPropagation();
+                                            e.nativeEvent.stopImmediatePropagation();}}>
                             <Slider {...settings} infinite={plainColors.length + customPlainColors.length > 5}>
                                 {map(plainColors, color => 
                                     <ColorItem 
@@ -301,7 +304,12 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                         )}
                     </div>
                     <div className={styles['colors-slider-selector']}>
-                        <div className={styles['colors-slider']} >
+                        <div className={styles['colors-slider']} 
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                e.nativeEvent.stopImmediatePropagation();
+                            }}
+                        >
                             <Slider {...settings} infinite={flowerColors.length + customFlowerColors.length > 5}>
                                 {map(flowerColors, color => 
                                     <ColorItem 
