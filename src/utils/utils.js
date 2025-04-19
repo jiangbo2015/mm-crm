@@ -79,7 +79,7 @@ export const filterImageUrl = url => {
     // 本地数据
     if (arrs.length >= 3) {
         if (url.indexOf('.svg') >= 0) {
-            if (arrs[1] > '2025-03-22') {
+            if (arrs[1] > '2025-04-11') {
                 return `${svgUrl}${url}`;
             }
             return `${preSvgUrl}${url}`;
