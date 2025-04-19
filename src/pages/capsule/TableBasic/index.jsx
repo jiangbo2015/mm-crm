@@ -44,6 +44,13 @@ const Com = props => {
             render: d => PENDING_MAP[d]
         },
         {
+            title: '创建人',
+            dataIndex: 'author',
+            key: 'author',
+            render: (author) => (<div>{author.name}</div>)
+            
+        },
+        {
             title: '创建日期',
             dataIndex: 'createdAt',
             key: 'createdAt',
