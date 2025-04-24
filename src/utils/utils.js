@@ -130,7 +130,7 @@ async function addFileToZip(url, filename, zip) {
 async function downloadResourcesAsZip(data, name) {
     const baseUrl = 'https://ik.imagekit.io/';
     const zip = new JSZip();
-
+    const filenameMap = {}
     // 遍历数据，下载文件并添加到 ZIP
     for (const item of data) {
         // 下载 fileUrl
@@ -145,12 +145,24 @@ async function downloadResourcesAsZip(data, name) {
             for (const colorItem of item.finishedStyleColorsList) {
                 if (colorItem.imgUrlFront) {
                     const imgUrlFront = `${baseUrl}${colorItem.imgUrlFront}`;
-                    const filename = colorItem.imgUrlFront.split('/').pop();
-                    await addFileToZip(imgUrlFront, `${filename}.png`, zip);
+                    let filename = `${lodash.get(item, 'style.styleNo')}+${lodash.get(lodash.find(lodash.get(item, 'colorItem.colors'), o => !o), 'code', '')}_Front`;
+                    if(filenameMap[filename]) {
+                        filenameMap[filename] += 1;
+                    } else {
+                        filenameMap[filename] = 1
+                    }
+                    
+                    
+                    await addFileToZip(imgUrlFront, `${filename}_${filenameMap[filename]}.png`, zip);
                 }
                 if (colorItem.imgUrlBack) {
                     const imgUrlBack = `${baseUrl}${colorItem.imgUrlBack}`;
-                    const filename = colorItem.imgUrlBack.split('/').pop();
+                    let filename = `${lodash.get(item, 'style.styleNo')}+${lodash.get(lodash.find(lodash.get(item, 'colorItem.colors'), o => !o), 'code', '')}_Back`;
+                    if(filenameMap[filename]) {
+                        filenameMap[filename] += 1;
+                    } else {
+                        filenameMap[filename] = 1
+                    }
                     await addFileToZip(imgUrlBack, `${filename}.png`, zip);
                 }
             }

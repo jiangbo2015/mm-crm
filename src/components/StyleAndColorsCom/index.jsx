@@ -83,7 +83,6 @@ export default React.memo(props => {
                     let j = 0;
                     const svgGroupArr = []
                     const newSvgMaskGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                    const strokeSvgGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
                     for (let i = 0; i < svg.children.length; i++) {
                         if (svg.children[i].tagName === 'g' || svg.children[i].tagName === 'path') {
                             let block = svg.children[i];
@@ -110,14 +109,8 @@ export default React.memo(props => {
                                     onSetEditSvgGroupIndex(jj);
                                 };
                                 if (curStylesEditGroupIndex === j && showGroupStroke) {
-                                    
-                                    const clonedStrokeBlock = block.cloneNode(true);
-                                    clonedStrokeBlock.style.fill = '#ffeb3b';
-                                    clonedStrokeBlock.style.opacity = 0.3;
-                                    block.style.stroke = '#ffeb3b';
-                                    block.style.strokeWidth = '16px';
-                                    strokeSvgGroup.appendChild(clonedStrokeBlock);
-                                    svg.appendChild(strokeSvgGroup);
+                                    block.style.stroke = '#000';
+                                    block.style.strokeWidth = '8px';
                                 }
                             }
                             // svg.children[i].setAttribute('index', j);
@@ -134,12 +127,8 @@ export default React.memo(props => {
                     }
 
                     if(curStylesEditGroupIndex === -2) { // 全选
-                        const clonedStrokeGroup = newSvgMaskGroup.cloneNode(true);
-                        clonedStrokeGroup.style.fill = '#ffeb3b';
-                        clonedStrokeGroup.style.opacity = 0.3;
-                        svg.style.stroke = '#ffeb3b';
-                        svg.style.strokeWidth = '16px';
-                        svg.appendChild(clonedStrokeGroup);
+                        svg.style.stroke = '#000';
+                        svg.style.strokeWidth = '8px';
                     }
                     if(texture) {
                         newSvgMaskGroup.setAttribute("id", MaskGroupID)

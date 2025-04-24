@@ -78,7 +78,7 @@ const Com = props => {
     const [searchText, setSearchText] = useState('')
     const ulMaxHRef = useRef(0);
     const scrollContainerRef = useRef({})
-    const { capsuleFavoritesMap } = props
+    const { capsuleFavoritesMap, collapsed } = props
     const {docs, pages, page} = props.list
 
     useEffect(() => {
@@ -106,6 +106,10 @@ const Com = props => {
     }, [searchText])
     
 
+    useEffect(() => {
+      setKey(Date.now())
+    }, [collapsed])
+    
     const handleSearchImage = async () => {
         if(Number(page) < pages && !isLoading) {
             setIsLoading(true)
@@ -265,4 +269,5 @@ const Com = props => {
 
 export default connect(state => ({
     ...state.creativeCapsule,
+    collapsed: state.global.collapsed,
 }))(Com);

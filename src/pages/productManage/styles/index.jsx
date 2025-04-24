@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Typography, Alert, Button, Modal, Row, Col, Input } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TableBasic from './TableBasic';
 import Form from './Form';
 import { connect } from 'dva';
 
 const { Search } = Input;
+const { confirm } = Modal;
 
 const Com = props => {
     const formRef = useRef();
@@ -90,16 +92,29 @@ const Com = props => {
         });
     };
 
+    const showDeleteConfirm = () => {
+        confirm({
+            title: '确认删除选中的款式吗?',
+            icon: <ExclamationCircleOutlined />,
+            okText: '确认',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk() {
+            props.dispatch({
+                type: 'style/delete',
+                payload: {
+                    ids: selectedKeys,
+                },
+            });
+            },
+        });
+        };
+
     const handleDeleteBatch = () => {
         if (selectedKeys.length < 1) {
             return;
         }
-        props.dispatch({
-            type: 'style/delete',
-            payload: {
-                ids: selectedKeys,
-            },
-        });
+        showDeleteConfirm()
     };
 
     const handleBatchUpdate = () => {

@@ -88,6 +88,7 @@ const Com = ({dispatch, channelList, currentUser}) => {
                     setVisible(false);
                     handleClear();
                 }}
+                destroyOnClose
             >
                 <Form ref={v => (formRef.current = v)} code={newChannelCode} />
             </Modal>

@@ -104,9 +104,9 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
         //   visible={visible}
         onOk={handleOk}
         footer={[
-            <Button danger onClick={handleDel}>
+            editData?<Button danger onClick={handleDel}>
                 删除
-            </Button>,
+            </Button>:null,
             <Button key="back" onClick={modalProps?.onCancel}>
                 取消
             </Button>,
@@ -114,6 +114,7 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
                 确定
             </Button>
         ]}
+        destroyOnClose
     >
         <div className={styles["picker-container"]}>
 

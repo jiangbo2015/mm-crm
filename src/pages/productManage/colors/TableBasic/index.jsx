@@ -38,6 +38,7 @@ const Com = props => {
         },
         {
             title: '创建人',
+            width: 76,
             dataIndex: 'creator',
             key: 'creator',
             render: (creator) => get(creator, 'name', '-')

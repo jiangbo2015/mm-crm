@@ -77,9 +77,12 @@ const Com = props => {
     const [searchText, setSearchText] = useState('')
     const ulMaxHRef = useRef(0);
     const scrollContainerRef = useRef({})
-    const { capsuleFavoritesMap } = props
+    const { capsuleFavoritesMap, collapsed } = props
     const {docs, pages, page} = props.list
-
+    useEffect(() => {
+        setKey(Date.now())
+    }, [collapsed])
+    
     useEffect(() => {
         const payload = {
             page: 1,
@@ -260,4 +263,5 @@ const Com = props => {
 
 export default connect(state => ({
     ...state.myFavorites,
+    collapsed: state.global.collapsed,
 }))(Com);

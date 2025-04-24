@@ -55,6 +55,12 @@ const ImageCropper = ({ onUpload, modalProps, editData }) => {
         setUploadedImgUrl(editData?.value)
       }, [editData])
     const beforeUpload = (file) => {
+        const limit = file.size / 1024 < 200;
+                if (!limit) {
+                    message.error('Image must smaller than 200K!');
+                    return limit;
+                }
+                
         const reader = new FileReader();
         reader.onload = (e) => {
           setSrc(e.target.result);
@@ -189,9 +195,9 @@ const ImageCropper = ({ onUpload, modalProps, editData }) => {
         //   visible={visible}
         onOk={handleOk}
         footer={[
-            <Button danger onClick={handleDel}>
+            editData ? <Button danger onClick={handleDel}>
                 删除
-            </Button>,
+            </Button> : null,
             <Button key="back" onClick={modalProps?.onCancel}>
                 取消
             </Button>,
@@ -199,6 +205,7 @@ const ImageCropper = ({ onUpload, modalProps, editData }) => {
                 确定
             </Button>
         ]}
+        destroyOnClose
     >
             <Form form={form} {...formItemLayout} name="inputDesiner" layout="vertical">
                 <Row>

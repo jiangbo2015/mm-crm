@@ -26,7 +26,7 @@ const ColorTypeToPlaceholder = {
 const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, colorType}) => {
   const dispatch = useDispatch()
 
-  const {docs: sourceList, total, limit, page, code} = useSelector(state => get(state, colorType === 0 ? 'style.colorList' : 'style.colorListFlower' , {}))
+  const {docs: sourceList, total=0, limit = 0, page = 0, code} = useSelector(state => get(state, colorType === 0 ? 'style.colorList' : 'style.colorListFlower' , {}))
   const [selectedItemList, setSelectedItemList] = useState([]);
   const [sort, setSort] = useState('time');
 
@@ -39,8 +39,10 @@ const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, color
   
 
   useEffect(() => {
-    handleFetch({ limit: 30, page: 1})
-  }, [sort])
+    if(modalProps?.visible) {
+        handleFetch({ limit: 30, page: 1})
+    }
+  }, [sort, modalProps?.visible])
 
   
   const handleFetch = (params) => {
@@ -101,6 +103,7 @@ const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, color
         onOk={handleOk}
         style={{top: 52 }}
         //   onCancel={hideModal}
+        destroyOnClose
     >
         <div className={styles['selector-tools']}>
             <Search 

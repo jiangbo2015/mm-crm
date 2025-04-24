@@ -61,9 +61,9 @@ const Model = {
                 yield put(
                     routerRedux.replace({
                         pathname: '/user/login',
-                        search: stringify({
-                            redirect: window.location.href,
-                        }),
+                        // search: stringify({
+                        //     redirect: window.location.href,
+                        // }),
                     }),
                 );
             }

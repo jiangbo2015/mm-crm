@@ -232,6 +232,7 @@ export default {
                                     path: '/productManage/goods',
                                     name: '商品分类',
                                     component: './productManage/goods',
+                                    authority: ['admin'],
                                 },
                                 {
                                     path: '/productManage/styles',

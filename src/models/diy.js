@@ -34,6 +34,7 @@ const initState = {
     currentEditCapsuleStyleRegion: -1,
     selectedGoodId: undefined,
     selectedGoodCategryId: undefined,
+    hasUpdate: false,
 
 }
 const Model = {
@@ -54,17 +55,20 @@ const Model = {
             if (res.success) {
                 yield put({
                     type: 'setCapsule',
-                    payload: {_id: res.data?._id,}
+                    payload: {_id: res.data?._id, arrangement: res.data?.arrangement, hasUpdate: false,}
                 });
             }
             return res 
         },
         *updateCapsule({ payload }, { put, call }) {
             const res = yield call(update, payload);
+            if (res.success) {
+                yield put({
+                    type: 'setCapsule',
+                    payload: { arrangement: res.data?.arrangement, hasUpdate: false,}
+                });
+            }
             return res
-        },
-        *createCapsuleItem({ payload }, { put, call }) {
-            const res = yield call(add, payload);
         },
         *createCustomColor({ payload }, { put, call, select }) {
             const res = yield call(colorAdd, payload);
@@ -166,6 +170,7 @@ const Model = {
             return {
                 ...state,
                 name: payload,
+                hasUpdate: true,
             };
         },
         setMode(state, { payload }) {
@@ -208,12 +213,14 @@ const Model = {
             return {
                 ...state,
                 capsuleItems: payload,
+                hasUpdate: true,
             };
         },
         addCapsuleItem(state, { payload }) {
             return {
                 ...state,
                 capsuleItems: [...state.capsuleItems, payload],
+                hasUpdate: true,
             };
         },
         setCurrentEditCapsuleItem(state, { payload }) {

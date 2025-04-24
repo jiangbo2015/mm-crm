@@ -45,6 +45,7 @@ const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
             label: "自主上传",
             key: 2,
             children: <ColorList 
+                showTip='name'
                 hideSearch 
                 colors={customPlainColors} 
                 onAdd={() => {setVisibleEyeDropper(true)}}

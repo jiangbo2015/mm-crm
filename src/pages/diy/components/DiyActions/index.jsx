@@ -18,7 +18,7 @@ const StatusToMapText = {
     'published': '已发布'
 }
 
-const DiyActions = () => {
+const DiyActions = ({arrangement}) => {
 
     const { 
         handleSave, 
@@ -82,7 +82,7 @@ const DiyActions = () => {
         })
     };
     const handleSaveToMy = async () => {
-        handleSaveAs(`${name}-copy`, true).then((res) => {
+        handleSaveAs(`${name}-copy`, arrangement).then((res) => {
             // console.log('res-->', res?.data?._id)
             modal.confirm({
                 title: '复制成功',
@@ -116,7 +116,7 @@ const DiyActions = () => {
             return
         }
         if(close) {close()}
-        handleSave().then(() => {
+        handleSave(undefined, arrangement).then(() => {
             modal.confirm({
                 title: '保存成功',
                 content: '去查看胶囊详情 ？',

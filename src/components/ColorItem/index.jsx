@@ -12,10 +12,11 @@ export const ColorItem = ({item = {}, ...props}) => {
 
 }
 
-export const PlainColorItem = ({item = {}, size, onClick, children, className, borderWidth}) => {
-    const { value, namecn, nameen } = item
+export const PlainColorItem = ({item = {}, showTip = 'code', size, onClick, children, className, borderWidth}) => {
+    const { value, namecn, nameen, code } = item
     const locale = getLocale();
-    return (<Tooltip title={locale === 'en-US'? nameen : namecn}>
+    const name = locale === 'en-US'? nameen : namecn
+    return (<Tooltip title={showTip === 'code'? code : name}>
             <div
                 onClick={onClick}
                 className={classnames(styles['item-val'], className)}

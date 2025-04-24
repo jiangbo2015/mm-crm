@@ -77,9 +77,12 @@ const Com = props => {
     const [searchText, setSearchText] = useState('')
     const ulMaxHRef = useRef(0);
     const scrollContainerRef = useRef({})
-    const { capsuleFavoritesMap, currentUser } = props
+    const { capsuleFavoritesMap, currentUser, collapsed } = props
     const {docs, pages, page} = props.list
 
+        useEffect(() => {
+          setKey(Date.now())
+        }, [collapsed])
     useEffect(() => {
         if(!currentUser?._id) {
             return
@@ -264,4 +267,5 @@ const Com = props => {
 export default connect(state => ({
     ...state.creativeCapsule,
     currentUser: state.user.currentUser,
+    collapsed: state.global.collapsed,
 }))(Com);

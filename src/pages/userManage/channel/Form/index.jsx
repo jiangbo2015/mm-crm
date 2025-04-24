@@ -44,7 +44,7 @@ class ChannelForm extends React.Component {
                                 whitespace: true,
                             },
                         ],
-                    })(<Input disable/>)}
+                    })(<Input disabled/>)}
                 </Form.Item>
                 <Form.Item label={<span>通道名称</span>}>
                     {getFieldDecorator('name', {

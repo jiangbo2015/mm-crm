@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 import logoSvg from '@/assets/logo.svg'
 import useArrangement from '@/hooks/useArrangement'
+import { useLeavePageConfirm } from '@/hooks/useLeavePageConfirm';
 import useDiy from './hooks/useDiy'
 import AvatarDropdown from '@/components/GlobalHeader/AvatarDropdown';
 import PlainColorsAside from './components/PlainColorsAside'
@@ -21,9 +22,11 @@ import styles from './index.less'
 
 const Com = props => {
     const params = useParams()
-    const { isEditor, handleEdit, handleChangeName } = useDiy()
-    const { arrangement, ArrangmentDropdown } = useArrangement('', 20)
+    
+    const { isEditor, arrangement: cloudArrangement, hasUpdate, handleEdit, handleChangeName } = useDiy()
+    const { arrangement, ArrangmentDropdown } = useArrangement('', 20, cloudArrangement)
     const { _id, name, status, currentUser, dispatch } = props;
+    useLeavePageConfirm(hasUpdate || arrangement!==cloudArrangement)
     console.log("_id", _id)
     console.log("status", status)
 
@@ -91,7 +94,7 @@ const Com = props => {
                 </div> 
                 <div className={styles['header-right']}>
                     <div className={styles['diy-actions']}>
-                        <DiyActions />
+                        <DiyActions arrangement={arrangement}/>
                     </div>
                     <AvatarDropdown isHideName/>
                 </div>

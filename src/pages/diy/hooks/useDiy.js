@@ -25,6 +25,8 @@ const useDiy = () => {
     const plainColors = useSelector(state => state?.diy?.plainColors)
     const flowerColors = useSelector(state => state?.diy?.flowerColors)
     const mode = useSelector(state => state?.diy?.mode)
+    const arrangement = useSelector(state => state?.diy?.arrangement)
+    const hasUpdate = useSelector(state => state?.diy?.hasUpdate)
     
     const selectedGoodId = useSelector(state => state?.diy?.selectedGoodId)
     const selectedGoodCategryId = useSelector(state => state?.diy?.selectedGoodCategryId)
@@ -74,8 +76,9 @@ const useDiy = () => {
             payload: item,
         });
     };
-    const handleSave = async (inputName) => {
+    const handleSave = async (inputName, arrangement) => {
         const data = {
+            arrangement,
             name: inputName ?? name,
             capsuleItems: map(capsuleItems, ci => {
                 if(ci?.type === 'style') {
@@ -111,9 +114,10 @@ const useDiy = () => {
             });
         }
     };
-    const handleSaveAs = async (inputName) => {
+    const handleSaveAs = async (inputName, arrangement) => {
         const data = {
             name: inputName ?? name,
+            arrangement,
             capsuleItems: map(capsuleItems, ci => {
                 if(ci?.type === 'style') {
                     return {
@@ -305,6 +309,8 @@ const useDiy = () => {
 
 
     return {
+        arrangement,
+        hasUpdate,
         name,
         status,
         uploading,

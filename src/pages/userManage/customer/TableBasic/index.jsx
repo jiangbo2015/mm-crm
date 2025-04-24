@@ -9,6 +9,11 @@ const Com = props => {
     // 客户名称、客户类型、国家、所属产品经理、通道
     const columns = [
         {
+            title: '客户账号',
+            dataIndex: 'account',
+            key: 'account',
+        },
+        {
             title: '客户名称',
             dataIndex: 'name',
             key: 'name',

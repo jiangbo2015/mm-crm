@@ -30,7 +30,7 @@ const onChange = (key) => {
 
 
 
-const ColorList = ({ colors, colorType = 0, onAdd, hideSearch, onClickItem }) => {
+const ColorList = ({ colors, colorType = 0, onAdd, hideSearch, onClickItem, showTip }) => {
 
     const [searchText, setSearchText] = useState('')
     const { arrangement, ArrangmentDropdown } = useArrangement(null)
@@ -57,6 +57,7 @@ const ColorList = ({ colors, colorType = 0, onAdd, hideSearch, onClickItem }) =>
         </div>
         <div className={classnames(styles['color-list-body'], styles[`grid-${arrangement}`])}>
             {map(filteredColors, item => <ColorItem 
+                showTip={showTip}
                 key={item._id} 
                 item={item} 
                 size={ArrangementToSize[arrangement]}

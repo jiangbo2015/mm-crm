@@ -24,9 +24,17 @@ const getArrangementIconMap = (arrangement, size = 14) => {
         '5': <Icon style={{fontSize: `${size}px`}} component={FiveSvg}/>
     }, arrangement)
 }
-const useArrangement = (children, size) => {
+const useArrangement = (children, size, cloudArrangement) => {
   const [arrangement, setAarrangement] = useState('5')
-  const [visibleStylesSelectorModal, setVisibleStylesSelectorModal] = useState(false);
+//   const [visibleStylesSelectorModal, setVisibleStylesSelectorModal] = useState(false);
+    useEffect(() => {
+        if(cloudArrangement) {
+            console.log("cloudArrangement", cloudArrangement)
+            setAarrangement(cloudArrangement)
+        }
+      
+    }, [cloudArrangement])
+    
 
   const items = [
     { label: <Icon component={FiveSvg}/>, key: '5' }, // 菜单项务必填写 key

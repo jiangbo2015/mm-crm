@@ -11,6 +11,7 @@ import ProLayout, {
 } from '@ant-design/pro-layout';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Link, useIntl, connect, Dispatch, history, getLocale } from 'umi';
+import { get } from 'lodash';
 import { GithubOutlined } from '@ant-design/icons';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
@@ -18,6 +19,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 // import { ConnectState } from '@/models/connect';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/logo.svg';
+import logoMin from '../assets/logo_min.png';
 
 const noMatch = (
   <Result
@@ -50,6 +52,7 @@ const BasicLayout = (props) => {
     location = {
       pathname: '/',
     },
+    collapsed
   } = props;
 
   const menuDataRef = useRef([]);
@@ -62,6 +65,8 @@ const BasicLayout = (props) => {
       });
     }
   }, []);
+
+
   /**
    * init variables
    */
@@ -83,11 +88,18 @@ const BasicLayout = (props) => {
     [location.pathname],
   );
 
+  useEffect(() => {
+    if(!authorized.authority) {
+        history.push(get(menuDataRef.current, '0.children.0.path') || get(menuDataRef.current, '0.path'))
+        // history.push('')
+    }
+  }, [location.pathname, authorized])
+
   const { formatMessage } = useIntl();
 
   return (
     <ProLayout
-      logo={logo}
+      logo={collapsed ? <img style={{width: '22px', height: 'auto', marginLeft: '-3px'}} src={logoMin}/> : logo}
       formatMessage={formatMessage}
       {...props}
       {...settings}

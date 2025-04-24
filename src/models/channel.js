@@ -59,7 +59,11 @@ const Model = {
 
         *update({ payload }, { put, call }) {
             const res = yield call(udpateChannel, payload);
-             
+            if (res.success) {
+                yield put({
+                    type: 'getList',
+                });
+            }
             if (res.success) {
                 yield put({
                     type: 'findById',

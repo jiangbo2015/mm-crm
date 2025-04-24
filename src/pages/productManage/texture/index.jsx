@@ -1,11 +1,13 @@
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Button, Card, Col, Input, Modal, Row } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { connect } from 'dva';
 import React, { useEffect, useState } from 'react';
 import Form from './From';
 import TableBasic from './TableBasic';
 
 const { Search } = Input;
+const { confirm } = Modal;
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
@@ -67,18 +69,29 @@ const Com = props => {
     const handleClear = () => {
         setVisible(false);
     };
-
+        const showDeleteConfirm = () => {
+            confirm({
+              title: '确认删除选中的纹理吗?',
+              icon: <ExclamationCircleOutlined />,
+              okText: '确认',
+              okType: 'danger',
+              cancelText: '取消',
+              onOk() {
+                props.dispatch({
+                    type: 'style/deleteColor',
+                    payload: {
+                        ids: selectedKeys,
+                        type: 2,
+                    },
+                });
+              },
+            });
+          };
     const handleDeleteBatch = () => {
         if (selectedKeys.length < 1) {
             return;
         }
-        props.dispatch({
-            type: 'style/deleteColor',
-            payload: {
-                ids: selectedKeys,
-                type: 2,
-            },
-        });
+        showDeleteConfirm()
     };
 
     const handleBatchUpdate = () => {

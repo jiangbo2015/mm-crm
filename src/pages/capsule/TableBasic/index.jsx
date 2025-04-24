@@ -47,7 +47,7 @@ const Com = props => {
             title: '创建人',
             dataIndex: 'author',
             key: 'author',
-            render: (author) => (<div>{author.name}</div>)
+            render: (author) => (<div>{author?.name}</div>)
             
         },
         {
@@ -65,19 +65,32 @@ const Com = props => {
                     <a onClick={() => {
                         history.push(`/diy/${record?._id}`)
                     }}>查看</a>
-                    <Divider type="vertical" />
+                    
                     {
                         record.status === 'pending' && (
-                            <Popconfirm
-                                title="确认要通过吗"
-                                onConfirm={() => handleApprove(record)}
+                            <>
+                                <Divider type="vertical" />
+                                <Popconfirm
+                                    title="确认要通过吗"
+                                    onConfirm={() => handleApprove(record)}
+                                    okText="是"
+                                    cancelText="否"
+                                >
+                                    <a>通过</a>
+                                </Popconfirm>
+                            </>
+
+                        )
+                    }
+                    <Divider type="vertical" />
+                    <Popconfirm
+                                title={`确认要删除“${record?.name}”吗`}
+                                onConfirm={() => handleDelete(record)}
                                 okText="是"
                                 cancelText="否"
                             >
-                                <a>通过</a>
+                                <a>删除</a>
                             </Popconfirm>
-                        )
-                    }
                 </div>
             ),
         },
@@ -107,7 +120,6 @@ const Com = props => {
             type: 'capsule/delete',
             payload: {
                 _id: record._id,
-                type: 0,
             },
         });
     };
