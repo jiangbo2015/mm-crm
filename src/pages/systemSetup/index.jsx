@@ -60,24 +60,24 @@ const Com = ({ systemData, dispatch }) => {
     }, [systemData]);
 
     const handleSubmit = () => {
-        if (!/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(email)) {
-            notification.error({
-                message: '邮箱格式不合法',
-            });
-            return;
-        }
-        if (!meiyuan || !ouyuan || isNaN(meiyuan) || isNaN(ouyuan)) {
-            notification.error({
-                message: '汇率不合法',
-            });
-            return;
-        }
+        // if (!/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(email)) {
+        //     notification.error({
+        //         message: '邮箱格式不合法',
+        //     });
+        //     return;
+        // }
+        // if (!meiyuan || !ouyuan || isNaN(meiyuan) || isNaN(ouyuan)) {
+        //     notification.error({
+        //         message: '汇率不合法',
+        //     });
+        //     return;
+        // }
 
-        const tempCarousels = carousels.map(f => ({
-            status: f.status,
-            url: f.status == 'done' ? f.response.data.url : '',
-        }));
-        console.log('handleSubmit', tempCarousels);
+        // const tempCarousels = carousels.map(f => ({
+        //     status: f.status,
+        //     url: f.status == 'done' ? f.response.data.url : '',
+        // }));
+        // console.log('handleSubmit', tempCarousels);
         dispatch({
             type: 'system/update',
             payload: {
@@ -121,7 +121,7 @@ const Com = ({ systemData, dispatch }) => {
     return (
         <PageHeaderWrapper>
             <Card>
-                <Input.Search
+                {/* <Input.Search
                     placeholder="输入系统邮箱"
                     enterButton="邮箱"
                     type="email"
@@ -141,54 +141,9 @@ const Com = ({ systemData, dispatch }) => {
                     addonAfter="人民币"
                     value={ouyuan}
                     onChange={e => setOuyuan(e.target.value)}
-                />
-                <Divider orientation="left">封面图</Divider>
+                /> */}
+                <Divider orientation="left">首页图片</Divider>
                 <Row style={{ marginTop: '20px' }}>
-                    <Col span="6">
-                        <Upload
-                            {...uploadProps}
-                            onChange={info => {
-                                handleAddImg(info, 'img1');
-                            }}
-                        >
-                            {imgUrls.img1 ? (
-                                <Avatar src={imgUrls.img1}></Avatar>
-                            ) : (
-                                <UploadBtn type={loading.img1 ? 'loading' : 'plus'}></UploadBtn>
-                            )}
-                        </Upload>
-                    </Col>
-                    <Col span="6">
-                        <Upload
-                            {...uploadProps}
-                            onChange={info => {
-                                handleAddImg(info, 'img2');
-                            }}
-                        >
-                            {imgUrls.img2 ? (
-                                <Avatar src={imgUrls.img2}></Avatar>
-                            ) : (
-                                <UploadBtn type={loading.img2 ? 'loading' : 'plus'}></UploadBtn>
-                            )}
-                        </Upload>
-                    </Col>
-                    <Col span="6">
-                        <Upload
-                            {...uploadProps}
-                            onChange={info => {
-                                handleAddImg(info, 'img3');
-                            }}
-                        >
-                            {imgUrls.img3 ? (
-                                <Avatar src={imgUrls.img3}></Avatar>
-                            ) : (
-                                <UploadBtn type={loading.img3 ? 'loading' : 'plus'}></UploadBtn>
-                            )}
-                        </Upload>
-                    </Col>
-                </Row>
-                <Divider orientation="left">胶囊展示图</Divider>
-                <Row flex justify="center">
                     <Col>
                         <Upload
                             {...uploadProps}
@@ -205,6 +160,9 @@ const Com = ({ systemData, dispatch }) => {
                             )}
                         </Upload>
                     </Col>
+                </Row>
+                <Divider orientation="left">首页背景图片</Divider>
+                <Row >
                     <Col>
                         <Upload
                             {...uploadProps}
@@ -222,7 +180,7 @@ const Com = ({ systemData, dispatch }) => {
                         </Upload>
                     </Col>
                 </Row>
-                轮播图：
+                {/* 轮播图：
                 <Upload
                     {...uploadProps}
                     className={'block'}
@@ -238,7 +196,7 @@ const Com = ({ systemData, dispatch }) => {
                     onChange={handleChange}
                 >
                     {carousels.length >= 8 ? null : uploadButton}
-                </Upload>
+                </Upload> */}
                 <Row type="flex" justify="center" style={{ margin: '20px' }}>
                     <Button type="primary" onClick={() => handleSubmit()}>
                         确认更新

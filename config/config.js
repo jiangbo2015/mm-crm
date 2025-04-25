@@ -249,6 +249,14 @@ export default {
                             component: './capsule',
                             authority: ['admin'],
                         },
+                        { // systemSetup
+                            path: '/systemSetup',
+                            name: '系统设置',
+                            locale: 'menu.setting',
+                            icon: 'setting',
+                            component: './systemSetup',
+                            authority: ['admin'],
+                        },
                         {
                             component: './404',
                         },

@@ -92,12 +92,9 @@ class Login extends Component {
                     onCreate={form => {
                         this.loginForm = form;
                     }}
-                >
-                    <Tab key="account" tab="账户密码登录">
-                        {status === 'error' &&
-                            loginType === 'account' &&
-                            !submitting &&
-                            this.renderMessage('账户或密码错误（admin/ant.design）')}
+                >    
+                        <h1 style={{marginBottom: 0}}>Login</h1>
+                        <p style={{marginBottom: 36}}>Please login to continue</p>          
                         <UserName
                             name="account"
                             placeholder="账号"
@@ -125,8 +122,6 @@ class Login extends Component {
                                 }
                             }}
                         />
-                    </Tab>
-
                     <Submit loading={submitting}>登录</Submit>
                 </LoginComponents>
             </div>

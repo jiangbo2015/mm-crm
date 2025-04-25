@@ -1,9 +1,10 @@
 import { DefaultFooter, getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Helmet } from 'react-helmet';
 import { Link } from 'umi';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'dva';
-// import SelectLang from '@/components/SelectLang';
+import SelectLang from '@/components/SelectLang';
+import { filterImageUrl } from '@/utils/utils'
 import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
 
@@ -15,10 +16,12 @@ const UserLayout = props => {
     } = props;
     const { routes = [] } = route;
     const {
+        system,
         children,
         location = {
             pathname: '',
         },
+        dispatch
     } = props;
     const { breadcrumb } = getMenuData(routes);
     const title = getPageTitle({
@@ -26,6 +29,14 @@ const UserLayout = props => {
         breadcrumb,
         ...props,
     });
+      useEffect(() => {
+        if (dispatch) {
+          dispatch({
+            type: 'system/get',
+          });
+        }
+      }, []);
+    console.log('filterImageUrl(system?.exhibition2)', filterImageUrl(system?.exhibition2))
     return (
         <>
             <Helmet>
@@ -33,12 +44,17 @@ const UserLayout = props => {
                 <meta name="description" content={title} />
             </Helmet>
 
-            <div className={styles.container}>
+            <div className={styles.container} style={{backgroundImage: `url(${filterImageUrl(system?.exhibition2)})`}}>
+                <div className={styles.header}>
+                    <img alt="logo" className={styles.logo} src={logo} />
+                    <SelectLang  className={styles.lang}/>
+                </div>
                 <div className={styles.content}>
-                    <div className={styles.top}>
-                        <img alt="logo" className={styles.logo} src={logo} />
+                    <div className={styles.loginWrapper}>
+                        <img src={filterImageUrl(system?.exhibition1)}/>
+                        {children}
                     </div>
-                    {children}
+                    
                 </div>
                 <DefaultFooter copyright="2025 We-idesign 3.0.0" links={[]} />
             </div>
@@ -46,4 +62,4 @@ const UserLayout = props => {
     );
 };
 
-export default connect(({ settings }) => ({ ...settings }))(UserLayout);
+export default connect(({ settings, system }) => ({ ...settings, system }))(UserLayout);

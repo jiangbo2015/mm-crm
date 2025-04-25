@@ -5,15 +5,15 @@
     flex-direction: column;
     height: 100vh;
     overflow: auto;
-    background: #fff;
+    background: #eee;
 
     :global(.ant-layout-footer) {
-        background: #fff;
+        background: none;
     }
 }
 
 .lang {
-    width: 100%;
+    width: 100px;
     height: 40px;
     line-height: 44px;
     text-align: right;
@@ -26,14 +26,17 @@
 .content {
     flex: 1;
     padding: 32px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (min-width: @screen-md-min) {
     .container {
         // background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
         background-repeat: no-repeat;
-        background-position: center 110px;
-        background-size: 100%;
+        background-position: center;
+        background-size: cover;
     }
 
     .content {
@@ -46,8 +49,12 @@
 }
 
 .header {
-    height: 44px;
-    line-height: 44px;
+    height: 60px;
+    padding: 0 20px;
+    line-height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     a {
         text-decoration: none;
@@ -55,7 +62,7 @@
 }
 
 .logo {
-    height: 240px;
+    height: 60px;
     margin-right: 16px;
     vertical-align: top;
 }
@@ -74,4 +81,16 @@
     margin-bottom: 40px;
     color: @text-color-secondary;
     font-size: @font-size-base;
+}
+
+.loginWrapper {
+    display: flex;
+    height: 400px;
+    justify-content: center;
+    border-radius: 20px;
+    overflow: hidden;
+
+    img {
+        margin-right: -15px;
+    }
 }
