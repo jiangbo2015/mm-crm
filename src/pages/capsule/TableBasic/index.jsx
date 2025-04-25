@@ -3,6 +3,7 @@ import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import { history } from 'umi';
+import { get } from 'lodash';
 import Form from '../Form';
 import CapsuleProduct from './capsuleProduct';
 import { filterImageUrl } from '@/utils/utils';
@@ -15,23 +16,26 @@ const PENDING_MAP = {
 
 const Com = props => {
     const columns = [
-        // {
-        //     title: '封面图',
-        //     dataIndex: 'covermap',
-        //     key: 'covermap',
-        //     render: url =>
-        //         url ? (
-        //             <img
-        //                 style={{
-        //                     maxWidth: '100px',
-        //                     maxHeight: '100px',
-        //                 }}
-        //                 src={filterImageUrl(url)}
-        //             />
-        //         ) : (
-        //             '未设置'
-        //         ),
-        // },
+        {
+            title: '封面图',
+            dataIndex: 'covermap',
+            key: 'covermap',
+            render: (covermap, record) => {
+                const url = get(record, 'capsuleItems.0.fileUrl') || 
+                                                            get(record, 'capsuleItems.0.finishedStyleColorsList.0.imgUrlFront')
+                return url ? (
+                    <img
+                        style={{
+                            maxWidth: '100px',
+                            maxHeight: '100px',
+                        }}
+                        src={filterImageUrl(url)}
+                    />
+                ) : (
+                    '未设置'
+                )
+            }
+        },
         {
             title: '名称',
             dataIndex: 'name',
