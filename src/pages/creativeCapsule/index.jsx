@@ -54,6 +54,10 @@ const customStyleGrid = `
   width: 100%;
   cursor: pointer;
 }
+#react-waterfall-grid-comps li>div>video {
+  width: 100%;
+  cursor: pointer;
+}
 #react-waterfall-grid-comps li>div>span {
   display: none;
 }
@@ -238,11 +242,16 @@ const Com = props => {
                                             <StarFilled onClick={() => { handleDelFavorite(capsuleFavoritesMap[item?._id]?._id)}} style={starIconStyle} /> : 
                                             <StarOutlined onClick={() => { handleAddFavorite(item?._id)}} style={starIconStyle} />
                                         }
-                                        <img 
-                                            onClick={() => handleGoDIY(item?._id)}
-                                            src={filterImageUrl(item.imgUrl || 
-                                            get(item, 'capsuleItems.0.fileUrl') || 
-                                            get(item, 'capsuleItems.0.finishedStyleColorsList.0.imgUrlFront'))} alt="" style={{minHeight: 100}} />
+                                        {get(item, 'capsuleItems.0.type') === 'video' ? 
+                                            <video onClick={() => handleGoDIY(item?._id)} autoPlay loop src={filterImageUrl(
+                                                get(item, 'capsuleItems.0.fileUrl'))}/> :                                         
+                                            <img 
+                                                onClick={() => handleGoDIY(item?._id)}
+                                                src={filterImageUrl(item.imgUrl || 
+                                                get(item, 'capsuleItems.0.fileUrl') || 
+                                                get(item, 'capsuleItems.0.finishedStyleColorsList.0.imgUrlFront'))} alt="" style={{minHeight: 100}} 
+                                            />
+                                        }
                                         <p style={{ 
                                             fontSize: 14, 
                                             fontWeight: 'bold',
