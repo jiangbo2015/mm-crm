@@ -25,8 +25,9 @@ const Com = props => {
     
     const { isEditor, arrangement: cloudArrangement, hasUpdate, handleEdit, handleChangeName } = useDiy()
     const { arrangement, ArrangmentDropdown } = useArrangement('', 20, cloudArrangement)
-    const { _id, name, status, currentUser, dispatch } = props;
-    useLeavePageConfirm(hasUpdate || (cloudArrangement && arrangement!==cloudArrangement))    
+    const { name, currentUser, dispatch } = props;
+    useLeavePageConfirm(isEditor && (hasUpdate || (cloudArrangement && arrangement!==cloudArrangement))
+)    
     useEffect(() => {
         if(params.id) {
             dispatch({
@@ -80,14 +81,13 @@ const Com = props => {
                     <img src={logoSvg} height={60}/>
                 </div>
                 <div className={styles['header-center']}>
-                    {ArrangmentDropdown}
                     <div>
                         {isEditor &&<Input onChange={onChangeName} size='large' placeholder="DIY胶囊名称" bordered={false} value={name}/>}
                         {!isEditor && <div style={{ paddingLeft: '11px', fontSize: 16}}>{name}</div>}
                     </div>
-                    
+                    {isEditor && ArrangmentDropdown}
                 </div> 
-                <div className={styles['header-right']}>
+                <div className={styles['header-right']} style={{width: isEditor ? '268px' : ''}}>
                     <div className={styles['diy-actions']}>
                         <DiyActions arrangement={arrangement}/>
                     </div>
