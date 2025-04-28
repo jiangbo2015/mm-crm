@@ -137,11 +137,11 @@ const DiyActions = ({arrangement}) => {
 
   return (
     <>
-      {!! author && <div><Tag icon={<UserOutlined />} color="purple">{author?.name}</Tag></div>}
+      {!isEditor && !! author && <div><Tag icon={<UserOutlined />} color="purple">{author?.name}</Tag></div>}
       {!!StatusToMapText[status] && 
        <div><Tag color="processing">{StatusToMapText[status]}</Tag></div>}
        
-      {IsPending && IsAdmin && <Button type="primary" icon={<SendOutlined />} onClick={handleApprove}>
+      {!isEditor && IsPending && IsAdmin && <Button type="primary" icon={<SendOutlined />} onClick={handleApprove}>
         通过发布
       </Button>}
       {!IsAuthor && !isEditor && <Button type="primary" icon={<DeliveredProcedureOutlined />} onClick={handleSaveToMy}>复制到“我的”</Button>}
