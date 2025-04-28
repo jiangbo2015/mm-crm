@@ -84,8 +84,15 @@ const Com = props => {
     const { capsuleFavoritesMap, collapsed } = props
     const {docs, pages, page} = props.list
     useEffect(() => {
-        setKey(Date.now())
+        if(key !=0 ) {
+            setTimeout(() => {
+                setKey(Date.now())
+            }, 300)
+        }
     }, [collapsed])
+    useEffect(() => {
+        console.log('key-->', key)
+    }, [key])
     
     useEffect(() => {
         const payload = {

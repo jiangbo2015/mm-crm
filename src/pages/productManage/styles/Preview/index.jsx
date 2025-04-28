@@ -6,6 +6,7 @@ import { Spin, Row, Col, Slider, InputNumber, Button } from 'antd';
 import ReactSVG from './react-svg';
 import StyleImg from './style-img';
 import ColorList from './ColorList';
+import StyleAndColors from '@/components/StyleAndColorsCom'
 import styles from './index.less';
 import { api } from '@/utils/apiconfig';
 
@@ -16,6 +17,7 @@ import { api } from '@/utils/apiconfig';
     svgBackText: state.style.svgBackText || '',
     queryPlainColor: state.style.queryPlainColor || '',
     queryFlowerColor: state.style.queryFlowerColor || '',
+    queryTexture: state.style.queryTexture || '',
 }))
 class Preview extends Component {
     constructor(props) {
@@ -31,9 +33,10 @@ class Preview extends Component {
                 x: 0,
                 y: 0,
             },
-            curEditGroupIndex: 0,
+            curEditGroupIndex: -1,
             curColors: [],
             curColor: { type: 0 },
+            curTexture: '',
         };
         this.props.dispatch({
             type: 'style/getQueryColor',
@@ -47,6 +50,14 @@ class Preview extends Component {
             type: 'style/getQueryColor',
             payload: {
                 type: 1,
+                limit: 1030,
+                page: 1,
+            },
+        });
+        this.props.dispatch({
+            type: 'style/getQueryColor',
+            payload: {
+                type: 2,
                 limit: 1030,
                 page: 1,
             },
@@ -68,6 +79,11 @@ class Preview extends Component {
         this.setState({ curColor: color, imgVals: { ...tempAttr }, curColors: [...curColors] });
     }
 
+    addTextureSelectListener(texture) {
+        this.setState({
+            curTexture: texture,
+        });
+    }
     handleSetCurEditGroupIndex(index) {
         console.log('handleSetCurEditGroupIndex(index)=>', index);
         this.setState({
@@ -138,19 +154,28 @@ class Preview extends Component {
             svgUrlBack,
             queryPlainColor,
             queryFlowerColor,
+            queryTexture,
             shadowUrl,
             shadowUrlBack,
             styleSize = 27,
             styleBackSize = 27,
         } = this.props;
         console.log('this.props', this.props);
-        const { imgVals, curColors, curColor } = this.state;
+        const { imgVals, curColors, curColor, curTexture } = this.state;
         return (
             <div>
                 {svgUrl ? (
                     <div>
                         <Row type="flex">
-                            <Col span={11}>
+                        <Col span={6}>
+                        <ColorList
+                                    onSearch={this.onSearchColor.bind(this)}
+                                    type={2}
+                                    colorListData={queryTexture.docs}
+                                    onSelect={this.addTextureSelectListener.bind(this)}
+                                />
+                        </Col>
+                            <Col span={9}>
                                 <ColorList
                                     type={0}
                                     colorListData={queryPlainColor.docs}
@@ -158,8 +183,7 @@ class Preview extends Component {
                                     onSearch={this.onSearchColor.bind(this)}
                                 />
                             </Col>
-                            <Col span={2}></Col>
-                            <Col span={11}>
+                            <Col span={9}>
                                 <ColorList
                                     onSearch={this.onSearchColor.bind(this)}
                                     type={1}
@@ -177,7 +201,7 @@ class Preview extends Component {
                             }}
                         >
                             <Col span={2}>
-                                <b>缩放比：</b>
+                                <b>花布缩放：</b>
                             </Col>
                             <Col
                                 span={12}
@@ -215,7 +239,7 @@ class Preview extends Component {
                                     disabled={curColor.type === 0}
                                 />
                             </Col>
-                            <Col span={4}>
+                            {/* <Col span={4}>
                                 {curColor.type ? (
                                     <Button
                                         type="primary"
@@ -224,14 +248,16 @@ class Preview extends Component {
                                         保存
                                     </Button>
                                 ) : null}
-                            </Col>
+                            </Col> */}
                         </Row>
                         <Row
                             style={{ height: '500px', overflow: 'hidden' }}
                             ref={ref => (this.styleWrapper = ref)}
                         >
                             <Col span={12}>
-                                <StyleImg
+                                <StyleAndColors
+                                    texture={curTexture}
+                                    showGroupStroke={true}
                                     svgId={styleId}
                                     styleId={styleId}
                                     styleSize={styleSize}
@@ -240,13 +266,16 @@ class Preview extends Component {
                                     shadowUrl={shadowUrl}
                                     colors={curColors}
                                     imgVals={imgVals}
+                                    curStylesEditGroupIndex={this.state.curEditGroupIndex}
                                     onSetEditSvgGroupIndex={this.handleSetCurEditGroupIndex.bind(
                                         this,
                                     )}
                                 />
                             </Col>
                             <Col span={12}>
-                                <StyleImg
+                                <StyleAndColors
+                                    texture={curTexture}
+                                    showGroupStroke={true}
                                     styleSize={styleSize}
                                     svgId={`${styleId}-back`}
                                     styleId={styleId}
@@ -255,6 +284,7 @@ class Preview extends Component {
                                     shadowUrl={shadowUrlBack}
                                     colors={curColors}
                                     imgVals={imgVals}
+                                    curStylesEditGroupIndex={this.state.curEditGroupIndex}
                                     onSetEditSvgGroupIndex={this.handleSetCurEditGroupIndex.bind(
                                         this,
                                     )}

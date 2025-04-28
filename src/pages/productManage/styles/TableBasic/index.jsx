@@ -121,6 +121,7 @@ const Com = props => {
                     styleBackSize: data.styleBackSize ? data.styleBackSize : 27,
                     price: data.price,
                     scale: data.scale ? data.scale : 58,
+                    displaySizePer: data.displaySizePer ?? 100,
                     // goodsId: data.goodsId,
                     // categoryId: data.categoryId,
                     tags: data.tags,

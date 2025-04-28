@@ -72,8 +72,14 @@ body,
 }
 
 .ant-layout {
-    min-height: 100vh;
+    height: 100vh;
     background-color: #fff;
+}
+
+.ant-pro-basicLayout-content {
+    height: calc(100% - 48px);
+    margin: 0 !important;
+    padding: 24px;
 }
 
 canvas {
@@ -81,6 +87,7 @@ canvas {
 }
 
 body {
+    overflow-x: scroll !important;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -89,26 +96,6 @@ body {
 ul,
 ol {
     list-style: none;
-}
-
-@media (max-width: @screen-xs) {
-    .ant-table {
-        width: 100%;
-        overflow-x: auto;
-
-        &-thead>tr,
-        &-tbody>tr {
-
-            >th,
-            >td {
-                white-space: pre;
-
-                >span {
-                    display: block;
-                }
-            }
-        }
-    }
 }
 
 .wrap {

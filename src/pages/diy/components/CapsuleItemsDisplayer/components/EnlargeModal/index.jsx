@@ -30,11 +30,11 @@ export const EnlargeModal = ({modalProps = {}, capsuleItem,
             {type === 'style' && 
                 <div className={styles['capsule-item-style']} style={{ alignItems: style?.vposition }}>
                     <img 
-                        width={`${(280 * style.styleSize) / 27}px`}
+                        width={`${(280 * style.styleSize * style.displaySizePer / 100) / 27}px`}
                         src={filterImageUrl(get(finishedStyleColorsList, `${finishedIndex}.imgUrlFront`))}
                     />
                     <img 
-                        width={`${(280 * style.styleBackSize) / 27}px`}
+                        width={`${(280 * style.styleBackSize * style.displaySizePer / 100) / 27}px`}
                         src={filterImageUrl(get(finishedStyleColorsList, `${finishedIndex}.imgUrlBack`))}
                     />
                 </div>

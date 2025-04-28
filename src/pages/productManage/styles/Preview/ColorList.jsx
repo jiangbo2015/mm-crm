@@ -34,9 +34,8 @@ class ColorList extends Component {
                                 className={styles.thumb}
                                 style={{
                                     background:
-                                        obj.type === 1
-                                            ? `url(${filterImageUrl(obj.value)})`
-                                            : obj.value,
+                                        obj.type === 0
+                                            ? obj.value :`url(${filterImageUrl(obj.value)})`,
                                 }}
                                 onClick={() => {
                                     this.props.onSelect(obj);

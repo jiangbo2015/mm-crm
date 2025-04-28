@@ -262,6 +262,14 @@ const useDiy = () => {
         }
         return limit;
     };
+    const beforeUpload1M = file => {
+        const limit = file.size / 1024 <= 1024;
+        console.log('file.size', file.size)
+        if (!limit) {
+            message.error('Image must smaller than 1M!');
+        }
+        return limit;
+    };
 
     const handleSelectGoodId = (id) => {
         dispatch({
@@ -318,6 +326,7 @@ const useDiy = () => {
         setCapsuleItems,
         addCapsuleItem,
         beforeUpload,
+        beforeUpload1M,
         handleAddCapsuleItemStyles,
         handleAddImg,
         handleAddVideo,

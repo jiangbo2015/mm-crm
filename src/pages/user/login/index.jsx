@@ -1,8 +1,9 @@
-import { Alert, Checkbox } from 'antd';
+import { Alert, Modal } from 'antd';
 import React, { Component } from 'react';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import LoginComponents from './components/Login';
+import { ContactUs } from './components/ContactUs';
 import styles from './style.less';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
@@ -17,11 +18,18 @@ class Login extends Component {
     state = {
         type: 'account',
         autoLogin: true,
+        openContactUs: false,
     };
 
     changeAutoLogin = e => {
         this.setState({
             autoLogin: e.target.checked,
+        });
+    };
+
+    handleOpenContactUs = (open) => {
+        this.setState({
+            openContactUs: open,
         });
     };
 
@@ -82,9 +90,17 @@ class Login extends Component {
     render() {
         const { userLogin, submitting } = this.props;
         const { status, type: loginType } = userLogin;
-        const { type, autoLogin } = this.state;
+        const { type, openContactUs } = this.state;
         return (
             <div className={styles.main}>
+                {openContactUs && <Modal 
+                        onCancel={() => this.handleOpenContactUs(false)}
+                        width={1000}
+                        open={true}
+                        footer={null}
+                    >
+                    <ContactUs callback={() => this.handleOpenContactUs(false)}/>
+                </Modal>}
                 <LoginComponents
                     defaultActiveKey={type}
                     onTabChange={this.onTabChange}
@@ -94,7 +110,7 @@ class Login extends Component {
                     }}
                 >    
                         <h1 style={{marginBottom: 0}}>Login</h1>
-                        <p style={{marginBottom: 36}}>Please login to continue</p>          
+                        <p style={{marginBottom: 30}}>Please login to continue</p>          
                         <UserName
                             name="account"
                             placeholder="账号"
@@ -123,6 +139,11 @@ class Login extends Component {
                             }}
                         />
                     <Submit loading={submitting}>登录</Submit>
+                    <div style={{color: '#afadad', marginTop: '-16px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        <div >Or</div>
+                        <div onClick={() => this.handleOpenContactUs(true)} style={{  cursor: 'pointer', textDecoration: 'underline'}}>Contact us</div>
+                    </div>
+
                 </LoginComponents>
             </div>
         );

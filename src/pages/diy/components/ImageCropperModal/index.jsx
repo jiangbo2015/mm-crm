@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, Modal, Upload, Form, Input, InputNumber, Row, Col, message } from 'antd'
+import { Button, Modal, Upload, Form, Input, InputNumber, Row, Col, message, Popconfirm } from 'antd'
 import ReactCrop from 'react-image-crop';
 import { get } from 'lodash'
 import 'react-image-crop/dist/ReactCrop.css';
@@ -195,9 +195,17 @@ const ImageCropper = ({ onUpload, modalProps, editData }) => {
         //   visible={visible}
         onOk={handleOk}
         footer={[
-            editData ? <Button danger onClick={handleDel}>
-                删除
-            </Button> : null,
+            editData ? 
+            <Popconfirm
+                title="确认要删除吗"
+                onConfirm={handleDel}
+                okText="是"
+                cancelText="否"
+            >
+                <Button danger onClick={handleDel}>
+                    删除
+                </Button>
+            </Popconfirm> : null,
             <Button key="back" onClick={modalProps?.onCancel}>
                 取消
             </Button>,

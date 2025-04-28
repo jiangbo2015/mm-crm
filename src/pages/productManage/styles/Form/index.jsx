@@ -1,6 +1,7 @@
 import React from 'react';
 import { PlusSquareOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Form } from '@ant-design/compatible';
+import { get } from 'lodash'
 import '@ant-design/compatible/assets/index.css';
 import {
     Input,
@@ -51,6 +52,7 @@ class RegistrationForm extends React.Component {
             this.props.editData && this.props.editData.styleBackSize
                 ? this.props.editData.styleBackSize
                 : 27,
+        displaySizePer: get(this.props.editData, 'displaySizePer', 100),
         loading: {
             imgUrl: false,
             svgUrl: false,
@@ -171,7 +173,7 @@ class RegistrationForm extends React.Component {
         };
 
         const { imgUrl, svgUrl, svgUrlBack, shadowUrl, shadowUrlBack } = this.state.urls;
-        const { vposition, styleSize, styleBackSize } = this.state;
+        const { vposition, styleSize, styleBackSize, displaySizePer } = this.state;
         // console.log({ scale });
 
         const checkboxOptions = this.props.tagList.map(tag => ({ label: tag, value: tag }));
@@ -364,6 +366,23 @@ class RegistrationForm extends React.Component {
                                 </Form.Item>
                             </Col>
                         </Row>
+                        {/* 显示大小 */}
+                        <Row>
+                            <Col span="20">
+                                <Form.Item label="显示大小">
+                                    {getFieldDecorator('displaySizePer', { initialValue: 100 })(
+                                        <InputNumber 
+                                            min={1} 
+                                            onChange={val => {
+                                            this.setState({
+                                                ...this.state,
+                                                displaySizePer: val,
+                                            });
+                                        }}/>
+                                    )}%
+                                </Form.Item>
+                            </Col>
+                        </Row>
                     </Col>
                     <Col
                         span="12"
@@ -387,7 +406,7 @@ class RegistrationForm extends React.Component {
                             {shadowUrl ? (
                                 <img
                                     src={filterImageUrl(shadowUrl)}
-                                    style={{ width: `${styleSize * 2}%` }}
+                                    style={{ width: `${styleSize * 2 * displaySizePer / 100}%` }}
                                 />
                             ) : null}
                         </div>
@@ -399,7 +418,7 @@ class RegistrationForm extends React.Component {
                             {shadowUrlBack ? (
                                 <img
                                     src={filterImageUrl(shadowUrlBack)}
-                                    style={{ width: `${styleBackSize * 2}%` }}
+                                    style={{ width: `${styleBackSize * 2 * displaySizePer / 100}%` }}
                                 />
                             ) : null}
                         </div>

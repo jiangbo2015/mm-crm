@@ -55,7 +55,7 @@ const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
     ]
     return (
         <>
-            <EyeDropperModal 
+            {visibleEyeDropper && <EyeDropperModal 
                 modalProps={{
                     visible: visibleEyeDropper,
                     onCancel: () => {
@@ -65,7 +65,7 @@ const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
                     // confirmLoading: updateChannelLoading
                 }}
                 editData={eyeDropperEditData}
-            />
+            />}
             <ColorsModal 
                 colorType={0}
                 modalProps={{

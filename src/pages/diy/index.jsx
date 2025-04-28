@@ -26,12 +26,7 @@ const Com = props => {
     const { isEditor, arrangement: cloudArrangement, hasUpdate, handleEdit, handleChangeName } = useDiy()
     const { arrangement, ArrangmentDropdown } = useArrangement('', 20, cloudArrangement)
     const { _id, name, status, currentUser, dispatch } = props;
-    useLeavePageConfirm(hasUpdate || (cloudArrangement && arrangement!==cloudArrangement))
-    console.log("_id", _id)
-    console.log("status", status)
-
-    
-    
+    useLeavePageConfirm(hasUpdate || (cloudArrangement && arrangement!==cloudArrangement))    
     useEffect(() => {
         if(params.id) {
             dispatch({

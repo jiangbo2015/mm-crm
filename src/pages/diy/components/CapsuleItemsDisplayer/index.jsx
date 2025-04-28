@@ -26,7 +26,7 @@ import styles from './index.less'
 export const ItemBottomTools = ({item = {}, index, showFinishedStyleIndex = -1}) => {
     const { type } = item
     const { 
-        beforeUpload, 
+        beforeUpload1M, 
         handleUpdateImg,
         handleUpdateVideo,
         handleUpdateCapsuleItem,
@@ -45,7 +45,7 @@ export const ItemBottomTools = ({item = {}, index, showFinishedStyleIndex = -1})
                 }} />  : 
                 <Upload
                     {...uploadProps}
-                    beforeUpload={beforeUpload}
+                    beforeUpload={beforeUpload1M}
                     onChange={(info) => {
                         if(type === 'edit') {
                             handleUpdateImg(info, index)
@@ -70,7 +70,7 @@ const AddCard = () => {
         visibleStylesSelectorModal,
         hideVisibleStylesSelectorModal,
         openVisibleStylesSelectorModal,
-        beforeUpload, 
+        beforeUpload1M, 
         handleAddCapsuleItemStyles,
         handleAddImg,
         handleAddVideo 
@@ -85,14 +85,14 @@ const AddCard = () => {
                             <PlusOutlined onClick={openVisibleStylesSelectorModal}/>
                             <Upload
                                 {...uploadProps}
-                                beforeUpload={beforeUpload}
+                                beforeUpload={beforeUpload1M}
                                 onChange={handleAddImg}
                             >
                                 <FileImageOutlined />
                             </Upload>
                             <Upload
                                 {...uploadProps}
-                                // beforeUpload={beforeUpload}
+                                beforeUpload={beforeUpload1M}
                                 onChange={handleAddVideo}
                             >
                                 <VideoCameraAddOutlined />

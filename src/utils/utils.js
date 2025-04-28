@@ -163,7 +163,7 @@ async function downloadResourcesAsZip(data, name) {
                     } else {
                         filenameMap[filename] = 1
                     }
-                    await addFileToZip(imgUrlBack, `${filename}.png`, zip);
+                    await addFileToZip(imgUrlBack, `${filename}_${filenameMap[filename]}.png`, zip);
                 }
             }
         }
@@ -177,4 +177,5 @@ async function downloadResourcesAsZip(data, name) {
 
 export { downloadResourcesAsZip }
 
-export const intl = (id) => useIntl().formatMessage({id})
+export const intl = (id ) => useIntl().formatMessage({id})
+export const fullIntl = (data) => useIntl().formatMessage(data)

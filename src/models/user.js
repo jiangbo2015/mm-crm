@@ -1,4 +1,4 @@
-import { queryCurrent, getList, add, del, update as updateUser, download } from '@/services/user';
+import { queryCurrent, getList, add, del, update as updateUser, download, feedback } from '@/services/user';
 import { api } from '@/utils/apiconfig';
 import { setAuthority, RoleToAuthority } from '@/utils/authority';
 
@@ -92,6 +92,10 @@ const UserModel = {
                     payload: false
                 });
             }
+        },
+        *feedback({ payload }, { call, put }) {
+            const response = yield call(feedback, payload);
+            return response
         },
     },
     reducers: {

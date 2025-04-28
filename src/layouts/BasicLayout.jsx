@@ -103,6 +103,7 @@ const BasicLayout = (props) => {
       formatMessage={formatMessage}
       {...props}
       {...settings}
+      disableMobile
       onCollapse={handleMenuCollapse}
       onMenuHeaderClick={() => history.push('/')}
       menuItemRender={(menuItemProps, defaultDom) => {

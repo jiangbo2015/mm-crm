@@ -16,6 +16,11 @@ import {
 } from '@/services/style';
 import { getGoodsParams } from '@/utils/utils';
 import { notification,message } from 'antd';
+const TypeToQueryListKey = {
+    0: 'queryPlainColor',
+    1: 'queryFlowerColor',
+    2: 'queryTexture',
+}
 
 const Model = {
     namespace: 'style',
@@ -26,6 +31,7 @@ const Model = {
         colorListFlower: [],
         queryPlainColor: [], //模糊查询的素色列表
         queryFlowerColor: [], //模糊查询的花色列表
+        queryTexture: [], //模糊查询的纹理列表
         imgUrl: '',
         svgUrl: '',
         shadowUrl: '',
@@ -388,7 +394,7 @@ const Model = {
         setQueryList(state, { payload }) {
             return {
                 ...state,
-                [payload.type === 0 ? 'queryPlainColor' : 'queryFlowerColor']: payload.data,
+                [TypeToQueryListKey[payload.type]]: payload.data,
             };
         },
         setSvgText(state, { payload }) {

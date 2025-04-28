@@ -142,7 +142,7 @@ const Com = ({ systemData, dispatch }) => {
                     value={ouyuan}
                     onChange={e => setOuyuan(e.target.value)}
                 /> */}
-                <Divider orientation="left">首页图片</Divider>
+                <Divider orientation="left">首页图片（png/jpg/gif）</Divider>
                 <Row style={{ marginTop: '20px' }}>
                     <Col>
                         <Upload
@@ -161,7 +161,7 @@ const Com = ({ systemData, dispatch }) => {
                         </Upload>
                     </Col>
                 </Row>
-                <Divider orientation="left">首页背景图片</Divider>
+                <Divider orientation="left">首页背景图片（png/jpg/gif）</Divider>
                 <Row >
                     <Col>
                         <Upload

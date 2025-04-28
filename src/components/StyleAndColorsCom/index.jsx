@@ -35,6 +35,11 @@ export default React.memo(props => {
         svgId,
         styleId,
         showGroupStroke,
+        imgVals= {
+            scale: 1,
+            x: 0,
+            y: 0,
+        },
         imgValsAttrs = [],
         curStylesEditGroupIndex,
         onSetEditSvgGroupIndex,
@@ -156,11 +161,11 @@ export default React.memo(props => {
                     for (let i = 0; i < colors.length; i++) {
                         let color = colors[i];
                         if (color && color.type) {
-                            let imgVals = imgValsAttrs.find(x => x.colorId === color._id) || {
-                                scale: 1,
-                                x: 0,
-                                y: 0,
-                            };
+                            // let imgVals = imgValsAttrs.find(x => x.colorId === color._id) || {
+                            //     scale: 1,
+                            //     x: 0,
+                            //     y: 0,
+                            // };
                             // // console.log("imgVals", imgVals)
                             let svgPattern = document.createElementNS('http://www.w3.org/2000/svg', 'pattern');
 

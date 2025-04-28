@@ -45,3 +45,11 @@ export async function readMessage(id) {
 export async function download() {
     return request('/api/user/download');
 }
+
+export async function feedback(data) {
+    return request('/api/user/feedback', {
+        method: 'post',
+        data,
+    });
+}
+    

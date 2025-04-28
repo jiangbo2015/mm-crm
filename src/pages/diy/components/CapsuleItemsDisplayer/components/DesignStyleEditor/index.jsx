@@ -18,6 +18,7 @@ import StyleAndColors from '@/components/StyleAndColorsCom'
 import { ColorItem } from '@/components/ColorItem'
 
 import fabricSvg from '@/assets/fabric.svg'
+import switchBgSvg from '@/assets/switch_bg.svg'
 import RandomSpeedProgress from '../RandomSpeedProgress'
 import useDiyEditor from '../../../../hooks/useDiyEditor'
 
@@ -82,6 +83,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
     const [colors, setColors] = useState([])
     const [texture, setTexture] = useState(null)
     const [createImgloading, setCreateImgLoading] = useState(false)
+    const [editorBg, setEditorBg] = useState('#FFF')
 
     useEffect(() => {
         // 定义事件处理函数
@@ -166,9 +168,22 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
             open
             footer={null}
             className={styles['design-style-modal']}
+            
         >
             <Spin spinning={createImgloading} indicator={null} delay={1000} tip={<RandomSpeedProgress loading={createImgloading} />}>
                 <div className={styles['style-code']}>{style?.styleNo}</div>
+                <div className={styles['switch-bg']}>
+                    <ReactSVG
+                            onClick={()=> {
+                                setEditorBg(editorBg === '#FFF' ? '#000' : '#FFF')
+                            }}
+                            src={switchBgSvg}
+                            style={{
+                                width: '18px',
+                                height: '18px',
+                            }}
+                    />
+                </div>
                 <div className={styles['design-style-modal-header']}>
                     <div className={styles['textures-selector']}>
                         <ReactSVG
@@ -176,6 +191,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                             style={{
                                 width: '26px',
                                 height: '26px',
+                                marginRight: '4px'
                             }}
                         />
                         面料选择<DoubleRightOutlined style={{margin: '0 12px'}}/>
@@ -200,10 +216,14 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                         <Button onClick={handleOk} type='primary'>完成</Button>
                     </div>
                 </div>
-                <div className={styles['design-style-wrapper']}>
+                <div className={styles['design-style-wrapper']} 
+                    style={{
+                        backgroundColor: editorBg
+                    }}
+                >
                     <div className={styles['design-style']} style={{ alignItems: style?.vposition }}>
                         <StyleAndColors
-                            width={`${(280 * style.styleSize) / 27}px`}
+                            width={`${(280 * style.styleSize * style.displaySizePer / 100) / 27}px`}
                             styleId={`${style._id}-front`}
                             svgId={`${style._id}-front`}
                             colors={colors}
@@ -227,7 +247,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                     </div>
                     <div className={styles['design-style']} style={{ alignItems: style?.vposition }}>
                         <StyleAndColors
-                            width={`${(280 * style.styleBackSize) / 27}px`}
+                            width={`${(280 * style.styleBackSize * style.displaySizePer / 100) / 27}px`}
                             styleId={`${style._id}-back`}
                             svgId={`${style._id}-back`}
                             colors={colors}

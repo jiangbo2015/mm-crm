@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Modal, message, Input, Button } from 'antd'
+import { Modal, message, Input, Button, Popconfirm } from 'antd'
 import { isFunction, get } from 'lodash'
 import Icon, { HomeOutlined } from '@ant-design/icons';
 import useDiy from '../../hooks/useDiy'
@@ -89,11 +89,9 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
   }
 
   if (!isSupported) {
-    return (
-      <div className={styles["error"]}>
-        当前浏览器不支持 EyeDropper API，请使用 Chrome 95+ 或 Edge 96+
-      </div>
-    );
+    message.destroy()
+    message.error('当前浏览器不支持 EyeDropper API，请使用 Chrome 95+ 或 Edge 96+', 3)
+    return null;
   }
 
   return (
@@ -104,9 +102,17 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
         //   visible={visible}
         onOk={handleOk}
         footer={[
-            editData?<Button danger onClick={handleDel}>
-                删除
-            </Button>:null,
+            editData?
+            <Popconfirm
+                title="确认要删除吗"
+                onConfirm={handleDel}
+                okText="是"
+                cancelText="否"
+            >
+                <Button danger>
+                    删除
+                </Button>
+            </Popconfirm>:null,
             <Button key="back" onClick={modalProps?.onCancel}>
                 取消
             </Button>,

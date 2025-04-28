@@ -84,9 +84,14 @@ const Com = props => {
     const { capsuleFavoritesMap, currentUser, collapsed } = props
     const {docs, pages, page} = props.list
 
-        useEffect(() => {
-          setKey(Date.now())
-        }, [collapsed])
+    useEffect(() => {
+        if(key !=0 ) {
+            setTimeout(() => {
+                setKey(Date.now())
+            }, 300)
+        }
+    }, [collapsed])
+    
     useEffect(() => {
         if(!currentUser?._id) {
             return
@@ -147,9 +152,9 @@ const Com = props => {
     };
 
     useEffect(() => {
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflowY = 'hidden';
         return () => {
-            document.body.style.overflow = 'auto'
+            document.body.style.overflowY = 'auto'
         }
     }, []);
 
@@ -240,7 +245,7 @@ const Com = props => {
                                             <StarOutlined onClick={() => { handleAddFavorite(item?._id)}} style={starIconStyle} />
                                         }
                                         {get(item, 'capsuleItems.0.type') === 'video' ? 
-                                            <video autoPlay loop src={filterImageUrl(
+                                            <video onClick={() => handleGoDIY(item?._id)} autoPlay loop src={filterImageUrl(
                                                 get(item, 'capsuleItems.0.fileUrl'))}/> :                                         
                                             <img 
                                                 onClick={() => handleGoDIY(item?._id)}
