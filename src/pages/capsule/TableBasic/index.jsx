@@ -21,17 +21,22 @@ const Com = props => {
             dataIndex: 'covermap',
             key: 'covermap',
             render: (covermap, record) => {
+                const type = get(record, 'capsuleItems.0.type')
                 const url = get(record, 'capsuleItems.0.fileUrl') || 
                                                             get(record, 'capsuleItems.0.finishedStyleColorsList.0.imgUrlFront')
-                return url ? (
-                    <img
+                return url ?
+                   type === 'video' ?  <video style={{
+                    maxWidth: '100px',
+                    maxHeight: '100px',
+                }}
+                src={filterImageUrl(url)}/> :  <img
                         style={{
                             maxWidth: '100px',
                             maxHeight: '100px',
                         }}
                         src={filterImageUrl(url)}
                     />
-                ) : (
+                : (
                     '未设置'
                 )
             }

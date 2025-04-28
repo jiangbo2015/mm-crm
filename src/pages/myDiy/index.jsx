@@ -7,7 +7,9 @@ import { history } from 'umi'
 import {
     StarFilled,
     StarOutlined,
+    PlaySquareFilled
   } from '@ant-design/icons';
+import { VideoPlayingModal } from '@/components/VideoPlayingModal'
 import Waterfall from 'waterfalljs-layout/dist/react/index.esm';
 import { useDebounce } from '@/hooks/useDebounce';
 import styles from './index.less'
@@ -71,12 +73,24 @@ const starIconStyle = {
     top: '18px', 
     fontSize: '26px',
     color: '#f7d102',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    zIndex: 9,
+}
+
+const playIconStyle = { 
+    position: 'absolute', 
+    left: '50%',  /* 水平方向居中 */
+    top: '50%',   /* 垂直方向居中 */
+    transform: 'translate(-50%, -50%)', /* 偏移自身宽高的50% */
+    fontSize: '38px',
+    color: '#0000007e',
+    cursor: 'pointer',
+    zIndex: 9,
 }
 
 const Com = props => {
     const [key, setKey] = useState(0)
-    const [images, setImages] = useState(defimages);
+    const [playingVideoUrl, setPlayingVideoUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false)
     const [searchText, setSearchText] = useState('')
     const ulMaxHRef = useRef(0);
@@ -217,6 +231,7 @@ const Com = props => {
                         zIndex: 999
                     }}  
                 />
+                {playingVideoUrl && <VideoPlayingModal modalProps={{onCancel: ()=> setPlayingVideoUrl(null)}} viedoUrl={playingVideoUrl} />}
                 <div
                     key={key}
                     style={{
@@ -244,9 +259,22 @@ const Com = props => {
                                             <StarFilled onClick={() => { handleDelFavorite(capsuleFavoritesMap[item?._id]?._id)}} style={starIconStyle} /> : 
                                             <StarOutlined onClick={() => { handleAddFavorite(item?._id)}} style={starIconStyle} />
                                         }
+                                        { get(item, 'capsuleItems.0.type') === 'video' &&
+                                            <PlaySquareFilled 
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    e.nativeEvent.stopImmediatePropagation();
+                                                    setPlayingVideoUrl(filterImageUrl(get(item, 'capsuleItems.0.fileUrl')))
+                                                }} 
+                                                style={playIconStyle} 
+                                            />
+                                        }
                                         {get(item, 'capsuleItems.0.type') === 'video' ? 
-                                            <video onClick={() => handleGoDIY(item?._id)} autoPlay loop src={filterImageUrl(
-                                                get(item, 'capsuleItems.0.fileUrl'))}/> :                                         
+                                            <video 
+                                                onClick={() => handleGoDIY(item?._id)}  
+                                            >
+                                                <source src={filterImageUrl(get(item, 'capsuleItems.0.fileUrl'))}/>
+                                            </video> :                                                
                                             <img 
                                                 onClick={() => handleGoDIY(item?._id)}
                                                 src={filterImageUrl(item.imgUrl || 

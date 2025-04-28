@@ -9,7 +9,7 @@ import {
     StarOutlined,
     PlaySquareFilled
   } from '@ant-design/icons';
-import {VideoPlayingModal} from '@/components/VideoPlayingModal'
+import { VideoPlayingModal } from '@/components/VideoPlayingModal'
 import Waterfall from 'waterfalljs-layout/dist/react/index.esm';
 import { useDebounce } from '@/hooks/useDebounce';
 import styles from './index.less'
@@ -74,7 +74,8 @@ const starIconStyle = {
     top: '18px', 
     fontSize: '26px',
     color: '#f7d102',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    zIndex: 9,
 }
 
 const playIconStyle = { 
@@ -84,7 +85,8 @@ const playIconStyle = {
     transform: 'translate(-50%, -50%)', /* 偏移自身宽高的50% */
     fontSize: '38px',
     color: '#0000007e',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    zIndex: 9,
 }
 
 const Com = props => {
@@ -231,6 +233,7 @@ const Com = props => {
                         zIndex: 999
                     }}  
                 />
+                {playingVideoUrl && <VideoPlayingModal modalProps={{onCancel: ()=> setPlayingVideoUrl(null)}} viedoUrl={playingVideoUrl} />}
                 <div
                     key={key}
                     style={{
@@ -261,7 +264,6 @@ const Com = props => {
                                         { get(item, 'capsuleItems.0.type') === 'video' &&
                                             <PlaySquareFilled 
                                                 onClick={(e) => {
-                                                    console.log('PlaySquareFilled onClick')
                                                     e.stopPropagation();
                                                     e.nativeEvent.stopImmediatePropagation();
                                                     setPlayingVideoUrl(filterImageUrl(get(item, 'capsuleItems.0.fileUrl')))
@@ -269,10 +271,9 @@ const Com = props => {
                                                 style={playIconStyle} 
                                             />
                                         }
-                                        {playingVideoUrl && <VideoPlayingModal modalProps={{onCancel: ()=> setPlayingVideoUrl(null)}} viedoUrl={playingVideoUrl} />}
                                         {get(item, 'capsuleItems.0.type') === 'video' ? 
                                             <video 
-                                                // onClick={() => handleGoDIY(item?._id)}  
+                                                onClick={() => handleGoDIY(item?._id)}  
                                             >
                                                 <source src={filterImageUrl(get(item, 'capsuleItems.0.fileUrl'))}/>
                                             </video> :                                         

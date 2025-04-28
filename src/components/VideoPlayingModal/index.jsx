@@ -4,11 +4,10 @@ import { Modal } from 'antd'
 import styles from './index.less'
 
 export const VideoPlayingModal = ({modalProps, viedoUrl }) => {
-
-    
     return (
         <Modal
             {...modalProps}
+            mask={false}
             width={1000}
             open
             footer={null}
