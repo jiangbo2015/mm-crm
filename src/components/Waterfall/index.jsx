@@ -142,7 +142,7 @@ const MyWaterfall = ({
                                 <li key={index + '' + searchText}>
                                     <div style={{position: 'relative'}}>
                                         {!!favoritesMap[item?._id] ? 
-                                            <StarFilled onClick={() => { handleDelFavorite(capsuleFavoritesMap[item?._id]?._id)}} style={starIconStyle} /> : 
+                                            <StarFilled onClick={() => { handleDelFavorite(favoritesMap[item?._id]?._id)}} style={starIconStyle} /> : 
                                             <StarOutlined onClick={() => { handleAddFavorite(item?._id)}} style={starIconStyle} />
                                         }
                                         { get(item, 'capsuleItems.0.type') === 'video' &&
