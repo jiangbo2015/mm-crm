@@ -96,7 +96,8 @@ const MyWaterfall = ({
     handleGoDIY,
     handleDelFavorite,
     handleAddFavorite,
-    waterfallKey
+    waterfallKey,
+    ulMaxHRef
 }) => {
     const [playingVideoUrl, setPlayingVideoUrl] = useState(null);
     return  (

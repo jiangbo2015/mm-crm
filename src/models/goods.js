@@ -7,12 +7,14 @@ import {
     del,
     update as updateGoods,
     sort as sortGoods,
+    getVisibleList
 } from '@/services/goods';
 
 const Model = {
     namespace: 'goods',
     state: {
         list: [],
+        visibleGoodsList: [],
         imgUrl: '', //商品图
         category: [],
     },
@@ -27,7 +29,15 @@ const Model = {
                 });
             }
         },
-
+        *getVisibleList({ payload }, { call, put }) {
+            const res = yield call(getVisibleList, payload);
+            if (res.success) {
+                yield put({
+                    type: 'setVisibleGoodsList',
+                    payload: res.data,
+                });
+            }
+        },
         *sort({ payload }, { put, call, select }) {
             const list = yield select(state => state.goods.list);
             const { dragIndex, hoverIndex } = payload;
@@ -97,7 +107,12 @@ const Model = {
                 list: payload,
             };
         },
-
+        setVisibleGoodsList(state, { payload }) {
+            return {
+                ...state,
+                visibleGoodsList: payload,
+            };
+        },
         setImgUrl(state, { payload }) {
             return {
                 ...state,

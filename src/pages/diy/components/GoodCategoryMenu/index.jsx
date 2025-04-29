@@ -39,6 +39,7 @@ export default () => {
     const {
         handleSelectGoodId,
         handleSelectGoodCategryId,
+        getAllGoods,
         goods,
         selectedGoodId,
         selectedGoodCategryId,
@@ -47,6 +48,9 @@ export default () => {
     const filteredGoods = filterGoods(originCapsuleItems, goods);
     // const {locale,formatMessage } = useIntl()
     const locale = getLocale();
+    useEffect(() => {
+        getAllGoods()
+    }, [])
     return (
         <div className={styles['good-category-menu']}>
                 {map(filteredGoods, (item, i) => (

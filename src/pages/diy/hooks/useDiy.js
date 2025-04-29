@@ -44,11 +44,12 @@ const useDiy = () => {
 
     const isEditor = mode === 'editor'
     const filterCapsuleItems = filterCapsuleItemsById(capsuleItems, selectedGoodCategryId ?? selectedGoodId)
-    useEffect(() => {
+
+    const getAllGoods = async () => {
         dispatch({
             type: 'goods/getList',
         });
-    }, [])
+    }
     const createCustomColor = async item => {
         return dispatch({
             type: 'diy/createCustomColor',
@@ -351,6 +352,7 @@ const useDiy = () => {
         handleGoEditOther,
         delCustomColor,
         updateCustomColor,
+        getAllGoods,
         goods,
         selectedGoodId,
         selectedGoodCategryId,

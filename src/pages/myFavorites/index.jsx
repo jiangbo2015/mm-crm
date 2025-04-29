@@ -144,6 +144,7 @@ const Com = props => {
             handleDelFavorite={handleDelFavorite}
             handleAddFavorite={handleAddFavorite}
             waterfallKey={key}
+            ulMaxHRef={ulMaxHRef}
         />
     )
 };

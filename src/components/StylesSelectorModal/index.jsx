@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Modal, Pagination, Menu,Tag, Input, Drawer, Radio } from 'antd';
+import { Modal, Pagination, Menu,Tag, Input, Drawer, Radio, Spin } from 'antd';
 import {
     DeleteOutlined,
     SearchOutlined,
@@ -29,9 +29,10 @@ const StylesSelectorModal = ({
     modalProps = {},
     onStylesSelectorModalOk, 
     initSelectedStyles,
-    mode = 'multiple' // 'multiple','single'
+    mode = 'multiple', // 'multiple','single'
+    fetching
 }) => {
-  const {docs: sourceList, total, limit, page} = styleList
+  const {docs: sourceList = [], total = 0, limit = 0, page = 1} = styleList
   const [searchInput, setSearchInput] = useState('');
   const [enlargeStyle, setEnlargeStyle] = useState(null);
   const [currentGood, setCurrentGood] = useState(null);
@@ -55,6 +56,7 @@ const StylesSelectorModal = ({
   }, [currentGood, currentGoodCategory, searchInput])
 
   useEffect(() => {
+    console.log("--handleFetchGoods---")
     handleFetchGoods()
   }, [])
 
@@ -70,7 +72,7 @@ const StylesSelectorModal = ({
 
   const handleFetchGoods = () => {
     dispatch({
-        type: 'goods/getList',
+        type: 'goods/getVisibleList',
     });
   }
   const handleFetch = (params) => {
@@ -151,7 +153,8 @@ const StylesSelectorModal = ({
         onOk={handleOk}
         //   onCancel={hideModal}
         style={{top: mode === 'multiple' ? 110:24 }}
-    >
+    > 
+        <Spin spinning={fetching}>
         <div className={styles['selector-tools']}>
             <Search 
                 prefix={<SearchOutlined />}  
@@ -206,6 +209,7 @@ const StylesSelectorModal = ({
                 size="small" total={total} pageSize={limit} current={toInteger(page)}
             />
         </div>
+        </Spin>
     </Modal>
     {SelectedDrawerOpen && <Drawer 
             className={styles['selected-drawer']}
@@ -236,7 +240,7 @@ const StylesSelectorModal = ({
 };
 
 export default connect(({  loading, style, goods }) => ({
-    fetching: loading.effects['style/getList'],
+    fetching: loading.effects['style/get'],
     styleList : style.list,
-    goodsList : goods.list
+    goodsList : goods.visibleGoodsList
 }))(StylesSelectorModal);

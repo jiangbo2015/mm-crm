@@ -2,13 +2,14 @@ import {
     getCapsuleById,
     add,
     update,
-    applyForPublication
+    applyForPublication,
+    getVisibleGoods,
 } from '@/services/diy';
 import {
     colorAdd,
     colorList,
     colorDel,
-    colorUpdate
+    colorUpdate,
 } from '@/services/style';
 import colorMockData from '../../mock/color'
 const ColorTypeToreducerKey = {
@@ -35,6 +36,7 @@ const initState = {
     selectedGoodId: undefined,
     selectedGoodCategryId: undefined,
     hasUpdate: false,
+    visibleGoods: []
 
 }
 const Model = {
@@ -46,6 +48,15 @@ const Model = {
             if (res.success) {
                 yield put({
                     type: 'setCapsule',
+                    payload: res.data,
+                });
+            }
+        },
+        *getVisibleGoods({ payload }, { call, put }) {
+            const res = yield call(getVisibleGoods, payload);
+            if (res.success) {
+                yield put({
+                    type: 'setVisibleGoods',
                     payload: res.data,
                 });
             }
@@ -177,6 +188,12 @@ const Model = {
             return {
                 ...state,
                 mode: payload,
+            };
+        },
+        setVisibleGoods(state, { payload }) {
+            return {
+                ...state,
+                visibleGoods: payload,
             };
         },
         setPlainColors(state, { payload }) {

@@ -102,7 +102,7 @@ const AddCard = () => {
                 </div>
                 </Spin>
             </div>
-            <StylesSelectorModal
+            {visibleStylesSelectorModal && <StylesSelectorModal
                 mode='single'
                 modalProps={{
                     visible: visibleStylesSelectorModal,
@@ -111,7 +111,7 @@ const AddCard = () => {
                 }}
                 onStylesSelectorModalOk={handleAddCapsuleItemStyles}
                 // initSelectedStyles={populatedStyles}
-            />
+            />}
         </>
 
     )

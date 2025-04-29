@@ -16,6 +16,13 @@ export async function getAllCapsule(data) {
     });
 }
 
+export async function getVisibleGoods(data) {
+    return request('/api/goods/getVisibleList', {
+        method: 'get',
+        params: data,
+    });
+}
+
 export async function getList(data) {
     return request('/api/capsule/getList', {
         method: 'get',

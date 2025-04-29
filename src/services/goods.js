@@ -7,6 +7,13 @@ export async function getList(data) {
     });
 }
 
+export async function getVisibleList(data) {
+    return request('/api/goods/getVisibleList', {
+        method: 'get',
+        params: data,
+    });
+}
+
 export async function add(data) {
     return request('/api/goods/add', {
         method: 'post',
