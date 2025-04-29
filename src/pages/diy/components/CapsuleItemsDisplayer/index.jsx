@@ -279,7 +279,7 @@ const CapsuleItemsDisplayer = ({arrangement = '5'}) => {
         setCapsuleItems(newItems);
       };
     return (
-        <div className={classnames(styles['capsule-items-displayer'], styles[`grid-${arrangement}`])}>
+        <div className={classnames(styles['capsule-items-displayer'], styles[`grid-${arrangement}`])} >
            {isEditor &&  <DragDrop>
                 {map(capsuleItems, (item, i) =>
                         <DropItem  key={`capsule-item-${item?._id}`}

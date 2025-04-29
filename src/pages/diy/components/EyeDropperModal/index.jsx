@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Modal, message, Input, Button, Popconfirm } from 'antd'
+import { Modal, message, Input, Button, Popconfirm, Alert } from 'antd'
 import { isFunction, get } from 'lodash'
 import Icon, { HomeOutlined } from '@ant-design/icons';
 import useDiy from '../../hooks/useDiy'
@@ -88,12 +88,6 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
     }
   }
 
-  if (!isSupported) {
-    message.destroy()
-    message.error('当前浏览器不支持 EyeDropper API，请使用 Chrome 95+ 或 Edge 96+', 3)
-    return null;
-  }
-
   return (
     <Modal
         {...modalProps}
@@ -122,35 +116,36 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
         ]}
         destroyOnClose
     >
+        {!isSupported ? <Alert type='error' showIcon message={'当前浏览器不支持 EyeDropper API，请使用 Chrome 95+ 或 Edge 96+'} /> : 
         <div className={styles["picker-container"]}>
 
-        <div style={{marginTop: '10px', color: '#7b7b7b'}}>
-            单击下面的滴管按钮，然后在屏幕上的任意位置选择一种颜色！
-        </div>
-        <div 
-            className={styles["picker-button"]}
-            onClick={handleOpenPicker}
-            aria-label="打开取色器"
-        >
-            <Icon component={DropperSvg}/>
-        </div>
-        {selectedColor && <div>
-                <Input placeholder="请输入颜色名" value={colorName} onChange={(e) => {
-                    setColorName(e?.target?.value)
-                }}/>
-            </div>}
-        {selectedColor && (
-            <div className={styles["color-preview"]}>
-            <div 
-                className={styles["color-block"]}
-                style={{ backgroundColor: selectedColor }}
-            />
-            <span className={styles["color-value"]}>{selectedColor}</span>
+            <div style={{marginTop: '10px', color: '#7b7b7b'}}>
+                单击下面的滴管按钮，然后在屏幕上的任意位置选择一种颜色！
             </div>
-        )}
+            <div 
+                className={styles["picker-button"]}
+                onClick={handleOpenPicker}
+                aria-label="打开取色器"
+            >
+                <Icon component={DropperSvg}/>
+            </div>
+            {selectedColor && <div>
+                    <Input placeholder="请输入颜色名" value={colorName} onChange={(e) => {
+                        setColorName(e?.target?.value)
+                    }}/>
+                </div>}
+            {selectedColor && (
+                <div className={styles["color-preview"]}>
+                <div 
+                    className={styles["color-block"]}
+                    style={{ backgroundColor: selectedColor }}
+                />
+                <span className={styles["color-value"]}>{selectedColor}</span>
+                </div>
+            )}
 
-        {error && <div className={styles["error"]}>{error}</div>}
-        </div>
+            {error && <div className={styles["error"]}>{error}</div>}
+        </div>}
     </Modal>
   );
 };
