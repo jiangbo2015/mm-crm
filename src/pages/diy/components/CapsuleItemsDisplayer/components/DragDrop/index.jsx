@@ -1,50 +1,68 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-// 1. 正确定义拖拽项目类型
 const ItemType = {
-  GRID_ITEM: 'grid_item', // 使用更具体的类型名称
+  GRID_ITEM: 'grid_item',
 };
 
 export const DropItem = ({ id, children, index, moveItem }) => {
   const ref = React.useRef(null);
 
-  // 2. 确保使用正确的类型
   const [{ isDragging }, drag] = useDrag({
-    type: ItemType.GRID_ITEM, // 使用定义的类型
-    item: { type: ItemType.GRID_ITEM, id, index }, // 必须在item中包含type
+    type: ItemType.GRID_ITEM,
+    item: { type: ItemType.GRID_ITEM, id, index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
-  const [, drop] = useDrop({
-    accept: ItemType.GRID_ITEM, // 使用相同的类型
+  const [{ isOver }, drop] = useDrop({
+    accept: ItemType.GRID_ITEM,
     hover(item, monitor) {
       if (!ref.current) return;
-      
+
       const dragIndex = item.index;
       const hoverIndex = index;
-
       if (dragIndex === hoverIndex) return;
 
-      // 计算位置
+      // 获取当前元素的边界信息和鼠标位置
       const hoverBoundingRect = ref.current.getBoundingClientRect();
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
+
+      // 计算元素中心点
+      const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+      // 计算鼠标相对于元素的位置
+      const hoverClientX = clientOffset.x - hoverBoundingRect.left;
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-      // 只在鼠标超过项目一半高度时移动
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
+      // 方向判断：确定是横向还是纵向移动
+      // 优先判断横向（Grid布局需要）
+      const isMovingRight = dragIndex < hoverIndex;
+      const isMovingLeft = dragIndex > hoverIndex;
 
+      // 横向拖动逻辑
+      if (Math.abs(hoverClientX - hoverMiddleX) > Math.abs(hoverClientY - hoverMiddleY)) {
+        if (isMovingRight && hoverClientX < hoverMiddleX) return;
+        if (isMovingLeft && hoverClientX > hoverMiddleX) return;
+      } 
+      // 纵向拖动逻辑
+      else {
+        if (isMovingRight && hoverClientY < hoverMiddleY) return;
+        if (isMovingLeft && hoverClientY > hoverMiddleY) return;
+      }
+
+      // 执行移动
       moveItem(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
   });
 
-  // 3. 正确连接drag和drop
   drag(drop(ref));
 
   return (
@@ -52,6 +70,9 @@ export const DropItem = ({ id, children, index, moveItem }) => {
       ref={ref}
       style={{
         opacity: isDragging ? 0.5 : 1,
+        backgroundColor: isOver ? 'rgba(0, 135, 255, 0.1)' : 'transparent',
+        transition: 'all 0.2s ease',
+        cursor: 'move',
       }}
     >
       {children}
@@ -59,52 +80,6 @@ export const DropItem = ({ id, children, index, moveItem }) => {
   );
 };
 
-const GridContainer = () => {
-  const [items, setItems] = useState([
-    { id: 1, text: '项目 1' },
-    { id: 2, text: '项目 2' },
-    { id: 3, text: '项目 3' },
-    { id: 4, text: '项目 4' },
-    { id: 5, text: '项目 5' },
-    { id: 6, text: '项目 6' },
-  ]);
-
-  const moveItem = (dragIndex, hoverIndex) => {
-    const dragItem = items[dragIndex];
-    const newItems = [...items];
-    newItems.splice(dragIndex, 1);
-    newItems.splice(hoverIndex, 0, dragItem);
-    setItems(newItems.map((item, index) => ({ ...item, index }))); // 更新索引
-  };
-
-  return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '16px',
-        padding: '16px',
-      }}
-    >
-      {items.map((item, index) => (
-        <GridItem
-          key={item.id}
-          id={item.id}
-          text={item.text}
-          index={index}
-          moveItem={moveItem}
-        />
-      ))}
-    </div>
-  );
+export const DragDrop = ({ children }) => {
+  return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
 };
-
-export const DragDrop = ({children}) => {
-  return (
-    <DndProvider backend={HTML5Backend}>
-        {children}
-    </DndProvider>
-  );
-};
-
-export default DragDrop;

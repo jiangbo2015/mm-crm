@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Upload, Spin, Modal } from 'antd'
 import { get, map, filter, includes } from 'lodash'
 import classnames from 'classnames'
-import { connect } from 'dva'
+import arrayMove from 'array-move';
 import {
     FileImageOutlined,
     VideoCameraAddOutlined,
@@ -270,19 +270,14 @@ const CapsuleItemsDisplayer = ({arrangement = '5'}) => {
     const currentEnlargeCapsuleItem = get(capsuleItems, currentEnlargeCapsuleItemIndex)
 
     const moveItem = (dragIndex, hoverIndex) => {
-        const dragItem = capsuleItems[dragIndex];
-        const newItems = [...capsuleItems];
-        newItems.splice(dragIndex, 1);
-        newItems.splice(hoverIndex, 0, dragItem);
-        // setItems(newItems.map((item, index) => ({ ...item, index }))); // 更新索引
-
+        const newItems = arrayMove(capsuleItems, dragIndex, hoverIndex)
         setCapsuleItems(newItems);
       };
     return (
         <div className={classnames(styles['capsule-items-displayer'], styles[`grid-${arrangement}`])} >
            {isEditor &&  <DragDrop>
                 {map(capsuleItems, (item, i) =>
-                        <DropItem  key={`capsule-item-${item?._id}`}
+                        <DropItem  key={`capsule-item-${item?._id}-${i}`}
                             id={item?._id}
                             index={i}
                             moveItem={moveItem}
