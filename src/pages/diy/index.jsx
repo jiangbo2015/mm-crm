@@ -81,8 +81,8 @@ const Com = props => {
                     <img src={logoSvg} height={60}/>
                 </div>
                 <div className={styles['header-center']}>
-                    <div>
-                        {isEditor &&<Input onChange={onChangeName} size='large' placeholder="DIY胶囊名称" bordered={false} value={name}/>}
+                    <div style={{flex: 1}}>
+                        {isEditor &&<Input style={{width: '100%'}} onChange={onChangeName} size='large' placeholder="DIY胶囊名称" bordered={false} value={name}/>}
                         {!isEditor && <div style={{ paddingLeft: '11px', fontSize: 16}}>{name}</div>}
                     </div>
                     {isEditor && ArrangmentDropdown}
