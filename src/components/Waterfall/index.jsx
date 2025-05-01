@@ -37,12 +37,10 @@ const customStyleGrid = `
   margin-bottom: 20px;
   padding: 0px;
   background: rgb(255, 255, 255);
-  transition: all 0.5s;
 }
 #react-waterfall-grid-comps li>div:hover {
   transform: translateY(-6px);
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s
 }
 #react-waterfall-grid-comps {
     padding: 0;
@@ -61,6 +59,9 @@ const customStyleGrid = `
 }
 #react-waterfall-grid-comps li>div:hover>span {
   display: block;
+}
+#react-waterfall-grid-comps>li.show {
+    transition: none !important;
 }
 `;
 

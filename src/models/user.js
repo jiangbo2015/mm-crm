@@ -1,4 +1,4 @@
-import { queryCurrent, getList, add, del, update as updateUser, download, feedback } from '@/services/user';
+import { queryCurrent, getList, add, del, update as updateUser, download, feedback, changePwd } from '@/services/user';
 import { api } from '@/utils/apiconfig';
 import { setAuthority, RoleToAuthority } from '@/utils/authority';
 
@@ -96,6 +96,15 @@ const UserModel = {
         *feedback({ payload }, { call, put }) {
             const response = yield call(feedback, payload);
             return response
+        },
+        *changePwd({ payload }, { call, put }) {
+            const res = yield call(changePwd, payload);
+            if (res?.success) {
+                localStorage.token = null;
+
+                // console.log('发送成功');
+            }
+            return res
         },
     },
     reducers: {

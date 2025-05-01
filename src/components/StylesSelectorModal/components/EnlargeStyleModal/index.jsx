@@ -19,7 +19,7 @@ export const EnlargeStyleModal = ({modalProps = {}, style = {}}) => {
             <div className={styles['design-style-wrapper']}>
                 <div className={styles['design-style']} style={{ alignItems: style?.vposition }}>
                     <StyleAndColors
-                        width={`${(200 * style.styleSize) / 27}px`}
+                        width={`${(200 * style.styleSize * style.displaySizePer / 100) / 27}px`}
                         styleId={`${style._id}-front`}
                         svgId={`${style._id}-front`}
                         {...style}
@@ -30,7 +30,7 @@ export const EnlargeStyleModal = ({modalProps = {}, style = {}}) => {
                 </div>
                 <div className={styles['design-style']} style={{ alignItems: style?.vposition }}>
                     <StyleAndColors
-                        width={`${(200 * style.styleBackSize) / 27}px`}
+                        width={`${(200 * style.styleBackSize * style.displaySizePer / 100) / 27}px`}
                         styleId={`${style._id}-back`}
                         svgId={`${style._id}-back`}
                         {...style}

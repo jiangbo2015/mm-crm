@@ -11,7 +11,7 @@ import ProLayout, {
 } from '@ant-design/pro-layout';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Link, useIntl, connect, Dispatch, history, getLocale } from 'umi';
-import { get } from 'lodash';
+import { get, includes } from 'lodash';
 import { GithubOutlined } from '@ant-design/icons';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
@@ -52,7 +52,8 @@ const BasicLayout = (props) => {
     location = {
       pathname: '/',
     },
-    collapsed
+    collapsed,
+    currentUser,
   } = props;
 
   const menuDataRef = useRef([]);
@@ -89,17 +90,21 @@ const BasicLayout = (props) => {
   );
 
   useEffect(() => {
-    if(!authorized.authority) {
-        history.push(get(menuDataRef.current, '0.children.0.path') || get(menuDataRef.current, '0.path'))
-        // history.push('')
+    if(!localStorage.token) {
+        history.push('/user/login')
+        return;
     }
-  }, [location.pathname, authorized])
+
+    if(location.pathname==='/' ) {
+        history.push(get(menuDataRef.current, '0.children.0.path') || get(menuDataRef.current, '0.path'))
+    }
+  }, [location.pathname, authorized, currentUser])
 
   const { formatMessage } = useIntl();
 
   return (
     <ProLayout
-      logo={collapsed ? <img style={{width: '22px', height: 'auto', marginLeft: '-3px'}} src={logoMin}/> : logo}
+      logo={collapsed ? <div style={{width: '10px', height: '60px'}}/> : logo}
       formatMessage={formatMessage}
       {...props}
       {...settings}
@@ -145,7 +150,8 @@ const BasicLayout = (props) => {
   );
 };
 
-export default connect(({ global, settings }) => ({
+export default connect(({ global, settings, user }) => ({
+    currentUser: user.currentUser,
   collapsed: global.collapsed,
   settings,
 }))(BasicLayout);

@@ -1,14 +1,16 @@
-import { LogoutOutlined, SettingOutlined, UserOutlined,MailOutlined } from '@ant-design/icons';
+import { LogoutOutlined, SettingOutlined, UserOutlined, KeyOutlined, MailOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin, Modal, Form, Input } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
+import ChangePasswordModal from './ChangePasswordModal'
 import styles from './index.less';
 
 class AvatarDropdown extends React.Component {
     state = {
-        email: this.props.currentUser.email // 初始化时直接使用 props 的值
+        email: this.props.currentUser.email, // 初始化时直接使用 props 的值
+        passwordModalOpen: false
     }
 
     componentDidUpdate(prevProps) {
@@ -22,9 +24,9 @@ class AvatarDropdown extends React.Component {
 
     onMenuClick = event => {
         const { key } = event;
-
+        const { dispatch } = this.props;
         if (key === 'logout') {
-            const { dispatch } = this.props;
+            
 
             if (dispatch) {
                 dispatch({
@@ -36,32 +38,43 @@ class AvatarDropdown extends React.Component {
         }
 
         if (key === 'email') {
-            const { dispatch } = this.props;
-
             if (dispatch) {
                 dispatch({
                     type: 'user/setEmailModalOpen',
                     payload: true
                 });
             }
-
             return;
         }
 
+        if (key === 'changePassword') {
+            this.setState({
+                passwordModalOpen: true
+            })
+
+            return;
+        }
         // history.push(`/account/${key}`);
     };
 
     onCloseEmailModalOpen = () => {
         const { dispatch } = this.props;
-
         if (dispatch) {
             dispatch({
                 type: 'user/setEmailModalOpen',
                 payload: false
             });
         }
+    }
 
-        return;    
+    onCloseChangePasswordModalOpen = () => {
+        const { dispatch } = this.props;
+        if (dispatch) {
+            dispatch({
+                type: 'user/setChangePasswordModalOpen',
+                payload: false
+            });
+        }
     }
 
     onUpdateEmail = () => {
@@ -71,6 +84,23 @@ class AvatarDropdown extends React.Component {
         if (dispatch) {
             dispatch({
                 type: 'user/updateEmail',
+                payload: {
+                    _id: this.props.currentUser?._id,
+                    email: this.state.email
+                }
+            });
+        }
+
+        return;    
+    }
+
+    onChangePassword = () => {
+        const { dispatch } = this.props;
+
+        // console.log("this.state.email", this.state.email)
+        if (dispatch) {
+            dispatch({
+                type: 'user/changePassword',
                 payload: {
                     _id: this.props.currentUser?._id,
                     email: this.state.email
@@ -91,9 +121,10 @@ class AvatarDropdown extends React.Component {
             menu,
             isHideName
         } = this.props;
+        const { passwordModalOpen } = this.state
         const menuHeaderDropdown = (
             <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
-                {menu && (
+                {/* {menu && (
                     <Menu.Item key="center">
                         <UserOutlined />
                         个人中心
@@ -105,10 +136,14 @@ class AvatarDropdown extends React.Component {
                         个人设置
                     </Menu.Item>
                 )}
-                {menu && <Menu.Divider />}
+                {menu && <Menu.Divider />} */}
                 <Menu.Item key="email">
                     <MailOutlined />
                     邮箱设置
+                </Menu.Item>
+                <Menu.Item key="changePassword">
+                    <KeyOutlined />
+                    修改密码
                 </Menu.Item>
                 <Menu.Item key="logout">
                     <LogoutOutlined />
@@ -142,6 +177,7 @@ class AvatarDropdown extends React.Component {
                     this.setState({email: e.target.value})
                 }}/>
             </Modal>}
+            { passwordModalOpen && <ChangePasswordModal onCancel={() => this.setState({ passwordModalOpen: false })}/> }
             </>
 
         ) : (

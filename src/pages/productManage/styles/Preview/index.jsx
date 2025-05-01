@@ -63,7 +63,20 @@ class Preview extends Component {
             },
         });
     }
+    handleDocumentClick = (e) => {
+        // 处理点击事件
+        this.setState({
+            curEditGroupIndex: -1
+        })
+    };
+    
+    componentDidMount() {
+        document.addEventListener('click', this.handleDocumentClick);
+    }
 
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleDocumentClick);
+    }
     addColorSelectListener(color) {
         let { curColors, curEditGroupIndex } = this.state;
         let attrsIndex = this.props.attrs.find(x => x.colorId === color._id);
@@ -159,6 +172,8 @@ class Preview extends Component {
             shadowUrlBack,
             styleSize = 27,
             styleBackSize = 27,
+            displaySizePer = 100,
+            vposition
         } = this.props;
         console.log('this.props', this.props);
         const { imgVals, curColors, curColor, curTexture } = this.state;
@@ -166,16 +181,22 @@ class Preview extends Component {
             <div>
                 {svgUrl ? (
                     <div>
-                        <Row type="flex">
-                        <Col span={6}>
-                        <ColorList
+                        <Row type="flex" justify='space-between'>
+                            <Col span={7} onClick={(e) => {
+                                e.stopPropagation();
+                                e.nativeEvent.stopImmediatePropagation();
+                            }}>
+                                <ColorList
                                     onSearch={this.onSearchColor.bind(this)}
                                     type={2}
                                     colorListData={queryTexture.docs}
                                     onSelect={this.addTextureSelectListener.bind(this)}
                                 />
-                        </Col>
-                            <Col span={9}>
+                            </Col>
+                            <Col span={7} onClick={(e) => {
+                                e.stopPropagation();
+                                e.nativeEvent.stopImmediatePropagation();
+                            }}>
                                 <ColorList
                                     type={0}
                                     colorListData={queryPlainColor.docs}
@@ -183,7 +204,10 @@ class Preview extends Component {
                                     onSearch={this.onSearchColor.bind(this)}
                                 />
                             </Col>
-                            <Col span={9}>
+                            <Col span={7} onClick={(e) => {
+                                e.stopPropagation();
+                                e.nativeEvent.stopImmediatePropagation();
+                            }}>
                                 <ColorList
                                     onSearch={this.onSearchColor.bind(this)}
                                     type={1}
@@ -200,7 +224,10 @@ class Preview extends Component {
                                 alignItems: 'center',
                             }}
                         >
-                            <Col span={2}>
+                            <Col span={2} onClick={(e) => {
+                                e.stopPropagation();
+                                e.nativeEvent.stopImmediatePropagation();
+                            }}>
                                 <b>花布缩放：</b>
                             </Col>
                             <Col
@@ -210,6 +237,10 @@ class Preview extends Component {
                                     alignItems: 'center',
                                 }}
                                 type="flex"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.nativeEvent.stopImmediatePropagation();
+                                }}
                             >
                                 {/* <Row type="flex"> */}
                                 <MinusSquareOutlined />
@@ -228,7 +259,10 @@ class Preview extends Component {
                                 <PlusSquareOutlined />
                                 {/* </Row> */}
                             </Col>
-                            <Col span={4}>
+                            <Col span={4} onClick={(e) => {
+                                e.stopPropagation();
+                                e.nativeEvent.stopImmediatePropagation();
+                            }}>
                                 <InputNumber
                                     onChange={this.onScaleChange.bind(this)}
                                     value={imgVals.scale}
@@ -251,45 +285,42 @@ class Preview extends Component {
                             </Col> */}
                         </Row>
                         <Row
-                            style={{ height: '500px', overflow: 'hidden' }}
+                            style={{ overflow: 'hidden', display: 'flex', alignItems: vposition, justifyContent: 'space-around' }}
                             ref={ref => (this.styleWrapper = ref)}
                         >
-                            <Col span={12}>
-                                <StyleAndColors
-                                    texture={curTexture}
-                                    showGroupStroke={true}
-                                    svgId={styleId}
-                                    styleId={styleId}
-                                    styleSize={styleSize}
-                                    width="200px"
-                                    svgUrl={svgUrl}
-                                    shadowUrl={shadowUrl}
-                                    colors={curColors}
-                                    imgVals={imgVals}
-                                    curStylesEditGroupIndex={this.state.curEditGroupIndex}
-                                    onSetEditSvgGroupIndex={this.handleSetCurEditGroupIndex.bind(
-                                        this,
-                                    )}
-                                />
-                            </Col>
-                            <Col span={12}>
-                                <StyleAndColors
-                                    texture={curTexture}
-                                    showGroupStroke={true}
-                                    styleSize={styleSize}
-                                    svgId={`${styleId}-back`}
-                                    styleId={styleId}
-                                    width={`${(200 * styleBackSize) / styleSize}px`}
-                                    svgUrl={svgUrlBack}
-                                    shadowUrl={shadowUrlBack}
-                                    colors={curColors}
-                                    imgVals={imgVals}
-                                    curStylesEditGroupIndex={this.state.curEditGroupIndex}
-                                    onSetEditSvgGroupIndex={this.handleSetCurEditGroupIndex.bind(
-                                        this,
-                                    )}
-                                />
-                            </Col>
+
+                            <StyleAndColors
+                                texture={curTexture}
+                                showGroupStroke={true}
+                                svgId={styleId}
+                                styleId={styleId}
+                                styleSize={styleSize}
+                                width={`${280 * displaySizePer / 100}px`}
+                                svgUrl={svgUrl}
+                                shadowUrl={shadowUrl}
+                                colors={curColors}
+                                imgVals={imgVals}
+                                curStylesEditGroupIndex={this.state.curEditGroupIndex}
+                                onSetEditSvgGroupIndex={this.handleSetCurEditGroupIndex.bind(
+                                    this,
+                                )}
+                            />
+                            <StyleAndColors
+                                texture={curTexture}
+                                showGroupStroke={true}
+                                styleSize={styleSize}
+                                svgId={`${styleId}-back`}
+                                styleId={styleId}
+                                width={`${(280 * styleBackSize * displaySizePer / 100) / styleSize}px`}
+                                svgUrl={svgUrlBack}
+                                shadowUrl={shadowUrlBack}
+                                colors={curColors}
+                                imgVals={imgVals}
+                                curStylesEditGroupIndex={this.state.curEditGroupIndex}
+                                onSetEditSvgGroupIndex={this.handleSetCurEditGroupIndex.bind(
+                                    this,
+                                )}
+                            />
                         </Row>
                     </div>
                 ) : (

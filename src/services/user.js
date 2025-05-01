@@ -52,4 +52,12 @@ export async function feedback(data) {
         data,
     });
 }
+
+export async function changePwd(data) {
+    return request('/api/user/changePwd', {
+        method: 'post',
+        data,
+    });
+}
     
+
