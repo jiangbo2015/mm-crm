@@ -206,7 +206,7 @@ export default {
                             path: '/productManage',
                             name: '素材管理',
                             icon: 'sketch',
-                            authority: ['admin', 'graphicDesigner'],
+                            authority: ['admin', 'designer','graphicDesigner'],
                             routes: [
                                 // {
                                 //     path: '/productManage/productInfo',

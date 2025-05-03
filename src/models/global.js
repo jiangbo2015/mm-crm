@@ -167,13 +167,6 @@ const GlobalModel = {
                 payload: notices,
             });
             const res = yield call(readMessage, payload);
-            // yield put({
-            //     type: 'user/changeNotifyCount',
-            //     payload: {
-            //         totalCount: notices.length,
-            //         unreadCount: notices.filter(item => !item.read).length,
-            //     },
-            // });
         },
 
         *fetchBranchList(_, { call, put, select }) {

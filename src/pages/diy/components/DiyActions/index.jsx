@@ -144,7 +144,7 @@ const DiyActions = ({arrangement}) => {
       {!isEditor && IsPending && IsAdmin && <Button type="primary" icon={<SendOutlined />} onClick={handleApprove}>
         通过发布
       </Button>}
-      {!IsAuthor && !isEditor && <Button type="primary" icon={<DeliveredProcedureOutlined />} onClick={handleSaveToMy}>复制到“我的”</Button>}
+      {!isEditor && <Button type="primary" icon={<DeliveredProcedureOutlined />} onClick={handleSaveToMy}>复制到“我的”</Button>}
       {!isEditor && <Button type="primary" onClick={handleDownload}>
         下载
       </Button>}
@@ -159,6 +159,7 @@ const DiyActions = ({arrangement}) => {
       }}>
         保存
       </Button>}
+
       <Modal title="请输入胶囊名称" width={340} open={inputNameOpen} onOk={() => {
         confirmSave(onCloseInputName)
       }} onCancel={onCloseInputName}> 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Tag, message } from 'antd';
+import { history } from 'umi';
 import { connect } from 'dva';
 import groupBy from 'lodash/groupBy';
 import { filterImageUrl } from '@/utils/utils';
@@ -27,7 +28,7 @@ class GlobalHeaderRight extends Component {
         type: 'global/changeNoticeReadState',
         payload: _id,
       });
-      window.open(`/#/diy/${objectModelId}`)
+      history.push(`/diy/${objectModelId}`)
     }
   };
 
@@ -128,7 +129,11 @@ class GlobalHeaderRight extends Component {
                         // style={{display: 'flex', gap: '10px', marginBottom: '10px', cursor: "pointer"}}
                         onClick={() => this.changeReadState(item)}
                     >
-                        <img src={filterImageUrl(item.coverImage)} alt="" width={100} style={{flex: 'none'}} />
+                        <div className={styles['notice-item-cover']}>{
+                            item.coverType === 'video' ? <video src={filterImageUrl(item.coverImage)} />
+                            : <img  src={filterImageUrl(item.coverImage)} />
+                        }</div>
+                        
                         <b>{item.content}</b>
                     </div>
                 ))
