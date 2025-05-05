@@ -1,11 +1,11 @@
-import component from './en-US/component';
-import globalHeader from './en-US/globalHeader';
-import menu from './en-US/menu';
-import pwa from './en-US/pwa';
-import settingDrawer from './en-US/settingDrawer';
-import settings from './en-US/settings';
-import page from './en-US/page';
-import t from './en-US/t';
+import component from './pt-BR/component';
+import globalHeader from './pt-BR/globalHeader';
+import menu from './pt-BR/menu';
+import pwa from './pt-BR/pwa';
+import settingDrawer from './pt-BR/settingDrawer';
+import settings from './pt-BR/settings';
+import page from './pt-BR/page';
+import t from './pt-BR/t';
 
 export default {
   'navBar.lang': 'Languages',

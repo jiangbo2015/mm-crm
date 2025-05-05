@@ -7,6 +7,7 @@ const { Option } = Select;
 const { useForm } = Form;
 import { filterImageUrl } from '@/utils/utils';
 import styles from './index.less';
+import {intl} from '@/utils/utils'
 
 var isHexcolor = require('is-hexcolor');
 import { connect } from 'dva';
@@ -189,7 +190,7 @@ const CapsuleForm = props => {
             <Row>
             <Col span="8">
                     <Form.Item
-                        label={<span>中文名</span>}
+                        label={<span>{intl('中文名')}</span>}
                         name="namecn"
                         rules={[
                             {

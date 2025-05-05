@@ -4,6 +4,7 @@ import '@ant-design/compatible/assets/index.css';
 import { Input, Row, Select, Col } from 'antd';
 import { get,map } from 'lodash';
 import { connect } from 'dva';
+import {intl} from '@/utils/utils'
 
 const { Option } = Select;
 // const allCountries = wcc.getAllCountries();
@@ -120,7 +121,7 @@ class RegistrationForm extends React.Component {
             <Form {...formItemLayout}>
                 <Row>
                     <Col span="12">
-                        <Form.Item label={<span>账号</span>}>
+                        <Form.Item label={<span>{intl('账号')}</span>}>
                             {getFieldDecorator('account', {
                                 rules: [
                                     {
@@ -133,7 +134,7 @@ class RegistrationForm extends React.Component {
                         </Form.Item>
                     </Col>
                     <Col span="12">
-                        <Form.Item label="密码">
+                        <Form.Item label={intl("密码")}>
                             {getFieldDecorator('password', {
                                 rules: [
                                     {
@@ -147,7 +148,7 @@ class RegistrationForm extends React.Component {
                 </Row>
                 <Row>
                     <Col span="12">
-                        <Form.Item label="姓名">
+                        <Form.Item label={intl("姓名")}>
                             {getFieldDecorator('name', {
                                 rules: [
                                     {
@@ -159,7 +160,7 @@ class RegistrationForm extends React.Component {
                         </Form.Item>
                     </Col>
                     <Col span="12">
-                        <Form.Item label="邮箱">
+                        <Form.Item label={intl("邮箱")}>
                             {getFieldDecorator('email', {
                                 rules: [
                                     {
@@ -174,7 +175,7 @@ class RegistrationForm extends React.Component {
                 <Row></Row>
                 <Row>
                     <Col span="12">
-                        <Form.Item label="通道">
+                        <Form.Item label={intl("通道")}>
                             {tdSelector}
                         </Form.Item>
                     </Col>

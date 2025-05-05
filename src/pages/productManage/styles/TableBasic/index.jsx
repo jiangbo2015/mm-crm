@@ -10,6 +10,7 @@ import Preview from '../Preview';
 import { filterImageUrl } from '@/utils/utils';
 import { getGoodsParamsToValue } from '@/utils/utils';
 import RecordModal from '@/components/RecordModal';
+import {intl} from '@/utils/utils'
 
 const Com = props => {
     const columns = [
@@ -54,9 +55,9 @@ const Com = props => {
             key: 'action',
             render: (text, record) => (
                 <div>
-                    <a onClick={e => handleEdit(record)}>编辑</a>
+                    <a onClick={e => handleEdit(record)}>{intl('编辑')}</a>
                     <Divider type="vertical" />
-                    <a onClick={e => handlePreview(record)}>预览</a>
+                    <a onClick={e => handlePreview(record)}>{intl('预览')}</a>
                     <Divider type="vertical" />
                     <Popconfirm
                         title="确认要删除吗"

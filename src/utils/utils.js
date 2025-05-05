@@ -177,5 +177,5 @@ async function downloadResourcesAsZip(data, name) {
 
 export { downloadResourcesAsZip }
 
-export const intl = (id ) => useIntl().formatMessage({id})
+export const intl = (id ) => useIntl().formatMessage({id, defaultMessage: id})
 export const fullIntl = (data) => useIntl().formatMessage(data)

@@ -5,6 +5,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import Form from './Form';
 import TableBasic from './TableBasic';
 import { connect } from 'dva';
+import {intl} from '@/utils/utils'
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
@@ -55,15 +56,15 @@ const Com = props => {
                 title={
                     IsAdmin ? (
                         <Radio.Group size='large' value={allData} onChange={e => setAllData(e.target.value)}>
-                            <Radio.Button value={false}>我的客户</Radio.Button>
-                            <Radio.Button value={true}>所有客户</Radio.Button>
+                            <Radio.Button value={false}>{intl('我的客户')}</Radio.Button>
+                            <Radio.Button value={true}>{intl('所有客户')}</Radio.Button>
                         </Radio.Group>
                     ) : "我的客户"
                 }
                 extra={
                     <div>
                         {allData ? null : <Button type="primary" onClick={() => setVisible(true)}>
-                            添加
+                            {intl('添加')}
                         </Button>}
                         {/* <Button
                             style={{ marginLeft: '20px' }}
@@ -79,7 +80,7 @@ const Com = props => {
                 <TableBasic isAllData={allData} />
             </Card>
             <Modal
-                title="添加"
+                title={intl("添加")}
                 visible={visible}
                 width="800px"
                 onOk={() => {

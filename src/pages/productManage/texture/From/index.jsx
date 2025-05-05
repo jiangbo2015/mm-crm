@@ -19,6 +19,7 @@ import { filter } from 'lodash';
 
 import { Avatar, UploadBtn, uploadProps } from '../UploadCom';
 import { colorSystemList } from '../../colors/From/index';
+import {intl} from '@/utils/utils'
 
 const ColorOptionLabel = ({ c = {} }) => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -260,7 +261,7 @@ class RegistrationForm extends React.Component {
                                     ],
                                 })(<InputNumber min={1} step={1} />)}
                             </Form.Item> */}
-                            <Form.Item label={<span>实际画布单循环宽度(cm)</span>}>
+                            <Form.Item label={<span>{intl('实际画布单循环宽度')}(cm)</span>}>
                                 {getFieldDecorator('size', {
                                     rules: [
                                         {

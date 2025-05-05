@@ -9,6 +9,7 @@ var isHexcolor = require('is-hexcolor');
 import { connect } from 'dva';
 import { api } from '@/utils/apiconfig';
 import UploadComPro, { Avatar, uploadProps, UploadBtn } from './UploadCom';
+import {intl} from '@/utils/utils'
 
 const selectProps = {
     showSearch: true,
@@ -214,7 +215,7 @@ class RegistrationForm extends React.Component {
             <>
                 <Row gutter={[24]}>
                     <Col span="12">
-                        <Form.Item label="素色">
+                        <Form.Item label={intl("素色")}>
                             <Select
                                 {...selectProps}
                                 onSearch={this.handleQueryPlain}
@@ -248,7 +249,7 @@ class RegistrationForm extends React.Component {
                         </div>
                         <Search
                             placeholder="请输入颜色值"
-                            enterButton="添加素色"
+                            enterButton={intl("添加素色")}
                             onSearch={this.addPlainColor}
                             style={{ marginBottom: '10px' }}
                         />
@@ -278,7 +279,7 @@ class RegistrationForm extends React.Component {
                 <Divider className={styles.divider}></Divider>
                 <Row gutter={[24]}>
                     <Col span="12">
-                        <Form.Item label="花色">
+                        <Form.Item label={intl("花色")}>
                             <Select
                                 {...selectProps}
                                 onSearch={this.handleQueryFlower}
@@ -321,7 +322,7 @@ class RegistrationForm extends React.Component {
                                     )}
                                 </Upload>
                                 <Button type="primary" onClick={this.handleConfirmAdd}>
-                                    确认添加
+                                    {intl('确认添加')}
                                 </Button>
                             </Col>
                         </Row>

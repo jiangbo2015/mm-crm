@@ -2,6 +2,7 @@ import React from 'react';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Input, Select } from 'antd';
+import {intl} from '@/utils/utils'
 
 
 class ChannelForm extends React.Component {
@@ -35,7 +36,7 @@ class ChannelForm extends React.Component {
 
         return (
             <Form {...formItemLayout}>
-                <Form.Item label={<span>通道编号</span>}>
+                <Form.Item label={<span>{intl('通道编号')}</span>}>
                     {getFieldDecorator('code', {
                         rules: [
                             {
@@ -46,7 +47,7 @@ class ChannelForm extends React.Component {
                         ],
                     })(<Input disabled/>)}
                 </Form.Item>
-                <Form.Item label={<span>通道名称</span>}>
+                <Form.Item label={<span>{intl('通道名称')}</span>}>
                     {getFieldDecorator('name', {
                         rules: [
                             {
@@ -57,7 +58,7 @@ class ChannelForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label="备注">
+                <Form.Item label={intl("备注")}>
                     {getFieldDecorator('remark', {
                         rules: [
                             {

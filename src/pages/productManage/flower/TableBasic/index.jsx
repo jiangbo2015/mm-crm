@@ -8,11 +8,12 @@ import React, { useRef, useState } from 'react';
 import Form from '../From';
 import styles from './index.less';
 import RecordModal from '@/components/RecordModal';
+import {intl} from '@/utils/utils'
 
 const Com = props => {
     const columns = [
         {
-            title: '色块',
+            title: intl('色块'),
             dataIndex: 'value',
             key: 'value',
             render: (val, obj) => (
@@ -25,30 +26,30 @@ const Com = props => {
             ),
         },
         {
-            title: '开发编号',
+            title: intl('开发编号'),
             dataIndex: 'code',
             key: 'code',
             // render: (val) => (<div className={styles.color} style={{background: val}}></div>)
         },
         {
-            title: '名称',
+            title: intl('名称'),
             dataIndex: 'value',
             key: 'value',
         },
         {
-            title: '创建人',
+            title: intl('创建人'),
             dataIndex: 'creator',
             key: 'creator',
             render: (creator) => get(creator, 'name', '-')
         },
         {
-            title: '创建日期',
+            title: intl('创建日期'),
             dataIndex: 'createdAt',
             key: 'createdAt',
             render: (createdAt) => moment(createdAt).format('YYYY-MM-DD hh:mm:ss')
         },
         {
-            title: '操作',
+            title: intl('操作'),
             dataIndex: 'action',
             key: 'action',
             render: (text, record) => (
@@ -56,9 +57,9 @@ const Com = props => {
                     {/* <a onClick={e => handleEdit(record)}>编辑</a>
                     <Divider type="vertical" /> */}
 
-                    <a onClick={() => handleEdit(record)}>编辑</a>
+                    <a onClick={() => handleEdit(record)}>{intl('编辑')}</a>
                     <Divider type="vertical" />
-                    <a onClick={() => setVisiblePreview(record)}>预览</a>
+                    <a onClick={() => setVisiblePreview(record)}>{intl('预览')}</a>
                     <Divider type="vertical" />
                     <Popconfirm
                         title="确认要删除吗"
@@ -69,7 +70,7 @@ const Com = props => {
                         <a href="#">删除</a>
                     </Popconfirm>
                      <Divider type="vertical" />
-                    <a onClick={() => props.dispatch({type: 'record/getList', payload: {modelId: record._id}})}>修改记录</a>
+                    <a onClick={() => props.dispatch({type: 'record/getList', payload: {modelId: record._id}})}>{intl('修改记录')}</a>
                 </div>
             ),
         },
@@ -152,7 +153,7 @@ const Com = props => {
                 />
             </Modal>
             <Modal
-                title="预览"
+                title={intl("预览")}
                 visible={Boolean(visiblePreview)}
                 width="400px"
                 footer={null}
