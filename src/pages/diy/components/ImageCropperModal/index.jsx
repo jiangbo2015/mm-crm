@@ -8,6 +8,7 @@ import request from '@/utils/request';
 import { Avatar, UploadBtn } from '@/pages/productManage/colors/UploadCom.js'
 import useDiy from '../../hooks/useDiy'
 import styles from './index.less';
+import {intl} from '@/utils/utils'
 
 export const uploadProps = {
     name: 'file',
@@ -228,20 +229,20 @@ const ImageCropper = ({ onUpload, modalProps, editData }) => {
                     </Col>
                     <Col span="1"></Col>
                     <Col span="11">
-                        <Form.Item required name="size"  label={<span>印花图案单循环宽度（cm）</span>}>
+                        <Form.Item required name="size"  label={<span>{intl('印花图案单循环宽度')}（cm）</span>}>
                             <InputNumber min={1} step={1} />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row style={{marginTop: '30px'}}>
                     <Col span="24">
-                        <Form.Item required name="name" label={<span>印花名称（自定义）</span>}>
+                        <Form.Item required name="name" label={<span>{intl('印花名称（自定义）')}</span>}>
                             <Input style={{ width: '200px' }} />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row style={{marginTop: '10px', color: '#7b7b7b'}}>
-                    *自主上传的印花图案不能超过200KB
+                    *{intl('自主上传的印花图案不能超过200kb')}
                 </Row>
             </Form>
         </Modal>

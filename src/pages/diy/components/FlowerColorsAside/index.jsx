@@ -7,6 +7,7 @@ import ColorsModal from '@/components/ColorsModal'
 import ColorList from '../ColorList'
 import ImageCropperModal from '../ImageCropperModal'
 import styles from './index.less'
+import {intl} from '@/utils/utils'
 
 
 const onChange = (key) => {
@@ -34,12 +35,12 @@ const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
         }
     const FlowerColorsItems = [ 
         { 
-            label: "印花选择",
+            label: intl("印花选择"),
             key: 1,
             children: <ColorList colorType={1} colors={flowerColors} onAdd={() => {setVisibleFlowerColorsModal(true)}}/>,
         },
         { 
-            label: "自主上传",
+            label: intl("自主上传"),
             key: 2,
             children: <ColorList hideSearch colorType={1} colors={customFlowerColors} onAdd={() => {setVisibleImageCropperModal(true)}} onClickItem={handleEditImageCropper}/>,
         },

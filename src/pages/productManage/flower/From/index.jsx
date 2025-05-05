@@ -19,6 +19,7 @@ import { filter } from 'lodash';
 
 import { Avatar, UploadBtn, uploadProps } from '../UploadCom';
 import { colorSystemList } from '../../colors/From/index';
+import {intl} from '@/utils/utils'
 
 const ColorOptionLabel = ({ c = {} }) => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -234,7 +235,7 @@ class RegistrationForm extends React.Component {
                         <Col span="1"></Col>
                         <Col span="10">
                             {/* 编号改“开发编号”，下面请添加一个非必填项：“印花编号”，供业务人员一旦该花布进入打样环节的时候，可以填写印花厂编号，以备后查 */}
-                            <Form.Item label={<span>开发编号</span>}>
+                            <Form.Item label={<span>{intl('开发编号')}</span>}>
                                 {getFieldDecorator('code', {
                                     rules: [
                                         {
@@ -260,7 +261,7 @@ class RegistrationForm extends React.Component {
                                     ],
                                 })(<InputNumber min={1} step={1} />)}
                             </Form.Item> */}
-                            <Form.Item label={<span>实际画布单循环宽度(cm)</span>}>
+                            <Form.Item label={<span>{intl('实际画布单循环宽度')}(cm)</span>}>
                                 {getFieldDecorator('size', {
                                     rules: [
                                         {
@@ -275,7 +276,7 @@ class RegistrationForm extends React.Component {
                 )}
                 <Row>
                     <Col span="24">
-                        <Form.Item label="可用商品">{checkboxSelector}</Form.Item>
+                        <Form.Item label={intl("可用商品")}>{checkboxSelector}</Form.Item>
                     </Col>
                 </Row>
                 <Row>

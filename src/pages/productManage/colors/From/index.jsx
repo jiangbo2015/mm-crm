@@ -4,14 +4,15 @@ import '@ant-design/compatible/assets/index.css';
 import { Button, Checkbox, Col, Input, notification, Row, Select } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
+import {intl} from '@/utils/utils'
 var isHexcolor = require('is-hexcolor');
 export const colorSystemList = [
-    { label: '红色系', value: 6 },
-    { label: '黄色系', value: 5 },
-    { label: '蓝色系', value: 4 },
-    { label: '绿色系', value: 3 },
-    { label: '棕色系', value: 2 },
-    { label: '紫色系', value: 1 },
+    { label: intl('红色系'), value: 6 },
+    { label: intl('黄色系'), value: 5 },
+    { label: intl('蓝色系'), value: 4 },
+    { label: intl('绿色系'), value: 3 },
+    { label: intl('棕色系'), value: 2 },
+    { label: intl('紫色系'), value: 1 },
 ];
 const ColorOptionLabel = ({ c = {} }) => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -157,7 +158,7 @@ class RegistrationForm extends React.Component {
                 {!this.props.isBatch && (
                     <Row>
                         <Col span="8">
-                            <Form.Item label={<span>编号</span>}>
+                            <Form.Item label={<span>{intl('编号')}</span>}>
                                 {getFieldDecorator('code', {
                                     rules: [
                                         {
@@ -168,7 +169,7 @@ class RegistrationForm extends React.Component {
                                     ],
                                 })(<Input style={{ width: '160px' }} />)}
                             </Form.Item>
-                            <Form.Item label={<span>颜色值</span>}>
+                            <Form.Item label={<span>{intl('颜色值')}</span>}>
                                 {getFieldDecorator('value', {
                                     rules: [
                                         {
@@ -231,7 +232,7 @@ class RegistrationForm extends React.Component {
                 )}
                 <Row>
                     <Col span="24">
-                        <Form.Item label="可用商品">
+                        <Form.Item label={intl("可用商品")}>
                             {getFieldDecorator('goodsId')(
                                 <Checkbox.Group options={this.checkboxOptions} />,
                             )}

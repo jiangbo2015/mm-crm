@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { get } from 'lodash'
 import { useDispatch, useSelector } from '@/hooks/useDvaTools'
 import { downloadResourcesAsZip,wait } from '@/utils/utils'
+import {intl} from '@/utils/utils'
 
 import {
     SendOutlined,
@@ -65,8 +66,8 @@ const DiyActions = ({arrangement}) => {
             payload: { _id }
         })
         modal.info({
-            title: '发布提交成功',
-            content: '请等待管理员审批',
+            title: intl('发布提交成功'),
+            content: intl('请等待管理员审批'),
         })
     };
     const handleApprove = async () => {
@@ -118,10 +119,10 @@ const DiyActions = ({arrangement}) => {
         if(close) {close()}
         handleSave(undefined, arrangement).then(() => {
             modal.confirm({
-                title: '保存成功',
-                content: '去查看胶囊详情 ？',
-                cancelText: '留下编辑',
-                okText: '去查看',
+                title: intl('保存成功'),
+                content: intl('去查看胶囊详情 ？'),
+                cancelText: intl('留下编辑'),
+                okText: intl('去查看'),
                 onOk: handleView
             });
         })
@@ -142,25 +143,25 @@ const DiyActions = ({arrangement}) => {
        <div><Tag color="processing">{StatusToMapText[status]}</Tag></div>}
        
       {!isEditor && IsPending && IsAdmin && <Button type="primary" icon={<SendOutlined />} onClick={handleApprove}>
-        通过发布
+        {intl('通过发布')}
       </Button>}
-      {!isEditor && <Button type="primary" icon={<DeliveredProcedureOutlined />} onClick={handleSaveToMy}>复制到“我的”</Button>}
+      {!isEditor && <Button type="primary" icon={<DeliveredProcedureOutlined />} onClick={handleSaveToMy}>{intl('复制到（我的创建）')}</Button>}
       {!isEditor && <Button type="primary" onClick={handleDownload}>
-        下载
+        {intl('下载')}
       </Button>}
       {!isEditor && IsAuthor && IsCanEdit && <Button type="primary" onClick={handleEdit}>
-        编辑
+        {intl('编辑')}
       </Button>}
       {!isEditor && IsAuthor && IsCanPublish && <Button type="primary" onClick={handlePublish}>
-        发布
+        {intl('发布')}
       </Button>}
       {isEditor && IsAuthor && IsCanEdit &&  <Button type="primary" onClick={() => {
         handlePreSave()
       }}>
-        保存
+        {intl('保存')}
       </Button>}
 
-      <Modal title="请输入胶囊名称" width={340} open={inputNameOpen} onOk={() => {
+      <Modal title={intl("请输入胶囊名称")} width={340} open={inputNameOpen} onOk={() => {
         confirmSave(onCloseInputName)
       }} onCancel={onCloseInputName}> 
         <Input onChange={onChangeName} />

@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import React, { useEffect, useState } from 'react';
 import Form from './From';
 import TableBasic from './TableBasic';
+import {intl} from '@/utils/utils'
 
 const { Search } = Input;
 const { confirm } = Modal;
@@ -132,7 +133,7 @@ const Com = props => {
                                 setAddColorType(0);
                             }}
                         >
-                            添加素色
+                            {intl('添加素色')}
                         </Button>
 
                         <Button
@@ -142,7 +143,7 @@ const Com = props => {
                                 setBatchVisible(true);
                             }}
                         >
-                            批量编辑
+                            {intl('批量编辑')}
                         </Button>
 
                         <Button
@@ -151,7 +152,7 @@ const Com = props => {
                                 handleDeleteBatch();
                             }}
                         >
-                            批量删除
+                           {intl('批量删除')}
                         </Button>
                     </>
                 }
@@ -165,7 +166,7 @@ const Com = props => {
                 />
             </Card>
             <Modal
-                title="批量编辑"
+                title={intl("批量编辑")}
                 visible={batchVisible}
                 width="800px"
                 footer={null}
@@ -182,7 +183,7 @@ const Com = props => {
                 />
             </Modal>
             <Modal
-                title="添加"
+                title={intl("添加")}
                 visible={visible}
                 width="800px"
                 footer={false}

@@ -9,6 +9,7 @@ import ColorList from './ColorList';
 import StyleAndColors from '@/components/StyleAndColorsCom'
 import styles from './index.less';
 import { api } from '@/utils/apiconfig';
+import {intl} from '@/utils/utils'
 
 @connect(state => ({
     // styleId: state.style._id || '',
@@ -228,7 +229,7 @@ class Preview extends Component {
                                 e.stopPropagation();
                                 e.nativeEvent.stopImmediatePropagation();
                             }}>
-                                <b>花布缩放：</b>
+                                <b>{intl('花布缩放')}：</b>
                             </Col>
                             <Col
                                 span={12}

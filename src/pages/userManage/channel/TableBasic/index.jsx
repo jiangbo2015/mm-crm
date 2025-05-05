@@ -5,27 +5,28 @@ import { get } from 'lodash';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import Form from '../Form';
+import {intl} from '@/utils/utils'
 
 const Com = props => {
     const columns = [
         {
-            title: '通道编号',
+            title: intl('通道编号'),
             dataIndex: 'code',
             key: 'code',
         },
         {
-            title: '通道名',
+            title: intl('通道名'),
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '说明',
+            title: intl('说明'),
             dataIndex: 'remark',
             key: 'remark',
             
         },
         {
-            title: '操作',
+            title: intl('操作'),
             dataIndex: '_id',
             key: '_id',
             render: (id, record) => (
@@ -104,7 +105,7 @@ const Com = props => {
     return (
         <>
             <Modal
-                title="编辑"
+                title={intl("编辑")}
                 visible={visible}
                 onOk={() => {
                     handleUpdate();

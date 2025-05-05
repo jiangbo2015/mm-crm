@@ -4,22 +4,24 @@ import styles from './index.less';
 import { get } from 'lodash';
 import { connect } from 'dva';
 import Form from '../Form';
+import {intl} from '@/utils/utils'
+
 
 const Com = props => {
     // 客户名称、客户类型、国家、所属产品经理、通道
     const columns = [
         {
-            title: '客户账号',
+            title: intl('客户账号'),
             dataIndex: 'account',
             key: 'account',
         },
         {
-            title: '客户名称',
+            title: intl('客户名称'),
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '所属产品经理',
+            title: intl('所属产品经理'),
             dataIndex: 'owner',
             key: 'owner',
             render: (owner) => (
@@ -29,26 +31,26 @@ const Com = props => {
             ),
         },
         {
-            title: '所属通道',
+            title: intl('所属通道'),
             dataIndex: 'channel',
             render: (channel) => {
                 return <div>{channel?.name}</div>;
             },
         },
         {
-            title: '所属通道',
+            title: intl('所属通道'),
             dataIndex: 'email',
             render: (email) => {
                 return <div>{email}</div>;
             },
         },
     ].concat(props.isAllData ? [] : [{
-        title: '操作',
+        title: intl('操作'),
         dataIndex: 'action',
         key: 'action',
         render: (text, record) => (
             <div>
-                <a onClick={e => handleEdit(record)}>编辑</a>
+                <a onClick={e => handleEdit(record)}>{intl('编辑')}</a>
                 <Divider type="vertical" />
                 <Popconfirm
                     title="确认要删除吗"
@@ -56,7 +58,7 @@ const Com = props => {
                     okText="是"
                     cancelText="否"
                 >
-                    <a href="#">删除</a>
+                    <a href="#">{intl('删除')}</a>
                 </Popconfirm>
             </div>
         ),

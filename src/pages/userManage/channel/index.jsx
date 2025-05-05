@@ -6,6 +6,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import Form from './Form';
 import TableBasic from './TableBasic';
 import { connect } from 'dva';
+import {intl} from '@/utils/utils'
 function createCode(pre, currentList) {
     // 过滤出当前列表中与 pre 前缀匹配的编号
     const matchedCodes = filter(currentList, ({code = ''}) => code.startsWith(pre + '-'));
@@ -63,14 +64,14 @@ const Com = ({dispatch, channelList, currentUser}) => {
                 title={
                     IsAdmin ? (
                         <Radio.Group size='large' value={allData} onChange={e => setAllData(e.target.value)}>
-                            <Radio.Button value={false}>我的通道</Radio.Button>
-                            <Radio.Button value={true}>所有通道</Radio.Button>
+                            <Radio.Button value={false}>{intl('我的通道')}</Radio.Button>
+                            <Radio.Button value={true}>{intl('所有通道')}</Radio.Button>
                         </Radio.Group>
-                    ) : "我的通道"
+                    ) : intl("我的通道")
                 }
                 extra={
                     allData ? null : <Button type="primary" onClick={() => setVisible(true)}>
-                        添加
+                        {intl('添加')}
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}
@@ -78,7 +79,7 @@ const Com = ({dispatch, channelList, currentUser}) => {
                 <TableBasic isAllData={allData} />
             </Card>
             <Modal
-                title="添加"
+                title={intl("添加")}
                 visible={visible}
                 onOk={() => {
                     handleSubmit();
