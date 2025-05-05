@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { get } from 'lodash'
 import { useDispatch, useSelector } from '@/hooks/useDvaTools'
 import { downloadResourcesAsZip,wait } from '@/utils/utils'
-import {intl} from '@/utils/utils'
+import { intl } from '@/utils/utils'
 
 import {
     SendOutlined,
@@ -111,18 +111,22 @@ const DiyActions = ({arrangement}) => {
         confirmSave()
     }
 
+    const saveSuccessInfo = {
+        title: intl('保存成功'),
+        content: intl('去查看胶囊详情 ？'),
+        cancelText: intl('留下编辑'),
+        okText: intl('去查看')
+    }
     function confirmSave (close) {
         if(!name) {
             message.error("胶囊名称不能为空")
             return
         }
         if(close) {close()}
-        handleSave(undefined, arrangement).then(() => {
+        
+        handleSave(undefined, arrangement).then(function() {
             modal.confirm({
-                title: intl('保存成功'),
-                content: intl('去查看胶囊详情 ？'),
-                cancelText: intl('留下编辑'),
-                okText: intl('去查看'),
+                ...saveSuccessInfo,
                 onOk: handleView
             });
         })

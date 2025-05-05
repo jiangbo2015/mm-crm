@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Spin,Tag, Input, Radio, Divider } from 'antd';
+import { Modal, Button, Spin, Popover, Input, Radio, Divider } from 'antd';
 import { getLocale } from 'umi';
 import Slider from "react-slick";
 import { get, map, split, fill } from 'lodash'
@@ -171,46 +171,61 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
             
         >
             <Spin spinning={createImgloading} indicator={null} delay={1000} tip={<RandomSpeedProgress loading={createImgloading} />}>
-                <div className={styles['style-code']}>{style?.styleNo}</div>
-                <div className={styles['switch-bg']}>
-                    <ReactSVG
-                            onClick={()=> {
-                                setEditorBg(editorBg === '#FFF' ? '#000' : '#FFF')
-                            }}
-                            src={switchBgSvg}
-                            style={{
-                                width: '18px',
-                                height: '18px',
-                            }}
-                    />
-                </div>
                 <div className={styles['design-style-modal-header']}>
-                    <div className={styles['textures-selector']}>
-                        <ReactSVG
-                            src={fabricSvg}
-                            style={{
-                                width: '26px',
-                                height: '26px',
-                                marginRight: '4px'
-                            }}
-                        />
-                        面料选择<DoubleRightOutlined style={{margin: '0 12px'}}/>
-                        <div style={{display: 'flex'}} value={texture?._id} size='small' >
-                            {map(textures, t => (
-                                <div 
+                    <div style={{display: 'flex'}}>
+                        <div className={styles['textures-selector']}>
+                            <Popover placement="bottomRight" content={
+                                <div style={{display: 'flex', flexDirection: 'column'}} value={texture?._id} size='small' >
+                                    <div 
+                                        style={{
+                                            padding: '0 8px',
+                                            fontWeight: !texture?._id ? 'bold':'normal',
+                                            cursor:  'pointer'                                    }}
+                                        onClick={()=> {
+                                            setTexture(null)
+                                        }} 
+                                        type='text'>
+                                        常规布（默认）
+                                    </div>
+                                    {map(textures, t => (
+                                        <div 
+                                            style={{
+                                                padding: '0 8px',
+                                                fontWeight: t?._id === texture?._id ? 'bold':'normal',
+                                                cursor:  'pointer'                                    }}
+                                            onClick={()=> {
+                                                setTexture(t)
+                                            }} 
+                                            type='text'>
+                                            {t?.code}
+                                        </div>)
+                                    )}
+                            </div>}>
+                                <ReactSVG
+                                    src={fabricSvg}
                                     style={{
-                                        padding: '0 8px',
-                                        fontWeight: t?._id === texture?._id ? 'bold':'normal',
-                                        cursor:  'pointer'                                    }}
+                                        width: '26px',
+                                        height: '26px',
+                                        marginRight: '4px'
+                                    }}
+                                />
+                            </Popover>
+                        </div>       
+                        <div className={styles['switch-bg']}>
+                            <ReactSVG
                                     onClick={()=> {
-                                        setTexture(t)
-                                    }} 
-                                    type='text'>
-                                    {t?.code}
-                                </div>)
-                            )}
+                                        setEditorBg(editorBg === '#FFF' ? '#000' : '#FFF')
+                                    }}
+                                    src={switchBgSvg}
+                                    style={{
+                                        width: '18px',
+                                        height: '18px',
+                                    }}
+                            />
                         </div>
                     </div>
+
+                <div className={styles['style-code']}>{style?.styleNo}</div>
                     <div className={styles['action-buttons']}>
                         <Button onClick={handleCancel} style={{marginRight: '8px'}}>取消</Button>
                         <Button onClick={handleOk} type='primary'>完成</Button>
@@ -292,6 +307,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                                             handleFillColor(color)
                                         }} 
                                         item={color} size={24} 
+                                        showTip='name'
                                     /> 
                                 )}
                                 

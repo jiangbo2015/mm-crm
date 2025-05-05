@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Table, Divider, Modal, Popconfirm, Row, Col, Input } from 'antd';
+import { Table, Divider, Modal, Popconfirm, Badge, Col, Input } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import { history } from 'umi';
-import { get } from 'lodash';
+import { get, find } from 'lodash';
 import Form from '../Form';
 import CapsuleProduct from './capsuleProduct';
 import { filterImageUrl } from '@/utils/utils';
@@ -15,30 +15,34 @@ const PENDING_MAP = {
 }
 
 const Com = props => {
+    console.log('')
+    const { notices } = props
     const columns = [
         {
             title: '封面图',
             dataIndex: 'covermap',
             key: 'covermap',
             render: (covermap, record) => {
+                const isNew = find(notices, ['objectModelId', record?._id])
                 const type = get(record, 'capsuleItems.0.type')
                 const url = get(record, 'capsuleItems.0.fileUrl') || 
-                                                            get(record, 'capsuleItems.0.finishedStyleColorsList.0.imgUrlFront')
-                return url ?
-                   type === 'video' ?  <video style={{
-                    maxWidth: '100px',
-                    maxHeight: '100px',
-                }}
-                src={filterImageUrl(url)}/> :  <img
-                        style={{
-                            maxWidth: '100px',
-                            maxHeight: '100px',
-                        }}
-                        src={filterImageUrl(url)}
-                    />
-                : (
-                    '未设置'
-                )
+                    get(record, 'capsuleItems.0.finishedStyleColorsList.0.imgUrlFront')
+                const coverDom = url ?
+                    type === 'video' ?  <video style={{
+                     maxWidth: '100px',
+                     maxHeight: '100px',
+                 }}
+                 src={filterImageUrl(url)}/> :  <img
+                         style={{
+                             maxWidth: '100px',
+                             maxHeight: '100px',
+                         }}
+                         src={filterImageUrl(url)}
+                     />
+                 : (
+                     '未设置'
+                 )
+                return isNew ? <Badge.Ribbon placement='start' text="New" color="red">{coverDom}</Badge.Ribbon> : coverDom
             }
         },
         {
@@ -72,6 +76,7 @@ const Com = props => {
             render: (text, record) => (
                 <div>
                     <a onClick={() => {
+                        handleNoticeRead(record)
                         history.push(`/diy/${record?._id}`)
                     }}>查看</a>
                     
@@ -117,14 +122,17 @@ const Com = props => {
             payload: record,
         });
     };
-    const handleManageStyle = record => {
-        setVisiblePreview(record);
-        props.dispatch({
-            type: 'capsule/setCurrentCapsule',
-            payload: record,
-        });
+    const handleNoticeRead = record => {
+        const notice = find(notices, ['objectModelId', record?._id])
+        if(notice?._id) {
+            props.dispatch({
+                type: 'global/changeNoticeReadState',
+                payload: notice?._id,
+            });
+        }
     };
     const handleDelete = record => {
+        handleNoticeRead(record)
         props.dispatch({
             type: 'capsule/delete',
             payload: {
@@ -133,6 +141,7 @@ const Com = props => {
         });
     };
     const handleApprove = record => {
+        handleNoticeRead(record)
         props.dispatch({
             type: 'capsule/update',
             payload: {
@@ -193,7 +202,8 @@ const Com = props => {
     );
 };
 
-export default connect(({ capsule, loading }) => ({
+export default connect(({ capsule, loading, global }) => ({
     capsuleList: capsule.list,
     fetching: loading.effects['capsule/getList'],
+    notices: global.notices,
 }))(Com);
