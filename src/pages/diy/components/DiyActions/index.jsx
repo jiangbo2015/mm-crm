@@ -113,7 +113,7 @@ const DiyActions = ({arrangement}) => {
 
     const saveSuccessInfo = {
         title: intl('保存成功'),
-        content: intl('去查看胶囊详情 ？'),
+        content: `${intl('去查看胶囊详情')} ？`,
         cancelText: intl('留下编辑'),
         okText: intl('去查看')
     }
