@@ -78,7 +78,7 @@ const ChangePasswordModal = ({ dispatch, onCancel }) => {
                 </Form.Item>
                 <Form.Item>
                     <Button type="default" htmlType="submit">
-                        确认
+                        {intl("确认")}
                     </Button>
                 </Form.Item>
             </Form>

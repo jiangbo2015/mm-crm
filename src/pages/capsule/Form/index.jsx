@@ -322,7 +322,7 @@ const CapsuleForm = props => {
                 <Col span="3">
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
-                            确认
+                            {intl("确认")}
                         </Button>
                     </Form.Item>
                 </Col>

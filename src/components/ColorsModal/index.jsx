@@ -8,7 +8,7 @@ import {
 // <AppstoreOutlined />
 import { connect } from 'dva';
 import { get, map, toInteger, includes , filter, findIndex } from 'lodash';
-
+import { intl } from '@/utils/utils'
 import { ColorItem } from '@/components/ColorItem'
 import SortSelect from '@/components/SortSelect'
 import { useDispatch, useSelector } from '@/hooks/useDvaTools';
@@ -18,14 +18,13 @@ import styles from './index.less'
 const { Search } = Input;
 const { CheckableTag } = Tag;
 const size = 50
-const ColorTypeToPlaceholder = {
-    0: "颜色",
-    1: "花布"
-}
 
 const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, colorType}) => {
   const dispatch = useDispatch()
-
+    const ColorTypeToPlaceholder = {
+        0: intl("颜色"),
+        1: intl("花布")
+    }
   const {docs: sourceList, total=0, limit = 0, page = 0, code} = useSelector(state => get(state, colorType === 0 ? 'style.colorList' : 'style.colorListFlower' , {}))
   const [selectedItemList, setSelectedItemList] = useState([]);
   const [sort, setSort] = useState('time');

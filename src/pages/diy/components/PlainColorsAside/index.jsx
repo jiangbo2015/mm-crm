@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import { map } from 'lodash';
 
 import ColorsModal from '@/components/ColorsModal'
+import { intl } from '@/utils/utils'
 import ColorList from '../ColorList'
 import EyeDropperModal from '../EyeDropperModal'
 import styles from './index.less'
@@ -37,12 +38,12 @@ const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
     
     const PlainColorsItems = [ 
         { 
-            label: "颜色选择",
+            label: intl("颜色选择"),
             key: 1,
             children: <ColorList colors={plainColors} onAdd={() => {setVisiblePlainColorsModal(true)}}/>,
         },
         { 
-            label: "自主上传",
+            label: intl("自主上传"),
             key: 2,
             children: <ColorList 
                 showTip='name'

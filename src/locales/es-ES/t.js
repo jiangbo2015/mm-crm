@@ -98,6 +98,7 @@ export default {
     "花布管理": "Gestión de Estampados",
     "纹理管理": "Gestión de Texturas",
     "商品分类": "Categorías de Productos",
+    "款式": "Patrones",
     "款式管理": "Gestión de Patrones",
     "胶囊管理": "Gestión de Cápsulas",
     "系统设置": "Configuración del Sistema",
@@ -112,5 +113,5 @@ export default {
     "退出登录": "Logout",
     "旧密码": "Contraseña antigua",
     "新密码": "Nueva contraseña",
-    "确认新密码":"Confirmar nueva contraseña"
+    "确认新密码":"Confirmar nueva contraseña",
   }

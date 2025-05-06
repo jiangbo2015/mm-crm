@@ -3,20 +3,15 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import { map, filter, includes, isFunction } from 'lodash';
 import {
-    DeleteOutlined,
     SearchOutlined,
     PlusOutlined
 } from '@ant-design/icons';
 import useArrangement from '@/hooks/useArrangement'
 import { ColorItem } from '@/components/ColorItem'
-
+import { intl } from '@/utils/utils'
 import styles from './index.less'
 
 const { Search } = Input
-const ColorTypeToPlaceholder = {
-    0: "颜色",
-    1: "花布"
-}
 
 const ArrangementToSize = {
     '3': 50,
@@ -40,7 +35,10 @@ const ColorList = ({ colors, colorType = 0, onAdd, hideSearch, onClickItem, show
         setSearchText(input)
     }
 
-
+    const ColorTypeToPlaceholder = {
+        0: intl("颜色"),
+        1: intl("花布")
+    }
     return (<div className={styles['color-list-wrapper']}>
         <div className={styles['color-list-header']}>
             {hideSearch ? <div style={{flex: 1}}></div> : <Search 

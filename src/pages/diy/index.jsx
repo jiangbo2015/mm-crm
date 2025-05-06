@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Tag, Button, Modal, Input } from 'antd';
+import { Input } from 'antd';
 import { history, useParams } from 'umi';
 import { connect } from 'dva';
 import { get } from 'lodash';
-import Icon, { LeftOutlined } from '@ant-design/icons';
+import { LeftOutlined } from '@ant-design/icons';
+import { intl } from '@/utils/utils'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -82,7 +83,8 @@ const Com = props => {
                 </div>
                 <div className={styles['header-center']}>
                     <div style={{flex: 1}}>
-                        {isEditor &&<Input style={{width: '100%'}} onChange={onChangeName} size='large' placeholder="DIY胶囊名称" bordered={false} value={name}/>}
+                        {isEditor &&<Input style={{width: '100%'}} onChange={onChangeName} size='large' 
+                                            placeholder={intl("DIY胶囊名称")} bordered={false} value={name}/>}
                         {!isEditor && <div style={{ paddingLeft: '11px', fontSize: 16}}>{name}</div>}
                     </div>
                     {isEditor && ArrangmentDropdown}

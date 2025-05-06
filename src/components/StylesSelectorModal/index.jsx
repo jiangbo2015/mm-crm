@@ -3,9 +3,8 @@ import { Modal, Pagination, Menu,Tag, Input, Drawer, Radio, Spin } from 'antd';
 import {
     DeleteOutlined,
     SearchOutlined,
-    CheckOutlined
 } from '@ant-design/icons';
-// <AppstoreOutlined />
+import { intl } from '@/utils/utils'
 import { connect } from 'dva';
 import { get, map, toInteger, includes , filter, findIndex, find } from 'lodash';
 
@@ -160,7 +159,7 @@ const StylesSelectorModal = ({
                 prefix={<SearchOutlined />}  
                 bordered={false} 
                 addonAfter={null} 
-                placeholder="款式" 
+                placeholder={intl("款式")} 
                 allowClear 
                 onSearch={onSearch} 
                 style={{ width: 200 }} 

@@ -122,7 +122,7 @@ export default {
                         {
                             path: '/creativeCapsule',
                             name: '创意胶囊',
-                            locale: 'menu.creativeCapsule',
+                            locale: '创意胶囊',
                             icon: 'camera',
                             component: './creativeCapsule',
                             authority: ['admin', 'productor', 'designer', 'customer'],
@@ -130,7 +130,7 @@ export default {
                         {
                             path: '/myFavorites',
                             name: '我的收藏',
-                            locale: 'menu.myFavorites',
+                            locale: '我的收藏',
                             icon: 'star',
                             component: './myFavorites',
                             authority: ['admin', 'productor', 'designer', 'customer'],
@@ -146,14 +146,14 @@ export default {
                             path: '/myDiy',
                             name: '我的创建',
                             icon: 'skin',
-                            locale: 'menu.myCreation',
+                            locale: '我的创建',
                             component: './myDiy',
                             authority: ['admin', 'productor', 'designer', 'customer'],
                         },
                         {
                             path: '/diy',
                             name: '创建DIY',
-                            locale: 'menu.diy',
+                            locale: '创建DIY',
                             icon: 'edit',
                             component: './diy',
                             authority: ['admin', 'productor', 'designer', 'customer'],
@@ -161,12 +161,14 @@ export default {
                         {
                             path: '/userManage',
                             name: '用户管理',
+                            locale: '用户管理',
                             icon: 'user',
                             authority: ['admin', 'productor'],
                             routes: [
                                 {
                                     path: '/userManage/channel',
                                     name: '通道管理',
+                                    locale: '通道管理',
                                     component: './userManage/channel/index.jsx',
                                     authority: ['admin', 'productor'],
                                 },
@@ -179,24 +181,28 @@ export default {
                                 {
                                     path: '/userManage/customer',
                                     name: '客户',
+                                    locale: '客户',
                                     component: './userManage/customer',
                                     authority: ['admin', 'productor'],
                                 },
                                 {
                                     path: '/userManage/productor',
                                     name: '产品经理',
+                                    locale: '产品经理',
                                     component: './userManage/productor/index.jsx',
                                     authority: ['admin'],
                                 },
                                 {
                                     path: '/userManage/designer',
                                     name: '设计人员',
+                                    locale: '设计人员',
                                     component: './userManage/designer',
                                     authority: ['admin'],
                                 },
                                 {
                                     path: '/userManage/graphicDesigner',
                                     name: '美工',
+                                    locale: '美工',
                                     component: './userManage/graphicDesigner',
                                     authority: ['admin'],
                                 },
@@ -205,6 +211,7 @@ export default {
                         {
                             path: '/productManage',
                             name: '素材管理',
+                            locale: '素材管理',
                             icon: 'sketch',
                             authority: ['admin', 'designer','graphicDesigner'],
                             routes: [
@@ -216,27 +223,32 @@ export default {
                                 {
                                     path: '/productManage/colors',
                                     name: '素色管理',
+                                    locale: '素色管理',
                                     component: './productManage/colors/index.jsx',
                                 },
                                 {
                                     path: '/productManage/flower',
                                     name: '花布管理',
+                                    locale: '花布管理',
                                     component: './productManage/flower/index.jsx',
                                 },
                                 {
                                     path: '/productManage/texture',
                                     name: '纹理管理',
+                                    locale: '纹理管理',
                                     component: './productManage/texture/index.jsx',
                                 },
                                 {
                                     path: '/productManage/goods',
                                     name: '商品分类',
+                                    locale: '商品分类',
                                     component: './productManage/goods',
                                     authority: ['admin'],
                                 },
                                 {
                                     path: '/productManage/styles',
                                     name: '款式管理',
+                                    locale: '款式管理',
                                     component: './productManage/styles',
                                 },
                             ],
@@ -244,7 +256,7 @@ export default {
                         {
                             path: '/capsule',
                             name: '胶囊管理',
-                            locale: 'menu.capsule',
+                            locale: '胶囊管理',
                             icon: 'copyright',
                             component: './capsule',
                             authority: ['admin'],
@@ -252,7 +264,7 @@ export default {
                         {
                             path: '/systemSetup',
                             name: '系统设置',
-                            locale: 'menu.setting',
+                            locale: '系统设置',
                             icon: 'setting',
                             component: './systemSetup',
                             authority: ['admin'],

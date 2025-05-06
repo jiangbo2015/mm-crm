@@ -98,6 +98,7 @@ export default {
     "花布管理": "Print Management",
     "纹理管理": "Texture Management",
     "商品分类": "Product Categories",
+    "款式": "Pattern",
     "款式管理": "Pattern Management",
     "胶囊管理": "Capsule Management",
     "系统设置": "System Settings",
