@@ -84,6 +84,7 @@ export default {
     "印花编号": "Print Number",
     "实际画布单循环宽度": "Actual Canvas Repeat Width",
     "创意胶囊": "Creative Capsule",
+    "胶囊": "Capsule",
     "我的收藏": "My Favorites",
     "我的创建": "My Creations",
     "创建DIY": "Create a DIY Capsule",

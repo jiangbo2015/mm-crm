@@ -104,6 +104,7 @@ const BasicLayout = (props) => {
 
   return (
     <ProLayout
+        style={{ borderBottom: '10px solid #000', height: 'calc(100vh - 10px)'}}
       logo={collapsed ? <div style={{width: '10px', height: '60px'}}/> : logo}
       formatMessage={formatMessage}
       {...props}

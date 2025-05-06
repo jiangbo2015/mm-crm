@@ -84,6 +84,7 @@ export default {
     "印花编号": "Número de Estampado",
     "实际画布单循环宽度": "Ancho Real de Repetición del Lienzo",
     "创意胶囊": "Cápsula Creativa",
+    "胶囊": "Cápsula",
     "我的收藏": "Mis Favoritos",
     "我的创建": "Mis Creaciones",
     "创建DIY": "Crear una Cápsula DIY",

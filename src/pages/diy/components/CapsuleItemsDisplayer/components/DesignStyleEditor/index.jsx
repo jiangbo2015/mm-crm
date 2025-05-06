@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons';
 
 
-import { filterImageUrl } from '@/utils/utils';
+import { intl } from '@/utils/utils';
 
 import StyleAndColors from '@/components/StyleAndColorsCom'
 import { ColorItem } from '@/components/ColorItem'
@@ -53,8 +53,18 @@ const settings = {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 6,
+    slidesToShow: 10,
+    slidesToScroll: 10,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />
+  };
+
+  const groupSettings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 10,
+    slidesToScroll: 10,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />
   };
@@ -206,7 +216,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                                     style={{
                                         width: '26px',
                                         height: '26px',
-                                        marginRight: '4px'
+                                        marginRight: '6px'
                                     }}
                                 />
                             </Popover>
@@ -218,8 +228,8 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                                     }}
                                     src={switchBgSvg}
                                     style={{
-                                        width: '18px',
-                                        height: '18px',
+                                        width: '20px',
+                                        height: '20px',
                                     }}
                             />
                         </div>
@@ -227,8 +237,8 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
 
                 <div className={styles['style-code']}>{style?.styleNo}</div>
                     <div className={styles['action-buttons']}>
-                        <Button onClick={handleCancel} style={{marginRight: '8px'}}>取消</Button>
-                        <Button onClick={handleOk} type='primary'>完成</Button>
+                        <Button onClick={handleCancel} style={{marginRight: '8px'}}>{intl("取消")}</Button>
+                        <Button onClick={handleOk} type='primary'>{intl("完成")}</Button>
                     </div>
                 </div>
                 <div className={styles['design-style-wrapper']} 
@@ -285,7 +295,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                             onClick={(e) => {
                                             e.stopPropagation();
                                             e.nativeEvent.stopImmediatePropagation();}}>
-                            <Slider {...settings} infinite={plainColors.length + customPlainColors.length > 5}>
+                            <Slider {...settings} infinite={plainColors.length + customPlainColors.length > 9}>
                                 {map(plainColors, color => 
                                     <ColorItem 
                                         key={`s-${color?._id}`}
@@ -315,29 +325,34 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                         </div>
                     </div>
                     <div className={styles['style-group-selector']}>
-                        <div 
-                            className={classnames(styles['svg-group-btn'], currentEditCapsuleStyleRegion === -2 ? styles['svg-group-btn-active'] : '')} 
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                e.nativeEvent.stopImmediatePropagation();
-                                handleUpdateCurrentEditCapsuleStyleRegion(-2)
-                            }}
-                        >
-                            {isZhCN ? '全部' : 'ALL'}
-                        </div>
-                        {map(styleSvgGroups, 
-                            g => <div 
-                                    className={classnames(styles['svg-group-btn'], currentEditCapsuleStyleRegion === g?.index ? styles['svg-group-btn-active'] : '')} 
-                                    key={`${g?.index}-group-btn`} 
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        e.nativeEvent.stopImmediatePropagation();
-                                        handleUpdateCurrentEditCapsuleStyleRegion(g?.index)
-                                    }}
-                                >
-                                    {get(split(g.id, '_x2F_'), isZhCN ? 0 : 1)}
-                                </div>
-                        )}
+                        {/* <div>
+                        <Slider {...settings} infinite={styleSvgGroups.length > 3}> */}
+                            <div 
+                                className={classnames(styles['svg-group-btn'], currentEditCapsuleStyleRegion === -2 ? styles['svg-group-btn-active'] : '')} 
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.nativeEvent.stopImmediatePropagation();
+                                    handleUpdateCurrentEditCapsuleStyleRegion(-2)
+                                }}
+                            >
+                                {isZhCN ? '全部' : 'ALL'}
+                            </div>
+                            {map(styleSvgGroups, 
+                                g => <div 
+                                        className={classnames(styles['svg-group-btn'], currentEditCapsuleStyleRegion === g?.index ? styles['svg-group-btn-active'] : '')} 
+                                        key={`${g?.index}-group-btn`} 
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            e.nativeEvent.stopImmediatePropagation();
+                                            handleUpdateCurrentEditCapsuleStyleRegion(g?.index)
+                                        }}
+                                    >
+                                        {get(split(g.id, '_x2F_'), isZhCN ? 0 : 1)}
+                                    </div>
+                            )}
+                        {/* </Slider>
+                        </div> */}
+
                     </div>
                     <div className={styles['colors-slider-selector']}>
                         <div className={styles['colors-slider']} 
@@ -346,7 +361,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                                 e.nativeEvent.stopImmediatePropagation();
                             }}
                         >
-                            <Slider {...settings} infinite={flowerColors.length + customFlowerColors.length > 5}>
+                            <Slider {...settings} infinite={flowerColors.length + customFlowerColors.length > 9}>
                                 {map(flowerColors, color => 
                                     <ColorItem 
                                         onClick={(e) => {

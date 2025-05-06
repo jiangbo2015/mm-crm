@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import { intl } from '@/utils/utils'
 import { connect } from 'dva';
+import { getLocale } from 'umi';
 import { get, map, toInteger, includes , filter, findIndex, find } from 'lodash';
 
 import { StyleItem } from '@/components/StyleItem'
@@ -31,6 +32,8 @@ const StylesSelectorModal = ({
     mode = 'multiple', // 'multiple','single'
     fetching
 }) => {
+    console.log("getLocale :", getLocale())
+  const locale = getLocale()
   const {docs: sourceList = [], total = 0, limit = 0, page = 1} = styleList
   const [searchInput, setSearchInput] = useState('');
   const [enlargeStyle, setEnlargeStyle] = useState(null);
