@@ -172,7 +172,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
         >
             <Spin spinning={createImgloading} indicator={null} delay={1000} tip={<RandomSpeedProgress loading={createImgloading} />}>
                 <div className={styles['design-style-modal-header']}>
-                    <div style={{display: 'flex'}}>
+                    <div style={{display: 'flex', alignItems: 'center' }}>
                         <div className={styles['textures-selector']}>
                             <Popover placement="bottomRight" content={
                                 <div style={{display: 'flex', flexDirection: 'column'}} value={texture?._id} size='small' >

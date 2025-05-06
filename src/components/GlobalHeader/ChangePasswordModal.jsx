@@ -1,6 +1,7 @@
 import { Button, Modal, Form, Input, message } from 'antd';
 import { connect } from 'dva';
 import { history } from 'umi';
+import { intl } from '@/utils/utils'
 
 const ChangePasswordModal = ({ dispatch, onCancel }) => {
     const [form] = Form.useForm();
@@ -32,7 +33,7 @@ const ChangePasswordModal = ({ dispatch, onCancel }) => {
             footer={false}
             visible={true}
             onCancel={onCancel}
-            title="修改密码"
+            title={intl("修改密码")}
             bodyStyle={{
                 backgroundColor: '#F0F0F0',
             }}
@@ -40,7 +41,7 @@ const ChangePasswordModal = ({ dispatch, onCancel }) => {
         >
             <Form onFinish={onFinish} form={form}>
                 <Form.Item
-                    label="旧密码"
+                    label={intl("旧密码")}
                     name="password"
                     rules={[
                         {
@@ -52,7 +53,7 @@ const ChangePasswordModal = ({ dispatch, onCancel }) => {
                     <Input type="password" />
                 </Form.Item>
                 <Form.Item
-                    label="新密码"
+                    label={intl("新密码")}
                     name="newPwd"
                     rules={[
                         {
@@ -64,7 +65,7 @@ const ChangePasswordModal = ({ dispatch, onCancel }) => {
                     <Input type="password" />
                 </Form.Item>
                 <Form.Item
-                    label="确认新密码"
+                    label={intl("确认新密码")}
                     name="confirmPwd"
                     rules={[
                         {

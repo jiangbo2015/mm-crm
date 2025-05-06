@@ -50,14 +50,14 @@ const RandomSpeedProgress = () => {
 
   return (
     <div style={{ width: '80%', margin: '50px auto' , color:"#000"}}>
-      <p>图片生成中，请稍等片刻......</p>
+      <p><b>图片生成中，请稍等片刻......</b></p>
       <Progress 
         percent={percent} 
         strokeColor="#000"
         status="active"
         showInfo={false}
       />
-      <p>当前进度: {percent.toFixed(1)}%</p>
+      <p><b>当前进度: {percent.toFixed(1)}%</b></p>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { LogoutOutlined, SettingOutlined, UserOutlined, KeyOutlined, MailOutline
 import { Avatar, Menu, Spin, Modal, Form, Input } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
-import { history } from 'umi';
+import { injectIntl } from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
 import ChangePasswordModal from './ChangePasswordModal'
 import styles from './index.less';
@@ -118,7 +118,7 @@ class AvatarDropdown extends React.Component {
                 name: '',
                 email: ''
             },
-            menu,
+            intl,
             isHideName
         } = this.props;
         const { passwordModalOpen } = this.state
@@ -139,15 +139,15 @@ class AvatarDropdown extends React.Component {
                 {menu && <Menu.Divider />} */}
                 <Menu.Item key="email">
                     <MailOutlined />
-                    邮箱设置
+                    {intl.formatMessage({id: "邮箱设置"})}
                 </Menu.Item>
                 <Menu.Item key="changePassword">
                     <KeyOutlined />
-                    修改密码
+                    {intl.formatMessage({id: "修改密码"})}
                 </Menu.Item>
                 <Menu.Item key="logout">
                     <LogoutOutlined />
-                    退出登录
+                    {intl.formatMessage({id: "退出登录"})}
                 </Menu.Item>
             </Menu>
         );
@@ -166,8 +166,9 @@ class AvatarDropdown extends React.Component {
                     
                 </span>
             </HeaderDropdown>
-            {emailModalOpen && <Modal open={true} 
-                title="邮箱设置" 
+            {emailModalOpen && 
+            <Modal open={true} 
+                title={intl.formatMessage({id: "邮箱设置"})} 
                 onCancel={this.onCloseEmailModalOpen}
                 onOk={this.onUpdateEmail}
             >
@@ -195,4 +196,4 @@ class AvatarDropdown extends React.Component {
 export default connect(({ user }) => ({
     currentUser: user.currentUser,
     emailModalOpen: user.emailModalOpen,
-}))(AvatarDropdown);
+}))(injectIntl(AvatarDropdown));

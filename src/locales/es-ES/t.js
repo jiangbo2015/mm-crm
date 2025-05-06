@@ -106,5 +106,11 @@ export default {
     "通道编号": "ID de Canal",
     "通道名称": "Nombre del Canal",
     "说明": "Descripción",
-    "添加": "Añadir"
+    "添加": "Añadir",
+    "邮箱设置": "Configuración del buzón",
+    "修改密码": "Modificar la contraseña",
+    "退出登录": "Logout",
+    "旧密码": "Contraseña antigua",
+    "新密码": "Nueva contraseña",
+    "确认新密码":"Confirmar nueva contraseña"
   }

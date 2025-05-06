@@ -106,5 +106,11 @@ export default {
     "通道编号": "Channel ID",
     "通道名称": "Channel Name",
     "说明": "Description",
-    "添加": "Add"
+    "添加": "Add",
+    "邮箱设置": "Email settings",
+    "修改密码": "Change Password",
+    "退出登录": "Logout",
+    "旧密码": "Old Password",
+    "新密码": "New Password",
+    "确认新密码":"Confirm new password"
   }
