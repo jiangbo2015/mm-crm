@@ -32,7 +32,7 @@ const Com = props => {
             render: (id, record) => (
                 <div>
                     {props?.isAllData? null: <> 
-                        <a onClick={e => handleEdit(record)}>编辑</a>
+                        <a onClick={e => handleEdit(record)}>{intl('编辑')}</a>
                             <Divider type="vertical" />
                             <Popconfirm
                                 title="确认要删除吗"
@@ -40,7 +40,7 @@ const Com = props => {
                                 okText="是"
                                 cancelText="否"
                             >
-                                <a href="#">删除</a>
+                                <a href="#">{intl('删除')}</a>
                             </Popconfirm>
                             <Divider type="vertical" />
                         </>

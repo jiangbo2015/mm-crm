@@ -153,7 +153,7 @@ const Com = props => {
                                 handleDeleteBatch();
                             }}
                         >
-                            {intl('批量编辑')}
+                            {intl('批量删除')}
                         </Button>
                     </>
                 }

@@ -3,6 +3,8 @@ import { Button, Card, Col, Input, Modal, Row } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { connect } from 'dva';
 import React, { useEffect, useState } from 'react';
+import { intl } from '@/utils/utils'
+
 import Form from './From';
 import TableBasic from './TableBasic';
 
@@ -143,7 +145,7 @@ const Com = props => {
                                 setBatchVisible(true);
                             }}
                         >
-                            批量编辑
+                            {intl('批量编辑')}
                         </Button>
 
                         <Button
@@ -152,7 +154,7 @@ const Com = props => {
                                 handleDeleteBatch();
                             }}
                         >
-                            批量删除
+                            {intl('批量删除')}
                         </Button>
                     </>
                 }
@@ -166,8 +168,8 @@ const Com = props => {
                 />
             </Card>
             <Modal
-                title="批量编辑"
-                visible={batchVisible}
+                title={intl('批量编辑')}
+                open={batchVisible}
                 width="800px"
                 footer={null}
                 destroyOnClose={true}

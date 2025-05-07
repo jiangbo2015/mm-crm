@@ -4,7 +4,7 @@ import '@ant-design/compatible/assets/index.css';
 import { Input, Row, Select, Col } from 'antd';
 import { get,map } from 'lodash';
 import { connect } from 'dva';
-import {intl} from '@/utils/utils'
+import { injectIntl } from 'umi'
 
 const { Option } = Select;
 // const allCountries = wcc.getAllCountries();

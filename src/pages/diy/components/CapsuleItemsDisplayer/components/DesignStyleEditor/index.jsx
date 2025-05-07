@@ -184,7 +184,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                 <div className={styles['design-style-modal-header']}>
                     <div style={{display: 'flex', alignItems: 'center' }}>
                         <div className={styles['textures-selector']}>
-                            <Popover placement="bottomRight" content={
+                            <Popover trigger="click" className={styles["textures-list"]} placement="bottomLeft" content={
                                 <div style={{display: 'flex', flexDirection: 'column'}} value={texture?._id} size='small' >
                                     <div 
                                         style={{
@@ -216,7 +216,8 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                                     style={{
                                         width: '26px',
                                         height: '26px',
-                                        marginRight: '6px'
+                                        marginRight: '6px',
+                                        cursor: 'pointer'
                                     }}
                                 />
                             </Popover>

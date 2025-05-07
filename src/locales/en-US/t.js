@@ -1,5 +1,5 @@
 export default {
-    "账号": "User name",
+    // "账号": "User name",
     "密码": "Password",
     "姓名": "Name",
     "所在地": "Location",
@@ -7,6 +7,8 @@ export default {
     "备注": "Notes",
     "我的客户": "My Clients",
     "所有客户": "All Clients",
+    "账号": "Account",
+    "名称": "Name",
     "客户账号": "Client Account",
     "客户名称": "Client Name",
     "所属产品经理": "Assigned Product Manager",
@@ -46,6 +48,7 @@ export default {
     "添加素色": "Add Solid Color",
     "批量编辑": "Bulk Edit",
     "批量删除": "Bulk Delete",
+    "删除": "Delete",
     "修改记录": "Edit History",
     "修改人": "Edited By",
     "修改时间": "Last Modified Time",
@@ -114,5 +117,6 @@ export default {
     "退出登录": "Logout",
     "旧密码": "Old Password",
     "新密码": "New Password",
-    "确认新密码":"Confirm new password"
+    "确认新密码":"Confirm new password",
+    "完成": "Complete"
   }

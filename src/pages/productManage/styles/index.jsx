@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Typography, Alert, Button, Modal, Row, Col, Input } from 'antd';
+import { Card, Button, Modal, Row, Col, Input } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TableBasic from './TableBasic';
 import Form from './Form';
+import { intl } from '@/utils/utils'
 import { connect } from 'dva';
 
 const { Search } = Input;
@@ -159,7 +160,7 @@ const Com = props => {
                                 setBatchVisible(true);
                             }}
                         >
-                            批量编辑
+                            {intl('批量编辑')}
                         </Button>
                         <Button
                             type="danger"
@@ -167,7 +168,7 @@ const Com = props => {
                                 handleDeleteBatch();
                             }}
                         >
-                            批量删除
+                            {intl('批量删除')}
                         </Button>
                     </>
                 }
@@ -196,8 +197,8 @@ const Com = props => {
                 <Form ref={v => (formRef.current = v)} />
             </Modal>
             <Modal
-                title="批量编辑"
-                visible={batchVisible}
+                title={intl('批量编辑')}
+                open={batchVisible}
                 width="800px"
                 // footer={null}
                 destroyOnClose={true}

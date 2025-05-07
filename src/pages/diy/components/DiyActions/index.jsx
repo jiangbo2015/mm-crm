@@ -1,3 +1,4 @@
+import { history } from 'umi'
 import { Button, Modal, message, Input, Tag } from 'antd';
 import React, { useState } from 'react';
 import { get } from 'lodash'
@@ -70,6 +71,7 @@ const DiyActions = ({arrangement}) => {
             content: intl('请等待管理员审批'),
         })
     };
+
     const handleApprove = async () => {
         await dispatch({
             type: 'diy/approve',
@@ -82,6 +84,7 @@ const DiyActions = ({arrangement}) => {
             title: '发布成功',
         })
     };
+
     const handleSaveToMy = async () => {
         handleSaveAs(`${name}-copy`, arrangement).then((res) => {
             // console.log('res-->', res?.data?._id)
@@ -101,6 +104,21 @@ const DiyActions = ({arrangement}) => {
             type: 'diy/setMode',
             payload: 'editor'
         })
+    };
+
+    const handleDel = async () => {
+        const res = await dispatch({
+            type: 'diy/delCapsule',
+            payload: {
+                _id,
+            },
+        })
+        if(res.success) {
+            message.success("删除成功")
+            history.goBack()
+        } else {
+            message.error("删除失败")
+        }
     };
 
     async function handlePreSave() {
@@ -158,6 +176,9 @@ const DiyActions = ({arrangement}) => {
       </Button>}
       {!isEditor && IsAuthor && IsCanPublish && <Button type="primary" onClick={handlePublish}>
         {intl('发布')}
+      </Button>}
+      {!isEditor && IsCanEdit && IsAuthor && <Button type="primary" onClick={handleDel}>
+        {intl('删除')}
       </Button>}
       {isEditor && IsAuthor && IsCanEdit &&  <Button type="primary" onClick={() => {
         handlePreSave()

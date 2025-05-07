@@ -1,24 +1,24 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Table, Divider, Tag, Modal, Popconfirm, message } from 'antd';
-import lodash from 'lodash';
+import { intl } from '@/utils/utils';
 import { connect } from 'dva';
 import Form from '../Form';
 
 const Com = props => {
     const columns = [
         {
-            title: '账号',
+            title: intl('账号'),
             dataIndex: 'account',
             key: 'account',
             render: text => <a>{text}</a>,
         },
         {
-            title: '名字',
+            title: intl('姓名'),
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '操作',
+            title: intl('操作'),
             dataIndex: 'action',
             key: 'action',
             render: (text, record) => (

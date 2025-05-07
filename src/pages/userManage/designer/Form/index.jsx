@@ -2,6 +2,7 @@ import React from 'react';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Input } from 'antd';
+import { intl } from '@/utils/utils'
 
 class RegistrationForm extends React.Component {
     state = {};
@@ -41,7 +42,7 @@ class RegistrationForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label={<span>姓名</span>}>
+                <Form.Item label={<span>{intl("姓名")}</span>}>
                     {getFieldDecorator('name', {
                         rules: [
                             {

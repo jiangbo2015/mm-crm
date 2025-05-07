@@ -93,4 +93,9 @@ export async function applyForPublication(data) {
     });
 }
 
-
+export async function delCapsule(data) {
+    return request('/api/capsule/delete', {
+        method: 'post',
+        data,
+    });
+}

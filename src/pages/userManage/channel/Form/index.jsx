@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Input, Select } from 'antd';
-import {intl} from '@/utils/utils'
+import { injectIntl } from 'umi'
 
 
 class ChannelForm extends React.Component {
@@ -13,6 +13,7 @@ class ChannelForm extends React.Component {
         }
     }
     render() {
+        const { intl } = this.props.form
         const { getFieldDecorator } = this.props.form;
         
         const formItemLayout = {
@@ -74,4 +75,4 @@ class ChannelForm extends React.Component {
 
 export default Form.create({
     name: 'inputDesiner',
-})(ChannelForm);
+})(injectIntl(ChannelForm));

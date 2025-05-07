@@ -38,7 +38,7 @@ const Com = props => {
             },
         },
         {
-            title: intl('所属通道'),
+            title: intl('邮箱'),
             dataIndex: 'email',
             render: (email) => {
                 return <div>{email}</div>;
@@ -58,7 +58,7 @@ const Com = props => {
                     okText="是"
                     cancelText="否"
                 >
-                    <a href="#">{intl('删除')}</a>
+                    <a href="#">{intl("删除")}</a>
                 </Popconfirm>
             </div>
         ),

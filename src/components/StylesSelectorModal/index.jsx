@@ -34,6 +34,7 @@ const StylesSelectorModal = ({
 }) => {
     console.log("getLocale :", getLocale())
   const locale = getLocale()
+  const isZhCN =  locale === 'zh-CN'
   const {docs: sourceList = [], total = 0, limit = 0, page = 1} = styleList
   const [searchInput, setSearchInput] = useState('');
   const [enlargeStyle, setEnlargeStyle] = useState(null);
@@ -168,7 +169,7 @@ const StylesSelectorModal = ({
                 style={{ width: 200 }} 
             />
             <Radio.Group
-                options={map(goodsList, good => ({ value: good?._id, label: good?.name }))}
+                options={map(goodsList, good => ({ value: good?._id, label: isZhCN ? good?.name : good?.aliasName }))}
                 onChange={(e) => handleSetCurrentGoodById(e?.target?.value)}
                 value={currentGood?._id}
                 optionType="button"
@@ -183,7 +184,7 @@ const StylesSelectorModal = ({
                     handleSetCurrentGoodCategoryById(key)
                   }} 
             >
-                {map(currentGood?.category,  category => (<Menu.Item key={category?._id}>{category?.name}</Menu.Item>))}
+                {map(currentGood?.category,  category => (<Menu.Item key={category?._id}>{isZhCN ? category?.name : category?.enname }</Menu.Item>))}
             </Menu>
             <div className={styles['grid-seletor']}>
                 {map(sourceList, (item) => {

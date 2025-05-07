@@ -5,7 +5,7 @@ import '@ant-design/compatible/assets/index.css';
 import { Input, Checkbox, Select } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 import { connect } from 'dva';
-const { Option } = Select;
+import { injectIntl } from 'umi';
 
 @connect(state => ({
     channelList: {},
@@ -16,6 +16,7 @@ const { Option } = Select;
 }))
 class RegistrationForm extends React.Component {
     render() {
+        const { intl } = this.props
         const { getFieldDecorator } = this.props.form;
         // const { capsuleList, branchList, goodsList } = this.props;
         const formItemLayout = {
@@ -53,7 +54,7 @@ class RegistrationForm extends React.Component {
 
         return (
             <Form {...formItemLayout}>
-                <Form.Item label="账号">
+                <Form.Item label={intl("账号")}>
                     {getFieldDecorator('account', {
                         rules: [
                             {
@@ -63,7 +64,7 @@ class RegistrationForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label={<span>密码</span>}>
+                <Form.Item label={<span>{intl('密码')}</span>}>
                     {getFieldDecorator('password', {
                         rules: [
                             {
@@ -74,7 +75,7 @@ class RegistrationForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label="姓名" hasFeedback>
+                <Form.Item label={intl("姓名")} hasFeedback>
                     {getFieldDecorator('name', {
                         rules: [
                             {
@@ -84,12 +85,12 @@ class RegistrationForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label="所在地">
+                <Form.Item label={intl("所在地")}>
                     {getFieldDecorator('address', {
                         rules: [],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label="邮箱">
+                <Form.Item label={intl("邮箱")}>
                     {getFieldDecorator('email', {
                         rules: [
                             {
@@ -117,7 +118,7 @@ class RegistrationForm extends React.Component {
                 </Form.Item> */}
                 {/* <Form.Item label="货币">{productorSelector}</Form.Item> */}
 
-                <Form.Item label="备注">
+                <Form.Item label={intl("备注")}>
                     {getFieldDecorator('remark', {
                         rules: [],
                     })(<Input.TextArea />)}
@@ -129,4 +130,4 @@ class RegistrationForm extends React.Component {
 
 export default Form.create({
     name: 'inputProductor',
-})(RegistrationForm);
+})(injectIntl(RegistrationForm));

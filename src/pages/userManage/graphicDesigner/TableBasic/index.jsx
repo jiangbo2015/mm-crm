@@ -3,19 +3,19 @@ import { Table, Divider, Tag, Modal, Popconfirm } from 'antd';
 import styles from './index.less';
 import { get } from 'lodash';
 import { connect } from 'dva';
+import { intl } from '@/utils/utils';
 import Form from '../Form';
 
 const Com = props => {
-    console.log(props);
     const columns = [
         {
-            title: '账号',
+            title: intl('账号'),
             dataIndex: 'account',
             key: 'account',
             render: text => <a>{text}</a>,
         },
         {
-            title: '名字',
+            title: intl('姓名'),
             dataIndex: 'name',
             key: 'name',
         },

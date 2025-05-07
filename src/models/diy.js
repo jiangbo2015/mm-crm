@@ -4,6 +4,7 @@ import {
     update,
     applyForPublication,
     getVisibleGoods,
+    delCapsule
 } from '@/services/diy';
 import {
     colorAdd,
@@ -70,6 +71,10 @@ const Model = {
                 });
             }
             return res 
+        },
+        *delCapsule({ payload }, { put, call }) {
+            const res = yield call(delCapsule, payload);
+            return res
         },
         *updateCapsule({ payload }, { put, call }) {
             const res = yield call(update, payload);

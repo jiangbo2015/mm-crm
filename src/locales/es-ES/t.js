@@ -46,6 +46,7 @@ export default {
     "添加素色": "Añadir Color Liso",
     "批量编辑": "Edición Masiva",
     "批量删除": "Eliminación Masiva",
+    "删除": "Eliminación",
     "修改记录": "Historial de Edición",
     "修改人": "Editado por",
     "修改时间": "Fecha de Modificación",
@@ -115,4 +116,5 @@ export default {
     "旧密码": "Contraseña antigua",
     "新密码": "Nueva contraseña",
     "确认新密码":"Confirmar nueva contraseña",
+    "完成": "Completado"
   }

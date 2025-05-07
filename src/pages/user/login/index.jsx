@@ -4,6 +4,7 @@ import { Link } from 'umi';
 import { connect } from 'dva';
 import LoginComponents from './components/Login';
 import { ContactUs } from './components/ContactUs';
+import { intl } from '@/utils/utils'
 import styles from './style.less';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
@@ -113,7 +114,7 @@ class Login extends Component {
                         <p style={{marginBottom: 30}}>Please login to continue</p>          
                         <UserName
                             name="account"
-                            placeholder="账号"
+                            placeholder={intl("账号")}
                             rules={[
                                 {
                                     // required: true,
@@ -123,7 +124,7 @@ class Login extends Component {
                         />
                         <Password
                             name="password"
-                            placeholder="密码"
+                            placeholder={intl("密码")}
                             rules={[
                                 {
                                     // required: true,
