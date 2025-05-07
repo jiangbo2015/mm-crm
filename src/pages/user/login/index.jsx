@@ -1,10 +1,10 @@
 import { Alert, Modal } from 'antd';
 import React, { Component } from 'react';
-import { Link } from 'umi';
+import { injectIntl } from 'umi';
 import { connect } from 'dva';
 import LoginComponents from './components/Login';
 import { ContactUs } from './components/ContactUs';
-import { intl } from '@/utils/utils'
+// import { intl } from '@/utils/utils'
 import styles from './style.less';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
@@ -89,7 +89,7 @@ class Login extends Component {
     );
 
     render() {
-        const { userLogin, submitting } = this.props;
+        const { userLogin, submitting, intl } = this.props;
         const { status, type: loginType } = userLogin;
         const { type, openContactUs } = this.state;
         return (
@@ -114,7 +114,7 @@ class Login extends Component {
                         <p style={{marginBottom: 30}}>Please login to continue</p>          
                         <UserName
                             name="account"
-                            placeholder={intl("账号")}
+                            placeholder={intl.formatMessage({id: "账号"})}
                             rules={[
                                 {
                                     // required: true,
@@ -124,7 +124,7 @@ class Login extends Component {
                         />
                         <Password
                             name="password"
-                            placeholder={intl("密码")}
+                            placeholder={intl.formatMessage({id: "密码"})}
                             rules={[
                                 {
                                     // required: true,
@@ -139,7 +139,7 @@ class Login extends Component {
                                 }
                             }}
                         />
-                    <Submit loading={submitting}>登录</Submit>
+                    <Submit loading={submitting}>{intl.formatMessage({id: "登陆"})}</Submit>
                     <div style={{color: '#afadad', marginTop: '-16px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <div >Or</div>
                         <div onClick={() => this.handleOpenContactUs(true)} style={{  cursor: 'pointer', textDecoration: 'underline'}}>Contact us</div>
@@ -151,4 +151,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default injectIntl(Login);

@@ -17,7 +17,7 @@ class RegistrationForm extends React.Component {
         productorName: this.props.channelId,
     };
     render() {
-        const { channelList } = this.props;
+        const { channelList, intl } = this.props;
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -115,13 +115,11 @@ class RegistrationForm extends React.Component {
         //     </Select>,
         // );
 
-        console.log('-----channelList-----');
-        console.log(channelList);
         return (
             <Form {...formItemLayout}>
                 <Row>
                     <Col span="12">
-                        <Form.Item label={<span>{intl('账号')}</span>}>
+                        <Form.Item label={<span>{intl.formatMessage({id: '账号'})}</span>}>
                             {getFieldDecorator('account', {
                                 rules: [
                                     {
@@ -134,7 +132,7 @@ class RegistrationForm extends React.Component {
                         </Form.Item>
                     </Col>
                     <Col span="12">
-                        <Form.Item label={intl("密码")}>
+                        <Form.Item label={intl.formatMessage({id: "密码"})}>
                             {getFieldDecorator('password', {
                                 rules: [
                                     {
@@ -148,7 +146,7 @@ class RegistrationForm extends React.Component {
                 </Row>
                 <Row>
                     <Col span="12">
-                        <Form.Item label={intl("姓名")}>
+                        <Form.Item label={intl.formatMessage({id: "姓名"})}>
                             {getFieldDecorator('name', {
                                 rules: [
                                     {
@@ -160,7 +158,7 @@ class RegistrationForm extends React.Component {
                         </Form.Item>
                     </Col>
                     <Col span="12">
-                        <Form.Item label={intl("邮箱")}>
+                        <Form.Item label={intl.formatMessage({id: "邮箱"})}>
                             {getFieldDecorator('email', {
                                 rules: [
                                     {
@@ -175,7 +173,7 @@ class RegistrationForm extends React.Component {
                 <Row></Row>
                 <Row>
                     <Col span="12">
-                        <Form.Item label={intl("通道")}>
+                        <Form.Item label={intl.formatMessage({id: "通道"})}>
                             {tdSelector}
                         </Form.Item>
                     </Col>
@@ -187,4 +185,4 @@ class RegistrationForm extends React.Component {
 
 export default Form.create({
     name: 'inputProductor',
-})(RegistrationForm);
+})(injectIntl(RegistrationForm));

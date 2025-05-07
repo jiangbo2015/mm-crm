@@ -107,6 +107,7 @@ export default {
     "胶囊管理": "Capsule Management",
     "系统设置": "System Settings",
     "我的通道": "My Channels",
+    "通道": "Channel",
     "所有通道": "All Channels",
     "通道编号": "Channel ID",
     "通道名称": "Channel Name",

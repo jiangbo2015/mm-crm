@@ -13,7 +13,7 @@ class ChannelForm extends React.Component {
         }
     }
     render() {
-        const { intl } = this.props.form
+        const { intl } = this.props
         const { getFieldDecorator } = this.props.form;
         
         const formItemLayout = {
@@ -37,7 +37,7 @@ class ChannelForm extends React.Component {
 
         return (
             <Form {...formItemLayout}>
-                <Form.Item label={<span>{intl('通道编号')}</span>}>
+                <Form.Item label={<span>{intl.formatMessage({id: '通道编号'})}</span>}>
                     {getFieldDecorator('code', {
                         rules: [
                             {
@@ -48,7 +48,7 @@ class ChannelForm extends React.Component {
                         ],
                     })(<Input disabled/>)}
                 </Form.Item>
-                <Form.Item label={<span>{intl('通道名称')}</span>}>
+                <Form.Item label={<span>{intl.formatMessage({id: '通道名称'})}</span>}>
                     {getFieldDecorator('name', {
                         rules: [
                             {
@@ -59,7 +59,7 @@ class ChannelForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label={intl("备注")}>
+                <Form.Item label={intl.formatMessage({id: "备注"})}>
                     {getFieldDecorator('remark', {
                         rules: [
                             {

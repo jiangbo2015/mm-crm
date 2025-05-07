@@ -105,6 +105,7 @@ export default {
     "胶囊管理": "Gestión de Cápsulas",
     "系统设置": "Configuración del Sistema",
     "我的通道": "Mis Canales",
+    "我的通道": "Canales",
     "所有通道": "Todos los canales",
     "通道编号": "ID de Canal",
     "通道名称": "Nombre del Canal",

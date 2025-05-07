@@ -54,7 +54,7 @@ class RegistrationForm extends React.Component {
 
         return (
             <Form {...formItemLayout}>
-                <Form.Item label={intl("账号")}>
+                <Form.Item label={intl.formatMessage({id: "账号"})}>
                     {getFieldDecorator('account', {
                         rules: [
                             {
@@ -64,7 +64,7 @@ class RegistrationForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label={<span>{intl('密码')}</span>}>
+                <Form.Item label={<span>{intl.formatMessage({id: '密码'})}</span>}>
                     {getFieldDecorator('password', {
                         rules: [
                             {
@@ -75,7 +75,7 @@ class RegistrationForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label={intl("姓名")} hasFeedback>
+                <Form.Item label={intl.formatMessage({id: "姓名"})} hasFeedback>
                     {getFieldDecorator('name', {
                         rules: [
                             {
@@ -85,12 +85,12 @@ class RegistrationForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label={intl("所在地")}>
+                <Form.Item label={intl.formatMessage({id: "所在地"})}>
                     {getFieldDecorator('address', {
                         rules: [],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label={intl("邮箱")}>
+                <Form.Item label={intl.formatMessage({id: "邮箱"})}>
                     {getFieldDecorator('email', {
                         rules: [
                             {
@@ -118,7 +118,7 @@ class RegistrationForm extends React.Component {
                 </Form.Item> */}
                 {/* <Form.Item label="货币">{productorSelector}</Form.Item> */}
 
-                <Form.Item label={intl("备注")}>
+                <Form.Item label={intl.formatMessage({id: "备注"})}>
                     {getFieldDecorator('remark', {
                         rules: [],
                     })(<Input.TextArea />)}
