@@ -15,10 +15,9 @@ import {
 } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
-import { filter } from 'lodash'; 
+import { injectIntl } from 'umi'; 
 
 import { Avatar, UploadBtn, uploadProps } from '../UploadCom';
-import { colorSystemList } from '../../colors/From/index';
 import {intl} from '@/utils/utils'
 
 const ColorOptionLabel = ({ c = {} }) => (
@@ -159,7 +158,7 @@ class RegistrationForm extends React.Component {
         return limit;
     };
     render() {
-        const { colorList = [], form } = this.props;
+        const { colorList = [], form, intl } = this.props;
         const { getFieldDecorator } = form;
         console.log('colorList', colorList)
 
@@ -261,7 +260,7 @@ class RegistrationForm extends React.Component {
                                     ],
                                 })(<InputNumber min={1} step={1} />)}
                             </Form.Item> */}
-                            <Form.Item label={<span>{intl('实际画布单循环宽度')}(cm)</span>}>
+                            <Form.Item label={<span>{intl.formatMessage({id: '实际画布单循环宽度'})}(cm)</span>}>
                                 {getFieldDecorator('size', {
                                     rules: [
                                         {
@@ -311,4 +310,4 @@ class RegistrationForm extends React.Component {
 
 export default Form.create({
     name: 'inputFlower',
-})(RegistrationForm);
+})(injectIntl(RegistrationForm));

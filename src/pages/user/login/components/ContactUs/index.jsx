@@ -41,10 +41,7 @@ export const ContactUs = ({callback}) => {
                     },
                 ]}
             >
-                <InputBottomBorder placeholder={d({
-            id: 'your_name',
-            defaultMessage: '您的姓名',
-        })} />
+                <InputBottomBorder placeholder={intl('您的姓名')} />
             </Form.Item>
         </Col>
         <Col span={2}></Col>
@@ -58,10 +55,7 @@ export const ContactUs = ({callback}) => {
                     },
                 ]}
             >
-                <InputBottomBorder placeholder={d({
-            id: 'your_email',
-            defaultMessage: '您的邮箱',
-        })} />
+                <InputBottomBorder placeholder={intl("您的邮箱")} />
             </Form.Item>
         </Col>
     </Row>

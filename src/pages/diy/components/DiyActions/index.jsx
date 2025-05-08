@@ -9,7 +9,8 @@ import { intl } from '@/utils/utils'
 import {
     SendOutlined,
     DeliveredProcedureOutlined,
-    UserOutlined
+    UserOutlined,
+    ExclamationCircleOutlined
 } from '@ant-design/icons';
 
 import useDiy from '../../hooks/useDiy'
@@ -106,19 +107,28 @@ const DiyActions = ({arrangement}) => {
         })
     };
 
-    const handleDel = async () => {
-        const res = await dispatch({
-            type: 'diy/delCapsule',
-            payload: {
-                _id,
+    const handleDel = () => {
+        modal.confirm({
+            title: '确认删除选中的款式吗?',
+            icon: <ExclamationCircleOutlined />,
+            okText: '确认',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk: async () => {
+                const res = await dispatch({
+                    type: 'diy/delCapsule',
+                    payload: {
+                        _id,
+                    },
+                })
+                if(res.success) {
+                    message.success("删除成功")
+                    history.goBack()
+                } else {
+                    message.error("删除失败")
+                }
             },
-        })
-        if(res.success) {
-            message.success("删除成功")
-            history.goBack()
-        } else {
-            message.error("删除失败")
-        }
+        });
     };
 
     async function handlePreSave() {

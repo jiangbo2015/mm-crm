@@ -110,8 +110,8 @@ class Login extends Component {
                         this.loginForm = form;
                     }}
                 >    
-                        <h1 style={{marginBottom: 0}}>Login</h1>
-                        <p style={{marginBottom: 30}}>Please login to continue</p>          
+                        <h1 style={{marginBottom: 0}}>{intl.formatMessage({id: "登 陆"})}</h1>
+                        <p style={{marginBottom: 30}}>{intl.formatMessage({id: "登陆以继续"})}</p>          
                         <UserName
                             name="account"
                             placeholder={intl.formatMessage({id: "账号"})}
@@ -139,10 +139,10 @@ class Login extends Component {
                                 }
                             }}
                         />
-                    <Submit loading={submitting}>{intl.formatMessage({id: "登陆"})}</Submit>
+                    <Submit loading={submitting}>{intl.formatMessage({id: "登 陆"})}</Submit>
                     <div style={{color: '#afadad', marginTop: '-16px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                        <div >Or</div>
-                        <div onClick={() => this.handleOpenContactUs(true)} style={{  cursor: 'pointer', textDecoration: 'underline'}}>Contact us</div>
+                        <div>{intl.formatMessage({id: "或者"})}</div>
+                        <div onClick={() => this.handleOpenContactUs(true)} style={{  cursor: 'pointer', textDecoration: 'underline'}}>{intl.formatMessage({id: "联系我们"})}</div>
                     </div>
 
                 </LoginComponents>

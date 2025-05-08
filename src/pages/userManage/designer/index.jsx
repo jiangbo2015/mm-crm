@@ -44,7 +44,7 @@ const Com = props => {
 
             <Modal
                 title="添加"
-                visible={visible}
+                open={visible}
                 onOk={() => {
                     handleSubmit();
                     handleClear();

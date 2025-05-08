@@ -109,7 +109,7 @@ const Com = props => {
             });
             },
         });
-        };
+    };
 
     const handleDeleteBatch = () => {
         if (selectedKeys.length < 1) {
