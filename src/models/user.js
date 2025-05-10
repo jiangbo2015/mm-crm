@@ -65,11 +65,15 @@ const UserModel = {
         *delete({ payload }, { call, put }) {
             const { success } = yield call(del, payload);
             if (success) {
+                const query = {
+                    role: payload.role,
+                }
+                if(payload.owner) {
+                    query.owner = payload.owner
+                }
                 yield put({
                     type: 'fetch',
-                    payload: {
-                        role: payload.role,
-                    },
+                    payload: query,
                 });
             }
         },

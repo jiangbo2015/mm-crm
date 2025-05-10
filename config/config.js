@@ -68,6 +68,7 @@ export default {
     antd: {},
     locale: {
         baseNavigator: true,
+        default: 'en-US'
     },
     hash: true,
     history: {
