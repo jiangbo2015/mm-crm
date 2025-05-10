@@ -67,7 +67,7 @@ const Com = props => {
                         okText="是"
                         cancelText="否"
                     >
-                        <a href="#">删除</a>
+                        <a href="#">{intl("删除")}</a>
                     </Popconfirm>
                      <Divider type="vertical" />
                     <a onClick={() => props.dispatch({type: 'record/getList', payload: {modelId: record._id}})}>{intl('修改记录')}</a>

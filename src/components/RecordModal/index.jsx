@@ -1,6 +1,7 @@
 import { Modal, Table } from 'antd';
 import { get } from 'lodash';
 import moment from 'moment';
+import { intl } from '@/utils/utils'
 
 const style = {
     'name': '名称',
@@ -56,23 +57,23 @@ const FieldToTextMap = {
 export default ({list, onCancel, modelName = 'style'}) => {
     console.log(list, 'list')
     const columns = [{
-        title: '修改人',
+        title: intl('修改人'),
         dataIndex: 'changedBy',
         key: 'changedBy',
         render: (d) => d.name
     },{
-        title: '修改时间',
+        title: intl('修改时间'),
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         render: (updatedAt) => moment(updatedAt).format('YYYY-MM-DD hh:mm:ss')
     },{
-        title: '修改内容',
+        title: intl('修改内容'),
         dataIndex: 'changes',
         key: 'changes',
-        render: (d) => d.map(x => <div>{`${get(FieldToTextMap,`${modelName}.${x.field}`) ?? x.field}: ${x.oldValue} -> ${x.newValue}`}</div>)
+        render: (d) => d.map(x => <div>{`${intl(get(FieldToTextMap,`${modelName}.${x.field}`) ?? x.field)}: ${x.oldValue} -> ${x.newValue}`}</div>)
     }]
     return (
-        <Modal title="修改记录" visible={true} width="800px" footer={false} onCancel={onCancel}>
+        <Modal title={intl("修改记录")} visible={true} width="800px" footer={false} onCancel={onCancel}>
             <Table columns={columns} dataSource={list} />
         </Modal>
     );

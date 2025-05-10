@@ -71,7 +71,7 @@ const Com = props => {
                         <a>{intl('删除')}</a>
                     </Popconfirm>
                     <Divider type="vertical" />
-                    <a onClick={() => props.dispatch({type: 'record/getList', payload: {modelId: record._id}})}>修改记录</a>
+                    <a onClick={() => props.dispatch({type: 'record/getList', payload: {modelId: record._id}})}>{intl('修改记录')}</a>
                 </div>
             ),
         },

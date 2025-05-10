@@ -9,7 +9,7 @@ import ColorList from './ColorList';
 import StyleAndColors from '@/components/StyleAndColorsCom'
 import styles from './index.less';
 import { api } from '@/utils/apiconfig';
-import {intl} from '@/utils/utils'
+import { injectIntl } from 'umi'
 
 @connect(state => ({
     // styleId: state.style._id || '',
@@ -163,6 +163,7 @@ class Preview extends Component {
     }
     render() {
         const {
+            intl,
             styleId,
             svgUrl,
             svgUrlBack,
@@ -174,7 +175,7 @@ class Preview extends Component {
             styleSize = 27,
             styleBackSize = 27,
             displaySizePer = 100,
-            vposition
+            vposition,
         } = this.props;
         console.log('this.props', this.props);
         const { imgVals, curColors, curColor, curTexture } = this.state;
@@ -229,7 +230,7 @@ class Preview extends Component {
                                 e.stopPropagation();
                                 e.nativeEvent.stopImmediatePropagation();
                             }}>
-                                <b>{intl('花布缩放')}：</b>
+                                <b>{intl.formatMessage({id: '花布缩放'})}：</b>
                             </Col>
                             <Col
                                 span={12}
@@ -332,4 +333,4 @@ class Preview extends Component {
     }
 }
 
-export default Preview;
+export default injectIntl(Preview);

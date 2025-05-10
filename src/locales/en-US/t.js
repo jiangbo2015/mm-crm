@@ -71,9 +71,9 @@ export default {
     "发布提交成功": "Submitted Successfully",
     "请等待管理员审批": "Please wait for admin approval",
     "知道了": "Got it",
-    "单击下面的滴灌按钮，然后在屏幕上的任意位置选择一种颜色": "Click the eyedropper below, then select a color anywhere on the screen.",
-    "请输入颜色名称": "Enter the color name",
-    "当前浏览器不支持EveDropper API, 请使用Chrome 95+或Edge96+": "The current browser does not support the EyeDropper API. Please use Chrome 95+ or Edge 96+.",
+    "单击下面的滴管按钮，然后在屏幕上的任意位置选择一种颜色": "Click the eyedropper below, then select a color anywhere on the screen",
+    "请输入颜色名": "Enter the color name",
+    "当前浏览器不支持 EyeDropper API，请使用Chrome 95+ 或 Edge 96+": "The current browser does not support the EyeDropper API. Please use Chrome 95+ or Edge 96+.",
     "印花图案单循环宽度": "Single Repeat Width of Print Pattern",
     "印花名称（自定义）": "Please enter the print name",
     "自主上传的印花图案不能超过200kb": "Uploaded print patterns must not exceed 200KB.",
@@ -121,5 +121,10 @@ export default {
     "旧密码": "Old Password",
     "新密码": "New Password",
     "确认新密码":"Confirm new password",
-    "完成": "Complete"
+    "确认":"Confirm",
+    "是":"Yes",
+    "否":"No",
+    "确认要删除吗": "Are you sure you want to delete it",
+    "完成": "Complete",
+        "您有未保存的更改，确定要离开吗？": "You have unsaved changes, are you sure you want to leave?"
   }

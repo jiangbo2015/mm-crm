@@ -1,13 +1,14 @@
 // hooks/useLeavePageConfirm.ts
 import { useEffect } from 'react';
 import { history } from 'umi';
+import { intl } from '@/utils/utils'
 
 /**
  * 离开页面确认提示 Hook
  * @param enabled 是否启用提示
  * @param message 提示消息（浏览器可能忽略自定义消息）
  */
-export function useLeavePageConfirm(enabled, message = '您有未保存的更改，确定要离开吗？') {
+export function useLeavePageConfirm(enabled, message = intl('您有未保存的更改，确定要离开吗？')) {
   useEffect(() => {
     if (!enabled) return;
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input } from 'antd';
+import { Input, Spin } from 'antd';
 import { history, useParams } from 'umi';
 import { connect } from 'dva';
 import { get } from 'lodash';
@@ -26,7 +26,7 @@ const Com = props => {
     
     const { isEditor, arrangement: cloudArrangement, hasUpdate, handleEdit, handleChangeName } = useDiy()
     const { arrangement, ArrangmentDropdown } = useArrangement('', 20, cloudArrangement)
-    const { name, currentUser, dispatch } = props;
+    const { name, currentUser, dispatch, _id } = props;
     useLeavePageConfirm(isEditor && (hasUpdate || (cloudArrangement && arrangement!==cloudArrangement))
 )    
     useEffect(() => {
@@ -73,37 +73,39 @@ const Com = props => {
     }
 
     return (
-        <div className={styles['diy-page-wrapper']}>
-            <div className={styles['diy-page-header']}>
-                <div className={styles['header-left']}>
-                    <div className={styles['back-button']} onClick={() => {history.goBack()}}>
-                        <LeftOutlined />
+        <Spin spinning={!!params.id && !_id} wrapperClassName={styles['loading_wrapper']} style={{height: '100%', width: '100%'}}>
+            <div className={styles['diy-page-wrapper']}>
+                
+                <div className={styles['diy-page-header']}>
+                    <div className={styles['header-left']}>
+                        <div className={styles['back-button']} onClick={() => {history.goBack()}}>
+                            <LeftOutlined />
+                        </div> 
+                        <img src={logoSvg} height={60}/>
+                    </div>
+                    <div className={styles['header-center']}>
+                        <div style={{flex: 1}}>
+                            {isEditor &&<Input style={{width: '100%'}} onChange={onChangeName} size='large' 
+                                                placeholder={intl("DIY胶囊名称")} bordered={false} value={name}/>}
+                            {!isEditor && <div style={{ paddingLeft: '11px', fontSize: 16}}>{name}</div>}
+                        </div>
+                        {isEditor && ArrangmentDropdown}
                     </div> 
-                    <img src={logoSvg} height={60}/>
+                    <div className={styles['header-right']} style={{width: isEditor ? '268px' : ''}}>
+                        <div className={styles['diy-actions']}>
+                            <DiyActions arrangement={arrangement}/>
+                        </div>
+                        <AvatarDropdown isHideName/>
+                    </div>
                 </div>
-                <div className={styles['header-center']}>
-                    <div style={{flex: 1}}>
-                        {isEditor &&<Input style={{width: '100%'}} onChange={onChangeName} size='large' 
-                                            placeholder={intl("DIY胶囊名称")} bordered={false} value={name}/>}
-                        {!isEditor && <div style={{ paddingLeft: '11px', fontSize: 16}}>{name}</div>}
-                    </div>
-                    {isEditor && ArrangmentDropdown}
-                </div> 
-                <div className={styles['header-right']} style={{width: isEditor ? '268px' : ''}}>
-                    <div className={styles['diy-actions']}>
-                        <DiyActions arrangement={arrangement}/>
-                    </div>
-                    <AvatarDropdown isHideName/>
+                <div className={styles['diy-page-content']}>
+                    {!isEditor && <GoodCategoryMenu/>}
+                    {isEditor && <PlainColorsAside/>}
+                    <CapsuleItemsDisplayer arrangement={arrangement}/>
+                    {isEditor && <FlowerColorsAside />}
                 </div>
             </div>
-            <div className={styles['diy-page-content']}>
-                {!isEditor && <GoodCategoryMenu/>}
-                {isEditor && <PlainColorsAside/>}
-                <CapsuleItemsDisplayer arrangement={arrangement}/>
-                {isEditor && <FlowerColorsAside />}
-            </div>
-        </div>
-
+        </Spin>
     );
 };
 

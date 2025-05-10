@@ -8,6 +8,7 @@ import React, { useRef, useState } from 'react';
 import Form from '../From';
 import styles from './index.less';
 import RecordModal from '@/components/RecordModal';
+import { intl } from '@/utils/utils'
 
 const Com = props => {
     const columns = [
@@ -56,9 +57,9 @@ const Com = props => {
                     {/* <a onClick={e => handleEdit(record)}>编辑</a>
                     <Divider type="vertical" /> */}
 
-                    <a onClick={() => handleEdit(record)}>编辑</a>
+                    <a onClick={() => handleEdit(record)}>{intl("编辑")}</a>
                     <Divider type="vertical" />
-                    <a onClick={() => setVisiblePreview(record)}>预览</a>
+                    <a onClick={() => setVisiblePreview(record)}>{intl("预览")}</a>
                     <Divider type="vertical" />
                     <Popconfirm
                         title="确认要删除吗"
@@ -66,10 +67,10 @@ const Com = props => {
                         okText="是"
                         cancelText="否"
                     >
-                        <a href="#">删除</a>
+                        <a href="#">{intl("删除")}</a>
                     </Popconfirm>
                      <Divider type="vertical" />
-                    <a onClick={() => props.dispatch({type: 'record/getList', payload: {modelId: record._id}})}>修改记录</a>
+                    <a onClick={() => props.dispatch({type: 'record/getList', payload: {modelId: record._id}})}>{intl("修改记录")}</a>
                 </div>
             ),
         },

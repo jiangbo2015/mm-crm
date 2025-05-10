@@ -69,9 +69,9 @@ export default {
     "发布提交成功": "Enviado con Éxito",
     "请等待管理员审批": "Por favor, espere la aprobación del administrador",
     "知道了": "Entendido",
-    "单击下面的滴灌按钮，然后在屏幕上的任意位置选择一种颜色": "Haz clic en el cuentagotas de abajo y elige un color en cualquier parte de la pantalla.",
-    "请输入颜色名称": "Introduzca el nombre del color",
-    "当前浏览器不支持EveDropper API, 请使用Chrome 95+或Edge96+": "El navegador actual no admite la API de EyeDropper. Por favor, use Chrome 95+ o Edge 96+.",
+    "单击下面的滴管按钮，然后在屏幕上的任意位置选择一种颜色": "Haz clic en el cuentagotas de abajo y elige un color en cualquier parte de la pantalla",
+    "请输入颜色名": "Introduzca el nombre del color",
+    "当前浏览器不支持 EyeDropper API，请使用Chrome 95+ 或 Edge 96+": "El navegador actual no admite la API de EyeDropper. Por favor, use Chrome 95+ o Edge 96+.",
     "印花图案单循环宽度": "Ancho de Repetición Única del Estampado",
     "印花名称（自定义）": "Introduzca el nombre del estampado",
     "自主上传的印花图案不能超过200kb": "Los estampados subidos no deben superar los 200KB.",
@@ -119,5 +119,9 @@ export default {
     "旧密码": "Contraseña antigua",
     "新密码": "Nueva contraseña",
     "确认新密码":"Confirmar nueva contraseña",
-    "完成": "Completado"
+    "完成": "Completado",
+    "是":"Sí",
+    "否":"No",
+    "确认要删除吗": "Confirmar para eliminar",
+    "您有未保存的更改，确定要离开吗？": "¿Tiene cambios no guardados, ¿ está seguro de que quiere irse?"
   }

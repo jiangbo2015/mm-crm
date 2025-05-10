@@ -3,7 +3,7 @@ import { Modal, message, Input, Button, Popconfirm, Alert } from 'antd'
 import { isFunction, get } from 'lodash'
 import Icon, { HomeOutlined } from '@ant-design/icons';
 import useDiy from '../../hooks/useDiy'
-
+import { intl } from '@/utils/utils'
 const DropperSvg  = () => ( <svg class="btn__icon" role="img" alt="eye dropper" height="60px" width="60px" xmlns="http://www.w3.org/2000/svg"
 version="1.1" viewBox="0 0 50 50" x="0px" y="0px">
     <path
@@ -14,11 +14,12 @@ version="1.1" viewBox="0 0 50 50" x="0px" y="0px">
 import styles from './index.less'
 
 const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
+    const [selectedColor, setSelectedColor] = useState('');
+    const [error, setError] = useState('');
+    const [colorName, setColorName] = useState('');
     const { createCustomColor, delCustomColor, updateCustomColor } = useDiy()
     const { onOk } = modalProps;
-  const [selectedColor, setSelectedColor] = useState('');
-  const [error, setError] = useState('');
-  const [colorName, setColorName] = useState('');
+
 
   useEffect(() => {
     setSelectedColor(editData?.value)
@@ -48,7 +49,7 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
 
   const handleOk = async () => {
     if (!colorName) {
-        message.error("请输入颜色名！")
+        setError("请输入颜色名")
         return
     }
     if(isFunction(onOk)) {
@@ -98,29 +99,29 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
         footer={[
             editData?
             <Popconfirm
-                title="确认要删除吗"
+                title={intl("确认要删除吗")}
                 onConfirm={handleDel}
-                okText="是"
-                cancelText="否"
+                okText={intl("是")}
+                cancelText={intl("否")}
             >
                 <Button danger>
-                    删除
+                    {intl("删除")}
                 </Button>
             </Popconfirm>:null,
             <Button key="back" onClick={modalProps?.onCancel}>
-                取消
+                {intl("取消")}
             </Button>,
             <Button key="submit" type="primary" onClick={handleOk}>
-                确定
+                {intl("确定")}
             </Button>
         ]}
         destroyOnClose
     >
-        {!isSupported ? <Alert type='error' showIcon message={'当前浏览器不支持 EyeDropper API，请使用 Chrome 95+ 或 Edge 96+'} /> : 
+        {!isSupported ? <Alert type='error' showIcon message={intl('当前浏览器不支持 EyeDropper API，请使用Chrome 95+ 或 Edge 96+')} /> : 
         <div className={styles["picker-container"]}>
 
             <div style={{marginTop: '10px', color: '#7b7b7b'}}>
-                单击下面的滴管按钮，然后在屏幕上的任意位置选择一种颜色！
+                {intl("单击下面的滴管按钮，然后在屏幕上的任意位置选择一种颜色")}！
             </div>
             <div 
                 className={styles["picker-button"]}
@@ -130,7 +131,7 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
                 <Icon component={DropperSvg}/>
             </div>
             {selectedColor && <div>
-                    <Input placeholder="请输入颜色名" value={colorName} onChange={(e) => {
+                    <Input placeholder={intl("请输入颜色名")} value={colorName} onChange={(e) => {
                         setColorName(e?.target?.value)
                     }}/>
                 </div>}
@@ -144,7 +145,7 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
                 </div>
             )}
 
-            {error && <div className={styles["error"]}>{error}</div>}
+            {error && <div className={styles["error"]}>{intl(error)}</div>}
         </div>}
     </Modal>
   );

@@ -56,3 +56,19 @@
     flex: 1;
     overflow: hidden;
 }
+
+.loading_wrapper {
+    height: 100%;
+    width: 100%;
+
+    :global {
+        .ant-spin-container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .ant-spin-blur {
+            opacity: 0 !important;
+        }
+    }
+}
