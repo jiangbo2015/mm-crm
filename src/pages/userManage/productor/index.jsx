@@ -4,6 +4,7 @@ import TableBasic from './TableBasic';
 import Form from './Form';
 import { connect } from 'dva';
 import React, { useEffect, useRef, useState } from 'react';
+import { intl } from '@/utils/utils'
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
@@ -47,10 +48,10 @@ const Com = props => {
     return (
         <PageHeaderWrapper>
             <Card
-                title="产品经理列表"
+                title={intl("产品经理")}
                 extra={
                     <Button type="primary" onClick={() => setVisible(true)}>
-                        添加
+                        {intl("添加")}
                     </Button>
                 }
             >
@@ -58,7 +59,7 @@ const Com = props => {
             </Card>
 
             <Modal
-                title="添加"
+                title={intl("添加")}
                 visible={visible}
                 onOk={() => {
                     handleSubmit();

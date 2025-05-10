@@ -4,6 +4,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import TableBasic from './TableBasic';
 import Form from './Form';
 import { connect } from 'dva';
+import {intl} from '@/utils/utils'
 
 const Com = props => {
     const [visible, setVisible] = useState(false);
@@ -32,10 +33,10 @@ const Com = props => {
     return (
         <PageHeaderWrapper>
             <Card
-                title="设计人员列表"
+                title={intl("设计人员")}
                 extra={
                     <Button type="primary" onClick={() => setVisible(true)}>
-                        添加
+                        {intl("添加")}
                     </Button>
                 }
             >
@@ -43,7 +44,7 @@ const Com = props => {
             </Card>
 
             <Modal
-                title="添加"
+                title={intl("添加")}
                 open={visible}
                 onOk={() => {
                     handleSubmit();

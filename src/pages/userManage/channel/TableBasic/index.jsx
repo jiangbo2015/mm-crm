@@ -15,7 +15,7 @@ const Com = props => {
             key: 'code',
         },
         {
-            title: intl('通道名'),
+            title: intl('通道名称'),
             dataIndex: 'name',
             key: 'name',
         },
