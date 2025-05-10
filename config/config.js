@@ -67,8 +67,8 @@ export default {
     dva: {},
     antd: {},
     locale: {
-        default: 'en-US',
         baseNavigator: true,
+        default: 'en-US'
     },
     hash: true,
     history: {
