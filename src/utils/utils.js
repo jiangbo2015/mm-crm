@@ -80,10 +80,11 @@ export const filterImageUrl = url => {
     // 本地数据
     if (arrs.length >= 3) {
         if (url.indexOf('.svg') >= 0) {
-            if (arrs[1] > '2025-04-11') {
-                return `${svgUrl}${url}`;
-            }
-            return `${preSvgUrl}${url}`;
+            return `${svgUrl}${url}`;
+            // if (arrs[1] > '2025-04-11') {
+            //     return `${svgUrl}${url}`;
+            // }
+            // return `${preSvgUrl}${url}`;
             // console.log('url', `${svgUrl}${url}`);
             
         } else {
