@@ -115,7 +115,7 @@ const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, color
                 style={{ width: 200 }} 
             />
             <div style={{display: 'flex'}}>
-                <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>全选</CheckableTag>
+                <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>{intl("全选")}</CheckableTag>
                 <SortSelect
                     onSelect={val => {
                         if (val != sort) {

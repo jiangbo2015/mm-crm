@@ -18,6 +18,7 @@ import { PlainColorItem, FlowerColorItem } from '@/components/ColorItem'
 import { StyleItem } from '@/components/StyleItem'
 import { CapsuleItem } from '@/components/CapsuleItem'
 import useFormModal from '@/hooks/useFormModal'
+import { intl } from '@/utils/utils'
 // import usePlainColorsModal from '@/hooks/usePlainColorsModal'
 import styles from './index.less';
 
@@ -59,10 +60,12 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
     const params = useParams()
 
     const [FormModal, showModal] = useFormModal({}, {
-        title: '客户分配',
+        title: null,
         onOk: (values) => {
             onFinishAssginCostomer(values)
         },
+        closeIcon: false,
+        closable:false
       }, {costomers: map(costomers, c => (c._id))});
       useEffect(() => {
         dispatch({
@@ -170,10 +173,10 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
     return (
         <PageHeaderWrapper >
             <Card
-                title="客户"
+                title={intl("客户")}
                 extra={
                     <Button type="primary" onClick={showModal}>
-                        分配
+                        {intl("分配")}
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}
@@ -201,10 +204,10 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
                 </FormModal>
             </Card>
             <Card
-                title="胶囊"
+                title={intl("胶囊")}
                 extra={
                     <Button type="primary" onClick={showCapsulesSelectModal}>
-                        分配
+                        {intl("分配")}
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}
@@ -224,10 +227,10 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
                 />
             </Card>
             <Card
-                title="款式"
+                title={intl("款式")}
                 extra={
                     <Button type="primary" onClick={showStylesSelectorModal}>
-                        分配
+                        {intl("分配")}
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}
@@ -250,10 +253,10 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
                 />
             </Card>
             <Card
-                title="颜色"
+                title={intl("颜色")}
                 extra={
                     <Button type="primary" onClick={showPlainColorsModal}>
-                        分配
+                        {intl("分配")}
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}
@@ -274,10 +277,10 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
                 />
             </Card>
             <Card
-                title="花布"
+                title={intl("花布")}
                 extra={
                     <Button type="primary" onClick={showFlowerColorsModal}>
-                        分配
+                        {intl("分配")}
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}
@@ -297,10 +300,10 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
                 />
             </Card>
             <Card
-                title="纹理"
+                title={intl("纹理")}
                 extra={
                     <Button type="primary" onClick={showTexturesModal}>
-                        分配
+                        {intl("分配")}
                     </Button>
                 }
                 style={{ marginBottom: '20px' }}

@@ -131,7 +131,7 @@ export default React.memo(props => {
                         onAfterInjection(svgGroupArr)
                     }
 
-                    if(curStylesEditGroupIndex === -2) { // 全选
+                    if(curStylesEditGroupIndex === -2) { // {intl("全选")}
                         svg.style.stroke = '#000';
                         svg.style.strokeWidth = '8px';
                     }

@@ -90,7 +90,7 @@ class Login extends Component {
 
     render() {
         const { userLogin, submitting, intl } = this.props;
-        const { status, type: loginType } = userLogin;
+        // const { status, type: loginType } = userLogin;
         const { type, openContactUs } = this.state;
         return (
             <div className={styles.main}>

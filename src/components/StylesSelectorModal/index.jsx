@@ -175,7 +175,7 @@ const StylesSelectorModal = ({
                 optionType="button"
                 buttonStyle="solid"
             />
-            {mode === 'multiple' ? <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>全选</CheckableTag>: <div></div>}
+            {mode === 'multiple' ? <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>{intl("全选")}</CheckableTag>: <div></div>}
         </div>
         <div className={styles['grid-seletor-wrapper']}>
             <Menu className={styles['category-menu']} 

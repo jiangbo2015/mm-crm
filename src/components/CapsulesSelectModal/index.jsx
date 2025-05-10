@@ -12,7 +12,7 @@ import { get, map, toInteger, includes , filter, findIndex } from 'lodash';
 
 import { CapsuleItem } from '@/components/CapsuleItem'
 import { useDispatch, useSelector } from '@/hooks/useDvaTools';
-
+import { intl } from '@/utils/utils'
 import styles from './index.less'
 
 const { Search } = Input;
@@ -115,12 +115,12 @@ const CapsulesSelectModal = ({modalProps = {},onCapsulesSelectModalOk, initSelec
                     prefix={<SearchOutlined />}  
                     bordered={false} 
                     addonAfter={null} 
-                    placeholder="胶囊"
+                    placeholder={intl("胶囊")}
                     allowClear 
                     onSearch={onSearch} 
                     style={{ width: 200 }} 
                 />
-                <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>全选</CheckableTag>
+                <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>{intl("全选")}</CheckableTag>
             </div>      
 
             <div className={styles['grid-seletor-capsule']}>

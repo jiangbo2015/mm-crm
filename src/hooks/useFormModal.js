@@ -41,6 +41,7 @@ const useFormModal = (formProps, modalProps, editData) => {
       visible={visible}
       onOk={handleOk}
       onCancel={hideModal}
+      
     >
       <Form form={form} {...formProps}>
         {children}

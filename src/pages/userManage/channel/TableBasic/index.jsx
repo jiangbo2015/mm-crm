@@ -45,7 +45,7 @@ const Com = props => {
                             <Divider type="vertical" />
                         </>
                     }
-                    <Link to={`/userManage/channel/detail/${id}`}>详情</Link>
+                    <Link to={`/userManage/channel/detail/${id}`}>{intl("详情")}</Link>
                 </div>
             ),
         },

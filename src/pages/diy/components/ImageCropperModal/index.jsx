@@ -43,6 +43,7 @@ const ImageCropper = ({ onUpload, modalProps, editData }) => {
     const [croppedImage, setCroppedImage] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState('');
+    const [formError, setFormError] = useState('');
     const imageRef = useRef(null);
 
     const [form] = Form.useForm()
@@ -120,8 +121,8 @@ const ImageCropper = ({ onUpload, modalProps, editData }) => {
   
     // 上传图片
     const handleUpload = async () => {
-      if (!croppedImage) {
-        setError('请先选择并裁剪图片');
+      if (!croppedImage || !croppedImage?.blob) {
+        setError('请先上传并裁剪图片');
         return;
       }
         var postData = new FormData();
@@ -138,7 +139,7 @@ const ImageCropper = ({ onUpload, modalProps, editData }) => {
             setUploadedImgUrl(response.data.url);
             setCropperOpen(false)
         } catch (err) {
-            setError('上传失败: ' + (err.message || '服务器错误'));
+            setError(intl('上传失败') + ': ' + (err.message || intl('服务器错误')));
         } finally {
             setIsUploading(false);
         }
@@ -150,31 +151,37 @@ const ImageCropper = ({ onUpload, modalProps, editData }) => {
       };
     
     const handleOk = async () => {
-        const vals = form.getFieldsValue()
-        const name = get(vals, 'name', '')
-        
-        const formData = {
-            isCustom: 1,
-            size: get(vals, 'size'),
-            // namecn: get(names, 0),
-            // nameen: get(names, 1, get(names, 0)),
-            namecn: name,
-            nameen: name,
-            value: uploadedImgUrl,
-            type: 1,
-            width: croppedImage?.width,
-            height: croppedImage?.height,
-        }
-        console.log('handleOk', formData)
-        const res = editData ? await updateCustomColor({
-            _id: editData?._id,
-            ...formData
-        }) : await createCustomColor(formData)
-        if(get(res, 'success')) {
-            modalProps.onCancel()
-        } else {
-            message.error(get(res, 'message'))
-        }
+        form.validateFields().then(async (values, error) => {
+            const vals = form.getFieldsValue()
+            const name = get(vals, 'name', '')
+            
+            const formData = {
+                isCustom: 1,
+                size: get(vals, 'size'),
+                // namecn: get(names, 0),
+                // nameen: get(names, 1, get(names, 0)),
+                namecn: name,
+                nameen: name,
+                value: uploadedImgUrl,
+                type: 1,
+                width: croppedImage?.width,
+                height: croppedImage?.height,
+            }
+            if (!uploadedImgUrl) {
+                setFormError("请先上传并裁剪图片")
+                return;
+            }
+            
+            const res = editData ? await updateCustomColor({
+                _id: editData?._id,
+                ...formData
+            }) : await createCustomColor(formData)
+            if(get(res, 'success')) {
+                modalProps.onCancel()
+            } else {
+                message.error(get(res, 'message'))
+            }
+        })
 
       }
     const handleDel = async () => {
@@ -192,26 +199,26 @@ const ImageCropper = ({ onUpload, modalProps, editData }) => {
         {...modalProps}
         closable={false}
         top={112}
-        width={300}
+        width={400}
         //   visible={visible}
         onOk={handleOk}
         footer={[
             editData ? 
             <Popconfirm
-                title="确认要删除吗"
+                title={intl("确认要删除吗")}
                 onConfirm={handleDel}
-                okText="是"
-                cancelText="否"
+                okText={intl("是")}
+                cancelText={intl("否")}
             >
-                <Button danger onClick={handleDel}>
-                    删除
+                <Button danger>
+                    {intl("删除")}
                 </Button>
             </Popconfirm> : null,
             <Button key="back" onClick={modalProps?.onCancel}>
-                取消
+                {intl("取消")}
             </Button>,
             <Button key="submit" type="primary" onClick={handleOk}>
-                确定
+                {intl("确定")}
             </Button>
         ]}
         destroyOnClose
@@ -226,17 +233,26 @@ const ImageCropper = ({ onUpload, modalProps, editData }) => {
                         >
                             {!!uploadedImgUrl ? <Avatar src={uploadedImgUrl}/> : <UploadBtn type="plus"/>}
                         </Upload>
+                        {formError && <div className={styles.error}>{intl(formError)}</div>}
                     </Col>
                     <Col span="1"></Col>
                     <Col span="11">
-                        <Form.Item required name="size"  label={<span>{intl('印花图案单循环宽度')}（cm）</span>}>
+                        <Form.Item required name="size" rules={[{
+                                required: true,
+                                message: `${intl('请输入')} ${intl('印花图案单循环宽度')}`,
+                        }]} label={<span>{intl('印花图案单循环宽度')}（cm）</span>}>
                             <InputNumber min={1} step={1} />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row style={{marginTop: '30px'}}>
                     <Col span="24">
-                        <Form.Item required name="name" label={<span>{intl('印花名称（自定义）')}</span>}>
+                        <Form.Item 
+                            rules={[{
+                                required: true,
+                                message: `${intl('请输入')} ${intl('名称')}`,
+                            }]} 
+                            required name="name" label={<span>{intl('印花名称（自定义）')}</span>}>
                             <Input style={{ width: '200px' }} />
                         </Form.Item>
                     </Col>
