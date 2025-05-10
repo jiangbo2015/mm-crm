@@ -132,4 +132,12 @@ export default {
     "上传失败": "Falló la carga",
     "服务器错误": "Error del servidor",
     "全选": "Todos",
+    "去编辑": "Ir a editar",
+  "下载中，请稍等片刻...": "Descargando, por favor espere...",
+  "下载完成": "Descarga completada",
+  "发布成功": "Publicado con éxito",
+  "复制成功": "Copiado con éxito",
+  "删除成功": "Eliminado con éxito",
+  "删除失败": "Error al eliminar",
+  "已复制到“我的创建”，去编辑": "Copiado a 'Mis creaciones', ir a editar"
   }

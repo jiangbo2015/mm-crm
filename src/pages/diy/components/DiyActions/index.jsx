@@ -45,9 +45,15 @@ const DiyActions = ({arrangement}) => {
     const IsCanPublish = status === 'draft'
     const [inputNameOpen, setInputNameOpen] = useState(false)
 
+    const downloadingText = {
+        title: intl('下载中，请稍等片刻...')
+    }
+    const downloaded = {
+        title: intl('下载完成')
+    }
     const handleDownload = async () => {
         const downloadingModal = modal.info({
-            title: '下载中，请稍等片刻...',
+            ...downloadingText,
             closable: false,
             okButtonProps: {
                 loading: true
@@ -55,24 +61,30 @@ const DiyActions = ({arrangement}) => {
         });
        await downloadResourcesAsZip(originCapsuleItems, name)
        downloadingModal.update({
-            title: '下载完成',
+            ...downloaded,
             closable: false
        })
        await wait(2000)
        downloadingModal.destroy()
     };
 
+    const publishText = {
+        title: intl('发布提交成功'),
+        content: intl('请等待管理员审批'),
+    }
     const handlePublish = async () => {
         await dispatch({
             type: 'diy/applyForPublication',
             payload: { _id }
         })
         modal.info({
-            title: intl('发布提交成功'),
-            content: intl('请等待管理员审批'),
+            ...publishText
         })
     };
 
+    const publishedText = {
+        title: intl('发布成功'),
+    }
     const handleApprove = async () => {
         await dispatch({
             type: 'diy/approve',
@@ -82,18 +94,21 @@ const DiyActions = ({arrangement}) => {
             },
         });
         modal.info({
-            title: '发布成功',
+            ...publishedText
         })
     };
 
+    const saveToMyText = {
+        title: intl('复制成功'),
+        content: intl('已复制到“我的创建”，去编辑'),
+        cancelText: intl('取消'),
+        okText: intl('去编辑'),
+    }
     const handleSaveToMy = async () => {
         handleSaveAs(`${name}-copy`, arrangement).then((res) => {
             // console.log('res-->', res?.data?._id)
             modal.confirm({
-                title: '复制成功',
-                content: '已复制到“我的创建”，去编辑',
-                cancelText: '取消',
-                okText: '去编辑',
+                ...saveToMyText,
                 onOk: () => {
                     handleGoEditOther(res?.data?._id)
                 }
@@ -107,13 +122,18 @@ const DiyActions = ({arrangement}) => {
         })
     };
 
+    const delText = {
+        title: intl('确认要删除吗'),
+        okText: intl('确认'),
+        cancelText: intl('取消'),
+        delSuccessText: intl('删除成功'),
+        delFailText: intl('删除失败'),
+    }
     const handleDel = () => {
         modal.confirm({
-            title: '确认删除选中的款式吗?',
+            ...delText,
             icon: <ExclamationCircleOutlined />,
-            okText: '确认',
             okType: 'danger',
-            cancelText: '取消',
             onOk: async () => {
                 const res = await dispatch({
                     type: 'diy/delCapsule',
@@ -122,10 +142,10 @@ const DiyActions = ({arrangement}) => {
                     },
                 })
                 if(res.success) {
-                    message.success("删除成功")
+                    message.success(delText.delSuccessText)
                     history.goBack()
                 } else {
-                    message.error("删除失败")
+                    message.error(delText.delFailText)
                 }
             },
         });

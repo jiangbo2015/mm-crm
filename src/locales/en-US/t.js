@@ -135,4 +135,12 @@ export default {
     "上传失败": "Upload failed",
     "服务器错误": "Server error",
     "全选": "All",
+    "去编辑": "Go to edit",
+    "下载中，请稍等片刻...": "Downloading, please wait...",
+    "下载完成": "Download completed",
+    "发布成功": "Published successfully",
+    "复制成功": "Copied successfully",
+    "删除成功": "Deleted successfully",
+    "删除失败": "Delete failed",
+    "已复制到“我的创建”，去编辑": "Copied to 'My Creations', go to edit"
   }
