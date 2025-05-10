@@ -19,7 +19,7 @@ import StylesSelectorModal from '@/components/StylesSelectorModal'
 import { DesignStyleEditor } from './components/DesignStyleEditor'
 import { EnlargeModal } from './components/EnlargeModal'
 import {DropItem, DragDrop} from './components/DragDrop'
-
+import { intl } from '@/utils/utils'
 import useDiy from '../../hooks/useDiy'
 import styles from './index.less'
 
@@ -199,10 +199,15 @@ const CapsuleItemFile = ({ item,index,handleDownload }) => {
 const CapsuleItem = (props) => {
     const {item, index} = props
     const type = get(props, 'item.type')
-
+    const downloadingText = {
+        title: intl('下载中，请稍等片刻...')
+    }
+    const downloaded = {
+        title: intl('下载完成')
+    }
     const handleDownload = async () => {
         const downloadingModal = Modal.info({
-            title: '下载中，请稍等片刻...',
+            ...downloadingText,
             closable: false,
             okButtonProps: {
                 loading: true
@@ -210,7 +215,7 @@ const CapsuleItem = (props) => {
         });
        await downloadResourcesAsZip([item], item?._id)
        downloadingModal.update({
-            title: '下载完成',
+            ...downloaded,
             closable: false
        })
        await wait(2000)
