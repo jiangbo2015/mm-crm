@@ -2,13 +2,14 @@ import React from 'react';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Input } from 'antd';
-import { intl } from '@/utils/utils';
+import { injectIntl } from 'umi';
 class RegistrationForm extends React.Component {
     state = {};
 
     render() {
+        const {intl} = this.props
         const { getFieldDecorator } = this.props.form;
-        console.log(this.props);
+
         const formItemLayout = {
             labelCol: {
                 xs: {
@@ -30,7 +31,7 @@ class RegistrationForm extends React.Component {
 
         return (
             <Form {...formItemLayout}>
-                <Form.Item label={<span>账号</span>}>
+                <Form.Item label={<span>{intl.formatMessage({id: "账号"})}</span>}>
                     {getFieldDecorator('account', {
                         rules: [
                             {
@@ -41,7 +42,7 @@ class RegistrationForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label={<span>{intl("姓名")}</span>}>
+                <Form.Item label={<span>{intl.formatMessage({id: "姓名"})}</span>}>
                     {getFieldDecorator('name', {
                         rules: [
                             {
@@ -52,7 +53,7 @@ class RegistrationForm extends React.Component {
                         ],
                     })(<Input />)}
                 </Form.Item>
-                <Form.Item label="密码">
+                <Form.Item label={intl.formatMessage({id: "密码"})}>
                     {getFieldDecorator('password', {
                         rules: [
                             {
@@ -69,4 +70,4 @@ class RegistrationForm extends React.Component {
 
 export default Form.create({
     name: 'inputDesiner',
-})(RegistrationForm);
+})(injectIntl(RegistrationForm));

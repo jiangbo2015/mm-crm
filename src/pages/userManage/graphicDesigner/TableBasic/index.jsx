@@ -21,20 +21,20 @@ const Com = props => {
         },
 
         {
-            title: '操作',
+            title: intl('操作'),
             key: 'action',
             dataIndex: 'action',
             render: (text, record) => (
                 <div>
-                    <a onClick={e => handleEdit(record)}>编辑</a>
+                    <a onClick={e => handleEdit(record)}>{intl('编辑')}</a>
                     <Divider type="vertical" />
                     <Popconfirm
-                        title="确认要删除吗"
+                        title={intl("确认要删除吗")}
                         onConfirm={() => handleDelete(record)}
-                        okText="是"
-                        cancelText="否"
+                        okText={intl("是")}
+                        cancelText={intl("否")}
                     >
-                        <a href="#">删除</a>
+                        <a href="#">{intl("删除")}</a>
                     </Popconfirm>
                 </div>
             ),
