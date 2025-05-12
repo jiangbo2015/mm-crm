@@ -5,6 +5,32 @@
     grid-row-gap: 30px;
     width: 472px;
     height: 450px;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+        background: #a7d2f8;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f8f8f8;
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 5px;
+        border: 2px solid #f8f8f8;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+
+    /* 对于Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 #f8f8f8;
 }
 
 .grid-seletor-item {

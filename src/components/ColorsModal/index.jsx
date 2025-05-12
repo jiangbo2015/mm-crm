@@ -19,7 +19,13 @@ const { Search } = Input;
 const { CheckableTag } = Tag;
 const size = 50
 
-const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, colorType}) => {
+const ColorsModal = ({
+    modalProps = {},
+    onColorsModalOk, 
+    initSelectedColors, 
+    colorType,
+    limitNum = 30
+}) => {
   const dispatch = useDispatch()
     const ColorTypeToPlaceholder = {
         0: intl("颜色"),
@@ -39,7 +45,7 @@ const ColorsModal = ({modalProps = {},onColorsModalOk, initSelectedColors, color
 
   useEffect(() => {
     if(modalProps?.visible) {
-        handleFetch({ limit: 30, page: 1})
+        handleFetch({ limit: limitNum, page: 1})
     }
   }, [sort, modalProps?.visible])
 

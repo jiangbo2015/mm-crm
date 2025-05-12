@@ -30,7 +30,8 @@ const StylesSelectorModal = ({
     onStylesSelectorModalOk, 
     initSelectedStyles,
     mode = 'multiple', // 'multiple','single'
-    fetching
+    fetching,
+    limitNum = 15
 }) => {
     console.log("getLocale :", getLocale())
   const locale = getLocale()
@@ -54,7 +55,7 @@ const StylesSelectorModal = ({
 
   useEffect(() => {
     if(currentGood && currentGoodCategory) {
-        handleFetch({ limit: 15, page: 1, goodId: currentGood?._id, categoryId: currentGoodCategory?._id, styleNo: searchInput })
+        handleFetch({ limit: limitNum, page: 1, goodId: currentGood?._id, categoryId: currentGoodCategory?._id, styleNo: searchInput })
     }
   }, [currentGood, currentGoodCategory, searchInput])
 

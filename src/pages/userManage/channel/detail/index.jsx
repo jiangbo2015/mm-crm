@@ -250,6 +250,7 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
                     }}
                     onStylesSelectorModalOk={handleUpdateStyles}
                     initSelectedStyles={populatedStyles}
+                    limitNum={10000}
                 />
             </Card>
             <Card
@@ -266,6 +267,7 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
                 </div>
                 
                 <ColorsModal 
+                    limitNum={10000} 
                     colorType={0}
                     modalProps={{
                         visible: visiblePlainColorsModal,
@@ -289,6 +291,7 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
                     {map(populatedFlowerColors, pc => (<FlowerColorItem item={pc} size={40} />))}
                 </div>
                 <ColorsModal 
+                    limitNum={10000} 
                     colorType={1}
                     modalProps={{
                         visible: visibleFlowerColorsModal,
@@ -312,6 +315,7 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
                     {map(populatedTextures, pc => (<FlowerColorItem item={pc} size={40} />))}
                 </div>
                 <ColorsModal 
+                    limitNum={10000} 
                     colorType={2}
                     modalProps={{
                         visible: visibleTexturesModal,

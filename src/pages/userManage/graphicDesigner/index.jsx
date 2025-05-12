@@ -33,7 +33,7 @@ const Com = props => {
     return (
         <PageHeaderWrapper>
             <Card
-                title={intl("设计人员")}
+                title={intl("美工")}
                 extra={
                     <Button type="primary" onClick={() => setVisible(true)}>
                         {intl("添加")}

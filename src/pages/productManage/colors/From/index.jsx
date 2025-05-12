@@ -275,6 +275,6 @@ class RegistrationForm extends React.Component {
     }
 }
 
-export default injectIntl(Form.create({
+export default Form.create({
     name: 'inputColor',
-})(RegistrationForm));
+})(injectIntl(RegistrationForm));
