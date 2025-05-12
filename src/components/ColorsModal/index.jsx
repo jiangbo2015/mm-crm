@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Modal, Pagination, Tooltip,Tag, Input, Drawer } from 'antd';
+import { Modal, Pagination, Spin,Tag, Input, Drawer } from 'antd';
 import {
     DeleteOutlined,
     SearchOutlined,
@@ -24,7 +24,8 @@ const ColorsModal = ({
     onColorsModalOk, 
     initSelectedColors, 
     colorType,
-    limitNum = 30
+    limitNum = 30,
+    fetching = false
 }) => {
   const dispatch = useDispatch()
     const ColorTypeToPlaceholder = {
@@ -110,58 +111,61 @@ const ColorsModal = ({
         //   onCancel={hideModal}
         destroyOnClose
     >
-        <div className={styles['selector-tools']}>
-            <Search 
-                prefix={<SearchOutlined />}  
-                bordered={false} 
-                addonAfter={null} 
-                placeholder={ColorTypeToPlaceholder[colorType]} 
-                allowClear 
-                onSearch={onSearch} 
-                style={{ width: 200 }} 
-            />
-            <div style={{display: 'flex'}}>
-                <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>{intl("全选")}</CheckableTag>
-                <SortSelect
-                    onSelect={val => {
-                        if (val != sort) {
-                            setSort(val);
-                        }
-                    }}
-                    value={sort}
-                    options={[
-                        { label: 'Time', value: 'time' },
-                        { label: 'Color', value: 'color' },
-                    ]}
+        <Spin spinning={fetching}>
+            <div className={styles['selector-tools']}>
+                <Search 
+                    prefix={<SearchOutlined />}  
+                    bordered={false} 
+                    addonAfter={null} 
+                    placeholder={ColorTypeToPlaceholder[colorType]} 
+                    allowClear 
+                    onSearch={onSearch} 
+                    style={{ width: 200 }} 
                 />
-            </div>
-        </div>      
+                <div style={{display: 'flex'}}>
+                    <CheckableTag onClick={isCheckedAll ? handleSelectUnAll : handleSelectAll} checked={isCheckedAll}>{intl("全选")}</CheckableTag>
+                    <SortSelect
+                        onSelect={val => {
+                            if (val != sort) {
+                                setSort(val);
+                            }
+                        }}
+                        value={sort}
+                        options={[
+                            { label: 'Time', value: 'time' },
+                            { label: 'Color', value: 'color' },
+                        ]}
+                    />
+                </div>
+            </div>      
 
-        <div className={styles['grid-seletor']}>
-            {map(sourceList, (item) => {
-                const { _id } = item
-                return (
-                    <div key={_id} className={styles['grid-seletor-item']}>
-                        <ColorItem
-                            
-                            className={styles['relative']}
-                            item={item}
-                            onClick={() => handleSelect(item)}
-                            size={size}
-                        >
-                            <CheckOutlined className={includes(selectedList, _id) ? styles['grid-seletor-item-selected-icon'] : styles['grid-seletor-item-icon']} />
-                        </ColorItem>
-                    </div>
+            <div className={styles['grid-seletor']}>
+                {map(sourceList, (item) => {
+                    const { _id } = item
+                    return (
+                        <div key={_id} className={styles['grid-seletor-item']}>
+                            <ColorItem
+                                
+                                className={styles['relative']}
+                                item={item}
+                                onClick={() => handleSelect(item)}
+                                size={size}
+                            >
+                                <CheckOutlined className={includes(selectedList, _id) ? styles['grid-seletor-item-selected-icon'] : styles['grid-seletor-item-icon']} />
+                            </ColorItem>
+                        </div>
+                    )}
                 )}
-            )}
-        </div>
-        <div className={styles['selector-footer']}>
-            <Pagination
-                onChange={onChange}
-                showSizeChanger={false}
-                size="small" total={total} pageSize={limit} current={toInteger(page)}
-            />
-        </div>
+            </div>
+            {limitNum<10000 && <div className={styles['selector-footer']}>
+                <Pagination
+                    onChange={onChange}
+                    showSizeChanger={false}
+                    size="small" total={total} pageSize={limit} current={toInteger(page)}
+                />
+            </div>}
+        </Spin>
+
     </Modal>
     {SelectedDrawerOpen && <Drawer 
             className={styles['selected-drawer']}
@@ -201,5 +205,5 @@ const ColorsModal = ({
 };
 
 export default connect(({  loading, style }) => ({
-    fetching: loading.effects['color/getList'],
+    fetching: loading.effects['style/getColorList'],
 }))(ColorsModal);

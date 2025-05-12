@@ -49,7 +49,9 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
         populatedStyles = [], 
         populatedFlowerColors = [],
         populatedTextures = [],
-        populatedCapsules = []
+        populatedCapsules = [],
+        name,
+        code
      } = currentChannel
     const [visiblePlainColorsModal, setVisiblePlainColorsModal] = useState(false);
     const [visibleFlowerColorsModal, setVisibleFlowerColorsModal] = useState(false);
@@ -75,6 +77,13 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
                 owner: currentUser._id
             },
         });
+        return () => {
+            dispatch({
+                type: 'channel/setCurrentChannel',
+                payload: {},
+            });
+            
+        } 
     }, [])
     
     useEffect(() => {
@@ -169,9 +178,8 @@ const Com = ({dispatch, currentChannel = {},currentUser={}, updateChannelLoading
         setVisibleCapsulesSelectModal(false)
     };
 
-    console.log("populatedCapsules", populatedCapsules)
     return (
-        <PageHeaderWrapper >
+        <PageHeaderWrapper title={`${name}（${code}）`}>
             <Card
                 title={intl("客户")}
                 extra={
