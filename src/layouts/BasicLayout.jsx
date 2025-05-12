@@ -59,15 +59,6 @@ const BasicLayout = (props) => {
   const menuDataRef = useRef([]);
   const locale = getLocale()
 
-  useEffect(() => {
-    if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent',
-      });
-    }
-  }, []);
-
-
   /**
    * init variables
    */

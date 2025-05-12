@@ -1,6 +1,7 @@
 import { queryCurrent, getList, add, del, update as updateUser, download, feedback, changePwd } from '@/services/user';
 import { api } from '@/utils/apiconfig';
 import { setAuthority, RoleToAuthority } from '@/utils/authority';
+import { routerRedux } from 'dva/router';
 
 const KEY = {
     // 0: 'productorList',
@@ -80,10 +81,24 @@ const UserModel = {
 
         *fetchCurrent(_, { call, put }) {
             const response = yield call(queryCurrent);
-            yield put({
-                type: 'saveCurrentUser',
-                payload: response.data,
-            });
+            if(response.success) {
+                if (response.data) {
+                    yield put({
+                        type: 'saveCurrentUser',
+                        payload: response.data,
+                    });
+                } else {
+                    localStorage.token = '';
+                    localStorage['antd-pro-authority'] = '';
+                    put(routerRedux.replace({
+                        pathname: '/user/login',
+                        // search: stringify({
+                        //     redirect: window.location.href,
+                        // }),
+                    }))
+                }
+            }
+            
         },
         *updateEmail({ payload }, { call, put }) {
             const { success } = yield call(updateUser, payload);
