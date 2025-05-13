@@ -62,12 +62,18 @@ const Model = {
                 });
             }
         },
-        *createCapsule({ payload }, { put, call }) {
+        *createCapsule({ payload }, { put, call, select }) {
             const res = yield call(add, payload);
             if (res.success) {
+                const currentUser = yield select(state => state.user.currentUser)
                 yield put({
                     type: 'setCapsule',
-                    payload: {_id: res.data?._id, arrangement: res.data?.arrangement, hasUpdate: false,}
+                    payload: {
+                        _id: res.data?._id, 
+                        arrangement: res.data?.arrangement, 
+                        hasUpdate: false,
+                        author: currentUser
+                    }
                 });
             }
             return res 
@@ -76,12 +82,17 @@ const Model = {
             const res = yield call(delCapsule, payload);
             return res
         },
-        *updateCapsule({ payload }, { put, call }) {
+        *updateCapsule({ payload }, { put, call, select }) {
             const res = yield call(update, payload);
             if (res.success) {
+                const currentUser = yield select(state => state.user.currentUser)
                 yield put({
                     type: 'setCapsule',
-                    payload: { arrangement: res.data?.arrangement, hasUpdate: false,}
+                    payload: { 
+                        arrangement: res.data?.arrangement, 
+                        hasUpdate: false,
+                        author: currentUser,
+                    }
                 });
             }
             return res

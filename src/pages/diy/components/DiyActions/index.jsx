@@ -39,7 +39,7 @@ const DiyActions = ({arrangement}) => {
     const _id = useSelector(state => state?.diy?._id)
     const [modal, contextHolder] = Modal.useModal();
     const IsAdmin = 0 === currentUser?.role
-    const IsAuthor = !author || author?._id === currentUser?._id
+    const IsAuthor = (!_id && !author) || author?._id === currentUser?._id
     const IsPending = status === 'pending'
     const IsCanEdit = status !== 'published'
     const IsCanPublish = status === 'draft'

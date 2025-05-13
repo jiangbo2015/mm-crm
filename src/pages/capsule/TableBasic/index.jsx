@@ -96,15 +96,17 @@ const Com = props => {
 
                         )
                     }
-                    <Divider type="vertical" />
-                    <Popconfirm
-                                title={`确认要删除“${record?.name}”吗`}
-                                onConfirm={() => handleDelete(record)}
-                                okText="是"
-                                cancelText="否"
-                            >
-                                <a>删除</a>
-                            </Popconfirm>
+                    {record?.status === 'published' && <>
+                        <Divider type="vertical" />
+                        <Popconfirm
+                            title={`确认要下线“${record?.name}”吗`}
+                            onConfirm={() => handleOffline(record)}
+                            okText="是"
+                            cancelText="否"
+                        >
+                            <a>下线</a>
+                        </Popconfirm>
+                    </>}
                 </div>
             ),
         },
@@ -137,6 +139,16 @@ const Com = props => {
             type: 'capsule/delete',
             payload: {
                 _id: record._id,
+            },
+        });
+    };
+    const handleOffline = record => {
+        handleNoticeRead(record)
+        props.dispatch({
+            type: 'capsule/update',
+            payload: {
+                _id: record._id,
+                status: 'draft',
             },
         });
     };
