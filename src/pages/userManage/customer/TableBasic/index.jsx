@@ -77,6 +77,7 @@ const Com = props => {
                         role: data.role,
                         _id: data._id,
                         ...values,
+                        owner: props.isAllData ? undefined : props?.user?.currentUser?._id
                     },
                 });
             }

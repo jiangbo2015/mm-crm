@@ -52,13 +52,18 @@ const UserModel = {
         },
 
         *update({ payload }, { call, put }) {
-            const { success } = yield call(updateUser, payload);
+            const { owner, ...data } = payload
+            const { success } = yield call(updateUser, data);
             if (success) {
+                const params = {
+                    role: payload.role
+                }
+                if(!!owner) {
+                    params.owner = owner
+                }
                 yield put({
                     type: 'fetch',
-                    payload: {
-                        role: payload.role,
-                    },
+                    payload: params,
                 });
             }
         },
