@@ -34,6 +34,7 @@ const errorHandler = error => {
     if (response && response.status) {
         const errorText = codeMessage[response.status] || response.statusText;
         const { status, url } = response;
+        console.log("status：",status)
         if(status === 401) {
             history.push('/user/login')
         } else {
