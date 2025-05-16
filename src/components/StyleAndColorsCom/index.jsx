@@ -10,10 +10,19 @@ function setLocalStorage(key, value) {
       localStorage.setItem(key, value);
     } catch (e) {
       if (e.name === 'QuotaExceededError') {
-        // 如果存储满了，先清除一部分旧数据
         console.warn("存储已满，尝试清理...");
-        localStorage.clear(); // 或按需删除部分数据
-        localStorage.setItem(key, value); // 重试
+        // 遍历所有键并删除非token项
+        Object.keys(localStorage).forEach((k) => {
+          if (k !== 'token') {
+            localStorage.removeItem(k);
+          }
+        });
+        // 重试存储
+        try {
+          localStorage.setItem(key, value);
+        } catch (e2) {
+          console.error("清理后存储仍失败：", e2);
+        }
       } else {
         console.error("存储失败：", e);
       }
