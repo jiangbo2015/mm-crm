@@ -57,7 +57,7 @@ const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
                 onColorsModalOk={handleUpdateFlowerColors}
                 initSelectedColors={flowerColors}
             />
-            <ImageCropperModal
+            {visibleImageCropperModal && <ImageCropperModal
                 modalProps={{
                     visible: visibleImageCropperModal,
                     onCancel: () => {
@@ -67,7 +67,7 @@ const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
                     // confirmLoading: updateChannelLoading
                 }}
                 editData={imageCropperEditData}
-            />
+            />}
             <Tabs
                 onChange={onChange}
                 type="card"
