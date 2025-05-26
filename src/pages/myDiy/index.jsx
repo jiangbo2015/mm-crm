@@ -8,9 +8,11 @@ import { useDebounce } from '@/hooks/useDebounce';
 
 const Com = props => {
     const [key, setKey] = useState(0)
+    const [capsuleStatus, setCapsuleStatus] = useState('');
     const [playingVideoUrl, setPlayingVideoUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false)
     const [searchText, setSearchText] = useState('')
+
     const ulMaxHRef = useRef(0);
     const scrollContainerRef = useRef({})
     const { capsuleFavoritesMap, currentUser, collapsed } = props
@@ -36,6 +38,9 @@ const Com = props => {
         if (searchText) {
             payload.name = searchText
         }
+        if(capsuleStatus) {
+            payload.status = capsuleStatus
+        }
         props.dispatch({
             type: 'creativeCapsule/getList',
             payload,
@@ -50,9 +55,11 @@ const Com = props => {
                 type: 'creativeCapsule/clearCapsuleList'
             });
         }
-    }, [searchText, currentUser?._id])
+    }, [searchText, currentUser?._id, capsuleStatus])
     
-
+    const handleChangeStatus = value => {
+        setCapsuleStatus(value);
+    }
     const handleSearchImage = async () => {
         if(Number(page) < pages && !isLoading) {
             setIsLoading(true)
@@ -147,6 +154,9 @@ const Com = props => {
             handleAddFavorite={handleAddFavorite}
             waterfallKey={key}
             ulMaxHRef={ulMaxHRef}
+            hasStatus
+            capsuleStatus={capsuleStatus}
+            handleChangeStatus={handleChangeStatus}
         />
     );
 };

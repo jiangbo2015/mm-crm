@@ -9,7 +9,7 @@ import { filterImageUrl } from '@/utils/utils';
 import styles from './index.less'
 
 export const StyleItem = ({item = {}, size, onClick, onSelect, onEnlarge, className, checked, showCheckedIcon, showEnlargeIcon, children}) => {
-    const {styleNo, imgUrl} = item
+    const {styleNo, imgUrl, styleSize, displaySizePer} = item
     return (
         <div className={styles['style-item']}>
             <Tooltip title={styleNo}>
@@ -19,6 +19,10 @@ export const StyleItem = ({item = {}, size, onClick, onSelect, onEnlarge, classN
                     style={{ width: size, height: size}}
                 >
                     <img
+                        style={{
+                            width: `${styleSize/27*70*displaySizePer/100}%`,
+                            height: `${styleSize/27*70*displaySizePer/100}%`,
+                        }}
                         className={styles['item-val-img']}
                         src={filterImageUrl(imgUrl)} 
                     />

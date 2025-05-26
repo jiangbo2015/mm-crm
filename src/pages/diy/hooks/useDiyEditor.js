@@ -69,7 +69,11 @@ const useDiy = () => {
         } else if(currentEditCapsuleItemFinishedIndex > 0) {
             currentEditCapsuleItem.finishedStyleColorsList[currentEditCapsuleItemFinishedIndex] = finishedObj
         } else {
-            currentEditCapsuleItem.finishedStyleColorsList = [finishedObj]
+            if(Array.isArray(currentEditCapsuleItem.finishedStyleColorsList)){
+                currentEditCapsuleItem.finishedStyleColorsList[0] = finishedObj
+            }else {
+                currentEditCapsuleItem.finishedStyleColorsList = [finishedObj]
+            }    
         }
         console.log('capsuleItems:', capsuleItems)
         dispatch({

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Input, Button, Modal, Spin } from 'antd';
+import { Input, Button, Modal, Spin, Radio } from 'antd';
 import { get, debounce } from 'lodash';
 import { filterImageUrl } from '@/utils/utils';
 import { connect } from 'dva';
@@ -12,6 +12,7 @@ import {
 import { VideoPlayingModal } from '@/components/VideoPlayingModal'
 import Waterfall from 'waterfalljs-layout/dist/react/index.esm';
 import { useDebounce } from '@/hooks/useDebounce';
+import { intl } from '@/utils/utils'
 import styles from './index.less'
 
 
@@ -98,7 +99,10 @@ const MyWaterfall = ({
     handleDelFavorite,
     handleAddFavorite,
     waterfallKey,
-    ulMaxHRef
+    ulMaxHRef,
+    hasStatus,
+    capsuleStatus,
+    handleChangeStatus
 }) => {
     const [playingVideoUrl, setPlayingVideoUrl] = useState(null);
     return  (
@@ -119,6 +123,22 @@ const MyWaterfall = ({
                         zIndex: 999
                     }}  
                 />
+                {hasStatus && <Radio.Group 
+                        style={{
+                            marginLeft: '10px',
+                            position: 'absolute',
+                            top: '-52px',
+                            left: '380px',
+                            zIndex: 999
+                        }} 
+                        value={capsuleStatus} 
+                        onChange={e => handleChangeStatus(e.target.value)}
+                    >
+                        <Radio.Button value="">{intl("全部")}</Radio.Button>
+                        <Radio.Button value="pending">{intl("待审核")}</Radio.Button>
+                        <Radio.Button value="published">{intl("已发布")}</Radio.Button>
+                        <Radio.Button value="draft">{intl("未发布")}</Radio.Button>
+                </Radio.Group>}
                 {playingVideoUrl && <VideoPlayingModal modalProps={{onCancel: ()=> setPlayingVideoUrl(null)}} viedoUrl={playingVideoUrl} />}
                 <div
                     key={waterfallKey}

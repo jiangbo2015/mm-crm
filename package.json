@@ -51,6 +51,7 @@
         "react-helmet": "^5.2.1",
         "react-html-parser": "^2.0.2",
         "react-image-crop": "8.2.0",
+        "react-photo-view": "^1.2.7",
         "react-slick": "^0.30.3",
         "react-sortable-hoc": "^1.11.0",
         "react-svg": "^11.0.14",

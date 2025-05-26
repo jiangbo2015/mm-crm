@@ -10,8 +10,12 @@ import {
     ZoomInOutlined,
     EditOutlined,
     DeleteOutlined,
-    DownloadOutlined
+    DownloadOutlined,
+    PlusCircleOutlined,
+    MinusCircleOutlined,
+    MinusOutlined,
 } from '@ant-design/icons';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 
 import { filterImageUrl, uploadProps,downloadResourcesAsZip,wait } from '@/utils/utils';
 import { ColorItem } from '@/components/ColorItem'
@@ -24,7 +28,7 @@ import useDiy from '../../hooks/useDiy'
 import styles from './index.less'
 
 export const ItemBottomTools = ({item = {}, index, showFinishedStyleIndex = -1}) => {
-    const { type } = item
+    const { type, fileUrl } = item
     const { 
         beforeUpload1M, 
         handleUpdateImg,
@@ -56,9 +60,15 @@ export const ItemBottomTools = ({item = {}, index, showFinishedStyleIndex = -1})
                 >
                     <EditOutlined />
                 </Upload>}
-            <ZoomInOutlined onClick={() => {
+                {type === 'img' ? 
+                    <PhotoView src={filterImageUrl(fileUrl)}>
+                        <ZoomInOutlined />
+                    </PhotoView> : 
+                <ZoomInOutlined onClick={() => {
                     handleEnlargeCapsuleItem(index, showFinishedStyleIndex)
-                }}/>
+                }}/>}
+                
+                
             <DeleteOutlined onClick={() => { handleDeleteCapsuleItem(index)} }/>
         </div>
     )
@@ -121,7 +131,9 @@ const CapsuleItemStyles = ({ item = {}, index, handleDownload }) => {
     const { 
         handleUpdateCapsuleItem,
         handleEnlargeCapsuleItem,
-        isEditor
+        handleDeleteCapsuleItemFinished,
+        isEditor,
+        name
     } = useDiy()
     const {style, finishedStyleColorsList } = item
     const finishedStyleColorsLength = get(finishedStyleColorsList, 'length', 0) 
@@ -134,7 +146,8 @@ const CapsuleItemStyles = ({ item = {}, index, handleDownload }) => {
                 <Button 
                     onClick={(e) => {
                         e.stopPropagation()
-                        handleDownload()
+                        console.log('handleDownload--->', name)
+                        handleDownload(name)
                     }}
                     size='small'
                     className={styles['download-icon']} shape="circle" icon={<DownloadOutlined />} />
@@ -165,7 +178,9 @@ const CapsuleItemStyles = ({ item = {}, index, handleDownload }) => {
                 {isEditor && <PlusOutlined onClick={() => {
                     handleUpdateCapsuleItem(index, -1)
                 }}/>}
-                
+                {isEditor && <MinusOutlined  onClick={() => {
+                    handleDeleteCapsuleItemFinished(index, showIndex)
+                }}/>}
             </div>}
         </div>
     )
@@ -174,20 +189,25 @@ const CapsuleItemStyles = ({ item = {}, index, handleDownload }) => {
 const CapsuleItemFile = ({ item,index,handleDownload }) => {
     const { type, fileUrl } = item
     const { 
-        handleEnlargeCapsuleItem,    
+        handleEnlargeCapsuleItem,
+        isEditor,
+        name 
     } = useDiy()
     return (
         <div className={styles['capsule-item-wrapper']}>
-            <div className={styles['aspect-ratio-box']} onClick={() => handleEnlargeCapsuleItem(index, -1)}>
+            <div className={styles['aspect-ratio-box']} onClick={type === 'img' ? null : () => handleEnlargeCapsuleItem(index, -1)}>
                 <Button 
                     onClick={(e) => {
                         e.stopPropagation()
-                        handleDownload()
+                        handleDownload(name)
                     }}
                     size='small'
                     className={styles['download-icon']} shape="circle" icon={<DownloadOutlined />} />
                 <div className={styles['capsule-item']}>
-                    {type === 'img' && <img className={styles['upload-picture']} src={filterImageUrl(fileUrl)}/>}
+                        {type === 'img' && !isEditor && <PhotoView src={filterImageUrl(fileUrl)}>
+                            <img className={styles['upload-picture']} src={filterImageUrl(fileUrl)}/>
+                        </PhotoView>}
+                        {type === 'img' && <img className={styles['upload-picture']} src={filterImageUrl(fileUrl)}/>}
                     {type === 'video' && <video className={styles['upload-picture']} src={filterImageUrl(fileUrl)}/>}
                 </div>
             </div>
@@ -205,7 +225,7 @@ const CapsuleItem = (props) => {
     const downloaded = {
         title: intl('下载完成')
     }
-    const handleDownload = async () => {
+    const handleDownload = async (name) => {
         const downloadingModal = Modal.info({
             ...downloadingText,
             closable: false,
@@ -213,7 +233,7 @@ const CapsuleItem = (props) => {
                 loading: true
             }
         });
-       await downloadResourcesAsZip([item], item?._id)
+       await downloadResourcesAsZip([item], name)
        downloadingModal.update({
             ...downloaded,
             closable: false
@@ -279,24 +299,34 @@ const CapsuleItemsDisplayer = ({arrangement = '5'}) => {
         setCapsuleItems(newItems);
       };
     return (
-        <div className={classnames(styles['capsule-items-displayer'], styles[`grid-${arrangement}`])} >
-           {isEditor &&  <DragDrop>
-                {map(capsuleItems, (item, i) =>
-                        <DropItem  key={`capsule-item-${item?._id}-${i}`}
-                            id={item?._id}
-                            index={i}
-                            moveItem={moveItem}
-                        >
-                          <CapsuleItem index={i} item={item} />
-                        </DropItem>
-                )}
-            </DragDrop>}
-            {!isEditor && map(capsuleItems, (item, i) => <CapsuleItem index={i} item={item} />)}
-            {isEditor && <AddCard />}
-            {currentEditCapsuleItem && <DesignStyleEditor />}
-            {currentEnlargeCapsuleItem && <EnlargeModal capsuleItem={currentEnlargeCapsuleItem} finishedIndex={currentEnlargeCapsuleItemFinishedIndex} />}
-            
-        </div>
+        <PhotoProvider toolbarRender={({ onScale, scale }) => {
+            return (
+              <>
+                <MinusCircleOutlined style={{fontSize: '18px'}} className="PhotoView-Slider__toolbarIcon" onClick={() => onScale(scale - 1)} />
+                <PlusCircleOutlined style={{fontSize: '18px'}} className="PhotoView-Slider__toolbarIcon" onClick={() => onScale(scale + 1)} />
+
+              </>
+            );
+          }}>
+            <div className={classnames(styles['capsule-items-displayer'], styles[`grid-${arrangement}`])} >
+            {isEditor &&  <DragDrop>
+                    {map(capsuleItems, (item, i) =>
+                            <DropItem  key={`capsule-item-${item?._id}-${i}`}
+                                id={item?._id}
+                                index={i}
+                                moveItem={moveItem}
+                            >
+                            <CapsuleItem index={i} item={item} />
+                            </DropItem>
+                    )}
+                </DragDrop>}
+                {!isEditor && map(capsuleItems, (item, i) => <CapsuleItem index={i} item={item} />)}
+                {isEditor && <AddCard />}
+                {currentEditCapsuleItem && <DesignStyleEditor />}
+                {currentEnlargeCapsuleItem && <EnlargeModal capsuleItem={currentEnlargeCapsuleItem} finishedIndex={currentEnlargeCapsuleItemFinishedIndex} />}
+                
+            </div>
+        </PhotoProvider>
     );
 }
 

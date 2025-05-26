@@ -134,11 +134,12 @@ async function downloadResourcesAsZip(data, name) {
     const zip = new JSZip();
     const filenameMap = {}
     // 遍历数据，下载文件并添加到 ZIP
-    for (const item of data) {
+    for (let i=0; i<data?.length; i++) {
+        const item = data[i]
         // 下载 fileUrl
         if (item.fileUrl) {
             const fileUrl = `${baseUrl}${item.fileUrl}`;
-            const filename = item.fileUrl.split('/').pop(); // 提取文件名
+            const filename = `${name}(${i+1}).${item.fileUrl.split('.').pop()}`; // 文件名
             await addFileToZip(fileUrl, filename, zip);
         }
 

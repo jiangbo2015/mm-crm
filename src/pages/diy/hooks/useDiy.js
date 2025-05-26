@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { message } from 'antd'
-import { get, map, filter, includes } from 'lodash';
+import { get, map, filter, includes,splice } from 'lodash';
 import { useDispatch, useSelector } from '@/hooks/useDvaTools'
 import { history } from 'umi';
 
@@ -201,6 +201,24 @@ const useDiy = () => {
         });
 
     }
+
+    const handleDeleteCapsuleItemFinished = (index, finishedIndex) => {
+        // console.log('handleDeleteCapsuleItemFinished:1', capsuleItems[index]?.finishedStyleColorsList?.length , finishedIndex)
+        // // splice()
+        
+        // if(capsuleItems[index]?.finishedStyleColorsList?.length === finishedIndex + 1) {
+        //     dispatch({
+        //         type: 'diy/setCurrentEditCapsuleItemFinishedIndex',
+        //         payload: finishedIndex - 1
+        //     })
+        // }
+        capsuleItems[index]?.finishedStyleColorsList?.splice(finishedIndex, 1)
+        dispatch({
+            type: 'diy/setCapsuleItems',
+            payload: [...capsuleItems],
+        });
+
+    }
     const handleUpdateCapsuleItem = (index, finishedIndex) => {
         dispatch({
             type: 'diy/setCurrentEditCapsuleItemIndex',
@@ -353,6 +371,7 @@ const useDiy = () => {
         delCustomColor,
         updateCustomColor,
         getAllGoods,
+        handleDeleteCapsuleItemFinished,
         goods,
         selectedGoodId,
         selectedGoodCategryId,
