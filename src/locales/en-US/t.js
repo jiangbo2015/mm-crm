@@ -82,7 +82,7 @@ export default {
     "自主上传的印花图案不能超过200kb": "Uploaded print patterns must not exceed 200KB.",
     "DIY胶囊名称": "DIY Capsule Name",
     "颜色选择": "Select Color",
-    "自主上传": "Upload Your Own",
+    "自主上传": "Your upload",
     "颜色": "Colors",
     "印花选择": "Select Print",
     "花布": "Prints",

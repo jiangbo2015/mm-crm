@@ -18,6 +18,7 @@ const onChange = (key) => {
 
 const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
     const [visiblePlainColorsModal, setVisiblePlainColorsModal] = useState(false);
+    const [visibleCustomPlainColorsModal, setVisibleCustomPlainColorsModal] = useState(false);
     const [visibleEyeDropper, setVisibleEyeDropper] = useState(false);
     const [eyeDropperEditData, setEyeDropperEditData] = useState(null);
     const handleUpdatePlainColors  = async (selectedPlainColors) => {
@@ -29,7 +30,15 @@ const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
             
             setVisiblePlainColorsModal(false)
         };
-    
+    const handleUpdateCustomPlainColors  = async (selectedPlainColors) => {
+        console.log(selectedPlainColors)
+            await dispatch({
+                type: 'diy/setCustomPlainColors',
+                payload: selectedPlainColors,
+            });
+            
+            setVisibleCustomPlainColorsModal(false)
+        };
     const handleEditEyeDropper = (item) => {
         setVisibleEyeDropper(true)
         setEyeDropperEditData(item)
@@ -49,7 +58,8 @@ const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
                 showTip='name'
                 hideSearch 
                 colors={customPlainColors} 
-                onAdd={() => {setVisibleEyeDropper(true)}}
+                // onAdd={() => {setVisibleEyeDropper(true)}}
+                onAdd={() => {setVisibleCustomPlainColorsModal(true)}}
                 onClickItem={handleEditEyeDropper}
             />,
         },
@@ -76,6 +86,18 @@ const PlainColorsAside = ({ plainColors, customPlainColors, dispatch }) => {
                 }}
                 onColorsModalOk={handleUpdatePlainColors}
                 initSelectedColors={plainColors}
+            />
+            <ColorsModal 
+                colorType={0}
+                isCustom
+                modalProps={{
+                    visible: visibleCustomPlainColorsModal,
+                    onCancel: () => setVisibleCustomPlainColorsModal(false),
+                    // confirmLoading: updateChannelLoading
+                }}
+                onColorsModalOk={handleUpdateCustomPlainColors}
+                initSelectedColors={customPlainColors}
+                onAdd={() => {setVisibleEyeDropper(true)}}
             />
            <Tabs
             onChange={onChange}

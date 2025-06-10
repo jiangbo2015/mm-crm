@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Modal, Pagination, Spin,Tag, Input, Drawer } from 'antd';
+import { Modal, Pagination, Spin,Tag, Input, Drawer, Button } from 'antd';
 import {
     DeleteOutlined,
     SearchOutlined,
@@ -25,7 +25,9 @@ const ColorsModal = ({
     initSelectedColors, 
     colorType,
     limitNum = 30,
-    fetching = false
+    fetching = false,
+    isCustom = false,
+    onAdd
 }) => {
   const dispatch = useDispatch()
     const ColorTypeToPlaceholder = {
@@ -36,6 +38,7 @@ const ColorsModal = ({
   const [selectedItemList, setSelectedItemList] = useState([]);
   const [sort, setSort] = useState('time');
 
+  const currentUser = useSelector(state => state?.user?.currentUser)
   const selectedList = map(selectedItemList, ({_id}) => _id)
   const SelectedDrawerOpen = modalProps?.visible && selectedList.length > 0;
 
@@ -52,6 +55,10 @@ const ColorsModal = ({
 
   
   const handleFetch = (params) => {
+    if (isCustom) {
+        params.isCustom = 1
+        params.creator = currentUser?._id
+    }
     dispatch({
         type: 'style/getColorList',
         payload: {code, ...params, type: colorType, sort},
@@ -68,6 +75,10 @@ const ColorsModal = ({
 
   const handleOk = () => {
     onColorsModalOk(selectedItemList)
+  };
+
+  const handleAdd = () => {
+    onAdd()
   };
 
   const handleSelect = (item = {}) => {
@@ -110,6 +121,21 @@ const ColorsModal = ({
         style={{top: 52 }}
         //   onCancel={hideModal}
         destroyOnClose
+        footer={<div style={{display: 'flex', justifyContent: 'space-between'}}>
+            {isCustom?
+                <Button onClick={handleAdd}>
+                    {intl("添加")}
+                </Button>
+            :null}
+            <div>
+            <Button key="back" onClick={modalProps?.onCancel}>
+                {intl("取消")}
+            </Button>
+            <Button key="submit" type="primary" onClick={handleOk}>
+                {intl("确定")}
+            </Button>
+            </div>
+        </div>}
     >
         <Spin spinning={fetching}>
             <div className={styles['selector-tools']}>
@@ -145,7 +171,7 @@ const ColorsModal = ({
                     return (
                         <div key={_id} className={styles['grid-seletor-item']}>
                             <ColorItem
-                                
+                                showTip={isCustom ? 'name' : 'code'}
                                 className={styles['relative']}
                                 item={item}
                                 onClick={() => handleSelect(item)}
@@ -180,7 +206,7 @@ const ColorsModal = ({
                     return (
                     <div key={`s-${item._id}`} className={styles['grid-seletor-item']}>
                             <ColorItem
-                                
+                                showTip={isCustom ? 'name' : 'code'}
                                 item={item}
                                 onClick={() => handleSelect(item)}
                                 

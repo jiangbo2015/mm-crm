@@ -80,7 +80,7 @@ export default {
     "自主上传的印花图案不能超过200kb": "Los estampados subidos no deben superar los 200KB.",
     "DIY胶囊名称": "Nombre de la Cápsula DIY",
     "颜色选择": "Seleccionar Color",
-    "自主上传": "Subir Manualmente",
+    "自主上传": "Tu subir",
     "颜色": "Colores",
     "印花选择": "Seleccionar Estampado",
     "花布": "Estampados",

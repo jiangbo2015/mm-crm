@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Modal, message, Input, Button, Popconfirm, Alert } from 'antd'
 import { isFunction, get } from 'lodash'
 import Icon, { HomeOutlined } from '@ant-design/icons';
+import { useSelector, useDispatch } from '@/hooks/useDvaTools'
 import useDiy from '../../hooks/useDiy'
 import { intl } from '@/utils/utils'
 const DropperSvg  = () => ( <svg class="btn__icon" role="img" alt="eye dropper" height="60px" width="60px" xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +18,9 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
     const [selectedColor, setSelectedColor] = useState('');
     const [error, setError] = useState('');
     const [colorName, setColorName] = useState('');
+    const dispatch = useDispatch()
     const { createCustomColor, delCustomColor, updateCustomColor } = useDiy()
+    const currentUser = useSelector(state => state?.user?.currentUser)
     const { onOk } = modalProps;
 
 
@@ -71,6 +74,16 @@ const EyeDropperPicker = ({modalProps = {}, editData = {}}) => {
         type: 0,
         namecn: colorName,
         nameen: colorName,
+    })
+    dispatch({
+        type: 'style/getColorList',
+        payload: {
+            page: 1,
+            limit: 30,
+            type: 0,
+            isCustom: 1,
+            creator: currentUser?._id
+        }
     })
     if(get(res, 'success')) {
         modalProps.onCancel()

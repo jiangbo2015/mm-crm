@@ -46,24 +46,24 @@ const Com = props => {
         }
     }, [params.id])
     useEffect(() => {
-        if(currentUser?._id) { 
-            dispatch({
-                type: 'diy/getColorList',
-                payload: {
-                    type: 0,
-                    isCustom: 1,
-                    creator: currentUser?._id
-                },
-            });
-            dispatch({
-                type: 'diy/getColorList',
-                payload: {
-                    type: 1,
-                    isCustom: 1,
-                    creator: currentUser?._id
-                },
-            });
-        }
+        // if(currentUser?._id) { 
+        //     dispatch({
+        //         type: 'diy/getColorList',
+        //         payload: {
+        //             type: 0,
+        //             isCustom: 1,
+        //             creator: currentUser?._id
+        //         },
+        //     });
+        //     dispatch({
+        //         type: 'diy/getColorList',
+        //         payload: {
+        //             type: 1,
+        //             isCustom: 1,
+        //             creator: currentUser?._id
+        //         },
+        //     });
+        // }
 
         dispatch({
             type: 'diy/getColorList',

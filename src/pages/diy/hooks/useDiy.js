@@ -24,6 +24,9 @@ const useDiy = () => {
     const capsuleItems = useSelector(state => state?.diy?.capsuleItems)
     const plainColors = useSelector(state => state?.diy?.plainColors)
     const flowerColors = useSelector(state => state?.diy?.flowerColors)
+    const customPlainColors = useSelector(state => state?.diy?.customPlainColors)
+    const customFlowerColors = useSelector(state => state?.diy?.customFlowerColors)
+    
     const mode = useSelector(state => state?.diy?.mode)
     const arrangement = useSelector(state => state?.diy?.arrangement)
     const hasUpdate = useSelector(state => state?.diy?.hasUpdate)
@@ -98,6 +101,8 @@ const useDiy = () => {
             }),
             plainColors: map(plainColors, pc => pc._id),
             flowerColors: map(flowerColors, fc => fc._id),
+            customFlowerColors: map(customFlowerColors, fc => fc._id),
+            customPlainColors: map(customPlainColors, pc => pc._id),
         }
         console.log("data->", data)
         if(_id) {

@@ -100,51 +100,41 @@ const Model = {
         *createCustomColor({ payload }, { put, call, select }) {
             const res = yield call(colorAdd, payload);
             if(res.success) {
-                const currentUser = yield select(state => state.user.currentUser)
-                yield put({
-                    type: 'getColorList',
-                    payload: {
-                        page: 1,
-                        limit: 10,
-                        type: payload.type,
-                        isCustom: 1,
-                        creator: currentUser?._id
-                    },
-                });
+                // const currentUser = yield select(state => state.user.currentUser)
+                // yield put({
+                //     type: 'getColorList',
+                //     payload: {
+                //         page: 1,
+                //         limit: 10,
+                //         type: payload.type,
+                //         isCustom: 1,
+                //         creator: currentUser?._id,
+                //     },
+                // });
             }
             return res
         },
         *updateCustomColor({ payload }, { put, call, select }) {
             const res = yield call(colorUpdate, payload);
             if(res.success) {
-                const currentUser = yield select(state => state.user.currentUser)
-                yield put({
-                    type: 'getColorList',
-                    payload: {
-                        page: 1,
-                        limit: 10,
-                        type: payload.type,
-                        isCustom: 1,
-                        creator: currentUser?._id
-                    },
-                });
+                // const currentUser = yield select(state => state.user.currentUser)
+                // yield put({
+                //     type: 'getColorList',
+                //     payload: {
+                //         page: 1,
+                //         limit: 10,
+                //         type: payload.type,
+                //         isCustom: 1,
+                //         creator: currentUser?._id
+                //     },
+                // });
             }
             return res
         },
         *delCustomColor({ payload }, { put, call, select }) {
             const res = yield call(colorDel, payload);
             if(res.success) {
-                const currentUser = yield select(state => state.user.currentUser)
-                yield put({
-                    type: 'getColorList',
-                    payload: {
-                        page: 1,
-                        limit: 10,
-                        type: payload.type,
-                        isCustom: 1,
-                        creator: currentUser?._id
-                    },
-                });
+ 
             }
             return res
         },

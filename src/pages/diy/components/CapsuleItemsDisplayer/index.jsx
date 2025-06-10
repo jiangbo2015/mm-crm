@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Upload, Spin, Modal } from 'antd'
+import { Button, Upload, Spin, Modal, Popconfirm } from 'antd'
 import { get, map, filter, includes } from 'lodash'
 import classnames from 'classnames'
 import arrayMove from 'array-move';
@@ -68,8 +68,14 @@ export const ItemBottomTools = ({item = {}, index, showFinishedStyleIndex = -1})
                     handleEnlargeCapsuleItem(index, showFinishedStyleIndex)
                 }}/>}
                 
-                
-            <DeleteOutlined onClick={() => { handleDeleteCapsuleItem(index)} }/>
+            <Popconfirm
+                title={intl("确认要删除吗")}
+                onConfirm={() => { handleDeleteCapsuleItem(index)}}
+                okText={intl("是")}
+                cancelText={intl("否")}
+            >    
+                <DeleteOutlined />
+            </Popconfirm>
         </div>
     )
 }
@@ -178,9 +184,15 @@ const CapsuleItemStyles = ({ item = {}, index, handleDownload }) => {
                 {isEditor && <PlusOutlined onClick={() => {
                     handleUpdateCapsuleItem(index, -1)
                 }}/>}
-                {isEditor && <MinusOutlined  onClick={() => {
-                    handleDeleteCapsuleItemFinished(index, showIndex)
-                }}/>}
+                {isEditor && 
+                <Popconfirm
+                    title={intl("确认要删除吗")}
+                    onConfirm={() => { handleDeleteCapsuleItemFinished(index, showIndex)}}
+                    okText={intl("是")}
+                    cancelText={intl("否")}
+                >   
+                    <MinusOutlined />
+                </Popconfirm>}
             </div>}
         </div>
     )

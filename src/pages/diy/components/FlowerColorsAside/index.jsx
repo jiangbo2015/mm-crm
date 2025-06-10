@@ -18,6 +18,7 @@ const onChange = (key) => {
 
 const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
     const [visibleFlowerColorsModal, setVisibleFlowerColorsModal] = useState(false);
+    const [visibleCustomFlowerColorsModal, setVisibleCustomFlowerColorsModal] = useState(false);
     const [visibleImageCropperModal, setVisibleImageCropperModal] = useState(false);
     const [imageCropperEditData, setImageCropperEditData] = useState(null)
     const handleUpdateFlowerColors  = async (selectedFlowerColors) => {
@@ -28,6 +29,15 @@ const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
             });
             
             setVisibleFlowerColorsModal(false)
+        };
+    const handleUpdateCustomFlowerColors  = async (selectedFlowerColors) => {
+        console.log(selectedFlowerColors)
+            await dispatch({
+                type: 'diy/setCustomFlowerColors',
+                payload: selectedFlowerColors,
+            });
+            
+            setVisibleCustomFlowerColorsModal(false)
         };
     const handleEditImageCropper = (item) => {
         setVisibleImageCropperModal(true)
@@ -42,7 +52,7 @@ const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
         { 
             label: intl("自主上传"),
             key: 2,
-            children: <ColorList hideSearch colorType={1} colors={customFlowerColors} onAdd={() => {setVisibleImageCropperModal(true)}} onClickItem={handleEditImageCropper}/>,
+            children: <ColorList hideSearch colorType={1} colors={customFlowerColors} onAdd={() => {setVisibleCustomFlowerColorsModal(true)}} onClickItem={handleEditImageCropper}/>,
         },
     ]
     return (
@@ -56,6 +66,18 @@ const FlowerColorsAside = ({ flowerColors, customFlowerColors,dispatch }) => {
                 }}
                 onColorsModalOk={handleUpdateFlowerColors}
                 initSelectedColors={flowerColors}
+            />
+            <ColorsModal 
+                colorType={1}
+                isCustom
+                modalProps={{
+                    visible: visibleCustomFlowerColorsModal,
+                    onCancel: () => setVisibleCustomFlowerColorsModal(false),
+                    // confirmLoading: updateChannelLoading
+                }}
+                onColorsModalOk={handleUpdateCustomFlowerColors}
+                initSelectedColors={customFlowerColors}
+                onAdd={() => {setVisibleImageCropperModal(true)}}
             />
             {visibleImageCropperModal && <ImageCropperModal
                 modalProps={{
