@@ -26,6 +26,7 @@ export const EnlargeStyleModal = ({modalProps = {}, style = {}}) => {
                         style={{
                             cursor: 'pointer',
                         }}
+                        styleSize={style.styleSize}
                     />
                 </div>
                 <div className={styles['design-style']} style={{ alignItems: style?.vposition }}>

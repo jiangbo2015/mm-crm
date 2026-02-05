@@ -281,6 +281,7 @@ export const DesignStyleEditor = ({modalProps = {}, onClick}) => {
                             {...style}
                             svgUrl={style.svgUrlBack}
                             shadowUrl={style.shadowUrlBack}
+                            styleSize={style.styleBackSize}
                             style={{
                                 cursor: 'pointer',
                             }}
